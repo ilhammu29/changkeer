@@ -5,8 +5,12 @@ import { getSupabaseEnv } from '@/lib/supabase/env';
 import { SEED_ARTICLES } from '@/lib/data/mock-seed';
 import { Article } from '@/types';
 import { revalidatePath } from 'next/cache';
+import { verifyAdminOrUnauthorized } from '@/lib/auth/session';
 
 export async function GET() {
+  const unauth = await verifyAdminOrUnauthorized();
+  if (unauth) return unauth;
+
   const { isConfigured } = getSupabaseEnv();
 
   if (!isConfigured) {
@@ -31,6 +35,9 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
+    const unauth = await verifyAdminOrUnauthorized();
+    if (unauth) return unauth;
+
     const body = await req.json();
     const validation = articleSchema.safeParse(body);
 
@@ -87,6 +94,9 @@ export async function POST(req: NextRequest) {
 
 export async function PUT(req: NextRequest) {
   try {
+    const unauth = await verifyAdminOrUnauthorized();
+    if (unauth) return unauth;
+
     const body = await req.json();
     const { id, ...dataToValidate } = body;
 
@@ -144,6 +154,9 @@ export async function PUT(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
   try {
+    const unauth = await verifyAdminOrUnauthorized();
+    if (unauth) return unauth;
+
     const { searchParams } = new URL(req.url);
     const id = searchParams.get('id');
 

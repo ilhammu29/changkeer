@@ -3,8 +3,12 @@ import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { getSupabaseEnv } from '@/lib/supabase/env';
 import { getMediaAssets } from '@/lib/data/media';
 import { MediaAsset } from '@/types';
+import { verifyAdminOrUnauthorized } from '@/lib/auth/session';
 
 export async function GET() {
+  const unauth = await verifyAdminOrUnauthorized();
+  if (unauth) return unauth;
+
   try {
     const assets = await getMediaAssets();
     return NextResponse.json({ success: true, assets });
@@ -14,6 +18,9 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
+  const unauth = await verifyAdminOrUnauthorized();
+  if (unauth) return unauth;
+
   try {
     const formData = await req.formData();
     const file = formData.get('file') as File | null;
@@ -45,7 +52,7 @@ export async function POST(req: NextRequest) {
     const fileName = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
 
     if (!isConfigured) {
-      // Return mock URL
+      // In dev fallback, create and track local mock asset
       const newAsset: MediaAsset = {
         id: `media-${Date.now()}`,
         bucket,
@@ -96,6 +103,45 @@ export async function POST(req: NextRequest) {
     }
 
     return NextResponse.json({ success: true, asset: record });
+  } catch (err: any) {
+    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+  }
+}
+
+export async function DELETE(req: NextRequest) {
+  const unauth = await verifyAdminOrUnauthorized();
+  if (unauth) return unauth;
+
+  try {
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get('id');
+
+    if (!id) {
+      return NextResponse.json({ success: false, error: 'ID media diperlukan' }, { status: 400 });
+    }
+
+    const { isConfigured } = getSupabaseEnv();
+    if (!isConfigured) {
+      return NextResponse.json({ success: true });
+    }
+
+    const supabase = await createServerSupabaseClient();
+    const { data: asset, error: findError } = await supabase
+      .from('media_assets')
+      .select('*')
+      .eq('id', id)
+      .single();
+
+    if (findError || !asset) {
+      return NextResponse.json({ success: false, error: 'Media tidak ditemukan' }, { status: 404 });
+    }
+
+    // Remove from storage
+    await supabase.storage.from(asset.bucket).remove([asset.file_name]);
+    // Remove record from database
+    await supabase.from('media_assets').delete().eq('id', id);
+
+    return NextResponse.json({ success: true });
   } catch (err: any) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }

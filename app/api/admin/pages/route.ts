@@ -3,8 +3,12 @@ import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { getSupabaseEnv } from '@/lib/supabase/env';
 import { SEED_PAGES } from '@/lib/data/mock-seed';
 import { revalidatePath } from 'next/cache';
+import { verifyAdminOrUnauthorized } from '@/lib/auth/session';
 
 export async function GET(req: NextRequest) {
+  const unauth = await verifyAdminOrUnauthorized();
+  if (unauth) return unauth;
+
   const { searchParams } = new URL(req.url);
   const slug = searchParams.get('slug');
   const { isConfigured } = getSupabaseEnv();
@@ -37,6 +41,9 @@ export async function GET(req: NextRequest) {
 }
 
 export async function PUT(req: NextRequest) {
+  const unauth = await verifyAdminOrUnauthorized();
+  if (unauth) return unauth;
+
   try {
     const body = await req.json();
     const { slug, sections, seo_title, seo_description } = body;
@@ -63,12 +70,16 @@ export async function PUT(req: NextRequest) {
     const supabase = await createServerSupabaseClient();
     const { data, error } = await supabase
       .from('pages')
-      .update({
-        sections,
-        seo_title,
-        seo_description,
-      })
-      .eq('slug', slug)
+      .upsert(
+        {
+          slug,
+          sections,
+          seo_title,
+          seo_description,
+          updated_at: new Date().toISOString(),
+        },
+        { onConflict: 'slug' }
+      )
       .select()
       .single();
 
@@ -76,9 +87,8 @@ export async function PUT(req: NextRequest) {
       return NextResponse.json({ success: false, error: error.message }, { status: 500 });
     }
 
-    // Revalidate relevant routes
     revalidatePath('/');
-    revalidatePath(`/${slug === 'home' ? '' : slug}`);
+    revalidatePath(`/${slug}`);
 
     return NextResponse.json({ success: true, page: data });
   } catch (err: any) {

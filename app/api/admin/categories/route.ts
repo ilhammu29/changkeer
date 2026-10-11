@@ -5,6 +5,7 @@ import { getSupabaseEnv } from '@/lib/supabase/env';
 import { SEED_CATEGORIES } from '@/lib/data/mock-seed';
 import { Category } from '@/types';
 import { revalidatePath } from 'next/cache';
+import { verifyAdminOrUnauthorized } from '@/lib/auth/session';
 
 export async function GET() {
   const { isConfigured } = getSupabaseEnv();
@@ -27,6 +28,9 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
+    const unauth = await verifyAdminOrUnauthorized();
+    if (unauth) return unauth;
+
     const body = await req.json();
     const validation = categorySchema.safeParse(body);
 
@@ -75,6 +79,9 @@ export async function POST(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
   try {
+    const unauth = await verifyAdminOrUnauthorized();
+    if (unauth) return unauth;
+
     const { searchParams } = new URL(req.url);
     const id = searchParams.get('id');
 

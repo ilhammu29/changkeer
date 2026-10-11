@@ -34,10 +34,47 @@ export default function AdminLayout({
 }) {
   const pathname = usePathname();
   const router = useRouter();
+  const [checkingAuth, setCheckingAuth] = React.useState(pathname !== '/admin/login');
+
+  React.useEffect(() => {
+    if (pathname === '/admin/login') {
+      setCheckingAuth(false);
+      return;
+    }
+
+    async function checkAuth() {
+      try {
+        const res = await fetch('/api/admin/auth/session');
+        const data = await res.json();
+        if (!data.authenticated) {
+          router.push(`/admin/login?redirect=${encodeURIComponent(pathname)}`);
+        } else {
+          setCheckingAuth(false);
+        }
+      } catch {
+        router.push('/admin/login');
+      }
+    }
+
+    checkAuth();
+  }, [pathname, router]);
 
   // If on login page, don't show admin shell
   if (pathname === '/admin/login') {
     return <>{children}</>;
+  }
+
+  if (checkingAuth) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background text-foreground">
+        <div className="text-center space-y-3">
+          <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto" />
+          <p className="text-xs uppercase tracking-widest text-muted-foreground font-mono">
+            MEMERIKSA SESI ADMINISTRATOR...
+          </p>
+        </div>
+      </div>
+    );
   }
 
   const handleLogout = async () => {

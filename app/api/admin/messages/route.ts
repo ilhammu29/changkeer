@@ -1,9 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createServerSupabaseClient } from '@/lib/supabase/server';
-import { getSupabaseEnv } from '@/lib/supabase/env';
-import { getContactMessagesAdmin } from '@/lib/data/contact';
+import {
+  getContactMessagesAdmin,
+  deleteContactMessage,
+  updateContactMessageRead,
+} from '@/lib/data/contact';
+import { verifyAdminOrUnauthorized } from '@/lib/auth/session';
 
 export async function GET() {
+  const unauth = await verifyAdminOrUnauthorized();
+  if (unauth) return unauth;
+
   try {
     const messages = await getContactMessagesAdmin();
     return NextResponse.json({ success: true, messages });
@@ -13,28 +19,20 @@ export async function GET() {
 }
 
 export async function PATCH(req: NextRequest) {
+  const unauth = await verifyAdminOrUnauthorized();
+  if (unauth) return unauth;
+
   try {
     const body = await req.json();
     const { id, is_read } = body;
 
-    if (!id) {
-      return NextResponse.json({ success: false, error: 'ID pesan diperlukan' }, { status: 400 });
+    if (!id || typeof is_read !== 'boolean') {
+      return NextResponse.json({ success: false, error: 'ID pesan dan status baca diperlukan' }, { status: 400 });
     }
 
-    const { isConfigured } = getSupabaseEnv();
-
-    if (!isConfigured) {
-      return NextResponse.json({ success: true });
-    }
-
-    const supabase = await createServerSupabaseClient();
-    const { error } = await supabase
-      .from('contact_messages')
-      .update({ is_read })
-      .eq('id', id);
-
-    if (error) {
-      return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    const ok = await updateContactMessageRead(id, is_read);
+    if (!ok) {
+      return NextResponse.json({ success: false, error: 'Gagal memperbarui status pesan' }, { status: 500 });
     }
 
     return NextResponse.json({ success: true });
@@ -44,6 +42,9 @@ export async function PATCH(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
+  const unauth = await verifyAdminOrUnauthorized();
+  if (unauth) return unauth;
+
   try {
     const { searchParams } = new URL(req.url);
     const id = searchParams.get('id');
@@ -52,17 +53,9 @@ export async function DELETE(req: NextRequest) {
       return NextResponse.json({ success: false, error: 'ID pesan diperlukan' }, { status: 400 });
     }
 
-    const { isConfigured } = getSupabaseEnv();
-
-    if (!isConfigured) {
-      return NextResponse.json({ success: true });
-    }
-
-    const supabase = await createServerSupabaseClient();
-    const { error } = await supabase.from('contact_messages').delete().eq('id', id);
-
-    if (error) {
-      return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    const ok = await deleteContactMessage(id);
+    if (!ok) {
+      return NextResponse.json({ success: false, error: 'Gagal menghapus pesan' }, { status: 500 });
     }
 
     return NextResponse.json({ success: true });

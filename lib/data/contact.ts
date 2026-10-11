@@ -74,3 +74,44 @@ export async function getContactMessagesAdmin(): Promise<ContactMessage[]> {
     return localMessages;
   }
 }
+
+export async function deleteContactMessage(id: string): Promise<boolean> {
+  const { isConfigured } = getSupabaseEnv();
+
+  if (!isConfigured) {
+    const idx = localMessages.findIndex((m) => m.id === id);
+    if (idx !== -1) {
+      localMessages.splice(idx, 1);
+    }
+    return true;
+  }
+
+  try {
+    const supabase = await createServerSupabaseClient();
+    const { error } = await supabase.from('contact_messages').delete().eq('id', id);
+    return !error;
+  } catch {
+    return false;
+  }
+}
+
+export async function updateContactMessageRead(id: string, isRead: boolean): Promise<boolean> {
+  const { isConfigured } = getSupabaseEnv();
+
+  if (!isConfigured) {
+    const msg = localMessages.find((m) => m.id === id);
+    if (msg) {
+      msg.is_read = isRead;
+    }
+    return true;
+  }
+
+  try {
+    const supabase = await createServerSupabaseClient();
+    const { error } = await supabase.from('contact_messages').update({ is_read: isRead }).eq('id', id);
+    return !error;
+  } catch {
+    return false;
+  }
+}
+
