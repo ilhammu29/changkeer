@@ -56,6 +56,17 @@ export function Navbar() {
     };
   }, [sidebarOpen]);
 
+  // Auto-close mobile sidebar when window is resized to desktop
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setSidebarOpen(false);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   // Detect if current page uses dark cinematic atmosphere (Home & Tentang Produk)
   const isDarkPage = pathname === '/' || pathname === '/tentang-produk';
 
@@ -116,7 +127,7 @@ export function Navbar() {
           </Link>
 
           {/* Minimalist Horizontal Navigation (Desktop) */}
-          <nav className="hidden xl:flex items-center space-x-7">
+          <nav className="hidden lg:flex items-center space-x-5 xl:space-x-7">
             {NAV_LINKS.map((link) => {
               const active = isActive(link.href);
               return (
@@ -146,7 +157,7 @@ export function Navbar() {
             })}
           </nav>
 
-          {/* Right Action: CTA & Sidebar Toggle */}
+          {/* Right Action: CTA & Mobile Sidebar Toggle */}
           <div className="flex items-center gap-3">
             <Link
               href="/katalog"
@@ -160,16 +171,16 @@ export function Navbar() {
               <ArrowUpRight className="w-3 h-3" />
             </Link>
 
-            {/* Sidebar Toggle Button (Opens Menu in Sidebar on All Devices) */}
+            {/* Mobile / Tablet Hamburger Menu Toggle (Hidden on Desktop) */}
             <button
               type="button"
-              className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-full border transition-all cursor-pointer ${
+              className={`lg:hidden inline-flex items-center gap-2 px-3.5 py-2 rounded-full border transition-all cursor-pointer ${
                 isDarkPage
                   ? 'border-white/20 text-white hover:bg-white/10 active:scale-95'
                   : 'border-border/80 text-foreground hover:bg-neutral-100 active:scale-95'
               }`}
               onClick={() => setSidebarOpen(true)}
-              aria-label="Open Sidebar Menu"
+              aria-label="Open Mobile Menu"
             >
               <Menu className="w-4 h-4" />
               <span className="text-[10px] font-mono font-bold tracking-widest uppercase">
@@ -180,9 +191,9 @@ export function Navbar() {
         </div>
       </Container>
 
-      {/* Slide-over Sidebar Drawer & Backdrop */}
+      {/* Slide-over Sidebar Drawer & Backdrop (Mobile & Tablet Only) */}
       {sidebarOpen && (
-        <div className="fixed inset-0 z-50">
+        <div className="lg:hidden fixed inset-0 z-50">
           {/* Backdrop */}
           <div
             className="fixed inset-0 bg-black/75 backdrop-blur-sm transition-opacity duration-300 animate-in fade-in"
