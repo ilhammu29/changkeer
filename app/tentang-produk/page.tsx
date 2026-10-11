@@ -1,12 +1,14 @@
 import React from 'react';
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import { Container } from '@/components/ui/Container';
 import { ProductShowcase } from '@/components/products/ProductShowcase';
-import { ProductCard } from '@/components/products/ProductCard';
+import { BrandPillarsEditorial } from '@/components/products/BrandPillarsEditorial';
+import { BrewingRitualCarousel } from '@/components/products/BrewingRitualCarousel';
 import { Reveal } from '@/components/ui/Reveal';
 import { getPublishedProducts } from '@/lib/data/products';
-import { Leaf, ShieldCheck, Clock, Recycle, ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Tentang Produk',
@@ -17,236 +19,101 @@ export const metadata: Metadata = {
 export default async function TentangProdukPage() {
   const products = await getPublishedProducts();
 
-  const ingredientsShowcase = [
-    {
-      name: 'Daun Teh Hijau & Hitam Utuh (Camellia sinensis)',
-      origin: 'Kebun Teh Pegunungan Nusantara',
-      notes: 'Dipetik pada pucuk optimal untuk mempertahankan antioksidan polifenol alami tanpa sensasi rasa pahit pekat.',
-    },
-    {
-      name: 'Kuntum Bunga Melati Utuh (Jasminum sambac)',
-      origin: 'Sentra Melati Tradisional Jawa',
-      notes: 'Kelopak melati segar utuh yang melepaskan aroma wangi menenangkan alami tanpa perisa esens sintetis.',
-    },
-    {
-      name: 'Daun Spearmint & Peppermint (Mentha)',
-      origin: 'Dataran Tinggi Sejuk',
-      notes: 'Memberikan hembusan sensasi dingin bersih alami yang melegakan pernapasan dan menyegarkan fokus.',
-    },
-    {
-      name: 'Gula Sorgum Organik Rendah Glikemik',
-      origin: 'Petani Sorgum Lestari',
-      notes: 'Pemanis alami bernutrisi alternatif pengganti gula tebu rafinasi, ramah bagi metabolisme tubuh.',
-    },
-    {
-      name: 'Madu Hutan Murni Nusantara',
-      origin: 'Hutan Tropis Alami',
-      notes: 'Madu mentah tanpa pasteurisasi berlebih untuk melengkapi kelembutan rasa dan daya tahan tubuh.',
-    },
-    {
-      name: 'Polong Vanilla Alami (Vanilla planifolia)',
-      origin: 'Perkebunan Vanilla Nusantara',
-      notes: 'Menyumbangkan aroma manis lembut yang menenangkan pikiran dan meredakan kepenatan harian.',
-    },
-  ];
-
   return (
     <div className="w-full bg-[#0c0b11]">
-      {/* 1. Main Exhibition Showcase (Reference-driven Minimalist Carousel) */}
+      {/* 1. Main Minimalist Product Showcase (Title Only on Left, Enlarged Product in Center, Price Only on Right) */}
       <ProductShowcase />
 
-      {/* 2. 4 Core Pillars of Brand Integrity from PDF */}
-      <section id="pillars" className="py-20 border-t border-border/20 bg-background text-foreground scroll-mt-20">
+      {/* 2. Brand Pillars (Editorial Manifesto Layout, No Cardboxes, No Generic AI Slop) */}
+      <BrandPillarsEditorial />
+
+      {/* 3. Universal Brewing Ritual (Interactive 360-Degree Circular Revolving Carousel) */}
+      <BrewingRitualCarousel />
+
+      {/* 4. Catalog Collection (Cards match Homepage FeaturedProducts style exactly) */}
+      <section className="py-24 sm:py-28 lg:py-32 bg-background text-foreground border-t border-border/40">
         <Container size="wide">
           <Reveal>
-            <div className="max-w-2xl mb-12">
-              <span className="text-[11px] font-mono font-bold tracking-[0.25em] uppercase text-accent block mb-2">
-                02 // KOMITMEN INTEGRITAS KAMI
-              </span>
-              <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-foreground">
-                STANDAR KUALITAS TANPA KOMPROMI
-              </h2>
-              <p className="text-xs sm:text-sm text-muted-foreground mt-2">
-                Lahir dari evaluasi kritis terhadap industri teh konvensional yang kerap mengabaikan kesehatan jangka panjang konsumen.
-              </p>
-            </div>
-          </Reveal>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="space-y-4 p-6 rounded-2xl bg-surface border border-border shadow-xs">
-              <div className="w-10 h-10 rounded-sm bg-primary text-primary-foreground flex items-center justify-center">
-                <Recycle className="w-5 h-5" />
-              </div>
-              <h3 className="text-lg font-bold uppercase tracking-tight text-foreground">
-                100% Bebas Mikroplastik
-              </h3>
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                Kantong teh konvensional melepaskan miliaran partikel mikroplastik berbahaya ke air panas. CHANGKEER menggunakan kemasan bebas mikroplastik dan ramah lingkungan.
-              </p>
-            </div>
-
-            <div className="space-y-4 p-6 rounded-2xl bg-surface border border-border shadow-xs">
-              <div className="w-10 h-10 rounded-sm bg-primary text-primary-foreground flex items-center justify-center">
-                <ShieldCheck className="w-5 h-5" />
-              </div>
-              <h3 className="text-lg font-bold uppercase tracking-tight text-foreground">
-                Bebas Daun Senna (Aman Harian)
-              </h3>
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                Banyak merek teh &quot;detox&quot; mengandalkan daun senna (daun jati cina) yang bersifat laksatif keras. Kami menolak bahan tersebut agar aman dikonsumsi harian tanpa merusak usus.
-              </p>
-            </div>
-
-            <div className="space-y-4 p-6 rounded-2xl bg-surface border border-border shadow-xs">
-              <div className="w-10 h-10 rounded-sm bg-primary text-primary-foreground flex items-center justify-center">
-                <Leaf className="w-5 h-5" />
-              </div>
-              <h3 className="text-lg font-bold uppercase tracking-tight text-foreground">
-                Gula Sorgum &amp; Madu Murni
-              </h3>
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                Mengganti gula tebu rafinasi berlebih dengan alternatif alami bernutrisi: gula sorgum rendah glikemik dan madu hutan murni nusantara.
-              </p>
-            </div>
-
-            <div className="space-y-4 p-6 rounded-2xl bg-surface border border-border shadow-xs">
-              <div className="w-10 h-10 rounded-sm bg-primary text-primary-foreground flex items-center justify-center">
-                <Clock className="w-5 h-5" />
-              </div>
-              <h3 className="text-lg font-bold uppercase tracking-tight text-foreground">
-                Penyajian Cepat &lt; 3 Menit
-              </h3>
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                Dirancang untuk gaya hidup aktif modern grab-and-go. Ekstraksi optimal daun teh dan kelopak bunga dicapai hanya dalam hitungan kurang dari 3 menit.
-              </p>
-            </div>
-          </div>
-        </Container>
-      </section>
-
-      {/* 3. Universal Brewing Ritual */}
-      <section className="py-20 border-b border-border bg-surface text-foreground">
-        <Container size="wide">
-          <Reveal>
-            <div className="max-w-2xl mx-auto text-center space-y-3 mb-16">
-              <span className="text-[11px] font-mono font-bold tracking-[0.25em] uppercase text-accent block">
-                03 // RITUAL PENYAJIAN CEPAT
-              </span>
-              <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-foreground">
-                3 LANGKAH NIKMAT &lt; 3 MENIT
-              </h2>
-              <p className="text-xs sm:text-sm text-muted-foreground">
-                Ekstraksi rasa dan aroma botani maksimal tanpa ribet, menemani kesibukan harian Anda.
-              </p>
-            </div>
-          </Reveal>
-
-          <Reveal delayMs={100}>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="p-8 rounded-2xl bg-background border border-border text-center space-y-3 shadow-xs">
-                <span className="font-mono text-3xl font-black text-primary">01</span>
-                <h4 className="font-bold text-base uppercase tracking-tight text-foreground">
-                  Siapkan Air Panas 85-95°C
-                </h4>
-                <p className="text-xs text-muted-foreground leading-relaxed">
-                  Tuangkan 250ml - 300ml air panas berkualitas ke dalam cangkir favorit Anda untuk mengaktifkan aroma minyak atsiri alami.
-                </p>
-              </div>
-
-              <div className="p-8 rounded-2xl bg-background border border-border text-center space-y-3 shadow-xs">
-                <span className="font-mono text-3xl font-black text-primary">02</span>
-                <h4 className="font-bold text-base uppercase tracking-tight text-foreground">
-                  Tutup Cangkir &amp; Seduh &lt; 3 Menit
-                </h4>
-                <p className="text-xs text-muted-foreground leading-relaxed">
-                  Masukkan kantung teh CHANGKEER. Tutup cangkir selama 2 hingga 3 menit agar aroma harum botani terkonsentrasi sempurna.
-                </p>
-              </div>
-
-              <div className="p-8 rounded-2xl bg-background border border-border text-center space-y-3 shadow-xs">
-                <span className="font-mono text-3xl font-black text-primary">03</span>
-                <h4 className="font-bold text-base uppercase tracking-tight text-foreground">
-                  Nikmati Hangat atau Dingin
-                </h4>
-                <p className="text-xs text-muted-foreground leading-relaxed">
-                  Nikmati selagi hangat untuk ketenangan batin, atau tambahkan es batu untuk kesegaran ganda di siang hari yang terik.
-                </p>
-              </div>
-            </div>
-          </Reveal>
-        </Container>
-      </section>
-
-      {/* 4. Raw Ingredients Explorer */}
-      <section className="py-20 border-b border-border bg-background text-foreground">
-        <Container size="wide">
-          <Reveal>
-            <div className="mb-12 max-w-2xl">
-              <span className="text-[11px] font-mono font-bold tracking-[0.25em] uppercase text-accent block mb-2">
-                04 // EKSPLORASI BOTANI ALAMI
-              </span>
-              <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-foreground">
-                BAHAN BAKU PILIHAN NUSANTARA
-              </h2>
-              <p className="text-xs sm:text-sm text-muted-foreground mt-2">
-                Kami menggunakan tanaman herbal murni, kelopak bunga asli, dan rempah bermutu tinggi untuk menjamin khasiat organ dan kesegaran rasa.
-              </p>
-            </div>
-          </Reveal>
-
-          <Reveal delayMs={100}>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {ingredientsShowcase.map((item) => (
-                <div
-                  key={item.name}
-                  className="p-6 rounded-2xl bg-surface border border-border flex flex-col justify-between space-y-4 hover:border-border-strong transition-colors"
-                >
-                  <div>
-                    <span className="text-[10px] font-mono uppercase tracking-widest text-accent block mb-1">
-                      ASAL: {item.origin}
-                    </span>
-                    <h4 className="font-bold text-base text-foreground leading-snug">
-                      {item.name}
-                    </h4>
-                  </div>
-                  <p className="text-xs text-muted-foreground leading-relaxed">
-                    {item.notes}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </Reveal>
-        </Container>
-      </section>
-
-      {/* 5. Catalog Link */}
-      <section className="py-20 bg-surface text-foreground">
-        <Container size="wide">
-          <Reveal>
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4">
-              <div>
-                <span className="text-[11px] font-mono font-bold tracking-[0.25em] uppercase text-accent block mb-2">
-                  05 // SELURUH KOLEKSI
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 sm:mb-16 gap-6">
+              <div className="space-y-2">
+                <span className="text-[11px] font-mono font-bold tracking-[0.25em] uppercase text-accent block">
+                  04 // SELURUH KOLEKSI
                 </span>
                 <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-foreground">
-                  KATALOG TEH HERBAL CHANGKEER
+                  Katalog Teh Herbal CHANGKEER
                 </h2>
               </div>
               <Link
                 href="/katalog"
-                className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-foreground hover:text-primary underline underline-offset-4"
+                className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-foreground hover:text-primary transition-colors border-b border-foreground pb-0.5 self-start sm:self-auto"
               >
-                <span>BUKA KATALOG LENGKAP</span>
-                <ArrowUpRight className="w-4 h-4" />
+                <span>Buka Katalog Lengkap</span>
+                <ArrowUpRight className="w-3.5 h-3.5" />
               </Link>
             </div>
           </Reveal>
 
+          {/* Cards matching the Homepage FeaturedProducts design exactly */}
           <Reveal delayMs={100}>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {products.slice(0, 3).map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+              {products.slice(0, 3).map((product) => {
+                const formattedPrice = new Intl.NumberFormat('id-ID', {
+                  style: 'currency',
+                  currency: 'IDR',
+                  maximumFractionDigits: 0,
+                }).format(product.price);
+
+                const imageSrc =
+                  product.featured_image ||
+                  (product.gallery && product.gallery[0]) ||
+                  '/images/assets/jasmine_tea_produk.jpg';
+
+                return (
+                  <div key={product.id} className="w-full">
+                    <Link
+                      href={`/katalog/${product.slug}`}
+                      className="block group relative aspect-[3/4] sm:aspect-[4/5] rounded-2xl overflow-hidden bg-muted border border-border/60 shadow-xs hover:shadow-xl transition-all duration-500"
+                    >
+                      {/* Full Product Photo */}
+                      <Image
+                        src={imageSrc}
+                        alt={product.name}
+                        fill
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-106"
+                      />
+
+                      {/* Subtle Gradient Scrim at Bottom */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent pointer-events-none transition-opacity duration-300" />
+
+                      {/* Top Right Quick Action Icon */}
+                      <div className="absolute top-3.5 right-3.5 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 w-8 h-8 rounded-full bg-white/90 backdrop-blur-xs text-black flex items-center justify-center shadow-md">
+                        <ArrowUpRight className="w-4 h-4" />
+                      </div>
+
+                      {/* Minimalist Card Text at Bottom */}
+                      <div className="absolute bottom-0 inset-x-0 p-5 flex flex-col justify-end space-y-1 text-white">
+                        <span className="text-[10px] font-mono tracking-[0.22em] uppercase text-white/70 block">
+                          {product.category?.name || 'RACIKAN BOTANI'}
+                        </span>
+
+                        <h3 className="font-extrabold text-sm sm:text-base uppercase tracking-wide text-white group-hover:text-amber-200 transition-colors line-clamp-1 leading-snug">
+                          {product.name}
+                        </h3>
+
+                        <div className="pt-1 flex items-center justify-between">
+                          <span className="text-xs sm:text-sm font-semibold text-white/95 tracking-wide">
+                            {formattedPrice}
+                          </span>
+                          <span className="text-[10px] font-mono uppercase tracking-wider text-white/60 group-hover:text-white transition-colors">
+                            Lihat Detail &rarr;
+                          </span>
+                        </div>
+                      </div>
+                    </Link>
+                  </div>
+                );
+              })}
             </div>
           </Reveal>
         </Container>

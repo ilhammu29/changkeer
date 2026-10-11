@@ -253,8 +253,8 @@ export function Navbar() {
               </nav>
             </div>
 
-            {/* Sidebar Bottom Action & Info */}
-            <div className="pt-6 border-t border-white/10 space-y-4">
+            {/* Sidebar Bottom Action */}
+            <div className="pt-4">
               <Link
                 href="/katalog"
                 onClick={() => setMobileMenuOpen(false)}
@@ -262,9 +262,6 @@ export function Navbar() {
               >
                 TEMUKAN TEH
               </Link>
-              <div className="text-[10px] text-white/40 tracking-wider text-center font-mono">
-                CHANGKEER INDONESIA
-              </div>
             </div>
           </aside>
         </div>
