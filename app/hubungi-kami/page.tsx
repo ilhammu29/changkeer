@@ -20,12 +20,12 @@ export default async function HubungiKamiPage() {
       {/* Section 1: Hero Banner with Background Image */}
       <section className="relative w-full py-16 sm:py-24 md:py-28 bg-neutral-950 overflow-hidden border-b border-border mb-12 sm:mb-16">
         <Image
-          src="/images/assets/english_breakfast_tea_produk.jpg"
+          src="/images/banners/contact_us_banner.jpg"
           alt="Contact Changkeer Concierge"
           fill
           priority
           sizes="100vw"
-          className="object-cover object-[center_35%]"
+          className="object-cover object-center"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black/92 via-black/75 to-black/40 pointer-events-none" />
 

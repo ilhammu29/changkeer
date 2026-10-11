@@ -55,7 +55,7 @@ export default function AboutChangkeerPage() {
       {/* 1. Hero Banner with Background Image */}
       <section className="relative w-full py-18 sm:py-24 md:py-28 bg-neutral-950 overflow-hidden border-b border-border mb-16 sm:mb-20">
         <Image
-          src="/images/assets/banner.jpg"
+          src="/images/banners/about_changkeer_banner.jpg"
           alt="About Changkeer Botanical Craft"
           fill
           priority

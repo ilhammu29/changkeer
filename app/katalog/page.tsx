@@ -32,7 +32,7 @@ export default async function BlendsAndPricesPage() {
       {/* 1. Hero Banner with Background Image */}
       <section className="relative w-full py-18 sm:py-24 md:py-28 bg-neutral-950 overflow-hidden border-b border-border">
         <Image
-          src="/images/assets/banner2.jpg"
+          src="/images/banners/blends_prices_banner.jpg"
           alt="Changkeer Blends & Prices"
           fill
           priority
