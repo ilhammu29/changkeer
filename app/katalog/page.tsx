@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import { Container } from '@/components/ui/Container';
 import { CatalogView } from '@/components/products/CatalogView';
+import { SeasonalWheelExplorer } from '@/components/products/SeasonalWheelExplorer';
 import { getPublishedProducts } from '@/lib/data/products';
 import { getCategories } from '@/lib/data/categories';
 import {
@@ -29,7 +30,7 @@ export default async function BlendsAndPricesPage() {
   return (
     <div className="pb-20 sm:pb-28 bg-white font-sans text-foreground">
       {/* 1. Hero Banner with Background Image */}
-      <section className="relative w-full py-18 sm:py-24 md:py-28 bg-neutral-950 overflow-hidden border-b border-border mb-12 sm:mb-16">
+      <section className="relative w-full py-18 sm:py-24 md:py-28 bg-neutral-950 overflow-hidden border-b border-border">
         <Image
           src="/images/assets/banner2.jpg"
           alt="Changkeer Blends & Prices"
@@ -56,8 +57,11 @@ export default async function BlendsAndPricesPage() {
         </Container>
       </section>
 
-      {/* 2. Interactive Signature Grab-and-Go Catalog */}
-      <section className="mb-20 sm:mb-24">
+      {/* 2. Interactive 24 Solar Terms Seasonal Wheel Explorer & Carousel */}
+      <SeasonalWheelExplorer />
+
+      {/* 3. Interactive Signature Grab-and-Go Catalog */}
+      <section className="my-16 sm:my-20">
         <Container size="wide">
           <div className="mb-8 space-y-1.5">
             <span className="text-[10px] font-mono font-bold tracking-[0.25em] uppercase text-primary block">
@@ -75,7 +79,7 @@ export default async function BlendsAndPricesPage() {
         </Container>
       </section>
 
-      {/* 3. The 24 Solar Terms Seasonal Menu */}
+      {/* 4. The 24 Solar Terms Seasonal Menu */}
       <section className="py-16 sm:py-20 border-t border-b border-border/80 bg-neutral-50/60 mb-20 sm:mb-24">
         <Container size="wide">
           <div className="max-w-3xl space-y-3 mb-10 sm:mb-12">
@@ -176,7 +180,7 @@ export default async function BlendsAndPricesPage() {
         </Container>
       </section>
 
-      {/* 4. Add-ons & Customizations Atelier */}
+      {/* 5. Add-ons & Customizations Atelier */}
       <section className="mb-12">
         <Container size="wide">
           <div className="max-w-2xl mb-12 space-y-2">
