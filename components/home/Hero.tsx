@@ -74,7 +74,7 @@ export function Hero({ content: _content }: HeroProps = {}) {
 
   return (
     <section className="relative w-full h-[100svh] min-h-[580px] flex items-center justify-center overflow-hidden bg-[#0c0b11] select-none">
-      {/* Background Video Layer (Full-Bleed 100svh using VIDEO-LANDING-PAGE-V2.mp4) */}
+      {/* Background Video Layer (Full-Bleed 100svh using video-3.mp4) */}
       <div className="absolute inset-0 w-full h-full z-0 overflow-hidden bg-[#0c0b11]">
         {reducedMotion ? (
           <Image
@@ -87,7 +87,7 @@ export function Hero({ content: _content }: HeroProps = {}) {
         ) : (
           <video
             ref={videoRef}
-            src="/videos/VIDEO-LANDING-PAGE-V2.mp4"
+            src="/videos/video-3.mp4"
             poster="/images/hero/hero-video-poster.jpg"
             autoPlay
             loop
@@ -96,7 +96,7 @@ export function Hero({ content: _content }: HeroProps = {}) {
             preload="auto"
             className="absolute inset-0 w-full h-full object-cover object-center animate-hero-video-enter"
           >
-            <source src="/videos/VIDEO-LANDING-PAGE-V2.mp4" type="video/mp4" />
+            <source src="/videos/video-3.mp4" type="video/mp4" />
           </video>
         )}
       </div>
