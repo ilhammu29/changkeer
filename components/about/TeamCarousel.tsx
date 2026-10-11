@@ -107,7 +107,7 @@ export function TeamCarousel({ members }: TeamCarouselProps) {
               }`}
             >
               <div
-                className={`rounded-3xl p-7 sm:p-8 flex flex-col justify-between space-y-6 transition-all duration-700 ${
+                className={`rounded-3xl p-5 sm:p-8 flex flex-col justify-between space-y-5 sm:space-y-6 transition-all duration-700 ${
                   isCenter
                     ? 'bg-white border-2 border-primary shadow-2xl ring-4 ring-primary/10'
                     : 'bg-white/90 backdrop-blur-xs border border-border/80 shadow-md'

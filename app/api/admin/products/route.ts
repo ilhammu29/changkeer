@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { productSchema, getFirstErrorMessage } from '@/lib/validation/schemas';
-import { createServerSupabaseClient } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { getSupabaseEnv } from '@/lib/supabase/env';
 import { SEED_PRODUCTS } from '@/lib/data/mock-seed';
 import { Product } from '@/types';
@@ -15,7 +15,7 @@ export async function GET() {
   }
 
   try {
-    const supabase = await createServerSupabaseClient();
+    const supabase = createAdminClient();
     const { data, error } = await supabase
       .from('products')
       .select('*, category:categories(*)')
@@ -69,7 +69,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: true, product: newProduct });
     }
 
-    const supabase = await createServerSupabaseClient();
+    const supabase = createAdminClient();
     const { data, error } = await supabase
       .from('products')
       .insert({
@@ -129,7 +129,7 @@ export async function PUT(req: NextRequest) {
       return NextResponse.json({ success: false, error: 'Produk tidak ditemukan' }, { status: 404 });
     }
 
-    const supabase = await createServerSupabaseClient();
+    const supabase = createAdminClient();
     const { data, error } = await supabase
       .from('products')
       .update({
@@ -175,7 +175,7 @@ export async function DELETE(req: NextRequest) {
       return NextResponse.json({ success: true });
     }
 
-    const supabase = await createServerSupabaseClient();
+    const supabase = createAdminClient();
     const { error } = await supabase.from('products').delete().eq('id', id);
 
     if (error) {

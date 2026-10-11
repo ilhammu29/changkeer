@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Container } from '@/components/ui/Container';
 import { TeamCarousel } from '@/components/about/TeamCarousel';
-import { ArrowUpRight, Sparkles, MapPin, ShieldCheck } from 'lucide-react';
+import { ArrowUpRight, Sparkles } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'About Changkeer',
@@ -91,17 +91,6 @@ export default function AboutChangkeerPage() {
               <h2 className="text-2xl sm:text-4xl font-black uppercase tracking-tight text-foreground leading-snug">
                 AN HONEST CHANGKEER, FROM INDONESIAN SOIL
               </h2>
-
-              <div className="pt-2 flex flex-col gap-2.5">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary font-mono text-[11px] font-bold uppercase tracking-wider self-start">
-                  <MapPin className="w-3.5 h-3.5" />
-                  <span>Puncak · Garut · Wonosobo</span>
-                </div>
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-neutral-100 text-muted-foreground font-mono text-[11px] font-semibold uppercase tracking-wider self-start border border-border/60">
-                  <ShieldCheck className="w-3.5 h-3.5 text-primary" />
-                  <span>Plastic-Free · Zero Senna · Unsweetened Default</span>
-                </div>
-              </div>
             </div>
 
             <div className="lg:col-span-7 space-y-5 text-base sm:text-[17px] text-foreground/85 leading-relaxed font-normal">

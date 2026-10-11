@@ -1,4 +1,5 @@
-import { createServerSupabaseClient } from '@/lib/supabase/server';
+import { createPublicSupabaseClient } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { getSupabaseEnv } from '@/lib/supabase/env';
 import { SEED_ARTICLES } from './mock-seed';
 import { Article } from '@/types';
@@ -14,7 +15,7 @@ export async function getPublishedArticles(categorySlug?: string): Promise<Artic
   }
 
   try {
-    const supabase = await createServerSupabaseClient();
+    const supabase = createPublicSupabaseClient();
     let query = supabase
       .from('articles')
       .select('*, category:categories(*)')
@@ -49,7 +50,7 @@ export async function getArticleBySlug(slug: string): Promise<Article | null> {
   }
 
   try {
-    const supabase = await createServerSupabaseClient();
+    const supabase = createPublicSupabaseClient();
     const { data, error } = await supabase
       .from('articles')
       .select('*, category:categories(*)')
@@ -74,7 +75,7 @@ export async function getAllArticlesAdmin(): Promise<Article[]> {
   }
 
   try {
-    const supabase = await createServerSupabaseClient();
+    const supabase = createAdminClient();
     const { data, error } = await supabase
       .from('articles')
       .select('*, category:categories(*)')

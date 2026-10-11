@@ -49,46 +49,52 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col justify-center items-center p-6">
-      <div className="w-full max-w-md space-y-8 bg-surface p-8 sm:p-10 rounded-xl border border-border shadow-xl">
-        {/* Brand header */}
+    <div className="min-h-screen bg-[#0D0E12] text-white flex flex-col justify-center items-center p-4 sm:p-6 relative overflow-hidden font-sans">
+      {/* Ambient Botanical Glows */}
+      <div className="absolute -top-32 -left-32 w-96 h-96 bg-purple-600/15 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-emerald-600/10 rounded-full blur-3xl pointer-events-none" />
+
+      <div className="w-full max-w-md space-y-7 bg-[#16171F]/90 backdrop-blur-xl p-8 sm:p-10 rounded-3xl border border-white/10 shadow-2xl relative z-10">
+        {/* Brand Header */}
         <div className="text-center space-y-3">
-          <div className="relative w-14 h-14 rounded-full overflow-hidden border border-border shadow-md mx-auto">
+          <div className="relative w-14 h-14 rounded-full overflow-hidden border border-white/20 shadow-md mx-auto bg-white p-1">
             <Image
-              src="/images/logo_changkeer.jpg"
+              src="/images/logo_new.png"
               alt="CHANGKEER"
               fill
-              className="rounded-full object-cover"
+              className="object-contain p-1"
             />
           </div>
-          <h2 className="text-xl font-extrabold uppercase tracking-widest text-foreground">
-            CHANGKEER CMS
-          </h2>
-          <p className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">
-            PORTAL MANAJEMEN KONTEN &amp; PRODUK
-          </p>
+          <div className="space-y-1">
+            <h2 className="text-lg sm:text-xl font-black uppercase tracking-[0.2em] text-white">
+              CHANGKEER CMS
+            </h2>
+            <p className="text-[10px] text-white/60 uppercase tracking-[0.22em] font-mono font-semibold">
+              ADMINISTRATIVE ATELIER PORTAL
+            </p>
+          </div>
         </div>
 
         {error && (
-          <div className="p-4 rounded-md bg-red-50 border border-red-200 text-red-800 text-xs flex items-start gap-2.5">
-            <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
+          <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-200 text-xs flex items-start gap-2.5 animate-in fade-in duration-200">
+            <AlertCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
             <div>
-              <p className="font-bold">Akses Ditolak</p>
-              <p className="mt-0.5">{error}</p>
+              <p className="font-bold text-red-300">Akses Ditolak</p>
+              <p className="mt-0.5 text-white/80">{error}</p>
             </div>
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-5">
-          <div>
+          <div className="space-y-1.5">
             <label
               htmlFor="email"
-              className="block text-xs font-bold uppercase tracking-wider text-foreground mb-1.5"
+              className="block text-[11px] font-mono font-bold uppercase tracking-wider text-white/70"
             >
-              EMAIL ADMIN
+              EMAIL ADMINISTRATOR
             </label>
             <div className="relative">
-              <Mail className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
+              <Mail className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-white/40" />
               <input
                 id="email"
                 type="email"
@@ -97,20 +103,20 @@ export default function AdminLoginPage() {
                 placeholder="admin@changkeer.com"
                 required
                 disabled={isLoading}
-                className="w-full pl-10 pr-4 py-3 text-xs bg-background border border-border rounded-sm text-foreground focus:outline-none focus:ring-1 focus:ring-ring transition-colors"
+                className="w-full pl-10 pr-4 py-3 text-xs bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-white/35 focus:outline-none focus:border-white/40 focus:ring-1 focus:ring-white/40 transition-colors"
               />
             </div>
           </div>
 
-          <div>
+          <div className="space-y-1.5">
             <label
               htmlFor="password"
-              className="block text-xs font-bold uppercase tracking-wider text-foreground mb-1.5"
+              className="block text-[11px] font-mono font-bold uppercase tracking-wider text-white/70"
             >
               KATA SANDI
             </label>
             <div className="relative">
-              <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
+              <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-white/40" />
               <input
                 id="password"
                 type="password"
@@ -119,7 +125,7 @@ export default function AdminLoginPage() {
                 placeholder="••••••••••••"
                 required
                 disabled={isLoading}
-                className="w-full pl-10 pr-4 py-3 text-xs bg-background border border-border rounded-sm text-foreground focus:outline-none focus:ring-1 focus:ring-ring transition-colors"
+                className="w-full pl-10 pr-4 py-3 text-xs bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-white/35 focus:outline-none focus:border-white/40 focus:ring-1 focus:ring-white/40 transition-colors"
               />
             </div>
           </div>
@@ -127,28 +133,28 @@ export default function AdminLoginPage() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full inline-flex items-center justify-center gap-2 text-xs font-bold tracking-widest uppercase bg-primary text-primary-foreground py-3.5 rounded-sm hover:bg-primary-hover active:scale-[0.99] transition-all disabled:opacity-50 cursor-pointer"
+            className="w-full inline-flex items-center justify-center gap-2 text-xs font-extrabold tracking-widest uppercase bg-white text-black py-3.5 rounded-xl hover:bg-neutral-200 active:scale-[0.98] transition-all disabled:opacity-50 cursor-pointer shadow-lg"
           >
             {isLoading ? (
-              <span className="w-4 h-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin" />
+              <span className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin" />
             ) : (
               <span>MASUK KE DASHBOARD</span>
             )}
           </button>
         </form>
 
-        <div className="pt-4 border-t border-border text-center space-y-2">
-          <div className="flex items-center justify-center gap-1.5 text-[11px] text-muted-foreground">
-            <ShieldCheck className="w-3.5 h-3.5 text-accent" />
-            <span>Autentikasi Terenkripsi Supabase Auth</span>
+        <div className="pt-4 border-t border-white/10 text-center space-y-2.5">
+          <div className="flex items-center justify-center gap-1.5 text-[10px] font-mono text-white/50 uppercase tracking-wider">
+            <ShieldCheck className="w-3.5 h-3.5 text-purple-300" />
+            <span>Supabase Auth · 256-bit AES Encryption</span>
           </div>
-          <p className="text-[10px] text-muted-foreground/80">
-            Pendaftaran publik dinonaktifkan. Akun admin hanya dapat dibuat oleh Super Admin melalui console terverifikasi.
+          <p className="text-[10px] text-white/40 leading-relaxed font-sans">
+            Akses dibatasi hanya untuk personel resmi CHANGKEER.
           </p>
           <div className="pt-2">
             <Link
               href="/"
-              className="text-xs text-foreground font-semibold hover:underline"
+              className="text-xs text-white/75 hover:text-white font-semibold transition-colors"
             >
               ← Kembali ke Beranda Publik
             </Link>

@@ -1,4 +1,4 @@
-import { createServerSupabaseClient } from '@/lib/supabase/server';
+import { createPublicSupabaseClient } from '@/lib/supabase/server';
 import { getSupabaseEnv } from '@/lib/supabase/env';
 import { SEED_CATEGORIES } from './mock-seed';
 import { Category, CategoryType } from '@/types';
@@ -14,7 +14,7 @@ export async function getCategories(type?: CategoryType): Promise<Category[]> {
   }
 
   try {
-    const supabase = await createServerSupabaseClient();
+    const supabase = createPublicSupabaseClient();
     let query = supabase.from('categories').select('*').order('name');
     if (type) {
       query = query.eq('type', type);

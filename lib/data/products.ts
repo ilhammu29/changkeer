@@ -1,4 +1,5 @@
-import { createServerSupabaseClient } from '@/lib/supabase/server';
+import { createPublicSupabaseClient } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { getSupabaseEnv } from '@/lib/supabase/env';
 import { SEED_PRODUCTS } from './mock-seed';
 import { Product } from '@/types';
@@ -14,7 +15,7 @@ export async function getPublishedProducts(categorySlug?: string): Promise<Produ
   }
 
   try {
-    const supabase = await createServerSupabaseClient();
+    const supabase = createPublicSupabaseClient();
     let query = supabase
       .from('products')
       .select('*, category:categories(*)')
@@ -51,7 +52,7 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
   }
 
   try {
-    const supabase = await createServerSupabaseClient();
+    const supabase = createPublicSupabaseClient();
     const { data, error } = await supabase
       .from('products')
       .select('*, category:categories(*)')
@@ -78,7 +79,7 @@ export async function getAllProductsAdmin(): Promise<Product[]> {
   }
 
   try {
-    const supabase = await createServerSupabaseClient();
+    const supabase = createAdminClient();
     const { data, error } = await supabase
       .from('products')
       .select('*, category:categories(*)')

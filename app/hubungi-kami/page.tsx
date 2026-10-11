@@ -44,18 +44,19 @@ export default async function HubungiKamiPage() {
         </Container>
       </section>
 
-      {/* Section 2: Contact Form & Coordinates with Translucent Season Background */}
-      <section className="relative w-full py-8 sm:py-12 overflow-hidden">
-        {/* Translucent Botanical Season Background */}
+      {/* Section 2: Contact Form & Coordinates with Visible Season Background */}
+      <section className="relative w-full py-12 sm:py-20 overflow-hidden">
+        {/* Visible Botanical Season Background */}
         <div className="absolute inset-0 pointer-events-none z-0">
           <Image
             src="/images/seasons/spring.jpg"
-            alt="Changkeer Seasonal Botanical Texture"
+            alt="Changkeer Spring Season Botanical Background"
             fill
+            priority
             sizes="100vw"
-            className="object-cover object-center opacity-15"
+            className="object-cover object-center opacity-45 sm:opacity-55"
           />
-          <div className="absolute inset-0 bg-white/85 backdrop-blur-[1px]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-white/70 via-white/50 to-white/75 backdrop-blur-[0.5px]" />
         </div>
 
         <Container size="wide" className="relative z-10">

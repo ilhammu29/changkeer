@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { siteSettingsSchema, getFirstErrorMessage } from '@/lib/validation/schemas';
-import { createServerSupabaseClient } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { getSupabaseEnv } from '@/lib/supabase/env';
 import { SEED_SITE_SETTINGS } from '@/lib/data/mock-seed';
 import { revalidatePath } from 'next/cache';
@@ -17,7 +17,7 @@ export async function GET() {
   }
 
   try {
-    const supabase = await createServerSupabaseClient();
+    const supabase = createAdminClient();
     const { data, error } = await supabase
       .from('site_settings')
       .select('*')
@@ -59,7 +59,7 @@ export async function PUT(req: NextRequest) {
       return NextResponse.json({ success: true, settings: SEED_SITE_SETTINGS });
     }
 
-    const supabase = await createServerSupabaseClient();
+    const supabase = createAdminClient();
     const { data, error } = await supabase
       .from('site_settings')
       .upsert(

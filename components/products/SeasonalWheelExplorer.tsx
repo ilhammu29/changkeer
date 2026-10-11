@@ -319,10 +319,10 @@ export function SeasonalWheelExplorer() {
           <div className="flex flex-col items-center justify-center shrink-0 relative my-2 lg:my-0">
             {/* The Cut-Off Translucent Circular Wheel Container */}
             <div
-              className={`relative flex items-center justify-center aspect-square select-none transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+              className={`relative flex items-center justify-center aspect-square select-none transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] max-w-[calc(100vw-2rem)] ${
                 isExpanded
-                  ? 'w-[360px] sm:w-[450px] md:w-[490px] lg:w-[520px]'
-                  : 'w-[310px] sm:w-[370px] md:w-[400px] cursor-pointer'
+                  ? 'w-[310px] min-[380px]:w-[350px] sm:w-[440px] md:w-[490px] lg:w-[520px]'
+                  : 'w-[280px] min-[380px]:w-[320px] sm:w-[370px] md:w-[400px] cursor-pointer'
               }`}
               onClick={() => {
                 if (!isExpanded) setIsExpanded(true);
@@ -562,12 +562,12 @@ export function SeasonalWheelExplorer() {
                   />
 
                   {/* Large Cutout Product Cup Image */}
-                  <div className="relative w-[210px] sm:w-[260px] md:w-[290px] lg:w-[320px] h-[220px] sm:h-[270px] md:h-[300px] lg:h-[330px] flex items-center justify-center transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]">
+                  <div className="relative w-[185px] min-[380px]:w-[220px] sm:w-[260px] md:w-[290px] lg:w-[320px] h-[195px] min-[380px]:h-[230px] sm:h-[270px] md:h-[300px] lg:h-[330px] flex items-center justify-center transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]">
                     <Image
                       src={currentTerm.image}
                       alt={currentTerm.blend}
                       fill
-                      sizes="(max-width: 640px) 210px, (max-width: 1024px) 290px, 320px"
+                      sizes="(max-width: 640px) 220px, (max-width: 1024px) 290px, 320px"
                       className="object-contain drop-shadow-[0_22px_36px_rgba(0,0,0,0.25)] hover:scale-105 transition-transform duration-500 pointer-events-auto"
                       priority
                     />

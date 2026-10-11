@@ -1,4 +1,4 @@
-import { createServerSupabaseClient } from '@/lib/supabase/server';
+import { createPublicSupabaseClient } from '@/lib/supabase/server';
 import { getSupabaseEnv } from '@/lib/supabase/env';
 import { SEED_PAGES } from './mock-seed';
 import { PageContent } from '@/types';
@@ -11,7 +11,7 @@ export async function getPageContent(slug: string): Promise<PageContent | null> 
   }
 
   try {
-    const supabase = await createServerSupabaseClient();
+    const supabase = createPublicSupabaseClient();
     const { data, error } = await supabase
       .from('pages')
       .select('*')

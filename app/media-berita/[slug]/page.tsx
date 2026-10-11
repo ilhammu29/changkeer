@@ -6,7 +6,7 @@ import { notFound } from 'next/navigation';
 import { Container } from '@/components/ui/Container';
 import { ArticleCard } from '@/components/articles/ArticleCard';
 import { getArticleBySlug, getPublishedArticles } from '@/lib/data/articles';
-import { ArrowLeft, Clock, Calendar, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, CheckCircle2 } from 'lucide-react';
 
 interface ArticleDetailPageProps {
   params: Promise<{ slug: string }>;
@@ -158,68 +158,46 @@ export default async function ArticleDetailPage({
         <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/80 to-black/50 pointer-events-none" />
 
         <Container size="wide" className="relative z-10">
-          <div className="max-w-4xl space-y-5">
-            {/* Back to Media Navigation */}
+          <div className="max-w-3xl space-y-4 sm:space-y-5">
+            {/* Back Navigation */}
             <div>
               <Link
                 href="/media-berita"
-                className="inline-flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-white/70 hover:text-white transition-colors group"
+                className="inline-flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-white/75 hover:text-white transition-colors group"
               >
                 <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1" />
-                <span>BACK TO NEWS</span>
+                <span>Back to News</span>
               </Link>
             </div>
 
             {/* Category Tag */}
-            <div className="flex items-center gap-2.5 pt-2">
-              <span className="text-[11px] font-mono font-bold tracking-[0.25em] uppercase text-purple-300 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20">
-                {article.category?.name || 'BOTANICAL JOURNAL'}
-              </span>
-              <span className="text-xs text-white/50 font-mono">•</span>
-              <span className="text-[11px] font-mono uppercase tracking-wider text-white/70">
-                CHANGKEER JOURNAL
+            <div>
+              <span className="text-[11px] font-mono font-bold tracking-[0.25em] uppercase text-purple-300 block">
+                {article.category?.name || 'EDITORIAL JOURNAL'}
               </span>
             </div>
 
             {/* Main Headline */}
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-sans font-black text-white tracking-tight leading-[1.1] pt-1">
+            <h1 className="text-2xl sm:text-4xl lg:text-5xl font-sans font-black text-white tracking-tight leading-tight uppercase">
               {article.title}
             </h1>
 
             {/* Standfirst / Excerpt */}
             {article.excerpt && (
-              <p className="text-base sm:text-xl text-white/85 leading-relaxed font-normal pt-2">
+              <p className="text-sm sm:text-base lg:text-lg text-white/85 leading-relaxed font-normal">
                 {article.excerpt}
               </p>
             )}
 
-            {/* Author Byline & Publication Date */}
-            <div className="flex flex-wrap items-center justify-between gap-4 pt-6 border-t border-white/20 text-xs text-white/80">
-              <div className="flex items-center gap-3">
-                <div className="relative w-9 h-9 rounded-full overflow-hidden bg-white/20 border border-white/30 shrink-0 flex items-center justify-center font-bold text-xs text-white">
-                  CK
-                </div>
-                <div>
-                  <span className="font-bold text-white block text-xs">
-                    {article.author_name}
-                  </span>
-                  <span className="text-[10px] font-mono text-white/60 uppercase tracking-wider">
-                    Botanical Research &amp; Editorial Team
-                  </span>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-4 text-[11px] font-mono text-white/70">
-                <span className="flex items-center gap-1.5">
-                  <Calendar className="w-3.5 h-3.5 text-purple-300" />
-                  <span>{formattedDate}</span>
-                </span>
-                <span>•</span>
-                <span className="flex items-center gap-1.5">
-                  <Clock className="w-3.5 h-3.5 text-purple-300" />
-                  <span>{article.read_time_minutes} MIN READ</span>
-                </span>
-              </div>
+            {/* Clean Author Byline & Date (Single Line, Minimalist) */}
+            <div className="pt-4 border-t border-white/15 flex flex-wrap items-center gap-2.5 text-xs font-mono text-white/70">
+              <span className="font-bold text-white uppercase">
+                {article.author_name}
+              </span>
+              <span>·</span>
+              <span>{formattedDate}</span>
+              <span>·</span>
+              <span>{article.read_time_minutes} min read</span>
             </div>
           </div>
         </Container>

@@ -3,6 +3,7 @@ import React, { Suspense } from 'react';
 import { Plus_Jakarta_Sans, Cormorant_Garamond } from 'next/font/google';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
+import { ScrollRevealProvider } from '@/components/ui/ScrollRevealProvider';
 import './globals.css';
 
 const sans = Plus_Jakarta_Sans({
@@ -67,13 +68,15 @@ export default function RootLayout({
   return (
     <html lang="id" className={`h-full antialiased ${sans.variable} ${serif.variable}`}>
       <body className="min-h-full flex flex-col bg-background text-foreground font-sans">
-        <Suspense fallback={null}>
-          <Navbar />
-        </Suspense>
-        <main className="flex-1">{children}</main>
-        <Suspense fallback={null}>
-          <Footer />
-        </Suspense>
+        <ScrollRevealProvider>
+          <Suspense fallback={null}>
+            <Navbar />
+          </Suspense>
+          <main className="flex-1">{children}</main>
+          <Suspense fallback={null}>
+            <Footer />
+          </Suspense>
+        </ScrollRevealProvider>
       </body>
     </html>
   );

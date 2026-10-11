@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createServerSupabaseClient } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { getSupabaseEnv } from '@/lib/supabase/env';
 import { SEED_PAGES } from '@/lib/data/mock-seed';
 import { revalidatePath } from 'next/cache';
@@ -21,7 +21,7 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const supabase = await createServerSupabaseClient();
+    const supabase = createAdminClient();
     if (slug) {
       const { data, error } = await supabase.from('pages').select('*').eq('slug', slug).single();
       if (error) {
@@ -67,7 +67,7 @@ export async function PUT(req: NextRequest) {
       return NextResponse.json({ success: true, page: SEED_PAGES[slug] });
     }
 
-    const supabase = await createServerSupabaseClient();
+    const supabase = createAdminClient();
     const { data, error } = await supabase
       .from('pages')
       .upsert(

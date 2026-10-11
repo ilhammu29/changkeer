@@ -1,4 +1,4 @@
-import { createServerSupabaseClient } from '@/lib/supabase/server';
+import { createPublicSupabaseClient } from '@/lib/supabase/server';
 import { getSupabaseEnv } from '@/lib/supabase/env';
 import { SEED_SITE_SETTINGS } from './mock-seed';
 import { SiteSettings } from '@/types';
@@ -11,7 +11,7 @@ export async function getSiteSettings(): Promise<SiteSettings> {
   }
 
   try {
-    const supabase = await createServerSupabaseClient();
+    const supabase = createPublicSupabaseClient();
     const { data, error } = await supabase
       .from('site_settings')
       .select('*')

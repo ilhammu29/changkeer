@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Leaf, Sparkles, Flame, RotateCw, Check } from 'lucide-react';
+import { Leaf, Sparkles, Flame, Check } from 'lucide-react';
 import {
   DRIED_FRUITS,
   DRIED_FLOWERS,
@@ -70,33 +70,13 @@ const CATEGORIES: AtelierCategory[] = [
 
 export function BotanicalAddonsInteractive() {
   const [selectedId, setSelectedId] = useState<'fruits' | 'flowers' | 'sweeteners'>('fruits');
-  const [spinningId, setSpinningId] = useState<string | null>(null);
-
-  const handleSelect = (id: 'fruits' | 'flowers' | 'sweeteners') => {
-    setSelectedId(id);
-    // Trigger 360-degree rotation animation on click
-    setSpinningId(id);
-    setTimeout(() => {
-      setSpinningId(null);
-    }, 750);
-  };
-
-  const handleManualSpin = (e: React.MouseEvent, id: 'fruits' | 'flowers' | 'sweeteners') => {
-    e.stopPropagation();
-    setSelectedId(id);
-    setSpinningId(id);
-    setTimeout(() => {
-      setSpinningId(null);
-    }, 750);
-  };
 
   return (
     <div className="font-sans space-y-10">
-      {/* 360 Interactive Add-ons Cards Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 items-start perspective-[1200px]">
+      {/* Interactive Add-ons Cards Grid: Scales Up on Selection */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 items-start">
         {CATEGORIES.map((cat) => {
           const isSelected = selectedId === cat.id;
-          const isSpinning = spinningId === cat.id;
           const Icon = cat.icon;
 
           return (
@@ -104,39 +84,19 @@ export function BotanicalAddonsInteractive() {
               key={cat.id}
               className={`transition-all duration-500 ease-out flex flex-col ${
                 isSelected
-                  ? 'scale-102 sm:scale-106 z-20'
+                  ? 'scale-104 sm:scale-108 z-20'
                   : 'scale-98 sm:scale-95 opacity-80 hover:opacity-100 z-10'
               }`}
             >
-              {/* Cardbox Container with 360 degree 3D transform */}
+              {/* Cardbox Container */}
               <div
-                onClick={() => handleSelect(cat.id)}
-                style={{
-                  transformStyle: 'preserve-3d',
-                  transform: isSpinning ? 'rotateY(360deg)' : 'rotateY(0deg)',
-                  transition: 'transform 0.75s cubic-bezier(0.4, 0, 0.2, 1)',
-                }}
-                className={`relative rounded-3xl p-6 sm:p-7 shadow-md transition-all duration-300 cursor-pointer overflow-hidden border ${
+                onClick={() => setSelectedId(cat.id)}
+                className={`relative rounded-3xl p-6 sm:p-8 shadow-md transition-all duration-500 cursor-pointer overflow-hidden border ${
                   isSelected
                     ? 'bg-white border-primary shadow-2xl ring-2 ring-primary/20'
                     : 'bg-white/95 border-border/80 hover:border-border hover:shadow-lg'
                 }`}
               >
-                {/* 360 Degree Badge Button at Top Right */}
-                <button
-                  type="button"
-                  onClick={(e) => handleManualSpin(e, cat.id)}
-                  title="Spin card 360°"
-                  className={`absolute top-4 right-4 z-20 flex items-center gap-1 text-[9px] font-mono uppercase tracking-wider px-2.5 py-1 rounded-full transition-all cursor-pointer ${
-                    isSelected
-                      ? 'bg-primary text-primary-foreground shadow-xs'
-                      : 'bg-neutral-100 text-muted-foreground hover:bg-neutral-200 hover:text-foreground'
-                  }`}
-                >
-                  <RotateCw className={`w-3 h-3 ${isSpinning ? 'animate-spin' : ''}`} />
-                  <span>360°</span>
-                </button>
-
                 {/* Header */}
                 <div className="border-b border-border/70 pb-4 pr-16 space-y-1">
                   <div className="flex items-center gap-2">

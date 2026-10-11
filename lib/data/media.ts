@@ -1,4 +1,4 @@
-import { createServerSupabaseClient } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { getSupabaseEnv } from '@/lib/supabase/env';
 import { MediaAsset } from '@/types';
 
@@ -35,7 +35,7 @@ export async function getMediaAssets(): Promise<MediaAsset[]> {
   }
 
   try {
-    const supabase = await createServerSupabaseClient();
+    const supabase = createAdminClient();
     const { data, error } = await supabase
       .from('media_assets')
       .select('*')

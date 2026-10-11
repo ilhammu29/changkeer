@@ -4,8 +4,9 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { articleSchema, ArticleFormData, getFieldErrors } from '@/lib/validation/schemas';
 import { Article, Category } from '@/types';
-import { AlertCircle, CheckCircle2, ArrowLeft } from 'lucide-react';
+import { AlertCircle, CheckCircle2, ArrowLeft, Upload } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface ArticleFormProps {
   initialData?: Article;
@@ -36,6 +37,41 @@ export function ArticleForm({ initialData, categories }: ArticleFormProps) {
   const [serverError, setServerError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const [imageUploadError, setImageUploadError] = useState<string | null>(null);
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploadingImage(true);
+    setImageUploadError(null);
+
+    const data = new FormData();
+    data.append('file', file);
+    data.append('bucket', 'article-images');
+    data.append('altText', formData.title || file.name);
+
+    try {
+      const res = await fetch('/api/admin/media', {
+        method: 'POST',
+        body: data,
+      });
+      const json = await res.json();
+      if (!res.ok || !json.success) {
+        setImageUploadError(json.error || 'Gagal mengunggah gambar artikel');
+      } else {
+        setFormData((prev) => ({
+          ...prev,
+          featured_image: json.asset.public_url,
+        }));
+      }
+    } catch {
+      setImageUploadError('Kendala koneksi saat mengunggah gambar');
+    } finally {
+      setIsUploadingImage(false);
+    }
+  };
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
@@ -244,17 +280,64 @@ export function ArticleForm({ initialData, categories }: ArticleFormProps) {
             2. GAMBAR UTAMA &amp; SEO
           </h3>
 
-          <div>
-            <label className="block text-xs font-bold uppercase text-foreground mb-1">
-              URL GAMBAR UTAMA
-            </label>
-            <input
-              type="text"
-              value={formData.featured_image || ''}
-              onChange={(e) => setFormData({ ...formData, featured_image: e.target.value })}
-              placeholder="/images/articles/brewing-guide.jpg"
-              className="w-full px-3.5 py-2.5 text-xs bg-background border border-border rounded-sm text-foreground focus:outline-none focus:ring-1 focus:ring-ring"
-            />
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <label className="block text-xs font-bold uppercase text-foreground">
+                GAMBAR UTAMA ARTIKEL
+              </label>
+              <span className="text-[10px] text-muted-foreground font-mono">
+                PNG, JPG, WebP (Maks. 5MB)
+              </span>
+            </div>
+
+            {/* Thumbnail Preview */}
+            {formData.featured_image && (
+              <div className="flex items-center gap-4 p-3.5 bg-neutral-50 border border-border rounded-xl">
+                <div className="relative w-16 h-16 rounded-lg overflow-hidden border border-border shrink-0 bg-white">
+                  <Image
+                    src={formData.featured_image}
+                    alt={formData.title || 'Preview artikel'}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-mono font-bold text-foreground truncate">
+                    {formData.featured_image}
+                  </p>
+                  <p className="text-[11px] text-muted-foreground mt-0.5">
+                    Gambar sampul yang akan tampil di halaman daftar berita &amp; detail artikel.
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {imageUploadError && (
+              <p className="text-xs text-red-600 font-semibold">{imageUploadError}</p>
+            )}
+
+            {/* Upload Button & Text Input */}
+            <div className="flex flex-col sm:flex-row gap-3">
+              <label className="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-neutral-900 text-white hover:bg-neutral-800 text-xs font-bold uppercase tracking-wider rounded-xl cursor-pointer transition-all active:scale-95 shrink-0 shadow-xs">
+                <Upload className="w-4 h-4" />
+                <span>{isUploadingImage ? 'Mengunggah...' : 'Unggah Foto Langsung'}</span>
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp,image/svg+xml"
+                  onChange={handleImageUpload}
+                  disabled={isUploadingImage}
+                  className="hidden"
+                />
+              </label>
+
+              <input
+                type="text"
+                value={formData.featured_image || ''}
+                onChange={(e) => setFormData({ ...formData, featured_image: e.target.value })}
+                placeholder="Atau masukkan URL /images/articles/..."
+                className="flex-1 px-3.5 py-2.5 text-xs bg-background border border-border rounded-xl text-foreground focus:outline-none focus:ring-1 focus:ring-primary font-mono"
+              />
+            </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

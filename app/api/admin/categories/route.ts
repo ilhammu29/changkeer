@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { categorySchema, getFirstErrorMessage } from '@/lib/validation/schemas';
-import { createServerSupabaseClient } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { getSupabaseEnv } from '@/lib/supabase/env';
 import { SEED_CATEGORIES } from '@/lib/data/mock-seed';
 import { Category } from '@/types';
@@ -15,7 +15,7 @@ export async function GET() {
   }
 
   try {
-    const supabase = await createServerSupabaseClient();
+    const supabase = createAdminClient();
     const { data, error } = await supabase.from('categories').select('*').order('name');
     if (error) {
       return NextResponse.json({ success: false, error: error.message }, { status: 500 });
@@ -57,7 +57,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: true, category: newCat });
     }
 
-    const supabase = await createServerSupabaseClient();
+    const supabase = createAdminClient();
     const { data, error } = await supabase
       .from('categories')
       .insert(catData)
@@ -99,7 +99,7 @@ export async function DELETE(req: NextRequest) {
       return NextResponse.json({ success: true });
     }
 
-    const supabase = await createServerSupabaseClient();
+    const supabase = createAdminClient();
     const { error } = await supabase.from('categories').delete().eq('id', id);
 
     if (error) {

@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
@@ -15,6 +15,10 @@ import {
   Settings,
   ExternalLink,
   LogOut,
+  PanelLeftClose,
+  PanelLeftOpen,
+  Menu,
+  X,
 } from 'lucide-react';
 
 const ADMIN_NAV = [
@@ -35,9 +39,11 @@ export default function AdminLayout({
 }) {
   const pathname = usePathname();
   const router = useRouter();
-  const [checkingAuth, setCheckingAuth] = React.useState(pathname !== '/admin/login');
+  const [checkingAuth, setCheckingAuth] = useState(pathname !== '/admin/login');
+  const [collapsed, setCollapsed] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (pathname === '/admin/login') {
       setCheckingAuth(false);
       return;
@@ -60,6 +66,11 @@ export default function AdminLayout({
     checkAuth();
   }, [pathname, router]);
 
+  // Close mobile drawer on route change
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [pathname]);
+
   // If on login page, don't show admin shell
   if (pathname === '/admin/login') {
     return <>{children}</>;
@@ -67,7 +78,7 @@ export default function AdminLayout({
 
   if (checkingAuth) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background text-foreground">
+      <div className="min-h-screen flex items-center justify-center bg-background text-foreground font-sans">
         <div className="text-center space-y-3">
           <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto" />
           <p className="text-xs uppercase tracking-widest text-muted-foreground font-mono">
@@ -93,34 +104,78 @@ export default function AdminLayout({
   };
 
   return (
-    <div className="min-h-screen bg-muted/30 flex flex-col md:flex-row">
-      {/* Sidebar */}
-      <aside className="w-full md:w-64 bg-surface border-r border-border flex flex-col justify-between shrink-0">
+    <div className="min-h-screen bg-neutral-50 flex flex-col md:flex-row font-sans text-foreground">
+      {/* ========================================================================= */}
+      {/* DESKTOP SIDEBAR (EXPANDABLE & COLLAPSIBLE TO ICON MODE) */}
+      {/* ========================================================================= */}
+      <aside
+        className={`hidden md:flex flex-col justify-between shrink-0 bg-white border-r border-border/80 transition-all duration-300 ease-in-out z-30 ${
+          collapsed ? 'w-20' : 'w-64'
+        }`}
+      >
         <div>
           {/* Header */}
-          <div className="h-16 border-b border-border flex items-center justify-between px-6">
-            <Link href="/admin" className="flex items-center gap-2.5">
-              <div className="relative w-7 h-7 rounded-full overflow-hidden border border-border shadow-xs shrink-0">
+          <div
+            className={`h-16 border-b border-border/70 flex items-center transition-all ${
+              collapsed ? 'justify-center px-2' : 'justify-between px-5'
+            }`}
+          >
+            <Link
+              href="/admin"
+              className="flex items-center gap-2.5 overflow-hidden group"
+              title="CHANGKEER CMS"
+            >
+              <div className="relative w-8 h-8 rounded-full overflow-hidden border border-border shadow-xs shrink-0 bg-white group-hover:scale-105 transition-transform">
                 <Image
-                  src="/images/logo_changkeer.jpg"
+                  src="/images/logo_new.png"
                   alt="CHANGKEER"
                   fill
-                  className="rounded-full object-cover"
+                  className="object-contain p-0.5"
                 />
               </div>
-              <div>
-                <span className="font-bold text-xs tracking-widest uppercase text-foreground">
-                  CHANGKEER
-                </span>
-                <span className="block text-[8px] font-bold tracking-widest text-accent uppercase">
-                  CMS PORTAL
-                </span>
-              </div>
+              {!collapsed && (
+                <div className="flex flex-col">
+                  <span className="font-extrabold text-xs tracking-widest uppercase text-foreground leading-none">
+                    CHANGKEER
+                  </span>
+                  <span className="text-[9px] font-mono font-bold tracking-widest text-primary uppercase mt-0.5">
+                    CMS PORTAL
+                  </span>
+                </div>
+              )}
             </Link>
+
+            {/* Sidebar Collapse Toggle Button */}
+            {!collapsed && (
+              <button
+                type="button"
+                onClick={() => setCollapsed(true)}
+                className="w-7 h-7 rounded-lg text-muted-foreground hover:text-foreground hover:bg-neutral-100 flex items-center justify-center transition-colors cursor-pointer"
+                title="Perkecil Sidebar"
+                aria-label="Collapse sidebar"
+              >
+                <PanelLeftClose className="w-4 h-4" />
+              </button>
+            )}
           </div>
 
-          {/* Navigation Links */}
-          <nav className="p-4 space-y-1">
+          {/* Quick Expand Button when collapsed */}
+          {collapsed && (
+            <div className="p-2 border-b border-border/40 flex justify-center">
+              <button
+                type="button"
+                onClick={() => setCollapsed(false)}
+                className="w-8 h-8 rounded-lg text-muted-foreground hover:text-foreground hover:bg-neutral-100 flex items-center justify-center transition-colors cursor-pointer"
+                title="Perlebar Sidebar"
+                aria-label="Expand sidebar"
+              >
+                <PanelLeftOpen className="w-4 h-4" />
+              </button>
+            </div>
+          )}
+
+          {/* Navigation Items */}
+          <nav className="p-3 space-y-1.5">
             {ADMIN_NAV.map((item) => {
               const active = isActive(item.href);
               const Icon = item.icon;
@@ -128,14 +183,23 @@ export default function AdminLayout({
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`flex items-center gap-3 px-3.5 py-2.5 rounded-sm text-xs font-semibold tracking-wide transition-colors ${
+                  title={collapsed ? item.name : undefined}
+                  className={`flex items-center rounded-xl text-xs font-semibold tracking-wide transition-all group ${
+                    collapsed
+                      ? 'justify-center w-12 h-12 mx-auto'
+                      : 'gap-3 px-3.5 py-2.5'
+                  } ${
                     active
-                      ? 'bg-primary text-primary-foreground font-bold shadow-sm'
-                      : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                      ? 'bg-neutral-900 text-white font-bold shadow-xs'
+                      : 'text-muted-foreground hover:bg-neutral-100 hover:text-foreground'
                   }`}
                 >
-                  <Icon className="w-4 h-4 shrink-0" />
-                  <span>{item.name}</span>
+                  <Icon
+                    className={`shrink-0 transition-transform ${
+                      collapsed ? 'w-5 h-5 group-hover:scale-110' : 'w-4 h-4'
+                    }`}
+                  />
+                  {!collapsed && <span className="truncate">{item.name}</span>}
                 </Link>
               );
             })}
@@ -143,51 +207,175 @@ export default function AdminLayout({
         </div>
 
         {/* Footer Sidebar Actions */}
-        <div className="p-4 border-t border-border space-y-2">
+        <div className="p-3 border-t border-border/70 space-y-1.5">
           <Link
             href="/"
             target="_blank"
-            className="flex items-center justify-between px-3.5 py-2 rounded-sm text-xs font-semibold text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+            title={collapsed ? 'Lihat Website Publik' : undefined}
+            className={`flex items-center rounded-xl text-xs font-semibold text-muted-foreground hover:bg-neutral-100 hover:text-foreground transition-colors ${
+              collapsed
+                ? 'justify-center w-12 h-12 mx-auto'
+                : 'justify-between px-3.5 py-2.5'
+            }`}
           >
             <span className="flex items-center gap-2">
-              <ExternalLink className="w-3.5 h-3.5" />
-              <span>Lihat Website</span>
+              <ExternalLink className="w-4 h-4 shrink-0" />
+              {!collapsed && <span>Lihat Website</span>}
             </span>
-            <span className="text-[10px] uppercase font-mono">Live</span>
+            {!collapsed && (
+              <span className="text-[10px] uppercase font-mono px-1.5 py-0.2 rounded-md bg-emerald-50 text-emerald-700 font-bold border border-emerald-200">
+                Live
+              </span>
+            )}
           </Link>
 
           <button
             type="button"
             onClick={handleLogout}
-            className="w-full flex items-center gap-2 px-3.5 py-2 rounded-sm text-xs font-semibold text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
+            title={collapsed ? 'Keluar (Logout)' : undefined}
+            className={`flex items-center rounded-xl text-xs font-semibold text-red-600 hover:bg-red-50 transition-colors cursor-pointer ${
+              collapsed
+                ? 'justify-center w-12 h-12 mx-auto'
+                : 'w-full gap-2 px-3.5 py-2.5'
+            }`}
           >
-            <LogOut className="w-3.5 h-3.5" />
-            <span>Keluar (Logout)</span>
+            <LogOut className="w-4 h-4 shrink-0" />
+            {!collapsed && <span>Keluar (Logout)</span>}
           </button>
         </div>
       </aside>
 
-      {/* Main Content Area */}
+      {/* ========================================================================= */}
+      {/* MAIN CONTENT AREA & RESPONSIVE HEADER */}
+      {/* ========================================================================= */}
       <div className="flex-1 flex flex-col min-w-0">
-        <header className="h-16 bg-surface border-b border-border flex items-center justify-between px-6 sm:px-8">
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
-              PANEL ADMINISTRATOR
+        <header className="h-16 bg-white border-b border-border/80 flex items-center justify-between px-4 sm:px-8 shrink-0 z-20">
+          <div className="flex items-center gap-3">
+            {/* Mobile Hamburger Drawer Toggle */}
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(true)}
+              className="md:hidden p-2 rounded-lg text-foreground hover:bg-neutral-100 transition-colors"
+              aria-label="Open Admin Menu"
+            >
+              <Menu className="w-5 h-5" />
+            </button>
+
+            {/* Desktop Quick Toggle when collapsed */}
+            {collapsed && (
+              <button
+                type="button"
+                onClick={() => setCollapsed(false)}
+                className="hidden md:inline-flex items-center gap-1.5 text-xs font-mono font-bold text-muted-foreground hover:text-foreground px-2.5 py-1.5 rounded-lg border border-border/60 hover:bg-neutral-100 transition-colors cursor-pointer"
+                title="Perlebar Sidebar"
+              >
+                <PanelLeftOpen className="w-4 h-4 text-primary" />
+                <span>EXPAND SIDEBAR</span>
+              </button>
+            )}
+
+            <span className="text-xs font-mono font-bold uppercase tracking-wider text-muted-foreground">
+              PANEL ADMINISTRATOR · CHANGKEER CMS
             </span>
           </div>
 
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2 text-xs">
-              <span className="w-2 h-2 rounded-full bg-emerald-500" />
-              <span className="font-semibold text-foreground">Admin Aktif</span>
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="font-bold text-foreground hidden sm:inline">
+                Admin Aktif
+              </span>
             </div>
           </div>
         </header>
 
-        <main className="flex-1 p-6 sm:p-8 max-w-7xl w-full mx-auto">
+        {/* Mobile Navigation Drawer Backdrop */}
+        {mobileMenuOpen && (
+          <div className="md:hidden fixed inset-0 z-50">
+            <div
+              className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity"
+              onClick={() => setMobileMenuOpen(false)}
+            />
+            <aside className="fixed top-0 bottom-0 left-0 w-72 bg-white p-6 shadow-2xl flex flex-col justify-between border-r border-border animate-in slide-in-from-left duration-200">
+              <div className="space-y-6">
+                <div className="flex items-center justify-between border-b border-border/70 pb-4">
+                  <div className="flex items-center gap-2.5">
+                    <div className="relative w-8 h-8 rounded-full overflow-hidden border border-border shrink-0 bg-white">
+                      <Image
+                        src="/images/logo_new.png"
+                        alt="CHANGKEER"
+                        fill
+                        className="object-contain p-0.5"
+                      />
+                    </div>
+                    <div>
+                      <span className="font-extrabold text-xs tracking-widest uppercase text-foreground block">
+                        CHANGKEER
+                      </span>
+                      <span className="text-[9px] font-mono font-bold text-primary uppercase">
+                        CMS PORTAL
+                      </span>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="p-1.5 rounded-lg hover:bg-neutral-100 text-muted-foreground hover:text-foreground"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+
+                <nav className="space-y-1">
+                  {ADMIN_NAV.map((item) => {
+                    const active = isActive(item.href);
+                    const Icon = item.icon;
+                    return (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        onClick={() => setMobileMenuOpen(false)}
+                        className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold tracking-wide transition-colors ${
+                          active
+                            ? 'bg-neutral-900 text-white font-bold'
+                            : 'text-muted-foreground hover:bg-neutral-100 hover:text-foreground'
+                        }`}
+                      >
+                        <Icon className="w-4 h-4 shrink-0" />
+                        <span>{item.name}</span>
+                      </Link>
+                    );
+                  })}
+                </nav>
+              </div>
+
+              <div className="pt-4 border-t border-border/70 space-y-2">
+                <Link
+                  href="/"
+                  target="_blank"
+                  className="flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold text-muted-foreground hover:bg-neutral-100 hover:text-foreground"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                  <span>Lihat Website</span>
+                </Link>
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="w-full flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold text-red-600 hover:bg-red-50"
+                >
+                  <LogOut className="w-4 h-4" />
+                  <span>Keluar (Logout)</span>
+                </button>
+              </div>
+            </aside>
+          </div>
+        )}
+
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">
           {children}
         </main>
       </div>
     </div>
   );
 }
+

@@ -1,4 +1,5 @@
 import { createServerSupabaseClient } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { getSupabaseEnv } from '@/lib/supabase/env';
 import { ContactFormData } from '@/lib/validation/schemas';
 import { ContactMessage } from '@/types';
@@ -58,7 +59,7 @@ export async function getContactMessagesAdmin(): Promise<ContactMessage[]> {
   }
 
   try {
-    const supabase = await createServerSupabaseClient();
+    const supabase = createAdminClient();
     const { data, error } = await supabase
       .from('contact_messages')
       .select('*')
@@ -87,7 +88,7 @@ export async function deleteContactMessage(id: string): Promise<boolean> {
   }
 
   try {
-    const supabase = await createServerSupabaseClient();
+    const supabase = createAdminClient();
     const { error } = await supabase.from('contact_messages').delete().eq('id', id);
     return !error;
   } catch {
@@ -107,7 +108,7 @@ export async function updateContactMessageRead(id: string, isRead: boolean): Pro
   }
 
   try {
-    const supabase = await createServerSupabaseClient();
+    const supabase = createAdminClient();
     const { error } = await supabase.from('contact_messages').update({ is_read: isRead }).eq('id', id);
     return !error;
   } catch {

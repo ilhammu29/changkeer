@@ -1,9 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createServerSupabaseClient } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { getSupabaseEnv } from '@/lib/supabase/env';
 import { getMediaAssets } from '@/lib/data/media';
 import { MediaAsset } from '@/types';
 import { verifyAdminOrUnauthorized } from '@/lib/auth/session';
+import fs from 'fs/promises';
+import path from 'path';
 
 export async function GET() {
   const unauth = await verifyAdminOrUnauthorized();
@@ -52,7 +54,14 @@ export async function POST(req: NextRequest) {
     const fileName = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
 
     if (!isConfigured) {
-      // In dev fallback, create and track local mock asset
+      // Local disk fallback: write to public/uploads
+      const uploadDir = path.join(process.cwd(), 'public', 'uploads');
+      await fs.mkdir(uploadDir, { recursive: true });
+      const arrayBuffer = await file.arrayBuffer();
+      const buffer = Buffer.from(arrayBuffer);
+      await fs.writeFile(path.join(uploadDir, fileName), buffer);
+
+      const publicUrl = `/uploads/${fileName}`;
       const newAsset: MediaAsset = {
         id: `media-${Date.now()}`,
         bucket,
@@ -61,13 +70,13 @@ export async function POST(req: NextRequest) {
         file_size: file.size,
         mime_type: file.type,
         alt_text: altText || file.name,
-        public_url: `/images/products/changkeer-lemongrass-ginger.jpg`,
+        public_url: publicUrl,
         created_at: new Date().toISOString(),
       };
       return NextResponse.json({ success: true, asset: newAsset });
     }
 
-    const supabase = await createServerSupabaseClient();
+    const supabase = createAdminClient();
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
@@ -125,7 +134,7 @@ export async function DELETE(req: NextRequest) {
       return NextResponse.json({ success: true });
     }
 
-    const supabase = await createServerSupabaseClient();
+    const supabase = createAdminClient();
     const { data: asset, error: findError } = await supabase
       .from('media_assets')
       .select('*')
