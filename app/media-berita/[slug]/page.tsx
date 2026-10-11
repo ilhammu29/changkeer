@@ -141,97 +141,99 @@ export default async function ArticleDetailPage({
   const blocks = parseArticleBlocks(article.content);
 
   return (
-    <div className="py-12 md:py-20 bg-background text-foreground">
-      <Container size="narrow">
-        {/* Navigation Breadcrumb */}
-        <div className="mb-10">
-          <Link
-            href="/media-berita"
-            className="inline-flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-muted-foreground hover:text-foreground transition-colors group"
-          >
-            <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1" />
-            <span>KEMBALI KE MEDIA &amp; BERITA</span>
-          </Link>
-        </div>
+    <div className="pb-20 bg-white text-foreground">
+      {/* Section 1: Full-Bleed Hero Banner with Featured Image as Background */}
+      <section className="relative w-full py-20 sm:py-28 md:py-32 bg-neutral-950 overflow-hidden border-b border-border">
+        {/* Full Image Background */}
+        <Image
+          src={imageSrc}
+          alt={article.title}
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center"
+        />
 
-        {/* Editorial Article Header */}
-        <header className="space-y-6 pb-8 border-b border-border/70">
-          {/* Category Pill */}
-          <div className="flex items-center gap-2">
-            <span className="text-[11px] font-mono font-bold tracking-[0.25em] uppercase text-accent px-3 py-1 rounded-md bg-accent/10 border border-accent/20">
-              {article.category?.name || 'EDUKASI BOTANI'}
-            </span>
-            <span className="text-xs text-muted-foreground font-mono">•</span>
-            <span className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">
-              CHANGKEER JOURNAL
-            </span>
-          </div>
+        {/* Dark Cinematic Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/80 to-black/50 pointer-events-none" />
 
-          {/* Headline */}
-          <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black uppercase tracking-tight text-foreground leading-[1.12]">
-            {article.title}
-          </h1>
+        <Container size="wide" className="relative z-10">
+          <div className="max-w-4xl space-y-5">
+            {/* Back to Media Navigation */}
+            <div>
+              <Link
+                href="/media-berita"
+                className="inline-flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-white/70 hover:text-white transition-colors group"
+              >
+                <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1" />
+                <span>KEMBALI KE MEDIA &amp; BERITA</span>
+              </Link>
+            </div>
 
-          {/* Standfirst / Excerpt */}
-          {article.excerpt && (
-            <p className="text-base sm:text-xl text-muted-foreground leading-relaxed font-normal pt-1">
-              {article.excerpt}
-            </p>
-          )}
+            {/* Category Tag */}
+            <div className="flex items-center gap-2.5 pt-2">
+              <span className="text-[11px] font-mono font-bold tracking-[0.25em] uppercase text-purple-300 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20">
+                {article.category?.name || 'EDUKASI BOTANI'}
+              </span>
+              <span className="text-xs text-white/50 font-mono">•</span>
+              <span className="text-[11px] font-mono uppercase tracking-wider text-white/70">
+                CHANGKEER JOURNAL
+              </span>
+            </div>
 
-          {/* Author Byline & Verification Bar */}
-          <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-border/50 text-xs text-muted-foreground">
-            <div className="flex items-center gap-3">
-              <div className="relative w-9 h-9 rounded-full overflow-hidden bg-primary/10 border border-border shrink-0 flex items-center justify-center font-bold text-xs text-primary">
-                CK
+            {/* Main Headline */}
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-serif font-bold text-white tracking-tight leading-[1.1] pt-1">
+              {article.title}
+            </h1>
+
+            {/* Standfirst / Excerpt */}
+            {article.excerpt && (
+              <p className="text-base sm:text-xl text-white/85 leading-relaxed font-normal pt-2">
+                {article.excerpt}
+              </p>
+            )}
+
+            {/* Author Byline & Publication Date */}
+            <div className="flex flex-wrap items-center justify-between gap-4 pt-6 border-t border-white/20 text-xs text-white/80">
+              <div className="flex items-center gap-3">
+                <div className="relative w-9 h-9 rounded-full overflow-hidden bg-white/20 border border-white/30 shrink-0 flex items-center justify-center font-bold text-xs text-white">
+                  CK
+                </div>
+                <div>
+                  <span className="font-bold text-white block text-xs">
+                    {article.author_name}
+                  </span>
+                  <span className="text-[10px] font-mono text-white/60 uppercase tracking-wider">
+                    Kurator Botani &amp; Tim Riset
+                  </span>
+                </div>
               </div>
-              <div>
-                <span className="font-bold text-foreground block text-xs">
-                  {article.author_name}
+
+              <div className="flex items-center gap-4 text-[11px] font-mono text-white/70">
+                <span className="flex items-center gap-1.5">
+                  <Calendar className="w-3.5 h-3.5 text-purple-300" />
+                  <span>{formattedDate}</span>
                 </span>
-                <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">
-                  Kurator Botani &amp; Tim Riset
+                <span>•</span>
+                <span className="flex items-center gap-1.5">
+                  <Clock className="w-3.5 h-3.5 text-purple-300" />
+                  <span>{article.read_time_minutes} MIN BACA</span>
                 </span>
               </div>
             </div>
-
-            <div className="flex items-center gap-4 text-[11px] font-mono text-muted-foreground">
-              <span className="flex items-center gap-1.5">
-                <Calendar className="w-3.5 h-3.5 text-accent" />
-                <span>{formattedDate}</span>
-              </span>
-              <span>•</span>
-              <span className="flex items-center gap-1.5">
-                <Clock className="w-3.5 h-3.5 text-accent" />
-                <span>{article.read_time_minutes} MIN BACA</span>
-              </span>
-            </div>
           </div>
-        </header>
+        </Container>
+      </section>
 
-        {/* Featured Visual with Caption */}
-        <figure className="my-10">
-          <div className="relative aspect-[16/9] w-full rounded-2xl overflow-hidden border border-border/80 bg-muted shadow-sm">
-            <Image
-              src={imageSrc}
-              alt={article.title}
-              fill
-              className="object-cover object-center"
-              priority
-            />
-          </div>
-          <figcaption className="mt-3 text-[11px] font-mono text-muted-foreground text-center">
-            Dokumentasi Kurasi Riset Botani &amp; Tradisi Seduh — CHANGKEER Archive
-          </figcaption>
-        </figure>
-
-        {/* Professional Editorial Article Body */}
-        <article className="space-y-6 text-foreground/90 leading-[1.8] text-base sm:text-[17px]">
+      {/* Section 2: Open Professional Reading Layout */}
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 pt-16 sm:pt-20">
+        {/* Article Body Content */}
+        <article className="space-y-6 text-foreground/90 leading-[1.85] text-base sm:text-[17px]">
           {blocks.map((block, idx) => {
             if (block.type === 'heading') {
               return (
-                <div key={idx} className="pt-6 pb-2">
-                  <h3 className="text-xl sm:text-2xl font-bold uppercase tracking-tight text-foreground pb-2 border-b border-border/60">
+                <div key={idx} className="pt-8 pb-3">
+                  <h3 className="text-2xl sm:text-3xl font-serif font-bold uppercase tracking-tight text-foreground pb-2 border-b border-border/80">
                     {block.text}
                   </h3>
                 </div>
@@ -240,10 +242,10 @@ export default async function ArticleDetailPage({
 
             if (block.type === 'list' && block.items) {
               return (
-                <ul key={idx} className="space-y-3 my-5 pl-4 sm:pl-6 text-muted-foreground text-sm sm:text-base border-l-2 border-primary/30">
+                <ul key={idx} className="space-y-3.5 my-6 pl-4 sm:pl-6 text-muted-foreground text-sm sm:text-base border-l-2 border-primary/40">
                   {block.items.map((item, i) => (
-                    <li key={i} className="flex items-start gap-2.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 shrink-0" />
+                    <li key={i} className="flex items-start gap-3">
+                      <span className="w-1.5 h-1.5 rounded-full bg-primary mt-2.5 shrink-0" />
                       <span className="leading-relaxed">{renderFormattedText(item)}</span>
                     </li>
                   ))}
@@ -256,7 +258,7 @@ export default async function ArticleDetailPage({
               return (
                 <p
                   key={idx}
-                  className="first-letter:float-left first-letter:text-5xl sm:first-letter:text-6xl first-letter:font-black first-letter:mr-3.5 first-letter:leading-none first-letter:text-primary leading-[1.85]"
+                  className="first-letter:float-left first-letter:text-6xl sm:first-letter:text-7xl first-letter:font-serif first-letter:font-bold first-letter:mr-4 first-letter:leading-none first-letter:text-primary leading-[1.9]"
                 >
                   {renderFormattedText(block.text)}
                 </p>
@@ -272,7 +274,7 @@ export default async function ArticleDetailPage({
         </article>
 
         {/* Author Bio Box */}
-        <div className="mt-16 p-6 sm:p-8 rounded-2xl bg-surface border border-border/80 flex flex-col sm:flex-row items-start sm:items-center gap-5">
+        <div className="mt-16 p-6 sm:p-8 rounded-2xl bg-white border border-border/80 shadow-sm card-boundary flex flex-col sm:flex-row items-start sm:items-center gap-5">
           <div className="relative w-12 h-12 rounded-full overflow-hidden border border-border shrink-0 bg-primary/10 flex items-center justify-center font-bold text-sm text-primary">
             CK
           </div>
@@ -281,7 +283,7 @@ export default async function ArticleDetailPage({
               <h4 className="font-bold text-sm uppercase tracking-wide text-foreground">
                 {article.author_name}
               </h4>
-              <span className="inline-flex items-center gap-1 text-[10px] font-mono uppercase tracking-wider text-accent font-semibold px-2 py-0.5 rounded-full bg-accent/10">
+              <span className="inline-flex items-center gap-1 text-[10px] font-mono uppercase tracking-wider text-primary font-semibold px-2 py-0.5 rounded-full bg-primary/10">
                 <CheckCircle2 className="w-3 h-3" />
                 Penulis Terverifikasi
               </span>
@@ -294,12 +296,12 @@ export default async function ArticleDetailPage({
 
         {/* Related Articles Section */}
         {relatedArticles.length > 0 && (
-          <div className="pt-16 mt-16 border-t border-border/80">
-            <div className="mb-8">
+          <div className="pt-20 mt-16 border-t border-border/80">
+            <div className="mb-10 text-center sm:text-left">
               <span className="text-[11px] font-mono font-bold tracking-[0.25em] uppercase text-muted-foreground block mb-1">
                 BACAAN LAINNYA
               </span>
-              <h2 className="text-2xl font-black uppercase tracking-tight text-foreground">
+              <h2 className="text-2xl sm:text-3xl font-serif font-bold uppercase tracking-tight text-foreground">
                 ARTIKEL TERKAIT
               </h2>
             </div>
@@ -311,7 +313,7 @@ export default async function ArticleDetailPage({
             </div>
           </div>
         )}
-      </Container>
+      </div>
     </div>
   );
 }

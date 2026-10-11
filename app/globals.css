@@ -4,15 +4,12 @@
   :root {
     /* ==========================================================================
        CHANGKEER CENTRALIZED SEMANTIC DESIGN TOKENS
-       Official Brand Identity:
-       - Background terang: #F0F3F3
-       - Primary purple: #544D79
-       - Secondary muted purple: #8C849A
+       Universal Pure White Background & Luxury Editorial Palette
        ========================================================================== */
-    --background: #F0F3F3;
-    --foreground: #1D192B;
+    --background: #FFFFFF;
+    --foreground: #14121A;
     --surface: #FFFFFF;
-    --surface-hover: #E7ECEC;
+    --surface-hover: #F8F9FA;
     --surface-elevated: #FFFFFF;
 
     --primary: #544D79;
@@ -23,10 +20,10 @@
     --accent-foreground: #FFFFFF;
     --accent-subtle: #E2DFE8;
 
-    --muted: #E2E8E8;
-    --muted-foreground: #5B566B;
+    --muted: #F4F6F7;
+    --muted-foreground: #5C586B;
 
-    --border: #D5DCDC;
+    --border: #E5E8EB;
     --border-strong: #8C849A;
 
     --ring: #544D79;
@@ -86,6 +83,9 @@
   --color-border-strong: var(--border-strong);
   --color-ring: var(--ring);
 
+  --font-sans: var(--font-sans), sans-serif;
+  --font-serif: var(--font-serif), serif;
+
   --radius-sm: var(--radius-sm);
   --radius-md: var(--radius-md);
   --radius-lg: var(--radius-lg);
@@ -103,12 +103,24 @@ html {
 body {
   background-color: var(--background);
   color: var(--foreground);
+  font-family: var(--font-sans), sans-serif;
   min-height: 100vh;
   overflow-x: hidden;
   max-width: 100vw;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Luxury Editorial Headings */
+h1, h2, h3, h4 {
+  font-family: var(--font-serif), serif;
+  letter-spacing: -0.015em;
+}
+
+/* Subtle boundary shadow for components on white background */
+.card-boundary {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.03);
 }
 
 /* Accessible focus outline using design tokens */

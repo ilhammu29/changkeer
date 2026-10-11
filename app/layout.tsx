@@ -1,7 +1,23 @@
 import type { Metadata } from 'next';
+import React, { Suspense } from 'react';
+import { Plus_Jakarta_Sans, Cormorant_Garamond } from 'next/font/google';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import './globals.css';
+
+const sans = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-sans',
+  display: 'swap',
+});
+
+const serif = Cormorant_Garamond({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-serif',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   title: {
@@ -32,16 +48,14 @@ export const metadata: Metadata = {
   },
 };
 
-import React, { Suspense } from 'react';
-
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html lang="id" className="h-full antialiased">
-      <body className="min-h-full flex flex-col bg-background text-foreground">
+    <html lang="id" className={`h-full antialiased ${sans.variable} ${serif.variable}`}>
+      <body className="min-h-full flex flex-col bg-background text-foreground font-sans">
         <Suspense fallback={null}>
           <Navbar />
         </Suspense>

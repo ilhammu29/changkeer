@@ -2,7 +2,14 @@
 
 import React, { useState } from 'react';
 import { contactFormSchema, ContactFormData, getFieldErrors } from '@/lib/validation/schemas';
-import { CheckCircle2, AlertCircle, Send } from 'lucide-react';
+import { CheckCircle2, AlertCircle, Send, Sparkles } from 'lucide-react';
+
+const SUBJECT_PRESETS = [
+  'Konsultasi Racikan Teh',
+  'Peluang Kemitraan Kafe',
+  'Pesanan Khusus / Hampers',
+  'Pertanyaan Bahan & Kualitas',
+];
 
 export function ContactForm() {
   const [formData, setFormData] = useState<ContactFormData>({
@@ -26,6 +33,17 @@ export function ContactForm() {
       setErrors((prev) => {
         const next = { ...prev };
         delete next[name];
+        return next;
+      });
+    }
+  };
+
+  const handleSelectPreset = (preset: string) => {
+    setFormData((prev) => ({ ...prev, subject: preset }));
+    if (errors.subject) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next.subject;
         return next;
       });
     }
@@ -58,32 +76,38 @@ export function ContactForm() {
         setServerError(data.error || 'Gagal mengirim pesan. Silakan coba lagi.');
       } else {
         setSuccessMessage(data.message);
-        setFormData({ name: '', email: '', subject: '', message: '' });
+        setFormData({
+          name: '',
+          email: '',
+          subject: '',
+          message: '',
+        });
       }
     } catch {
-      setServerError('Koneksi terputus. Pastikan perangkat Anda terhubung ke internet.');
+      setServerError('Terjadi gangguan jaringan. Silakan coba sesaat lagi.');
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="bg-surface border border-border rounded-lg p-6 sm:p-10 shadow-sm">
-      <div className="mb-8">
-        <span className="text-[10px] font-bold tracking-[0.25em] uppercase text-accent block mb-1">
-          FORMULIR PERTANYAAN
-        </span>
-        <h3 className="text-2xl font-black uppercase tracking-tight text-foreground">
-          KIRIM PESAN KEPADA KAMI
+    <div className="bg-white border border-border/80 rounded-3xl p-7 sm:p-10 lg:p-12 shadow-sm card-boundary">
+      <div className="mb-8 space-y-2">
+        <div className="flex items-center gap-2 text-primary text-[11px] font-mono tracking-widest uppercase font-semibold">
+          <Sparkles className="w-3.5 h-3.5" />
+          <span>KORESPONDENSI RESMI</span>
+        </div>
+        <h3 className="text-2xl sm:text-3xl font-serif font-bold uppercase tracking-tight text-foreground">
+          Kirimkan Pesan Anda
         </h3>
-        <p className="text-xs text-muted-foreground mt-1">
-          Isi formulir di bawah ini dengan lengkap. Tim kami akan merespons melalui email resmi.
+        <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+          Tuliskan kebutuhan atau pertanyaan Anda. Tim kurator CHANGKEER akan meninjau dan membalas dalam kurun waktu 1x24 jam kerja.
         </p>
       </div>
 
       {successMessage && (
-        <div className="mb-6 p-4 rounded-md bg-accent-subtle/80 border border-border flex items-start gap-3">
-          <CheckCircle2 className="w-5 h-5 text-accent flex-shrink-0 mt-0.5" />
+        <div className="mb-6 p-4 rounded-xl bg-primary/10 border border-primary/20 flex items-start gap-3">
+          <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
           <div className="text-xs">
             <h5 className="font-bold text-foreground">Pesan Berhasil Terkirim</h5>
             <p className="text-muted-foreground mt-0.5">{successMessage}</p>
@@ -92,8 +116,8 @@ export function ContactForm() {
       )}
 
       {serverError && (
-        <div className="mb-6 p-4 rounded-md bg-red-50 border border-red-200 text-red-800 flex items-start gap-3">
-          <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+        <div className="mb-6 p-4 rounded-xl bg-red-50 border border-red-200 text-red-800 flex items-start gap-3">
+          <AlertCircle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
           <div className="text-xs">
             <h5 className="font-bold">Gagal Mengirim</h5>
             <p className="mt-0.5">{serverError}</p>
@@ -102,12 +126,12 @@ export function ContactForm() {
       )}
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           {/* Name Field */}
           <div>
             <label
               htmlFor="name"
-              className="block text-xs font-bold uppercase tracking-wider text-foreground mb-2"
+              className="block text-[11px] font-mono font-bold uppercase tracking-wider text-foreground mb-2"
             >
               NAMA LENGKAP <span className="text-red-500">*</span>
             </label>
@@ -117,14 +141,14 @@ export function ContactForm() {
               name="name"
               value={formData.name}
               onChange={handleChange}
-              placeholder="Contoh: Rian Pratama"
+              placeholder="Nama Anda"
               disabled={isLoading}
-              className={`w-full px-4 py-3 text-xs bg-background border rounded-sm text-foreground focus:outline-none focus:ring-1 focus:ring-ring transition-colors ${
-                errors.name ? 'border-red-500' : 'border-border'
+              className={`w-full px-4 py-3 text-xs bg-white border rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary transition-colors ${
+                errors.name ? 'border-red-500' : 'border-border/80'
               }`}
             />
             {errors.name && (
-              <p className="text-[11px] text-red-600 mt-1.5 font-medium">{errors.name}</p>
+              <p className="text-[11px] text-red-600 mt-1 font-medium">{errors.name}</p>
             )}
           </div>
 
@@ -132,7 +156,7 @@ export function ContactForm() {
           <div>
             <label
               htmlFor="email"
-              className="block text-xs font-bold uppercase tracking-wider text-foreground mb-2"
+              className="block text-[11px] font-mono font-bold uppercase tracking-wider text-foreground mb-2"
             >
               ALAMAT EMAIL <span className="text-red-500">*</span>
             </label>
@@ -142,40 +166,59 @@ export function ContactForm() {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              placeholder="Contoh: nama@domain.com"
+              placeholder="nama@domain.com"
               disabled={isLoading}
-              className={`w-full px-4 py-3 text-xs bg-background border rounded-sm text-foreground focus:outline-none focus:ring-1 focus:ring-ring transition-colors ${
-                errors.email ? 'border-red-500' : 'border-border'
+              className={`w-full px-4 py-3 text-xs bg-white border rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary transition-colors ${
+                errors.email ? 'border-red-500' : 'border-border/80'
               }`}
             />
             {errors.email && (
-              <p className="text-[11px] text-red-600 mt-1.5 font-medium">{errors.email}</p>
+              <p className="text-[11px] text-red-600 mt-1 font-medium">{errors.email}</p>
             )}
           </div>
         </div>
 
-        {/* Subject Field */}
+        {/* Subject Presets & Input */}
         <div>
           <label
             htmlFor="subject"
-            className="block text-xs font-bold uppercase tracking-wider text-foreground mb-2"
+            className="block text-[11px] font-mono font-bold uppercase tracking-wider text-foreground mb-2"
           >
             SUBJEK PESAN <span className="text-red-500">*</span>
           </label>
+
+          {/* Quick preset chips */}
+          <div className="flex flex-wrap gap-2 mb-3">
+            {SUBJECT_PRESETS.map((preset) => (
+              <button
+                key={preset}
+                type="button"
+                onClick={() => handleSelectPreset(preset)}
+                className={`text-[10px] font-mono uppercase tracking-wider px-3 py-1.5 rounded-lg border transition-all cursor-pointer ${
+                  formData.subject === preset
+                    ? 'bg-primary text-white border-primary shadow-xs'
+                    : 'bg-muted/60 border-border/70 text-muted-foreground hover:bg-muted hover:text-foreground'
+                }`}
+              >
+                {preset}
+              </button>
+            ))}
+          </div>
+
           <input
             type="text"
             id="subject"
             name="subject"
             value={formData.subject}
             onChange={handleChange}
-            placeholder="Contoh: Pertanyaan Kemitraan Kafe &amp; Reseller"
+            placeholder="Ketik atau pilih subjek pesan di atas"
             disabled={isLoading}
-            className={`w-full px-4 py-3 text-xs bg-background border rounded-sm text-foreground focus:outline-none focus:ring-1 focus:ring-ring transition-colors ${
-              errors.subject ? 'border-red-500' : 'border-border'
+            className={`w-full px-4 py-3 text-xs bg-white border rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary transition-colors ${
+              errors.subject ? 'border-red-500' : 'border-border/80'
             }`}
           />
           {errors.subject && (
-            <p className="text-[11px] text-red-600 mt-1.5 font-medium">{errors.subject}</p>
+            <p className="text-[11px] text-red-600 mt-1 font-medium">{errors.subject}</p>
           )}
         </div>
 
@@ -183,9 +226,9 @@ export function ContactForm() {
         <div>
           <label
             htmlFor="message"
-            className="block text-xs font-bold uppercase tracking-wider text-foreground mb-2"
+            className="block text-[11px] font-mono font-bold uppercase tracking-wider text-foreground mb-2"
           >
-            ISI PESAN <span className="text-red-500">*</span>
+            ISI PESAN ATAU KEBUTUHAN <span className="text-red-500">*</span>
           </label>
           <textarea
             id="message"
@@ -193,31 +236,29 @@ export function ContactForm() {
             rows={5}
             value={formData.message}
             onChange={handleChange}
-            placeholder="Tuliskan pesan, pertanyaan, atau rincian kebutuhan Anda secara lengkap..."
+            placeholder="Jelaskan kebutuhan Anda secara rinci..."
             disabled={isLoading}
-            className={`w-full px-4 py-3 text-xs bg-background border rounded-sm text-foreground focus:outline-none focus:ring-1 focus:ring-ring transition-colors ${
-              errors.message ? 'border-red-500' : 'border-border'
+            className={`w-full px-4 py-3 text-xs bg-white border rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary transition-colors resize-y ${
+              errors.message ? 'border-red-500' : 'border-border/80'
             }`}
           />
           {errors.message && (
-            <p className="text-[11px] text-red-600 mt-1.5 font-medium">{errors.message}</p>
+            <p className="text-[11px] text-red-600 mt-1 font-medium">{errors.message}</p>
           )}
         </div>
 
+        {/* Submit Button */}
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 text-xs font-bold tracking-widest uppercase bg-primary text-primary-foreground px-8 py-4 rounded-sm hover:bg-primary-hover active:scale-[0.99] transition-all disabled:opacity-50 cursor-pointer"
+          className="w-full inline-flex items-center justify-center gap-2 text-xs font-mono font-bold tracking-widest uppercase bg-primary text-white px-8 py-4 rounded-xl hover:bg-primary-hover active:scale-[0.99] transition-all shadow-sm cursor-pointer disabled:opacity-60"
         >
           {isLoading ? (
-            <>
-              <span className="w-4 h-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin" />
-              <span>SEDANG MENYIMPAN...</span>
-            </>
+            <span>MENGIRIM PESAN...</span>
           ) : (
             <>
-              <Send className="w-4 h-4" />
               <span>KIRIM PESAN SEKARANG</span>
+              <Send className="w-4 h-4" />
             </>
           )}
         </button>
