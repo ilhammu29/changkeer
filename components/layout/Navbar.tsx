@@ -67,20 +67,8 @@ export function Navbar() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Detect pages that start with a dark cinematic hero banner
-  const hasDarkHero =
-    pathname === '/' ||
-    pathname === '/tentang-produk' ||
-    pathname === '/katalog' ||
-    pathname === '/tentang-kami' ||
-    pathname.startsWith('/media-berita') ||
-    pathname === '/hubungi-kami';
-
-  const isDarkPage = pathname === '/' || pathname === '/tentang-produk';
-
-  // Determine if navbar should render dark or light text/buttons based on scroll and page
-  const isDarkTheme =
-    (!isScrolled && hasDarkHero) || (isScrolled && isDarkPage);
+  // Uniform dark luxury aesthetic for public navigation across all pages
+  const isDarkTheme = true;
 
   // Check if current route is active
   const isActive = (href: string) => {
@@ -96,13 +84,9 @@ export function Navbar() {
   return (
     <header
       className={`fixed top-0 inset-x-0 z-40 w-full transition-all duration-300 ease-out font-sans ${
-        isDarkTheme
-          ? isScrolled
-            ? 'bg-[#111216]/90 backdrop-blur-md border-b border-white/10 shadow-xl text-white'
-            : 'bg-transparent border-b border-transparent text-white'
-          : isScrolled
-          ? 'bg-white/95 backdrop-blur-md border-b border-border shadow-md text-foreground'
-          : 'bg-white/95 backdrop-blur-md border-b border-border shadow-xs text-foreground'
+        isScrolled
+          ? 'bg-[#111216]/95 backdrop-blur-md border-b border-white/10 shadow-xl text-white'
+          : 'bg-transparent border-b border-transparent text-white'
       }`}
     >
       <Container size="wide">
@@ -206,12 +190,12 @@ export function Navbar() {
 
           {/* Offcanvas Sidebar Drawer */}
           <aside
-            className="fixed top-0 right-0 bottom-0 w-80 sm:w-96 max-w-[88vw] bg-[#111019] text-white p-7 sm:p-8 shadow-2xl flex flex-col justify-between border-l border-white/10 animate-in slide-in-from-right duration-300 z-50 font-sans"
+            className="fixed top-0 right-0 bottom-0 w-80 sm:w-96 max-w-[88vw] h-full max-h-screen bg-[#111019] text-white p-6 sm:p-8 shadow-2xl flex flex-col justify-between border-l border-white/10 animate-in slide-in-from-right duration-300 z-50 font-sans overflow-hidden"
             aria-label="Sidebar Navigation Menu"
           >
-            <div>
+            <div className="flex flex-col flex-1 min-h-0">
               {/* Sidebar Header with Circular Logo and Close Button */}
-              <div className="flex items-center justify-between pb-6 border-b border-white/10">
+              <div className="flex items-center justify-between pb-5 border-b border-white/10 shrink-0">
                 <Link
                   href="/"
                   onClick={() => setSidebarOpen(false)}
@@ -235,7 +219,7 @@ export function Navbar() {
                 <button
                   type="button"
                   onClick={() => setSidebarOpen(false)}
-                  className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors cursor-pointer"
+                  className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors cursor-pointer shrink-0"
                   aria-label="Close menu"
                 >
                   <X className="w-4 h-4" />
@@ -243,12 +227,12 @@ export function Navbar() {
               </div>
 
               {/* Brand Micro Narrative */}
-              <div className="pt-4 pb-2 text-[11px] text-white/60 leading-relaxed font-sans">
+              <div className="pt-3 pb-2 text-[11px] text-white/60 leading-relaxed font-sans shrink-0">
                 Real loose-leaf blends following the 24 solar terms. Freshly brewed &amp; ready in under 3 minutes.
               </div>
 
-              {/* Sidebar Navigation Links */}
-              <nav className="mt-4 flex flex-col space-y-1.5">
+              {/* Sidebar Navigation Links (Scrollable independently) */}
+              <nav className="mt-3 flex flex-col space-y-1.5 flex-1 min-h-0 overflow-y-auto pr-1">
                 {NAV_LINKS.map((link, idx) => {
                   const active = isActive(link.href);
                   return (
@@ -256,7 +240,7 @@ export function Navbar() {
                       key={link.href}
                       href={link.href}
                       onClick={() => setSidebarOpen(false)}
-                      className={`text-xs font-bold tracking-[0.18em] uppercase py-3 px-3.5 rounded-xl flex items-center justify-between transition-all group ${
+                      className={`text-xs font-bold tracking-[0.18em] uppercase py-3 px-3.5 rounded-xl flex items-center justify-between transition-all group shrink-0 ${
                         active
                           ? 'text-white bg-white/10 shadow-xs'
                           : 'text-white/70 hover:text-white hover:bg-white/5'
@@ -280,7 +264,7 @@ export function Navbar() {
             </div>
 
             {/* Sidebar Bottom Action & Info */}
-            <div className="pt-6 border-t border-white/10 space-y-3">
+            <div className="pt-4 border-t border-white/10 space-y-2.5 shrink-0">
               <Link
                 href="/katalog"
                 onClick={() => setSidebarOpen(false)}

@@ -104,12 +104,12 @@ export default function AdminLayout({
   };
 
   return (
-    <div className="min-h-screen bg-neutral-50 flex flex-col md:flex-row font-sans text-foreground">
+    <div className="h-screen max-h-screen bg-neutral-50 flex flex-col md:flex-row font-sans text-foreground overflow-hidden">
       {/* ========================================================================= */}
       {/* DESKTOP SIDEBAR (EXPANDABLE & COLLAPSIBLE TO ICON MODE, FIXED VIEWPORT HEIGHT) */}
       {/* ========================================================================= */}
       <aside
-        className={`hidden md:flex flex-col justify-between shrink-0 bg-white border-r border-border/80 transition-all duration-300 ease-in-out z-30 sticky top-0 h-screen max-h-screen overflow-hidden ${
+        className={`hidden md:flex flex-col justify-between shrink-0 bg-white border-r border-border/80 transition-all duration-300 ease-in-out z-30 h-full max-h-full overflow-hidden ${
           collapsed ? 'w-20' : 'w-64'
         }`}
       >
@@ -246,10 +246,10 @@ export default function AdminLayout({
       </aside>
 
       {/* ========================================================================= */}
-      {/* MAIN CONTENT AREA & RESPONSIVE HEADER */}
+      {/* MAIN CONTENT AREA & RESPONSIVE HEADER (SCROLLS INDEPENDENTLY) */}
       {/* ========================================================================= */}
-      <div className="flex-1 flex flex-col min-w-0">
-        <header className="h-16 bg-white border-b border-border/80 flex items-center justify-between px-4 sm:px-8 shrink-0 sticky top-0 z-20">
+      <div className="flex-1 flex flex-col min-w-0 h-full max-h-full overflow-y-auto">
+        <header className="h-16 shrink-0 bg-white border-b border-border/80 flex items-center justify-between px-4 sm:px-8 sticky top-0 z-20">
           <div className="flex items-center gap-3">
             {/* Mobile Hamburger Drawer Toggle */}
             <button

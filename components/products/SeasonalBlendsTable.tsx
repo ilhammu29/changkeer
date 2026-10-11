@@ -35,8 +35,8 @@ export function SeasonalBlendsTable({ blends }: SeasonalBlendsTableProps) {
   return (
     <div className="bg-white border border-border/80 rounded-2xl overflow-hidden shadow-md card-boundary font-sans">
       {/* Category Tabs Header with Seasonal Symbols */}
-      <div className="p-4 sm:p-5 border-b border-border/70 bg-neutral-50/70 flex flex-wrap items-center justify-between gap-3">
-        <div className="flex flex-wrap items-center gap-2">
+      <div className="p-3.5 sm:p-5 border-b border-border/70 bg-neutral-50/70 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1 w-full sm:w-auto -mx-1 px-1">
           {TABS.map((tab) => {
             const isActive = activeSeason === tab.id;
             const count =
@@ -49,7 +49,7 @@ export function SeasonalBlendsTable({ blends }: SeasonalBlendsTableProps) {
                 key={tab.id}
                 type="button"
                 onClick={() => setActiveSeason(tab.id)}
-                className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-mono font-bold tracking-wider uppercase transition-all cursor-pointer ${
+                className={`shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-xs font-mono font-bold tracking-wider uppercase transition-all cursor-pointer ${
                   isActive
                     ? 'bg-neutral-900 text-white shadow-xs scale-102'
                     : 'bg-white border border-border/80 text-foreground hover:bg-neutral-100 hover:text-foreground'
@@ -73,9 +73,81 @@ export function SeasonalBlendsTable({ blends }: SeasonalBlendsTableProps) {
         </div>
       </div>
 
-      {/* Product Table without Extra Badges */}
-      <div className="overflow-x-auto">
-        <table className="w-full text-left text-xs sm:text-sm border-collapse">
+      {/* MOBILE RESPONSIVE CARD VIEW (block on mobile, hidden on md+) */}
+      <div className="block md:hidden divide-y divide-border/60">
+        {filteredBlends.map((item) => (
+          <div
+            key={item.term}
+            className={`p-4 space-y-2.5 transition-colors ${
+              item.isBrewingNow ? 'bg-primary/5' : 'bg-white'
+            }`}
+          >
+            {/* Top Row: Solar Term & Season + Date */}
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-2">
+                <span className="text-sm">
+                  {item.season === 'spring' && '🌸'}
+                  {item.season === 'summer' && '☀️'}
+                  {item.season === 'autumn' && '🍂'}
+                  {item.season === 'winter' && '❄️'}
+                </span>
+                <div>
+                  <span className="font-extrabold text-xs uppercase text-foreground">
+                    {item.term}
+                  </span>
+                  <span className="text-[11px] text-muted-foreground ml-1 font-serif">
+                    ({item.termChinese})
+                  </span>
+                </div>
+              </div>
+              <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-md bg-neutral-100 text-muted-foreground">
+                {item.starts}
+              </span>
+            </div>
+
+            {/* Blend Name & Ingredients */}
+            <div>
+              <h4 className="font-bold text-xs sm:text-sm text-foreground">
+                {item.blend}
+              </h4>
+              <p className="text-[11px] text-muted-foreground line-clamp-2 mt-0.5 leading-relaxed">
+                {item.ingredients.join(', ')}
+              </p>
+            </div>
+
+            {/* Bottom Row: Prices & Status */}
+            <div className="pt-1 flex items-center justify-between gap-2 border-t border-border/40">
+              <div className="flex items-center gap-3 font-mono text-xs">
+                <span className="text-foreground">
+                  <span className="text-muted-foreground text-[10px] uppercase block">Hot (350ml)</span>
+                  <strong className="font-bold">{item.hotPrice}</strong>
+                </span>
+                <span className="text-foreground">
+                  <span className="text-muted-foreground text-[10px] uppercase block">Iced (450ml)</span>
+                  <strong className="font-bold">{item.icedPrice}</strong>
+                </span>
+              </div>
+
+              <div>
+                {item.isBrewingNow ? (
+                  <span className="inline-flex items-center gap-1.5 text-[11px] font-mono font-bold text-primary px-2.5 py-1 rounded-full bg-primary/10">
+                    <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                    Now Brewing
+                  </span>
+                ) : (
+                  <span className="text-[10px] font-mono text-muted-foreground">
+                    Rotational
+                  </span>
+                )}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* DESKTOP TABLE VIEW (hidden on mobile, block on md+) */}
+      <div className="hidden md:block overflow-x-auto">
+        <table className="w-full min-w-[700px] text-left text-xs sm:text-sm border-collapse">
           <thead>
             <tr className="border-b border-border bg-neutral-100/50 text-foreground font-mono text-[11px] uppercase tracking-wider">
               <th className="py-3.5 px-4 sm:px-6 font-bold">Solar Term</th>

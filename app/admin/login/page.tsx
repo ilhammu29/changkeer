@@ -13,9 +13,6 @@ import {
   ArrowLeft,
   Eye,
   EyeOff,
-  Sparkles,
-  Leaf,
-  CheckCircle2,
 } from 'lucide-react';
 
 function AdminLoginForm() {
@@ -64,159 +61,102 @@ function AdminLoginForm() {
   };
 
   return (
-    <div className="min-h-screen w-full flex flex-col lg:flex-row bg-[#08090C] text-white font-sans selection:bg-white selection:text-black">
+    <div className="h-screen max-h-screen overflow-hidden w-full flex flex-col lg:flex-row bg-[#08090C] text-white font-sans selection:bg-white selection:text-black">
       {/* ========================================================================= */}
-      {/* LEFT SECTION: INFORMATION & BRAND ATELIER (FULL SCREEN HALF) */}
+      {/* LEFT HALF: INFORMATION & BOTANICAL ATELIER (SEASON BACKGROUND) */}
       {/* ========================================================================= */}
-      <div className="relative w-full lg:w-[52%] xl:w-[55%] flex flex-col justify-between p-8 sm:p-12 lg:p-16 xl:p-20 border-b lg:border-b-0 lg:border-r border-white/10 bg-[#060709] overflow-hidden min-h-[460px] lg:min-h-screen">
-        {/* Background Editorial Visual with Subtle Botanical Overlay */}
+      <div className="relative w-full lg:w-1/2 flex flex-col justify-between p-6 sm:p-10 lg:p-12 xl:p-14 border-b lg:border-b-0 lg:border-r border-white/10 bg-[#050608] shrink-0 lg:shrink h-1/3 sm:h-2/5 lg:h-full">
+        {/* Background Autumn Season Visual */}
         <div className="absolute inset-0 pointer-events-none z-0">
           <Image
-            src="/images/seasons/spring.jpg"
-            alt="CHANGKEER Botanical Background"
+            src="/images/seasons/autumn.jpg"
+            alt="CHANGKEER Autumn Season"
             fill
             priority
-            className="object-cover opacity-20 scale-105 filter saturate-50 blur-[1px]"
+            className="object-cover opacity-25 filter saturate-75"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#060709] via-[#060709]/80 to-[#060709]/90" />
-          <div className="absolute inset-0 bg-radial from-transparent via-[#060709]/60 to-[#060709]" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#050608] via-[#050608]/80 to-[#050608]/90" />
         </div>
 
-        {/* Ambient Botanical Glows */}
-        <div className="absolute -top-24 -left-24 w-96 h-96 bg-emerald-600/15 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-10 right-10 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl pointer-events-none" />
+        {/* Ambient Warm Botanical Glow */}
+        <div className="absolute -top-20 -left-20 w-80 h-80 bg-amber-600/10 rounded-full blur-3xl pointer-events-none" />
 
-        {/* Header Branding */}
-        <div className="relative z-10 flex items-center justify-between">
-          <div className="flex items-center gap-3.5">
-            <div className="relative w-12 h-12 rounded-full overflow-hidden border border-white/20 shadow-lg bg-white p-1 shrink-0">
-              <Image
-                src="/images/logo_new.png"
-                alt="CHANGKEER"
-                fill
-                className="object-contain p-1"
-              />
-            </div>
-            <div>
-              <span className="text-sm font-black uppercase tracking-[0.22em] text-white block leading-none">
-                CHANGKEER
-              </span>
-              <span className="text-[10px] text-white/50 uppercase tracking-[0.25em] font-mono font-semibold mt-1 block">
-                BOTANICAL ATELIER CMS
-              </span>
-            </div>
+        {/* Brand Header */}
+        <div className="relative z-10 flex items-center gap-3">
+          <div className="relative w-10 h-10 rounded-full overflow-hidden border border-white/20 shadow-md bg-white p-0.5 shrink-0">
+            <Image
+              src="/images/logo_new.png"
+              alt="CHANGKEER"
+              fill
+              className="object-contain p-0.5"
+            />
           </div>
-
-          <div className="hidden sm:inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] font-mono uppercase tracking-wider text-white/70">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            <span>SISTEM TERPROTEKSI</span>
+          <div>
+            <span className="text-xs font-black uppercase tracking-[0.22em] text-white block leading-none">
+              CHANGKEER
+            </span>
+            <span className="text-[9px] text-white/50 uppercase tracking-[0.22em] font-mono mt-0.5 block">
+              BOTANICAL ATELIER CMS
+            </span>
           </div>
         </div>
 
-        {/* Center Editorial Manifesto & Features */}
-        <div className="relative z-10 my-auto py-12 lg:py-16 space-y-8 max-w-xl">
-          <div className="space-y-3">
-            <div className="inline-flex items-center gap-2 text-xs font-mono font-bold tracking-widest uppercase text-emerald-400/90">
-              <Leaf className="w-3.5 h-3.5" />
-              <span>ATELIER OPERATIONS & CURATION PORTAL</span>
-            </div>
-            <h1 className="text-2xl sm:text-3xl xl:text-4xl font-extrabold uppercase tracking-tight text-white leading-[1.15]">
-              Harmoni Racikan Botani & Tata Kelola Terpadu
-            </h1>
-            <p className="text-xs sm:text-sm text-white/65 leading-relaxed font-normal pt-1">
-              Portal kendali sentral untuk merawat katalog teh herbal Nusantara, menerbitkan jurnal botani, mengelola inventaris media, dan memantau pesan kemitraan dalam satu ekosistem atelier.
-            </p>
-          </div>
-
-          {/* 3 Value Pillars */}
-          <div className="space-y-3.5 pt-2">
-            <div className="flex items-start gap-3.5 p-3.5 rounded-2xl bg-white/[0.03] border border-white/5 backdrop-blur-sm">
-              <div className="w-8 h-8 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shrink-0 mt-0.5 text-emerald-400">
-                <Leaf className="w-4 h-4" />
-              </div>
-              <div className="space-y-0.5">
-                <h2 className="text-xs font-bold uppercase tracking-wide text-white">
-                  Katalog Botani Dinamis
-                </h2>
-                <p className="text-[11px] text-white/55 leading-relaxed">
-                  Pembaruan instan racikan 4 musim, harga, panduan seduh, dan botanical add-ons tanpa hambatan.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-3.5 p-3.5 rounded-2xl bg-white/[0.03] border border-white/5 backdrop-blur-sm">
-              <div className="w-8 h-8 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center shrink-0 mt-0.5 text-purple-400">
-                <ShieldCheck className="w-4 h-4" />
-              </div>
-              <div className="space-y-0.5">
-                <h2 className="text-xs font-bold uppercase tracking-wide text-white">
-                  Autentikasi Aman & Enkripsi
-                </h2>
-                <p className="text-[11px] text-white/55 leading-relaxed">
-                  Didukung Supabase Auth dengan otorisasi berbasis peran (RBAC) dan penguncian sesi aman.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-3.5 p-3.5 rounded-2xl bg-white/[0.03] border border-white/5 backdrop-blur-sm">
-              <div className="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center shrink-0 mt-0.5 text-amber-400">
-                <Sparkles className="w-4 h-4" />
-              </div>
-              <div className="space-y-0.5">
-                <h2 className="text-xs font-bold uppercase tracking-wide text-white">
-                  Sinkronisasi Real-Time
-                </h2>
-                <p className="text-[11px] text-white/55 leading-relaxed">
-                  Revalidasi jalur otomatis memastikan setiap perubahan konten langsung tersaji di website publik.
-                </p>
-              </div>
-            </div>
-          </div>
+        {/* Narrative Manifesto (Simple, Clean, No clutter) */}
+        <div className="relative z-10 my-auto py-4 sm:py-6 space-y-2.5 max-w-lg">
+          <span className="text-[10px] font-mono font-bold tracking-[0.2em] uppercase text-amber-300/90 block">
+            PORTAL ADMINISTRATOR
+          </span>
+          <h1 className="text-xl sm:text-2xl xl:text-3xl font-extrabold uppercase tracking-tight text-white leading-tight">
+            Harmoni Seduhan Herbal Nusantara
+          </h1>
+          <p className="text-xs sm:text-sm text-white/65 leading-relaxed font-normal">
+            Pusat kendali terpadu untuk merawat katalog teh racikan 24 musim, menerbitkan jurnal botani, dan mengelola operasional atelier CHANGKEER.
+          </p>
         </div>
 
-        {/* Footer Origin Tag */}
-        <div className="relative z-10 pt-6 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-[10px] font-mono text-white/40 uppercase tracking-wider">
-          <span>CHANGKEER BOTANICAL ATELIER © 2026</span>
+        {/* Origin Footer */}
+        <div className="relative z-10 text-[10px] font-mono text-white/40 uppercase tracking-wider flex items-center justify-between">
+          <span>CHANGKEER © 2026</span>
           <span>PUNCAK · GARUT · WONOSOBO</span>
         </div>
       </div>
 
       {/* ========================================================================= */}
-      {/* RIGHT SECTION: FULL-SCREEN LOGIN FORM (NO CARDBOX) */}
+      {/* RIGHT HALF: SIMPLE LOGIN FORM (FULL SCREEN HALF, ZERO CARDBOX, NO OVERFLOW) */}
       {/* ========================================================================= */}
-      <div className="w-full lg:w-[48%] xl:w-[45%] flex flex-col justify-between p-8 sm:p-12 lg:p-16 xl:p-20 bg-[#0B0C10] relative z-10 min-h-[500px]">
-        {/* Top Navigation */}
-        <div className="flex items-center justify-between">
+      <div className="w-full lg:w-1/2 flex flex-col justify-between p-6 sm:p-10 lg:p-12 xl:p-14 bg-[#0A0B0F] relative z-10 flex-1 lg:h-full overflow-y-auto">
+        {/* Top Back Nav */}
+        <div className="flex items-center justify-between shrink-0">
           <Link
             href="/"
             className="inline-flex items-center gap-2 text-xs font-mono font-bold tracking-wider text-white/60 hover:text-white transition-colors group"
           >
-            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+            <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-1 transition-transform" />
             <span>KEMBALI KE WEBSITE</span>
           </Link>
 
-          <span className="text-[10px] font-mono uppercase tracking-widest text-white/40 border border-white/10 px-2.5 py-1 rounded-md">
-            PORTAL CMS
+          <span className="text-[10px] font-mono uppercase tracking-widest text-white/40 border border-white/10 px-2 py-0.5 rounded-md">
+            CMS PORTAL
           </span>
         </div>
 
-        {/* Center Form Container */}
-        <div className="my-auto py-10 space-y-8 max-w-md w-full mx-auto">
+        {/* Center Simple Form (Compact, fits perfectly without scrolling) */}
+        <div className="my-auto py-4 sm:py-6 space-y-5 max-w-sm w-full mx-auto">
           {/* Header */}
-          <div className="space-y-2">
-            <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-white">
+          <div className="space-y-1">
+            <h2 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-white">
               Masuk ke Dashboard
             </h2>
-            <p className="text-xs sm:text-sm text-white/60 leading-relaxed font-normal">
-              Masukkan email dan kata sandi administrator Anda untuk mengakses panel kendali CHANGKEER.
+            <p className="text-xs text-white/60 leading-relaxed font-normal">
+              Masukkan email dan kata sandi administrator Anda.
             </p>
           </div>
 
           {/* Error Banner */}
           {error && (
-            <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-200 text-xs flex items-start gap-3 animate-in fade-in duration-200">
+            <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-200 text-xs flex items-start gap-2.5">
               <AlertCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
-              <div className="space-y-0.5">
+              <div>
                 <p className="font-bold text-red-300">Autentikasi Gagal</p>
                 <p className="text-white/80">{error}</p>
               </div>
@@ -224,12 +164,12 @@ function AdminLoginForm() {
           )}
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-4">
             {/* Email Field */}
-            <div className="space-y-2">
+            <div className="space-y-1.5">
               <label
                 htmlFor="email"
-                className="block text-[11px] font-mono font-bold uppercase tracking-wider text-white/70"
+                className="block text-[10px] font-mono font-bold uppercase tracking-wider text-white/70"
               >
                 EMAIL ADMINISTRATOR
               </label>
@@ -244,21 +184,19 @@ function AdminLoginForm() {
                   required
                   autoFocus
                   disabled={isLoading}
-                  className="w-full pl-10 pr-4 py-3.5 text-xs bg-white/[0.04] border border-white/15 rounded-xl text-white placeholder:text-white/30 focus:outline-none focus:border-white focus:bg-white/[0.06] transition-all"
+                  className="w-full pl-10 pr-4 py-3 text-xs bg-white/[0.04] border border-white/15 rounded-xl text-white placeholder:text-white/30 focus:outline-none focus:border-white focus:bg-white/[0.06] transition-all"
                 />
               </div>
             </div>
 
             {/* Password Field */}
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <label
-                  htmlFor="password"
-                  className="block text-[11px] font-mono font-bold uppercase tracking-wider text-white/70"
-                >
-                  KATA SANDI
-                </label>
-              </div>
+            <div className="space-y-1.5">
+              <label
+                htmlFor="password"
+                className="block text-[10px] font-mono font-bold uppercase tracking-wider text-white/70"
+              >
+                KATA SANDI
+              </label>
               <div className="relative">
                 <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-white/40" />
                 <input
@@ -269,7 +207,7 @@ function AdminLoginForm() {
                   placeholder="••••••••••••"
                   required
                   disabled={isLoading}
-                  className="w-full pl-10 pr-11 py-3.5 text-xs bg-white/[0.04] border border-white/15 rounded-xl text-white placeholder:text-white/30 focus:outline-none focus:border-white focus:bg-white/[0.06] transition-all"
+                  className="w-full pl-10 pr-11 py-3 text-xs bg-white/[0.04] border border-white/15 rounded-xl text-white placeholder:text-white/30 focus:outline-none focus:border-white focus:bg-white/[0.06] transition-all"
                 />
                 <button
                   type="button"
@@ -290,38 +228,34 @@ function AdminLoginForm() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full inline-flex items-center justify-center gap-2 text-xs font-mono font-extrabold tracking-widest uppercase bg-white text-black py-4 rounded-xl hover:bg-neutral-200 active:scale-[0.99] transition-all disabled:opacity-50 cursor-pointer shadow-xl mt-2"
+              className="w-full inline-flex items-center justify-center gap-2 text-xs font-mono font-extrabold tracking-widest uppercase bg-white text-black py-3.5 rounded-xl hover:bg-neutral-200 active:scale-[0.99] transition-all disabled:opacity-50 cursor-pointer shadow-lg mt-1"
             >
               {isLoading ? (
                 <>
                   <span className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin" />
-                  <span>MEMVERIFIKASI KREDENSIAL...</span>
+                  <span>MEMVERIFIKASI...</span>
                 </>
               ) : (
-                <span>MASUK KE DASHBOARD CMS</span>
+                <span>MASUK KE DASHBOARD</span>
               )}
             </button>
           </form>
 
-          {/* Quick Notice */}
-          <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/5 text-[11px] text-white/50 space-y-1">
-            <div className="flex items-center gap-1.5 font-bold text-white/70">
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Kredensial Default Terkonfirmasi</span>
-            </div>
-            <p className="font-mono text-[10px] text-white/60">
-              Email: <code className="text-white">admin@changkeer.id</code> · Sandi: <code className="text-white">admin123</code>
-            </p>
+          {/* Simple default credentials reminder */}
+          <div className="pt-1 text-center">
+            <span className="text-[10px] font-mono text-white/45">
+              Email: <code className="text-white/80">admin@changkeer.id</code> · Sandi: <code className="text-white/80">admin123</code>
+            </span>
           </div>
         </div>
 
         {/* Bottom Security Info */}
-        <div className="pt-6 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-[10px] font-mono text-white/40 uppercase tracking-wider">
+        <div className="pt-4 border-t border-white/10 flex items-center justify-between text-[10px] font-mono text-white/40 uppercase tracking-wider shrink-0">
           <div className="flex items-center gap-1.5">
             <ShieldCheck className="w-3.5 h-3.5 text-purple-400 shrink-0" />
-            <span>Supabase Auth · 256-Bit TLS Encryption</span>
+            <span>Supabase Auth · Terenkripsi</span>
           </div>
-          <span>Akses Terbatas Administrator</span>
+          <span>Akses Terbatas</span>
         </div>
       </div>
     </div>
@@ -333,7 +267,7 @@ export default function AdminLoginPage() {
     <Suspense
       fallback={
         <div className="min-h-screen bg-[#08090C] text-white flex items-center justify-center font-mono text-xs">
-          MEMUAT PORTAL ADMINISTRATOR...
+          MEMUAT...
         </div>
       }
     >
