@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Container } from '@/components/ui/Container';
 import { ArrowUpRight } from 'lucide-react';
@@ -22,10 +23,15 @@ export function Footer() {
           <div className="lg:col-span-5 flex flex-col justify-between pr-0 lg:pr-8">
             <div>
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-9 h-9 rounded-sm bg-primary-foreground text-primary flex items-center justify-center font-black tracking-tighter text-sm">
-                  CK
+                <div className="relative w-9 h-9 rounded-full overflow-hidden border border-white/20 shadow-xs shrink-0">
+                  <Image
+                    src="/images/logo_changkeer.jpg"
+                    alt="CHANGKEER"
+                    fill
+                    className="rounded-full object-cover"
+                  />
                 </div>
-                <span className="font-black text-2xl tracking-[0.25em] uppercase text-primary-foreground">
+                <span className="font-extrabold text-xl tracking-[0.2em] uppercase text-primary-foreground">
                   CHANGKEER
                 </span>
               </div>

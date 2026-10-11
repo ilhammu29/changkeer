@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { adminLoginSchema, getFirstErrorMessage } from '@/lib/validation/schemas';
 import { Lock, Mail, ShieldCheck, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
@@ -51,11 +52,16 @@ export default function AdminLoginPage() {
     <div className="min-h-screen bg-background flex flex-col justify-center items-center p-6">
       <div className="w-full max-w-md space-y-8 bg-surface p-8 sm:p-10 rounded-xl border border-border shadow-xl">
         {/* Brand header */}
-        <div className="text-center space-y-2">
-          <div className="w-12 h-12 rounded-sm bg-primary text-primary-foreground flex items-center justify-center font-black tracking-tighter text-lg mx-auto">
-            CK
+        <div className="text-center space-y-3">
+          <div className="relative w-14 h-14 rounded-full overflow-hidden border border-border shadow-md mx-auto">
+            <Image
+              src="/images/logo_changkeer.jpg"
+              alt="CHANGKEER"
+              fill
+              className="rounded-full object-cover"
+            />
           </div>
-          <h2 className="text-2xl font-black uppercase tracking-tight text-foreground">
+          <h2 className="text-xl font-extrabold uppercase tracking-widest text-foreground">
             CHANGKEER CMS
           </h2>
           <p className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import {
   LayoutDashboard,
@@ -99,14 +100,19 @@ export default function AdminLayout({
           {/* Header */}
           <div className="h-16 border-b border-border flex items-center justify-between px-6">
             <Link href="/admin" className="flex items-center gap-2.5">
-              <div className="w-7 h-7 rounded-sm bg-primary text-primary-foreground flex items-center justify-center font-black text-xs">
-                CK
+              <div className="relative w-7 h-7 rounded-full overflow-hidden border border-border shadow-xs shrink-0">
+                <Image
+                  src="/images/logo_changkeer.jpg"
+                  alt="CHANGKEER"
+                  fill
+                  className="rounded-full object-cover"
+                />
               </div>
               <div>
-                <span className="font-black text-sm tracking-widest uppercase text-foreground">
+                <span className="font-bold text-xs tracking-widest uppercase text-foreground">
                   CHANGKEER
                 </span>
-                <span className="block text-[9px] font-bold tracking-widest text-accent uppercase">
+                <span className="block text-[8px] font-bold tracking-widest text-accent uppercase">
                   CMS PORTAL
                 </span>
               </div>
