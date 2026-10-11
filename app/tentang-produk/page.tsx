@@ -11,9 +11,9 @@ import { getPublishedProducts } from '@/lib/data/products';
 import { ArrowUpRight } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Tentang Produk',
+  title: 'About Product',
   description:
-    'Standar racikan teh herbal fungsional CHANGKEER. Pelajari 3 varian utama, kemurnian bahan baku tanpa daun senna, kemasan bebas mikroplastik, dan ritual seduh kurang dari 3 menit.',
+    'Changkeer functional loose-leaf herbal teas. 100% microplastic-free packaging, zero-senna gut safety, and fast-brew rituals in under three minutes.',
 };
 
 export default async function TentangProdukPage() {
@@ -37,17 +37,17 @@ export default async function TentangProdukPage() {
             <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 sm:mb-16 gap-6">
               <div className="space-y-2">
                 <span className="text-[11px] font-mono font-bold tracking-[0.25em] uppercase text-accent block">
-                  SELURUH KOLEKSI
+                  COLLECTION OVERVIEW
                 </span>
                 <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-foreground">
-                  Katalog Teh Herbal CHANGKEER
+                  Changkeer Signature Herbal Blends
                 </h2>
               </div>
               <Link
                 href="/katalog"
                 className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-foreground hover:text-primary transition-colors border-b border-foreground pb-0.5 self-start sm:self-auto"
               >
-                <span>Buka Katalog Lengkap</span>
+                <span>Open Blends &amp; Prices</span>
                 <ArrowUpRight className="w-3.5 h-3.5" />
               </Link>
             </div>
@@ -94,7 +94,7 @@ export default async function TentangProdukPage() {
                       {/* Minimalist Card Text at Bottom */}
                       <div className="absolute bottom-0 inset-x-0 p-5 flex flex-col justify-end space-y-1 text-white">
                         <span className="text-[10px] font-mono tracking-[0.22em] uppercase text-white/70 block">
-                          {product.category?.name || 'RACIKAN BOTANI'}
+                          {product.category?.name || 'HERBAL BLEND'}
                         </span>
 
                         <h3 className="font-extrabold text-sm sm:text-base uppercase tracking-wide text-white group-hover:text-amber-200 transition-colors line-clamp-1 leading-snug">
@@ -106,7 +106,7 @@ export default async function TentangProdukPage() {
                             {formattedPrice}
                           </span>
                           <span className="text-[10px] font-mono uppercase tracking-wider text-white/60 group-hover:text-white transition-colors">
-                            Lihat Detail &rarr;
+                            View Details &rarr;
                           </span>
                         </div>
                       </div>

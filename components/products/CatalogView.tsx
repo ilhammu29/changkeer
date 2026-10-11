@@ -48,7 +48,7 @@ export function CatalogView({ products, categories }: CatalogViewProps) {
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Cari racikan herbal, bahan (melati, serai, mint, teh hitam)..."
+            placeholder="Search herbal blends, ingredients (jasmine, mint, ginger, flowers)..."
             className="w-full pl-10 pr-4 py-2.5 text-xs bg-white border border-border rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary transition-colors"
           />
         </div>
@@ -61,9 +61,9 @@ export function CatalogView({ products, categories }: CatalogViewProps) {
             onChange={(e) => setSortOrder(e.target.value as any)}
             className="text-xs font-mono uppercase bg-white border border-border rounded-xl px-3.5 py-2.5 text-foreground focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer"
           >
-            <option value="featured">Urutan: Kurasi Unggulan</option>
-            <option value="price-asc">Harga: Terendah</option>
-            <option value="price-desc">Harga: Tertinggi</option>
+            <option value="featured">Sort: Featured Curation</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
           </select>
         </div>
       </div>
@@ -79,7 +79,7 @@ export function CatalogView({ products, categories }: CatalogViewProps) {
               : 'bg-white border border-border text-foreground hover:bg-neutral-50 shadow-xs card-boundary'
           }`}
         >
-          SEMUA VARIAN ({products.length})
+          ALL BLENDS ({products.length})
         </button>
 
         {categories
@@ -108,7 +108,7 @@ export function CatalogView({ products, categories }: CatalogViewProps) {
 
       {/* Product Results Count */}
       <div className="text-xs font-mono text-muted-foreground">
-        Menampilkan {filteredProducts.length} dari {products.length} racikan herbal tersedia
+        Showing {filteredProducts.length} of {products.length} signature herbal blends
       </div>
 
       {/* Product Grid */}
@@ -126,10 +126,10 @@ export function CatalogView({ products, categories }: CatalogViewProps) {
           </div>
           <div className="space-y-1">
             <h4 className="font-bold text-base uppercase text-foreground">
-              Tidak Ada Racikan yang Sesuai
+              No Blends Found
             </h4>
             <p className="text-xs text-muted-foreground max-w-sm mx-auto">
-              Tidak ditemukan produk untuk kata kunci &quot;{searchQuery}&quot;. Coba gunakan kata kunci umum seperti &quot;melati&quot;, &quot;mint&quot;, atau reset filter kategori.
+              No products match &quot;{searchQuery}&quot;. Try generic keywords such as &quot;jasmine&quot;, &quot;mint&quot;, or reset your filters.
             </p>
           </div>
           <button
@@ -140,7 +140,7 @@ export function CatalogView({ products, categories }: CatalogViewProps) {
             }}
             className="inline-flex text-xs font-mono font-bold uppercase tracking-wider bg-primary text-primary-foreground px-5 py-2.5 rounded-full hover:bg-primary-hover transition-colors cursor-pointer shadow-sm"
           >
-            RESET PENCARIAN
+            RESET SEARCH
           </button>
         </div>
       )}

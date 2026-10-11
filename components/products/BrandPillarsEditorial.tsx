@@ -8,35 +8,35 @@ import { ShieldCheck, HeartPulse, Sparkles, Zap } from 'lucide-react';
 const PILLARS = [
   {
     num: '01',
-    tag: 'ZERO PLASTIK',
-    title: '100% Bebas Mikroplastik',
+    tag: 'ZERO PLASTICS',
+    title: '100% Microplastic-Free',
     icon: ShieldCheck,
     description:
-      'Kantong teh konvensional melepaskan miliaran partikel mikroplastik berbahaya ke dalam air panas saat diseduh. CHANGKEER menolak material sintetis dan menggunakan kemasan serat alami ramah lingkungan yang aman diseduh tanpa residu polimer beracun.',
+      'Conventional tea bags leach billions of synthetic plastic particles into hot water. Changkeer strictly uses plastic-free paper or muslin sachets, safeguarding your daily steep from polymer residues.',
   },
   {
     num: '02',
-    tag: 'GUT SAFE',
-    title: 'Bebas Daun Senna (Aman Harian)',
+    tag: 'GUT INTEGRITY',
+    title: 'Zero Senna & No "Detox" Gimmicks',
     icon: HeartPulse,
     description:
-      'Banyak produk teh "detox" mengandalkan daun senna (daun jati cina) yang bersifat laksatif keras dan memicu iritasi dinding usus. Kami menolak keras bahan tersebut agar racikan aman dikonsumsi harian tanpa merusak keseimbangan flora pencernaan.',
+      'We reject senna and harsh laxatives. Every blend is made without deceptive detox claims, keeping your digestion balanced and naturally nurtured for daily habitual enjoyment.',
   },
   {
     num: '03',
-    tag: 'RENDAH GLIKEMIK',
-    title: 'Gula Sorgum Organik & Madu Hutan Murni',
+    tag: 'NATURAL ROOTS',
+    title: 'Unsweetened by Default & Pure Add-ons',
     icon: Sparkles,
     description:
-      'Mengeliminasi gula tebu rafinasi yang memicu lonjakan insulin. Kami memadukan gula sorgum bernutrisi rendah glikemik serta madu hutan murni nusantara untuk kelembutan rasa seimbang yang ramah bagi metabolisme tubuh.',
+      'Every cup is unsweetened by default. Sweeten consciously with low-glycemic organic sorghum sugar, palm sugar syrup, stevia leaf, or raw Indonesian forest honey—never refined white sugar.',
   },
   {
     num: '04',
     tag: 'GRAB & GO',
-    title: 'Ekstraksi Cepat Kurang Dari 3 Menit',
+    title: 'Brewed & Ready in Under Three Minutes',
     icon: Zap,
     description:
-      'Dirancang untuk ritme hidup aktif modern. Daun teh utuh dan kelopak botani segar terekstraksi optimal hanya dalam waktu kurang dari 3 menit, menghadirkan seduhan harum bernutrisi tanpa proses ritual yang memakan waktu.',
+      'Crafted for active modern lives. Whole botanical leaves and fresh petals infuse completely in under three minutes, delivering rich, calming flavor without prolonged waiting.',
   },
 ];
 
@@ -50,15 +50,14 @@ export function BrandPillarsEditorial() {
         {/* Section Heading */}
         <Reveal>
           <div className="max-w-2xl mx-auto text-center space-y-3 mb-16 sm:mb-24">
-            <span className="text-[11px] font-mono font-bold tracking-[0.25em] uppercase text-accent block">
-              KOMITMEN INTEGRITAS KAMI
+            <span className="text-[11px] font-mono font-bold tracking-[0.25em] uppercase text-primary block">
+              OUR INTEGRITY COMMITMENT
             </span>
             <h2 className="text-2xl sm:text-4xl font-serif font-bold uppercase tracking-tight text-foreground">
-              Standar Kualitas Tanpa Kompromi
+              Uncompromising Quality Standards
             </h2>
             <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-xl mx-auto">
-              Lahir dari evaluasi kritis terhadap industri teh konvensional yang kerap
-              mengabaikan kesehatan jangka panjang demi efisiensi produksi massal.
+              Rooted in our belief that a healthier daily drink must also be an honest one, with full ingredient disclosure on every cup.
             </p>
           </div>
         </Reveal>

@@ -25,7 +25,7 @@ export async function generateMetadata({
   const product = await getProductBySlug(slug);
 
   if (!product || product.status !== 'published') {
-    return { title: 'Produk Tidak Ditemukan' };
+    return { title: 'Product Not Found' };
   }
 
   return {
@@ -72,10 +72,10 @@ export default async function ProductDetailPage({
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 sm:mb-10">
               <div className="space-y-1">
                 <span className="text-[11px] font-mono font-bold tracking-[0.25em] uppercase text-primary block">
-                  EKSPLORASI BOTANI LAINNYA
+                  BOTANICAL EXPLORATION
                 </span>
                 <h2 className="text-2xl sm:text-3xl font-sans font-extrabold uppercase tracking-tight text-foreground">
-                  Racikan Sejenis
+                  Related Herbal Blends
                 </h2>
               </div>
 
@@ -83,7 +83,7 @@ export default async function ProductDetailPage({
                 href="/katalog"
                 className="text-xs font-mono font-bold tracking-wider uppercase text-foreground hover:text-primary transition-colors self-start sm:self-auto border-b border-foreground pb-0.5"
               >
-                LIHAT SEMUA KATALOG &rarr;
+                VIEW ALL BLENDS &amp; PRICES &rarr;
               </Link>
             </div>
 

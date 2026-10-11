@@ -24,7 +24,7 @@ export async function generateMetadata({
   const article = await getArticleBySlug(slug);
 
   if (!article || article.status !== 'published') {
-    return { title: 'Artikel Tidak Ditemukan' };
+    return { title: 'Article Not Found' };
   }
 
   return {
@@ -124,12 +124,12 @@ export default async function ArticleDetailPage({
     .slice(0, 2);
 
   const formattedDate = article.published_at
-    ? new Date(article.published_at).toLocaleDateString('id-ID', {
+    ? new Date(article.published_at).toLocaleDateString('en-US', {
         day: 'numeric',
         month: 'long',
         year: 'numeric',
       })
-    : new Date(article.created_at).toLocaleDateString('id-ID', {
+    : new Date(article.created_at).toLocaleDateString('en-US', {
         day: 'numeric',
         month: 'long',
         year: 'numeric',
@@ -166,14 +166,14 @@ export default async function ArticleDetailPage({
                 className="inline-flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-white/70 hover:text-white transition-colors group"
               >
                 <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1" />
-                <span>KEMBALI KE MEDIA &amp; BERITA</span>
+                <span>BACK TO NEWS</span>
               </Link>
             </div>
 
             {/* Category Tag */}
             <div className="flex items-center gap-2.5 pt-2">
               <span className="text-[11px] font-mono font-bold tracking-[0.25em] uppercase text-purple-300 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20">
-                {article.category?.name || 'EDUKASI BOTANI'}
+                {article.category?.name || 'BOTANICAL JOURNAL'}
               </span>
               <span className="text-xs text-white/50 font-mono">•</span>
               <span className="text-[11px] font-mono uppercase tracking-wider text-white/70">
@@ -204,7 +204,7 @@ export default async function ArticleDetailPage({
                     {article.author_name}
                   </span>
                   <span className="text-[10px] font-mono text-white/60 uppercase tracking-wider">
-                    Kurator Botani &amp; Tim Riset
+                    Botanical Research &amp; Editorial Team
                   </span>
                 </div>
               </div>
@@ -217,7 +217,7 @@ export default async function ArticleDetailPage({
                 <span>•</span>
                 <span className="flex items-center gap-1.5">
                   <Clock className="w-3.5 h-3.5 text-purple-300" />
-                  <span>{article.read_time_minutes} MIN BACA</span>
+                  <span>{article.read_time_minutes} MIN READ</span>
                 </span>
               </div>
             </div>
@@ -285,11 +285,11 @@ export default async function ArticleDetailPage({
               </h4>
               <span className="inline-flex items-center gap-1 text-[10px] font-mono uppercase tracking-wider text-primary font-semibold px-2 py-0.5 rounded-full bg-primary/10">
                 <CheckCircle2 className="w-3 h-3" />
-                Penulis Terverifikasi
+                Verified Contributor
               </span>
             </div>
             <p className="text-xs text-muted-foreground leading-relaxed">
-              Mendedikasikan diri pada eksplorasi botani nusantara, standar seduh higienis bebas mikroplastik, serta penyebarluasan kebiasaan minum teh yang menyehatkan tubuh dan menenangkan pikiran.
+              Dedicated to Indonesian loose-leaf botanical exploration, microplastic-free brewing standards, and honest hydration rituals.
             </p>
           </div>
         </div>
@@ -299,10 +299,10 @@ export default async function ArticleDetailPage({
           <div className="pt-20 mt-16 border-t border-border/80">
             <div className="mb-10 text-center sm:text-left">
               <span className="text-[11px] font-mono font-bold tracking-[0.25em] uppercase text-muted-foreground block mb-1">
-                BACAAN LAINNYA
+                FURTHER READING
               </span>
               <h2 className="text-2xl sm:text-3xl font-sans font-extrabold uppercase tracking-tight text-foreground">
-                ARTIKEL TERKAIT
+                Related Articles
               </h2>
             </div>
 

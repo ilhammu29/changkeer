@@ -7,9 +7,9 @@ import { getSiteSettings } from '@/lib/data/settings';
 import { Mail, Phone, MapPin, Clock, Sparkles } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Hubungi Kami',
+  title: 'Contact Us',
   description:
-    'Hubungi tim CHANGKEER untuk pertanyaan seputar produk, kemitraan kafe & reseller, atau informasi lainnya.',
+    'Get in touch with the Changkeer concierge for inquiries, seasonal blends, and wholesale opportunities.',
 };
 
 export default async function HubungiKamiPage() {
@@ -21,7 +21,7 @@ export default async function HubungiKamiPage() {
       <section className="relative w-full py-16 sm:py-24 md:py-28 bg-neutral-950 overflow-hidden border-b border-border mb-12 sm:mb-16">
         <Image
           src="/images/assets/english_breakfast_tea_produk.jpg"
-          alt="Hubungi Kami CHANGKEER"
+          alt="Contact Changkeer Concierge"
           fill
           priority
           sizes="100vw"
@@ -32,13 +32,13 @@ export default async function HubungiKamiPage() {
         <Container size="wide" className="relative z-10">
           <div className="max-w-2xl space-y-3.5">
             <span className="text-[11px] font-mono font-bold tracking-[0.25em] uppercase text-purple-300 block">
-              PUSAT KOMUNIKASI
+              CONCIERGE &amp; ATELIER
             </span>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-sans font-black uppercase tracking-tight text-white leading-tight">
-              HUBUNGI KAMI
+              Contact Us
             </h1>
             <p className="text-sm sm:text-base text-white/85 leading-relaxed font-normal">
-              Kami menyambut setiap pertanyaan, konsultasi racikan, dan peluang kemitraan dengan tangan terbuka.
+              We welcome every inquiry, custom blend consultation, and partnership idea with care.
             </p>
           </div>
         </Container>
@@ -51,13 +51,13 @@ export default async function HubungiKamiPage() {
             <div className="bg-white border border-border/80 rounded-3xl p-7 sm:p-9 space-y-6 shadow-md card-boundary">
               <div className="space-y-2 border-b border-border/70 pb-5">
                 <span className="text-[10px] font-mono tracking-widest uppercase text-primary font-bold block">
-                  ATELIER BOTANI CHANGKEER
+                  CHANGKEER BOTANICAL ATELIER
                 </span>
                 <h3 className="text-xl sm:text-2xl font-sans font-extrabold uppercase tracking-tight text-foreground">
-                  Koordinat Resmi
+                  Official Coordinates
                 </h3>
                 <p className="text-xs text-muted-foreground leading-relaxed pt-1">
-                  Studio racikan kami berpusat di dataran tinggi Bandung, didedikasikan untuk menghadirkan kebaikan botani murni langsung ke meja Anda.
+                  Our grab-and-go brew bar and botanical studio is based in Jakarta, serving honest loose-leaf infusions ready in under three minutes.
                 </p>
               </div>
 
@@ -67,7 +67,7 @@ export default async function HubungiKamiPage() {
                 <div className="space-y-1">
                   <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground font-semibold flex items-center gap-1.5">
                     <Mail className="w-3.5 h-3.5 text-primary" />
-                    <span>EMAIL KORESPONDENSI</span>
+                    <span>OFFICIAL CORRESPONDENCE</span>
                   </span>
                   <a
                     href={`mailto:${settings.contact_email || 'halo@changkeer.com'}`}
@@ -81,7 +81,7 @@ export default async function HubungiKamiPage() {
                 <div className="space-y-1">
                   <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground font-semibold flex items-center gap-1.5">
                     <Phone className="w-3.5 h-3.5 text-primary" />
-                    <span>CONCIERGE WHATSAPP &amp; TELEPON</span>
+                    <span>WHATSAPP &amp; PHONE CONCIERGE</span>
                   </span>
                   <div className="pl-5 flex items-center gap-2">
                     <a
@@ -93,7 +93,7 @@ export default async function HubungiKamiPage() {
                       {settings.contact_phone || '+62 812-3456-7890'}
                     </a>
                     <span className="inline-flex items-center gap-1 text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-bold border border-emerald-200">
-                      Aktif
+                      Active
                     </span>
                   </div>
                 </div>
@@ -102,11 +102,11 @@ export default async function HubungiKamiPage() {
                 <div className="space-y-1">
                   <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground font-semibold flex items-center gap-1.5">
                     <MapPin className="w-3.5 h-3.5 text-primary" />
-                    <span>ALAMAT STUDIO RACIKAN</span>
+                    <span>BREW BAR &amp; STUDIO LOCATION</span>
                   </span>
                   <p className="font-normal text-muted-foreground text-xs leading-relaxed pl-5">
                     {settings.contact_address ||
-                      'Jl. Harmoni Alam No. 8, Bandung, Jawa Barat, Indonesia'}
+                      'Jakarta, Indonesia · Real loose-leaf herbal tea grab-and-go'}
                   </p>
                 </div>
 
@@ -114,10 +114,10 @@ export default async function HubungiKamiPage() {
                 <div className="space-y-1">
                   <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground font-semibold flex items-center gap-1.5">
                     <Clock className="w-3.5 h-3.5 text-primary" />
-                    <span>JAM LAYANAN SEDUH &amp; KONSULTASI</span>
+                    <span>SERVICE HOURS &amp; INQUIRIES</span>
                   </span>
                   <p className="font-normal text-muted-foreground text-xs leading-relaxed pl-5">
-                    Senin – Sabtu: 09:00 – 17:00 WIB (Minggu &amp; Hari Libur Nasional Tutup)
+                    Monday – Saturday: 09:00 – 17:00 WIB (Closed on Sundays &amp; Public Holidays)
                   </p>
                 </div>
               </div>
@@ -128,11 +128,11 @@ export default async function HubungiKamiPage() {
               <div className="flex items-center gap-2 text-primary">
                 <Sparkles className="w-4 h-4" />
                 <span className="text-xs font-mono font-bold uppercase tracking-wider">
-                  FILOSOFI PELAYANAN
+                  SERVICE PHILOSOPHY
                 </span>
               </div>
               <p className="text-xs text-muted-foreground leading-relaxed">
-                Setiap pesan Anda dibaca langsung oleh tim peracik botani CHANGKEER. Kami memastikan setiap konsultasi formula dan pertanyaan kemitraan dijawab dengan dedikasi penuh dan kejujuran rasa.
+                Every message is received directly by the Changkeer team. We ensure every consultation and partnership inquiry is addressed with full botanical care.
               </p>
             </div>
           </div>

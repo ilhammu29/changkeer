@@ -8,17 +8,17 @@ import { Menu, X, ArrowUpRight } from 'lucide-react';
 import { Container } from '@/components/ui/Container';
 
 const NAV_LINKS = [
-  { name: 'BERANDA', href: '/' },
-  { name: 'TENTANG PRODUK', href: '/tentang-produk' },
-  { name: 'KATALOG', href: '/katalog' },
-  { name: 'TENTANG KAMI', href: '/tentang-kami' },
-  { name: 'MEDIA & BERITA', href: '/media-berita' },
-  { name: 'HUBUNGI KAMI', href: '/hubungi-kami' },
+  { name: 'HOME', href: '/' },
+  { name: 'ABOUT PRODUCT', href: '/tentang-produk' },
+  { name: 'BLENDS & PRICES', href: '/katalog' },
+  { name: 'ABOUT CHANGKEER', href: '/tentang-kami' },
+  { name: 'NEWS', href: '/media-berita' },
+  { name: 'CONTACT US', href: '/hubungi-kami' },
 ];
 
 export function Navbar() {
   const pathname = usePathname();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -39,14 +39,14 @@ export function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close mobile drawer on route change
+  // Close sidebar on route change
   useEffect(() => {
-    setMobileMenuOpen(false);
+    setSidebarOpen(false);
   }, [pathname]);
 
-  // Prevent body scroll when mobile drawer is open
+  // Prevent body scroll when sidebar drawer is open
   useEffect(() => {
-    if (mobileMenuOpen) {
+    if (sidebarOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
@@ -54,7 +54,7 @@ export function Navbar() {
     return () => {
       document.body.style.overflow = '';
     };
-  }, [mobileMenuOpen]);
+  }, [sidebarOpen]);
 
   // Detect if current page uses dark cinematic atmosphere (Home & Tentang Produk)
   const isDarkPage = pathname === '/' || pathname === '/tentang-produk';
@@ -74,27 +74,27 @@ export function Navbar() {
     <header
       className={`${
         isDarkPage ? 'fixed top-0 inset-x-0' : 'sticky top-0'
-      } z-40 w-full transition-all duration-300 ease-out ${
+      } z-40 w-full transition-all duration-300 ease-out font-sans ${
         isDarkPage
           ? isScrolled
             ? 'bg-[#111216]/90 backdrop-blur-md border-b border-white/10 shadow-xl text-white'
             : 'bg-transparent border-b border-transparent text-white'
           : isScrolled
-          ? 'bg-background/95 backdrop-blur-md border-b border-border shadow-xs text-foreground'
-          : 'bg-background/80 backdrop-blur-xs border-b border-transparent text-foreground'
+          ? 'bg-white/95 backdrop-blur-md border-b border-border shadow-xs text-foreground'
+          : 'bg-white/90 backdrop-blur-xs border-b border-transparent text-foreground'
       }`}
     >
       <Container size="wide">
         <div className="flex items-center justify-between h-20">
-          {/* Official CHANGKEER Circular Logo & Brand */}
-          <Link href="/" className="group flex items-center gap-2.5">
-            <div className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-full overflow-hidden border border-white/20 shadow-xs shrink-0 group-hover:scale-105 transition-transform duration-300">
+          {/* Official CHANGKEER Logo & Brand */}
+          <Link href="/" className="group flex items-center gap-3">
+            <div className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-full overflow-hidden border border-white/20 shadow-xs shrink-0 bg-white group-hover:scale-105 transition-transform duration-300">
               <Image
-                src="/images/logo_changkeer.jpg"
-                alt="Logo CHANGKEER"
+                src="/images/logo_new.png"
+                alt="CHANGKEER Logo"
                 fill
                 priority
-                className="rounded-full object-cover"
+                className="object-contain p-0.5"
               />
             </div>
             <div className="flex flex-col">
@@ -116,7 +116,7 @@ export function Navbar() {
           </Link>
 
           {/* Minimalist Horizontal Navigation (Desktop) */}
-          <nav className="hidden lg:flex items-center space-x-7">
+          <nav className="hidden xl:flex items-center space-x-7">
             {NAV_LINKS.map((link) => {
               const active = isActive(link.href);
               return (
@@ -146,66 +146,69 @@ export function Navbar() {
             })}
           </nav>
 
-          {/* Right Action / CTA Button */}
-          <div className="hidden sm:flex items-center gap-4">
+          {/* Right Action: CTA & Sidebar Toggle */}
+          <div className="flex items-center gap-3">
             <Link
               href="/katalog"
-              className={`text-[11px] font-bold tracking-[0.16em] uppercase px-4 py-2 rounded-full transition-all flex items-center gap-1.5 shadow-xs active:scale-95 ${
+              className={`hidden sm:inline-flex text-[11px] font-bold tracking-[0.16em] uppercase px-4 py-2 rounded-full transition-all items-center gap-1.5 shadow-xs active:scale-95 ${
                 isDarkPage
                   ? 'bg-white text-black hover:bg-neutral-200'
                   : 'bg-primary text-primary-foreground hover:bg-primary-hover'
               }`}
             >
-              <span>TEMUKAN TEH</span>
+              <span>EXPLORE BLENDS</span>
               <ArrowUpRight className="w-3 h-3" />
             </Link>
-          </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            type="button"
-            className={`lg:hidden p-2 rounded-full transition-colors ${
-              isDarkPage
-                ? 'text-white hover:bg-white/10'
-                : 'text-foreground hover:bg-surface-hover'
-            }`}
-            onClick={() => setMobileMenuOpen(true)}
-            aria-label="Buka menu navigasi"
-          >
-            <Menu className="w-5 h-5" />
-          </button>
+            {/* Sidebar Toggle Button (Opens Menu in Sidebar on All Devices) */}
+            <button
+              type="button"
+              className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-full border transition-all cursor-pointer ${
+                isDarkPage
+                  ? 'border-white/20 text-white hover:bg-white/10 active:scale-95'
+                  : 'border-border/80 text-foreground hover:bg-neutral-100 active:scale-95'
+              }`}
+              onClick={() => setSidebarOpen(true)}
+              aria-label="Open Sidebar Menu"
+            >
+              <Menu className="w-4 h-4" />
+              <span className="text-[10px] font-mono font-bold tracking-widest uppercase">
+                MENU
+              </span>
+            </button>
+          </div>
         </div>
       </Container>
 
       {/* Slide-over Sidebar Drawer & Backdrop */}
-      {mobileMenuOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden">
+      {sidebarOpen && (
+        <div className="fixed inset-0 z-50">
           {/* Backdrop */}
           <div
-            className="fixed inset-0 bg-black/70 backdrop-blur-xs transition-opacity duration-300"
-            onClick={() => setMobileMenuOpen(false)}
+            className="fixed inset-0 bg-black/75 backdrop-blur-sm transition-opacity duration-300 animate-in fade-in"
+            onClick={() => setSidebarOpen(false)}
             aria-hidden="true"
           />
 
-          {/* Offcanvas Drawer */}
+          {/* Offcanvas Sidebar Drawer */}
           <aside
-            className="fixed top-0 right-0 bottom-0 w-72 sm:w-80 max-w-[85vw] bg-[#111019] text-white p-6 shadow-2xl flex flex-col justify-between border-l border-white/10 animate-in slide-in-from-right duration-300 z-50"
-            aria-label="Sidebar Navigasi"
+            className="fixed top-0 right-0 bottom-0 w-80 sm:w-96 max-w-[88vw] bg-[#111019] text-white p-7 sm:p-8 shadow-2xl flex flex-col justify-between border-l border-white/10 animate-in slide-in-from-right duration-300 z-50 font-sans"
+            aria-label="Sidebar Navigation Menu"
           >
             <div>
               {/* Sidebar Header with Circular Logo and Close Button */}
-              <div className="flex items-center justify-between pb-5 border-b border-white/10">
+              <div className="flex items-center justify-between pb-6 border-b border-white/10">
                 <Link
                   href="/"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center gap-2.5"
+                  onClick={() => setSidebarOpen(false)}
+                  className="flex items-center gap-3"
                 >
-                  <div className="relative w-7 h-7 rounded-full overflow-hidden border border-white/20 shadow-xs shrink-0">
+                  <div className="relative w-8 h-8 rounded-full overflow-hidden border border-white/20 shadow-xs shrink-0 bg-white">
                     <Image
-                      src="/images/logo_changkeer.jpg"
+                      src="/images/logo_new.png"
                       alt="CHANGKEER"
                       fill
-                      className="rounded-full object-cover"
+                      className="object-contain p-0.5"
                     />
                   </div>
                   <div className="flex flex-col">
@@ -213,39 +216,51 @@ export function Navbar() {
                       CHANGKEER
                     </span>
                     <span className="text-[8px] tracking-[0.2em] uppercase text-white/60">
-                      HERBAL CRAFT
+                      HERBAL CRAFT &bull; JAKARTA
                     </span>
                   </div>
                 </Link>
 
                 <button
                   type="button"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="p-1.5 rounded-full hover:bg-white/10 text-white/70 hover:text-white transition-colors cursor-pointer"
-                  aria-label="Tutup menu navigasi"
+                  onClick={() => setSidebarOpen(false)}
+                  className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors cursor-pointer"
+                  aria-label="Close menu"
                 >
-                  <X className="w-5 h-5" />
+                  <X className="w-4 h-4" />
                 </button>
               </div>
 
-              {/* Sidebar Navigation Links with Compact & Refined Typography */}
-              <nav className="mt-5 flex flex-col space-y-1">
-                {NAV_LINKS.map((link) => {
+              {/* Brand Micro Narrative */}
+              <div className="pt-4 pb-2 text-[11px] text-white/60 leading-relaxed font-sans">
+                Real loose-leaf blends following the 24 solar terms. Freshly brewed &amp; ready in under 3 minutes.
+              </div>
+
+              {/* Sidebar Navigation Links */}
+              <nav className="mt-4 flex flex-col space-y-1.5">
+                {NAV_LINKS.map((link, idx) => {
                   const active = isActive(link.href);
                   return (
                     <Link
                       key={link.href}
                       href={link.href}
-                      onClick={() => setMobileMenuOpen(false)}
-                      className={`text-xs font-medium tracking-[0.18em] uppercase py-2.5 px-2 rounded-sm flex items-center justify-between transition-colors border-b border-white/5 ${
+                      onClick={() => setSidebarOpen(false)}
+                      className={`text-xs font-bold tracking-[0.18em] uppercase py-3 px-3.5 rounded-xl flex items-center justify-between transition-all group ${
                         active
-                          ? 'text-white font-bold bg-white/5'
+                          ? 'text-white bg-white/10 shadow-xs'
                           : 'text-white/70 hover:text-white hover:bg-white/5'
                       }`}
                     >
-                      <span>{link.name}</span>
-                      {active && (
-                        <span className="w-1.5 h-1.5 rounded-full bg-white shrink-0" />
+                      <span className="flex items-center gap-2.5">
+                        <span className="text-[10px] font-mono text-white/40 group-hover:text-primary transition-colors">
+                          0{idx + 1}
+                        </span>
+                        <span>{link.name}</span>
+                      </span>
+                      {active ? (
+                        <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+                      ) : (
+                        <ArrowUpRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-60 transition-opacity" />
                       )}
                     </Link>
                   );
@@ -253,15 +268,18 @@ export function Navbar() {
               </nav>
             </div>
 
-            {/* Sidebar Bottom Action */}
-            <div className="pt-4">
+            {/* Sidebar Bottom Action & Info */}
+            <div className="pt-6 border-t border-white/10 space-y-3">
               <Link
                 href="/katalog"
-                onClick={() => setMobileMenuOpen(false)}
-                className="w-full text-center block text-[11px] font-bold tracking-[0.18em] uppercase py-2.5 rounded-full bg-white text-black hover:bg-neutral-200 transition-colors shadow-sm"
+                onClick={() => setSidebarOpen(false)}
+                className="w-full text-center block text-[11px] font-bold tracking-[0.18em] uppercase py-3 rounded-xl bg-white text-black hover:bg-neutral-200 transition-colors shadow-sm"
               >
-                TEMUKAN TEH
+                EXPLORE BLENDS &amp; PRICES
               </Link>
+              <div className="text-[10px] font-mono text-white/50 text-center uppercase tracking-wider">
+                Unsweetened by default &bull; Plastic-free
+              </div>
             </div>
           </aside>
         </div>

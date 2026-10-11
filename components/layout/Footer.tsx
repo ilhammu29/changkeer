@@ -21,12 +21,12 @@ export function Footer() {
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 pb-8 border-b border-neutral-800/80">
           {/* Brand Info */}
           <div className="flex items-center gap-3">
-            <div className="relative w-8 h-8 rounded-full overflow-hidden border border-white/20 shrink-0">
+            <div className="relative w-8 h-8 rounded-full overflow-hidden border border-white/20 shrink-0 bg-white">
               <Image
-                src="/images/logo_changkeer.jpg"
+                src="/images/logo_new.png"
                 alt="CHANGKEER"
                 fill
-                className="rounded-full object-cover"
+                className="object-contain p-0.5"
               />
             </div>
             <div>
@@ -42,22 +42,22 @@ export function Footer() {
           {/* Clean Navigation Links */}
           <nav className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs font-semibold tracking-wider uppercase text-neutral-300">
             <Link href="/" className="hover:text-white transition-colors">
-              Beranda
+              Home
             </Link>
             <Link href="/tentang-produk" className="hover:text-white transition-colors">
-              Tentang Produk
+              About Product
             </Link>
             <Link href="/katalog" className="hover:text-white transition-colors">
-              Katalog
+              Blends &amp; Prices
             </Link>
             <Link href="/tentang-kami" className="hover:text-white transition-colors">
-              Tentang Kami
+              About Changkeer
             </Link>
             <Link href="/media-berita" className="hover:text-white transition-colors">
-              Media &amp; Berita
+              News
             </Link>
             <Link href="/hubungi-kami" className="hover:text-white transition-colors">
-              Hubungi Kami
+              Contact Us
             </Link>
           </nav>
 
@@ -85,13 +85,13 @@ export function Footer() {
 
         {/* Minimal Bottom Bar */}
         <div className="pt-6 flex flex-col sm:flex-row items-center justify-between text-[11px] text-neutral-500 gap-3">
-          <p>© {new Date().getFullYear()} CHANGKEER Botanical Craft. Hak Cipta Dilindungi.</p>
+          <p>© {new Date().getFullYear()} CHANGKEER Botanical Craft. All Rights Reserved.</p>
           <div className="flex items-center gap-4">
-            <span>100% Herbal Asli</span>
+            <span>100% Herbal Infusions</span>
             <span>•</span>
-            <span>Bebas Mikroplastik</span>
+            <span>Plastic-Free</span>
             <span>•</span>
-            <span>Bandung, Indonesia</span>
+            <span>Jakarta, Indonesia</span>
           </div>
         </div>
       </Container>

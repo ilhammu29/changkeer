@@ -10,37 +10,37 @@ const STEPS = [
     num: '01',
     stepNumber: 1,
     angle: 0,
-    title: 'Siapkan Air Panas 85°–95°C',
-    time: '< 1 Menit',
-    tag: 'SUHU OPTIMAL',
+    title: 'Heat Water to 85°–95°C',
+    time: '< 1 Minute',
+    tag: 'OPTIMAL TEMPERATURE',
     icon: Thermometer,
     description:
-      'Tuangkan 250ml – 300ml air panas berkualitas dengan suhu 85°–95°C ke dalam cangkir favorit Anda untuk membangunkan minyak atsiri alami botani tanpa merusak antioksidan polifenol daun teh.',
-    tip: 'Hindari air mendidih 100°C mendidih bergolak agar kelopak melati tidak layu terpanggang.',
+      'Pour 250ml – 300ml of fresh hot water at 85°–95°C into your cup to awaken essential botanical oils without scorching sensitive floral petals.',
+    tip: 'Avoid rolling boiling water at 100°C so delicate jasmine and blossoms preserve their natural sweetness.',
   },
   {
     num: '02',
     stepNumber: 2,
     angle: 120,
-    title: 'Tutup Cangkir & Seduh < 3 Menit',
-    time: '2–3 Menit',
-    tag: 'EKSTRAKSI TERTUTUP',
+    title: 'Cover Cup & Steep < 3 Minutes',
+    time: '2–3 Minutes',
+    tag: 'ENCLOSED STEEP',
     icon: Clock,
     description:
-      'Masukkan kantung teh CHANGKEER lalu tutup cangkir rapat selama 2 hingga 3 menit. Penutupan menjaga uap esensial agar aroma botani terkonsentrasi optimal dan rasa manis alami sorgum terlarut merata.',
-    tip: 'Kemasan bebas mikroplastik aman terendam air panas tanpa melepaskan partikel polimer sintetis.',
+      'Submerge the plastic-free sachet and cover the cup firmly for 2 to 3 minutes. Covering locks in volatile aromatic vapors and evenly extracts natural flavors.',
+    tip: 'Our plastic-free paper and muslin sachets are completely safe to steep with zero microplastic release.',
   },
   {
     num: '03',
     stepNumber: 3,
     angle: 240,
-    title: 'Nikmati Hangat atau Dingin',
-    time: 'Siap Dinikmati',
-    tag: 'PENYAJIAN FLEKSIBEL',
+    title: 'Enjoy Warm or Over Ice',
+    time: 'Ready to Sip',
+    tag: 'FLEXIBLE SERVE',
     icon: GlassWater,
     description:
-      'Nikmati selagi hangat untuk ketenangan batin dan melegakan tenggorokan, atau tuangkan ke atas pecahan es batu untuk sensasi kesegaran dingin instan yang membangkitkan stamina harian.',
-    tip: 'Rasa manis lembut alami madu dan sorgum tetap seimbang baik disajikan hangat maupun dingin.',
+      'Sip hot for a soothing, throat-clearing respite, or pour over ice cubes for an invigorating, crisp tropical refreshment to power your day.',
+    tip: 'Pure raw honey or sorghum adds balanced sweetness whether served piping hot or chilled.',
   },
 ];
 
@@ -72,14 +72,14 @@ export function BrewingRitualCarousel() {
         {/* Section Heading (Medium Restrained Size) */}
         <Reveal>
           <div className="max-w-2xl mx-auto text-center space-y-3 mb-16 sm:mb-20">
-            <span className="text-[11px] font-mono font-bold tracking-[0.25em] uppercase text-accent block">
-              RITUAL PENYAJIAN CEPAT
+            <span className="text-[11px] font-mono font-bold tracking-[0.25em] uppercase text-primary block">
+              FAST BREW RITUAL
             </span>
             <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-foreground">
-              3 Langkah Nikmat &lt; 3 Menit
+              3 Simple Steps in Under 3 Minutes
             </h2>
             <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-              Ekstraksi rasa dan aroma botani maksimal tanpa ribet, menemani kesibukan aktif harian Anda.
+              Maximum botanical aroma and clean taste without complication, crafted for your daily rhythm.
             </p>
           </div>
         </Reveal>
@@ -120,7 +120,7 @@ export function BrewingRitualCarousel() {
                       style={{
                         transform: `translate(${x}px, ${y}px) rotate(${-rotationDegree}deg)`,
                       }}
-                      aria-label={`Pilih langkah ${step.num}`}
+                      aria-label={`Select step ${step.num}`}
                     >
                       <div
                         className={`w-11 h-11 rounded-full flex items-center justify-center font-mono text-xs font-bold transition-all duration-300 shadow-md ${
@@ -158,7 +158,7 @@ export function BrewingRitualCarousel() {
                   className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
                     activeIndex === idx ? 'w-8 bg-primary' : 'w-2 bg-muted-foreground/30 hover:bg-muted-foreground/60'
                   }`}
-                  aria-label={`Buka langkah ${step.num}`}
+                  aria-label={`Open step ${step.num}`}
                 />
               ))}
             </div>
@@ -173,7 +173,7 @@ export function BrewingRitualCarousel() {
 
             <div className="space-y-2">
               <div className="flex items-baseline gap-2">
-                <span className="font-mono text-xs font-bold text-primary">LANGKAH {current.num}</span>
+                <span className="font-mono text-xs font-bold text-primary">STEP {current.num}</span>
                 <span className="text-muted-foreground text-xs">•</span>
                 <span className="text-xs text-muted-foreground font-mono">{current.time}</span>
               </div>
@@ -189,7 +189,7 @@ export function BrewingRitualCarousel() {
             {/* Practical Brewer Tip */}
             <div className="p-4 rounded-xl bg-background border border-border/80 text-xs text-muted-foreground space-y-1">
               <span className="font-mono text-[10px] font-bold text-foreground uppercase tracking-wider block">
-                TIPS PENYEDUHAN:
+                BREWING TIP:
               </span>
               <p className="leading-relaxed">{current.tip}</p>
             </div>
@@ -200,8 +200,8 @@ export function BrewingRitualCarousel() {
                 type="button"
                 onClick={handlePrev}
                 className="w-10 h-10 rounded-full border border-border bg-background hover:bg-surface-hover text-foreground flex items-center justify-center transition-all active:scale-90 cursor-pointer shadow-xs"
-                aria-label="Langkah sebelumnya (putar -120°)"
-                title="Langkah Sebelumnya"
+                aria-label="Previous step (rotate -120°)"
+                title="Previous Step"
               >
                 <ArrowLeft className="w-4 h-4" />
               </button>
@@ -210,14 +210,14 @@ export function BrewingRitualCarousel() {
                 type="button"
                 onClick={handleNext}
                 className="w-10 h-10 rounded-full border border-border bg-background hover:bg-surface-hover text-foreground flex items-center justify-center transition-all active:scale-90 cursor-pointer shadow-xs"
-                aria-label="Langkah berikutnya (putar +120°)"
-                title="Langkah Berikutnya"
+                aria-label="Next step (rotate +120°)"
+                title="Next Step"
               >
                 <ArrowRight className="w-4 h-4" />
               </button>
 
               <span className="text-xs font-mono text-muted-foreground tracking-wider pl-2">
-                0{activeIndex + 1} / 0{total} • Putar Ritual
+                0{activeIndex + 1} / 0{total} • Rotate Ritual
               </span>
             </div>
           </div>

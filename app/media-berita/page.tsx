@@ -7,9 +7,9 @@ import { getPublishedArticles } from '@/lib/data/articles';
 import { getCategories } from '@/lib/data/categories';
 
 export const metadata: Metadata = {
-  title: 'Media & Berita',
+  title: 'News & Journal',
   description:
-    'Wawasan dan edukasi seputar teh herbal, tradisi seduh nusantara, dan gaya hidup bernutrisi dari tim CHANGKEER.',
+    'Botanical insights, seasonal tea calendar stories, and mindful hydration guides from the Changkeer editorial team.',
 };
 
 export default async function MediaBeritaPage() {
@@ -24,7 +24,7 @@ export default async function MediaBeritaPage() {
       <section className="relative w-full py-16 sm:py-20 md:py-24 bg-neutral-950 overflow-hidden border-b border-border mb-12 sm:mb-16">
         <Image
           src="/images/assets/vanilla_mint_tea_produk.jpg"
-          alt="Media & Berita CHANGKEER"
+          alt="Changkeer News & Journal"
           fill
           priority
           sizes="100vw"
@@ -35,13 +35,13 @@ export default async function MediaBeritaPage() {
         <Container size="wide" className="relative z-10">
           <div className="max-w-2xl space-y-3">
             <span className="text-[11px] font-mono font-bold tracking-[0.25em] uppercase text-purple-300 block">
-              ARSIP EDUKASI &amp; BERITA
+              EDITORIAL &amp; BOTANICAL ARCHIVE
             </span>
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-sans font-black uppercase tracking-tight text-white leading-tight">
-              MEDIA &amp; BERITA
+              News
             </h1>
             <p className="text-sm sm:text-base text-white/80 leading-relaxed font-normal">
-              Kumpulan artikel, eksplorasi tanaman herbal nusantara, dan panduan gaya hidup berkesadaran.
+              Botanical explorations, 24 solar terms calendar rituals, and guides to wholesome daily living.
             </p>
           </div>
         </Container>

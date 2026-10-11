@@ -16,12 +16,12 @@ interface BrandStoryTeaserProps {
 }
 
 export function BrandStoryTeaser({ story }: BrandStoryTeaserProps) {
-  const tag = story?.tag || 'FILOSOFI KAMI';
-  const title = story?.title || 'Kembali ke Ritme Alami Tubuh';
+  const tag = story?.tag || 'OUR PHILOSOPHY';
+  const title = story?.title || "Taste First · Say What's Inside · Local Where We Can";
   const content =
     story?.content ||
-    'Di era modern di mana tubuh dipaksa terus berpacu dengan stimulan sintetis, CHANGKEER hadir sebagai jeda yang bermakna. Kami percaya kekuatan sejati lahir dari keseimbangan alami, kemurnian botani nusantara, dan kejernihan pikiran.';
-  const linkText = story?.link_text || 'Baca Kisah Selengkapnya';
+    'The name comes from cangkir, Indonesian for cup, with a nod to the Chinese tea traditions behind our calendar. Every ingredient is listed, with cautions where they apply, and zero senna or artificial shortcuts.';
+  const linkText = story?.link_text || 'ABOUT CHANGKEER';
   const linkUrl = story?.link_url || '/tentang-kami';
 
   return (
@@ -57,13 +57,13 @@ export function BrandStoryTeaser({ story }: BrandStoryTeaserProps) {
               <div className="space-y-3 text-xs sm:text-sm text-white/85 leading-relaxed font-normal max-w-xl">
                 <p>{content}</p>
                 <p className="text-white/75">
-                  Racikan kami dirancang tanpa jalan pintas kimiawi. Setiap kuntum bunga dan helai daun mempertahankan esensi fungsional aslinya, menemani ritual sehari-hari Anda dengan kehangatan rasa yang jujur dan menyegarkan.
+                  Flowers, ginger and honey come from growers in Puncak, Garut and Wonosobo. Crafted with integrity and brewed in plastic-free paper or muslin sachets.
                 </p>
               </div>
 
               {/* Brand Philosophy Accent Quote */}
               <blockquote className="text-xs sm:text-sm font-serif italic text-white/90 tracking-wide border-y border-white/20 py-2 px-6">
-                &ldquo;More Than Tea. A Better You.&rdquo;
+                &ldquo;Taste first. If it isn&apos;t nice to drink, it won&apos;t become a habit.&rdquo;
               </blockquote>
 
               {/* Action Button: Reduced Roundedness (rounded-lg instead of rounded-full) */}

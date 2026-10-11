@@ -37,14 +37,14 @@ export function BrandHighlights({ highlights: _highlights }: BrandHighlightsProp
                 <div className="absolute bottom-5 left-5 right-5 bg-surface/95 backdrop-blur-md p-3.5 rounded-xl border border-white/20 shadow-lg flex items-center justify-between">
                   <div className="flex flex-col">
                     <span className="text-[9px] font-mono tracking-[0.25em] uppercase text-muted-foreground font-semibold">
-                      STANDAR KEMASAN
+                      PACKAGING INTEGRITY
                     </span>
                     <span className="text-xs font-bold uppercase tracking-wider text-foreground">
-                      100% Bebas Mikroplastik
+                      100% Microplastic-Free
                     </span>
                   </div>
                   <span className="text-[10px] uppercase font-mono tracking-wider px-2 py-0.5 rounded-full bg-primary/10 text-primary font-bold">
-                    Bleach-Free
+                    Paper &amp; Muslin
                   </span>
                 </div>
               </div>
@@ -55,17 +55,23 @@ export function BrandHighlights({ highlights: _highlights }: BrandHighlightsProp
 
             {/* Right: Tentang Kami (Heading Sedang + Deskripsi Rapi) */}
             <div className="lg:col-span-7 flex flex-col justify-center space-y-4 lg:pl-4">
+              <span className="text-[10px] font-mono font-bold tracking-[0.25em] uppercase text-primary block">
+                ABOUT CHANGKEER
+              </span>
               <h2 className="text-lg sm:text-xl lg:text-2xl font-bold uppercase tracking-wide text-foreground leading-snug">
-                Tradisi Seduh Alami untuk Kejernihan Hidup Modern
+                Grab-and-Go Herbal Tea from Jakarta · Ready in &lt; 3 Minutes
               </h2>
 
-              {/* Deskripsi Singkat Font Bersih & Rapi */}
+              {/* Clean English Narrative */}
               <div className="space-y-3.5 text-xs sm:text-sm text-muted-foreground leading-relaxed font-normal">
                 <p>
-                  CHANGKEER lahir dari dedikasi menghadirkan jeda yang menenangkan di tengah ritme keseharian yang serba cepat. Kami meracik daun teh utuh, kelopak bunga melati, dan rempah alami nusantara tanpa pemutih kimiawi maupun kantong plastik berbahaya.
+                  Changkeer is a grab-and-go herbal tea brand from Jakarta. We serve real loose-leaf blends of flowers, fruit and roots, freshly brewed and ready in under three minutes.
                 </p>
                 <p>
-                  Setiap racikan dipermanis lembut dengan gula sorgum alami dan madu hutan murni rendah glikemik. Bebas daun senna keras sehingga sangat aman dan nyaman dikonsumsi setiap hari untuk menjaga hidrasi alami serta ketenangan pikiran Anda.
+                  Our menu follows the 24 solar terms of the traditional Chinese calendar, so a new seasonal blend arrives about every two weeks: warming ginger and dates in the rainy months, cooling chrysanthemum and citrus in the dry heat.
+                </p>
+                <p>
+                  Every cup is unsweetened by default, brewed from plastic-free paper or muslin sachets, and made without senna or &quot;detox&quot; claims. We list every ingredient, because a healthier daily drink should also be an honest one.
                 </p>
               </div>
             </div>

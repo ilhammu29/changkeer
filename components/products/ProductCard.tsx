@@ -42,7 +42,7 @@ export function ProductCard({ product }: ProductCardProps) {
         {product.is_featured && (
           <div className="absolute top-3.5 left-3.5 bg-black/40 backdrop-blur-md border border-white/20 text-white text-[9px] font-mono tracking-widest uppercase px-2.5 py-1 rounded-full flex items-center gap-1 font-semibold">
             <Sparkles className="w-2.5 h-2.5 text-amber-300" />
-            <span>UNGGULAN</span>
+            <span>FEATURED</span>
           </div>
         )}
 
@@ -54,7 +54,7 @@ export function ProductCard({ product }: ProductCardProps) {
         {/* Minimalist Card Text at Bottom */}
         <div className="absolute bottom-0 inset-x-0 p-5 flex flex-col justify-end space-y-1 text-white">
           <span className="text-[10px] font-mono tracking-[0.22em] uppercase text-white/70 block">
-            {product.category?.name || 'RACIKAN BOTANI'}
+            {product.category?.name || 'HERBAL BLEND'}
           </span>
 
           <h3 className="font-sans font-black text-sm sm:text-base uppercase tracking-wide text-white group-hover:text-amber-200 transition-colors line-clamp-1 leading-snug">
@@ -66,7 +66,7 @@ export function ProductCard({ product }: ProductCardProps) {
               {formattedPrice}
             </span>
             <span className="text-[10px] font-mono uppercase tracking-wider text-white/60 group-hover:text-white transition-colors">
-              Lihat Detail &rarr;
+              View Details &rarr;
             </span>
           </div>
         </div>

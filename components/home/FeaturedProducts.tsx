@@ -94,11 +94,11 @@ export function FeaturedProducts({ products }: FeaturedProductsProps) {
           {/* Section Header with Refined Medium Headline and Navigation */}
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
             <div className="space-y-2">
-              <span className="text-[11px] font-bold tracking-[0.25em] uppercase text-accent block">
-                KURASI BOTANI TERBAIK
+              <span className="text-[11px] font-bold tracking-[0.25em] uppercase text-primary block">
+                CURATED BOTANICAL BLENDS
               </span>
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold uppercase tracking-tight text-foreground">
-                Racikan Unggulan
+                Signature Blends
               </h2>
             </div>
 
@@ -114,7 +114,7 @@ export function FeaturedProducts({ products }: FeaturedProductsProps) {
                       ? 'bg-surface text-foreground hover:bg-surface-hover shadow-xs cursor-pointer active:scale-90'
                       : 'bg-muted/40 text-muted-foreground/40 cursor-not-allowed opacity-50'
                   }`}
-                  aria-label="Geser ke produk sebelumnya"
+                  aria-label="Previous product"
                 >
                   <ChevronLeft className="w-4 h-4" />
                 </button>
@@ -128,7 +128,7 @@ export function FeaturedProducts({ products }: FeaturedProductsProps) {
                       ? 'bg-surface text-foreground hover:bg-surface-hover shadow-xs cursor-pointer active:scale-90'
                       : 'bg-muted/40 text-muted-foreground/40 cursor-not-allowed opacity-50'
                   }`}
-                  aria-label="Geser ke produk berikutnya"
+                  aria-label="Next product"
                 >
                   <ChevronRight className="w-4 h-4" />
                 </button>
@@ -141,7 +141,7 @@ export function FeaturedProducts({ products }: FeaturedProductsProps) {
                 href="/katalog"
                 className="inline-flex items-center gap-1.5 text-xs font-bold tracking-widest uppercase text-foreground hover:text-primary transition-colors border-b border-foreground pb-0.5"
               >
-                <span>SEMUA PRODUK</span>
+                <span>ALL BLENDS &amp; PRICES</span>
                 <ArrowUpRight className="w-3.5 h-3.5" />
               </Link>
             </div>
@@ -205,7 +205,7 @@ export function FeaturedProducts({ products }: FeaturedProductsProps) {
                     {/* Minimalist Card Text at Bottom */}
                     <div className="absolute bottom-0 inset-x-0 p-5 flex flex-col justify-end space-y-1 text-white">
                       <span className="text-[10px] font-mono tracking-[0.22em] uppercase text-white/70 block">
-                        {product.category?.name || 'RACIKAN BOTANI'}
+                        {product.category?.name || 'HERBAL BLEND'}
                       </span>
 
                       <h3 className="font-extrabold text-sm sm:text-base uppercase tracking-wide text-white group-hover:text-amber-200 transition-colors line-clamp-1 leading-snug">
@@ -217,7 +217,7 @@ export function FeaturedProducts({ products }: FeaturedProductsProps) {
                           {formattedPrice}
                         </span>
                         <span className="text-[10px] font-mono uppercase tracking-wider text-white/60 group-hover:text-white transition-colors">
-                          Lihat Detail &rarr;
+                          View Details &rarr;
                         </span>
                       </div>
                     </div>
@@ -240,7 +240,7 @@ export function FeaturedProducts({ products }: FeaturedProductsProps) {
                       ? 'w-7 bg-foreground'
                       : 'w-1.5 bg-border-strong/40 hover:bg-border-strong'
                   }`}
-                  aria-label={`Buka produk nomor ${idx + 1}`}
+                  aria-label={`Open product number ${idx + 1}`}
                 />
               ))}
             </div>

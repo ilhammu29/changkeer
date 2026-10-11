@@ -56,10 +56,10 @@ export function ProductDetailInteractive({
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
 
   const detailTabs = [
-    { label: '01 Judul', title: 'Identitas & Varian' },
-    { label: '02 Deskripsi', title: 'Filosofi Rasa' },
-    { label: '03 Integritas', title: 'Standar Botani' },
-    { label: '04 Karakter', title: 'Profil Sensorik' },
+    { label: '01 TITLE', title: 'Blend Identity' },
+    { label: '02 NARRATIVE', title: 'Taste Philosophy' },
+    { label: '03 INTEGRITY', title: 'Botanical Purity' },
+    { label: '04 SENSORY', title: 'Sensory Profile' },
   ];
 
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -103,11 +103,11 @@ export function ProductDetailInteractive({
     ? cleanPhone
     : '6281234567890';
 
-  // WhatsApp Order & Consultation messages
-  const orderMessage = `Halo CHANGKEER, saya ingin memesan racikan teh herbal resmi:\n\n• Produk: ${product.name}\n• Jumlah: ${quantity} pcs\n• Estimasi Total: ${formattedTotalPrice}\n\nMohon informasi ketersediaan stok & nomor rekening pembayaran resmi. Terima kasih!`;
+  // WhatsApp Order & Consultation messages (English)
+  const orderMessage = `Hello CHANGKEER, I would like to order:\n\n• Blend: ${product.name}\n• Quantity: ${quantity} pcs\n• Estimated Total: ${formattedTotalPrice}\n\nPlease share stock availability & payment details. Thank you!`;
   const orderWhatsAppUrl = `https://wa.me/${targetPhone}?text=${encodeURIComponent(orderMessage)}`;
 
-  const consultMessage = `Halo CHANGKEER, saya ingin berkonsultasi mengenai racikan teh "${product.name}". Apakah cocok untuk rutinitas saya? Terima kasih.`;
+  const consultMessage = `Hello CHANGKEER, I'd like to ask about the "${product.name}" blend. Is it suitable for my daily routine? Thank you.`;
   const consultWhatsAppUrl = `https://wa.me/${targetPhone}?text=${encodeURIComponent(consultMessage)}`;
 
   const handleShare = async () => {
@@ -164,9 +164,9 @@ export function ProductDetailInteractive({
                   className={`text-[10px] font-mono uppercase tracking-wider px-2.5 py-1 rounded-md transition-all cursor-pointer whitespace-nowrap ${
                     detailSlide === idx
                       ? 'bg-primary text-white font-bold shadow-xs'
-                      : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
+                      : 'text-muted-foreground hover:text-foreground hover:bg-neutral-100'
                   }`}
-                  aria-label={`Lihat ${tab.title}`}
+                  aria-label={`View ${tab.title}`}
                 >
                   {tab.label}
                 </button>
@@ -180,7 +180,7 @@ export function ProductDetailInteractive({
                 onClick={() => setDetailSlide((prev) => Math.max(0, prev - 1))}
                 disabled={detailSlide === 0}
                 className="w-7 h-7 rounded-full border border-border/80 flex items-center justify-center text-foreground hover:bg-muted disabled:opacity-25 transition-colors cursor-pointer"
-                aria-label="Detail sebelumnya"
+                aria-label="Previous detail slide"
               >
                 <ChevronLeft className="w-3.5 h-3.5" />
               </button>
@@ -189,7 +189,7 @@ export function ProductDetailInteractive({
                 onClick={() => setDetailSlide((prev) => Math.min(detailTabs.length - 1, prev + 1))}
                 disabled={detailSlide === detailTabs.length - 1}
                 className="w-7 h-7 rounded-full border border-border/80 flex items-center justify-center text-foreground hover:bg-muted disabled:opacity-25 transition-colors cursor-pointer"
-                aria-label="Detail berikutnya (geser ke kanan)"
+                aria-label="Next detail slide"
               >
                 <ChevronRight className="w-3.5 h-3.5" />
               </button>
@@ -202,12 +202,12 @@ export function ProductDetailInteractive({
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
           >
-            {/* SLIDE 0: Judul & Identitas Varian (Tanpa Badge Sisi Kiri) */}
+            {/* SLIDE 0: Title & Identity (Clean text, No Badge) */}
             {detailSlide === 0 && (
               <div className="space-y-4 animate-in fade-in duration-300">
                 <div className="space-y-2">
                   <span className="text-[11px] font-mono tracking-[0.25em] uppercase text-primary font-bold block">
-                    {product.category?.name || 'RACIKAN HERBAL ASLI'}
+                    {product.category?.name || 'HERBAL LOOSE-LEAF INFUSION'}
                   </span>
                   <h1 className="text-2xl sm:text-3xl lg:text-4xl font-sans font-black uppercase tracking-tight text-foreground leading-[1.12]">
                     {product.name}
@@ -224,7 +224,7 @@ export function ProductDetailInteractive({
                     {product.description}
                   </p>
                   <p className="font-mono text-[10px] text-muted-foreground uppercase pt-1">
-                    NETTO: {product.weight_grams || 50} GRAM &bull; 100% BOTANI ALAMI
+                    NET WEIGHT: {product.weight_grams || 50}G &bull; 100% BOTANICAL INGREDIENTS
                   </p>
                 </div>
 
@@ -235,22 +235,22 @@ export function ProductDetailInteractive({
                     onClick={() => setDetailSlide(1)}
                     className="inline-flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-primary hover:text-primary-hover transition-colors cursor-pointer"
                   >
-                    <span>BACA DESKRIPSI LENGKAP</span>
+                    <span>READ FULL DESCRIPTION</span>
                     <ChevronRight className="w-4 h-4" />
                   </button>
                 </div>
               </div>
             )}
 
-            {/* SLIDE 1: Deskripsi Lengkap & Filosofi Racikan */}
+            {/* SLIDE 1: Description & Taste Philosophy (No "02 //" Headline) */}
             {detailSlide === 1 && (
               <div className="space-y-4 animate-in fade-in duration-300">
                 <div className="space-y-1">
                   <span className="text-[10px] font-mono tracking-widest uppercase text-muted-foreground font-semibold block">
-                    02 // DESKRIPSI &amp; FILOSOFI RASA
+                    DESCRIPTION &amp; TASTE PHILOSOPHY
                   </span>
                   <h3 className="text-lg sm:text-xl font-sans font-black uppercase tracking-tight text-foreground">
-                    Narasi Racikan Herbal
+                    Artisanal Botanical Narrative
                   </h3>
                 </div>
 
@@ -260,7 +260,7 @@ export function ProductDetailInteractive({
 
                 <div className="pt-2 border-t border-border/60 text-xs text-muted-foreground">
                   <p className="italic leading-relaxed">
-                    Setiap kelopak bunga dan rempah dipetik saat puncak keharuman, dikeringkan secara perlahan guna mengunci minyak atsiri alami tanpa perisa sintetis.
+                    Fresh whole flowers, fruit and roots harvested at peak aromatic intensity, gently dried to preserve essential oils with zero synthetic additives.
                   </p>
                 </div>
 
@@ -271,49 +271,49 @@ export function ProductDetailInteractive({
                     className="inline-flex items-center gap-1 text-xs font-mono font-bold uppercase tracking-wider text-muted-foreground hover:text-foreground cursor-pointer"
                   >
                     <ChevronLeft className="w-3.5 h-3.5" />
-                    <span>KEMBALI KE JUDUL</span>
+                    <span>BACK TO TITLE</span>
                   </button>
                   <button
                     type="button"
                     onClick={() => setDetailSlide(2)}
                     className="inline-flex items-center gap-1 text-xs font-mono font-bold uppercase tracking-wider text-primary hover:text-primary-hover cursor-pointer"
                   >
-                    <span>INTEGRITAS BOTANI</span>
+                    <span>BOTANICAL PURITY</span>
                     <ChevronRight className="w-3.5 h-3.5" />
                   </button>
                 </div>
               </div>
             )}
 
-            {/* SLIDE 2: Standar Integritas Botani */}
+            {/* SLIDE 2: Botanical Integrity & Standards */}
             {detailSlide === 2 && (
               <div className="space-y-4 animate-in fade-in duration-300">
                 <div className="space-y-1">
                   <span className="text-[10px] font-mono tracking-widest uppercase text-muted-foreground font-semibold block">
-                    03 // STANDAR BOTANI
+                    BOTANICAL PURITY &amp; STANDARDS
                   </span>
                   <h3 className="text-lg sm:text-xl font-sans font-black uppercase tracking-tight text-foreground">
-                    Integritas &amp; Kemurnian
+                    Honest Quality Checklist
                   </h3>
                 </div>
 
                 <div className="space-y-2.5 text-xs">
                   <div className="flex items-center gap-2.5 text-foreground font-medium">
                     <CheckCircle2 className="w-4 h-4 text-primary shrink-0" />
-                    <span>100% Bebas Mikroplastik (Bleach-Free Food Grade)</span>
+                    <span>100% Microplastic-Free (Bleach-Free Paper &amp; Muslin Sachets)</span>
                   </div>
                   <div className="flex items-center gap-2.5 text-foreground font-medium">
                     <CheckCircle2 className="w-4 h-4 text-primary shrink-0" />
-                    <span>Bebas Daun Senna (Aman Dikonsumsi Harian Tanpa Laksatif)</span>
+                    <span>Senna-Free (Safe for Daily Habits Without Harsh Laxatives)</span>
                   </div>
                   <div className="flex items-center gap-2.5 text-foreground font-medium">
                     <CheckCircle2 className="w-4 h-4 text-primary shrink-0" />
-                    <span>Pemanis Sorgum Alami &amp; Madu Rendah Glikemik</span>
+                    <span>Naturally Unsweetened by Default (Organic Sorghum &amp; Raw Honey)</span>
                   </div>
                   {product.weight_grams && (
                     <div className="flex items-center gap-2.5 text-foreground font-medium">
                       <CheckCircle2 className="w-4 h-4 text-primary shrink-0" />
-                      <span>Netto: {product.weight_grams} gram (Seduh Cepat &lt; 3 Menit)</span>
+                      <span>Net Weight: {product.weight_grams} grams (Ready in under 3 minutes)</span>
                     </div>
                   )}
                 </div>
@@ -325,29 +325,29 @@ export function ProductDetailInteractive({
                     className="inline-flex items-center gap-1 text-xs font-mono font-bold uppercase tracking-wider text-muted-foreground hover:text-foreground cursor-pointer"
                   >
                     <ChevronLeft className="w-3.5 h-3.5" />
-                    <span>DESKRIPSI</span>
+                    <span>DESCRIPTION</span>
                   </button>
                   <button
                     type="button"
                     onClick={() => setDetailSlide(3)}
                     className="inline-flex items-center gap-1 text-xs font-mono font-bold uppercase tracking-wider text-primary hover:text-primary-hover cursor-pointer"
                   >
-                    <span>PROFIL SENSORIK</span>
+                    <span>SENSORY PROFILE</span>
                     <ChevronRight className="w-3.5 h-3.5" />
                   </button>
                 </div>
               </div>
             )}
 
-            {/* SLIDE 3: Profil Sensorik (Aroma, Rasa, Kafein, Karakter) */}
+            {/* SLIDE 3: Sensory Profile (Aroma, Taste, Caffeine, Body) */}
             {detailSlide === 3 && (
               <div className="space-y-4 animate-in fade-in duration-300">
                 <div className="space-y-1">
                   <span className="text-[10px] font-mono tracking-widest uppercase text-muted-foreground font-semibold block">
-                    04 // PENGALAMAN INDERA
+                    SENSORY TASTING NOTES
                   </span>
                   <h3 className="text-lg sm:text-xl font-sans font-black uppercase tracking-tight text-foreground">
-                    Profil Sensorik Seduhan
+                    Sensory Brew Profile
                   </h3>
                 </div>
 
@@ -358,12 +358,12 @@ export function ProductDetailInteractive({
                       <span className="font-bold text-foreground block">{product.characteristics.aroma || '-'}</span>
                     </div>
                     <div className="p-2.5 rounded-xl border border-border/70 space-y-0.5">
-                      <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground block font-semibold">RASA</span>
+                      <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground block font-semibold">TASTE</span>
                       <span className="font-bold text-foreground block">{product.characteristics.taste || '-'}</span>
                     </div>
                     <div className="p-2.5 rounded-xl border border-border/70 space-y-0.5">
-                      <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground block font-semibold">KAFEIN</span>
-                      <span className="font-bold text-foreground block">{product.characteristics.caffeine || '-'}</span>
+                      <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground block font-semibold">CAFFEINE</span>
+                      <span className="font-bold text-foreground block">{product.characteristics.caffeine || 'Caffeine-Free'}</span>
                     </div>
                     <div className="p-2.5 rounded-xl border border-border/70 space-y-0.5">
                       <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground block font-semibold">BODY</span>
@@ -371,7 +371,7 @@ export function ProductDetailInteractive({
                     </div>
                   </div>
                 ) : (
-                  <p className="text-xs text-muted-foreground">Profil aroma floral seimbang dengan aftertaste manis alami.</p>
+                  <p className="text-xs text-muted-foreground">Balanced floral bouquet with naturally sweet finish.</p>
                 )}
 
                 <div className="pt-2 flex items-center justify-between">
@@ -381,14 +381,14 @@ export function ProductDetailInteractive({
                     className="inline-flex items-center gap-1 text-xs font-mono font-bold uppercase tracking-wider text-muted-foreground hover:text-foreground cursor-pointer"
                   >
                     <ChevronLeft className="w-3.5 h-3.5" />
-                    <span>INTEGRITAS BOTANI</span>
+                    <span>BOTANICAL PURITY</span>
                   </button>
                   <button
                     type="button"
                     onClick={() => setDetailSlide(0)}
                     className="inline-flex items-center gap-1 text-xs font-mono font-bold uppercase tracking-wider text-primary hover:text-primary-hover cursor-pointer"
                   >
-                    <span>KEMBALI KE AWAL</span>
+                    <span>BACK TO START</span>
                     <ChevronRight className="w-3.5 h-3.5" />
                   </button>
                 </div>
@@ -406,12 +406,12 @@ export function ProductDetailInteractive({
               {copied ? (
                 <>
                   <Check className="w-3.5 h-3.5 text-emerald-600" />
-                  <span className="text-emerald-700">TAUTAN TERSALIN</span>
+                  <span className="text-emerald-700">LINK COPIED</span>
                 </>
               ) : (
                 <>
                   <Share2 className="w-3.5 h-3.5" />
-                  <span>BAGIKAN PRODUK</span>
+                  <span>SHARE BLEND</span>
                 </>
               )}
             </button>
@@ -442,7 +442,7 @@ export function ProductDetailInteractive({
             <div className="absolute bottom-2 sm:bottom-4 w-56 sm:w-64 h-6 bg-black/15 rounded-full blur-xl pointer-events-none" />
           </div>
 
-          {/* Tombol Detail di Tengah (Membuka Popup Slide Carousel Gambar Produk) */}
+          {/* Center Detail Button */}
           <button
             type="button"
             onClick={() => {
@@ -452,18 +452,18 @@ export function ProductDetailInteractive({
             className="inline-flex items-center gap-2 text-xs font-mono font-bold tracking-widest uppercase bg-white border border-border/80 text-foreground px-6 py-3 rounded-full shadow-md hover:border-primary hover:text-primary active:scale-95 transition-all mt-4 cursor-pointer card-boundary group"
           >
             <Eye className="w-4 h-4 text-primary group-hover:scale-110 transition-transform" />
-            <span>DETAIL FOTO ({images.length})</span>
+            <span>VIEW GALLERY ({images.length})</span>
           </button>
         </div>
 
         {/* ========================================================================= */}
-        {/* RIGHT COLUMN: Tombol Order & Stepper (Dinaikkan Sedikit ke Atas / Floating) */}
+        {/* RIGHT COLUMN: Order Button & Stepper (Floating / Raised) */}
         {/* ========================================================================= */}
         <div className="lg:col-span-4 space-y-6 order-3 lg:pl-4 lg:-mt-4">
           {/* Price Header */}
           <div className="space-y-1">
             <span className="text-[10px] font-mono tracking-widest uppercase text-muted-foreground font-semibold block">
-              HARGA RESMI SATUAN
+              OFFICIAL UNIT PRICE
             </span>
             <div className="flex items-baseline gap-3">
               <span className="text-3xl sm:text-4xl font-mono font-black text-primary">
@@ -478,7 +478,7 @@ export function ProductDetailInteractive({
           {/* Quantity Selector */}
           <div className="space-y-2 pt-1">
             <label className="text-[11px] font-mono font-bold tracking-wider uppercase text-foreground block">
-              JUMLAH KEMASAN
+              PACK QUANTITY
             </label>
             <div className="flex items-center gap-4">
               <div className="inline-flex items-center bg-white border border-border/80 rounded-xl p-1 shadow-md card-boundary">
@@ -487,7 +487,7 @@ export function ProductDetailInteractive({
                   onClick={() => setQuantity((q) => Math.max(1, q - 1))}
                   disabled={quantity <= 1}
                   className="w-10 h-10 rounded-lg flex items-center justify-center text-foreground hover:bg-muted disabled:opacity-30 transition-colors cursor-pointer"
-                  aria-label="Kurangi jumlah"
+                  aria-label="Decrease quantity"
                 >
                   <Minus className="w-4 h-4" />
                 </button>
@@ -500,7 +500,7 @@ export function ProductDetailInteractive({
                   type="button"
                   onClick={() => setQuantity((q) => q + 1)}
                   className="w-10 h-10 rounded-lg flex items-center justify-center text-foreground hover:bg-muted transition-colors cursor-pointer"
-                  aria-label="Tambah jumlah"
+                  aria-label="Increase quantity"
                 >
                   <Plus className="w-4 h-4" />
                 </button>
@@ -514,7 +514,7 @@ export function ProductDetailInteractive({
             </div>
           </div>
 
-          {/* Primary Action Button: Pesan via WhatsApp */}
+          {/* Primary Action Button: Order via WhatsApp */}
           <div className="space-y-3 pt-3">
             <a
               href={orderWhatsAppUrl}
@@ -523,7 +523,7 @@ export function ProductDetailInteractive({
               className="w-full inline-flex items-center justify-center gap-2.5 text-xs font-mono font-bold tracking-widest uppercase bg-primary text-white px-7 py-4 rounded-xl hover:bg-primary-hover active:scale-[0.99] transition-all shadow-md cursor-pointer"
             >
               <MessageCircle className="w-4 h-4" />
-              <span>PESAN VIA WHATSAPP</span>
+              <span>ORDER VIA WHATSAPP</span>
             </a>
 
             <a
@@ -533,7 +533,7 @@ export function ProductDetailInteractive({
               className="w-full inline-flex items-center justify-center gap-2 text-xs font-mono font-bold tracking-widest uppercase bg-white border border-border/80 text-foreground px-6 py-3.5 rounded-xl hover:border-primary hover:text-primary transition-all shadow-md cursor-pointer card-boundary"
             >
               <Sparkles className="w-3.5 h-3.5 text-primary" />
-              <span>KONSULTASI RACIKAN DULU</span>
+              <span>CONSULT WITH CURATOR</span>
             </a>
           </div>
 
@@ -541,18 +541,18 @@ export function ProductDetailInteractive({
           <div className="pt-4 border-t border-border/70 space-y-2 text-xs text-muted-foreground">
             <div className="flex items-center gap-2">
               <ShieldCheck className="w-4 h-4 text-primary shrink-0" />
-              <span>Garansi 100% Produk Herbal Asli Tanpa Pemutih</span>
+              <span>100% Pure Botanical Blend (No Bleach)</span>
             </div>
             <div className="flex items-center gap-2">
               <ShieldCheck className="w-4 h-4 text-primary shrink-0" />
-              <span>Kemasan Kedap Udara &amp; Higienis Food-Grade</span>
+              <span>Airtight Food-Grade Muslin Packaging</span>
             </div>
           </div>
         </div>
       </div>
 
       {/* ========================================================================= */}
-      {/* POP-UP SLIDE CAROUSEL MODAL (Simple, Elegan, Tidak Terpotong) */}
+      {/* POP-UP SLIDE CAROUSEL MODAL */}
       {/* ========================================================================= */}
       {isGalleryModalOpen && (
         <div
@@ -570,7 +570,7 @@ export function ProductDetailInteractive({
             <div className="flex items-center justify-between pb-3 border-b border-border/70">
               <div>
                 <span className="text-[10px] font-mono tracking-widest uppercase text-primary font-bold block">
-                  GALERI FOTO RESMI
+                  OFFICIAL PHOTO GALLERY
                 </span>
                 <h3 className="text-base sm:text-lg font-sans font-bold uppercase tracking-tight text-foreground">
                   {product.name}
@@ -581,7 +581,7 @@ export function ProductDetailInteractive({
                 type="button"
                 onClick={() => setIsGalleryModalOpen(false)}
                 className="w-9 h-9 rounded-full bg-muted/70 hover:bg-muted flex items-center justify-center text-foreground transition-colors cursor-pointer"
-                aria-label="Tutup galeri"
+                aria-label="Close gallery"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -591,7 +591,7 @@ export function ProductDetailInteractive({
             <div className="relative aspect-[4/3] w-full bg-muted/30 rounded-2xl overflow-hidden border border-border/60 flex items-center justify-center">
               <Image
                 src={images[activeModalIndex]}
-                alt={`${product.name} foto ${activeModalIndex + 1}`}
+                alt={`${product.name} photo ${activeModalIndex + 1}`}
                 fill
                 sizes="(max-width: 768px) 100vw, 672px"
                 className="object-cover object-center transition-all duration-300"
@@ -605,7 +605,7 @@ export function ProductDetailInteractive({
                     type="button"
                     onClick={prevModalImage}
                     className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 backdrop-blur-md border border-border/80 text-foreground flex items-center justify-center hover:bg-white shadow-md transition-all active:scale-95 cursor-pointer"
-                    aria-label="Foto sebelumnya"
+                    aria-label="Previous image"
                   >
                     <ChevronLeft className="w-5 h-5" />
                   </button>
@@ -614,7 +614,7 @@ export function ProductDetailInteractive({
                     type="button"
                     onClick={nextModalImage}
                     className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 backdrop-blur-md border border-border/80 text-foreground flex items-center justify-center hover:bg-white shadow-md transition-all active:scale-95 cursor-pointer"
-                    aria-label="Foto berikutnya"
+                    aria-label="Next image"
                   >
                     <ChevronRight className="w-5 h-5" />
                   </button>

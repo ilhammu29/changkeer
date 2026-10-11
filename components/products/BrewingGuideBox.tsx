@@ -11,10 +11,10 @@ export function BrewingGuideBox({ guide }: BrewingGuideBoxProps) {
     <div className="space-y-8 font-sans">
       <div className="border-b border-border/80 pb-4">
         <span className="text-[11px] font-mono font-bold tracking-[0.25em] uppercase text-primary block">
-          PANDUAN EKSTRAKSI &amp; SEDUH
+          EXTRACTION &amp; BREW RITUAL
         </span>
         <h3 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-foreground mt-1">
-          Cara Penyajian Sempurna (&lt; 3 Menit)
+          Perfect Serving Ritual (&lt; 3 Minutes)
         </h3>
       </div>
 
@@ -25,13 +25,13 @@ export function BrewingGuideBox({ guide }: BrewingGuideBoxProps) {
           </div>
           <div className="space-y-0.5">
             <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-muted-foreground block">
-              SUHU AIR
+              WATER TEMPERATURE
             </span>
             <span className="text-lg font-black text-foreground block">
               {guide.water_temp || '85°C - 90°C'}
             </span>
             <span className="text-[11px] text-muted-foreground block">
-              Suhu optimal ekstraksi aromatik
+              Optimal aromatic extraction heat
             </span>
           </div>
         </div>
@@ -42,13 +42,13 @@ export function BrewingGuideBox({ guide }: BrewingGuideBoxProps) {
           </div>
           <div className="space-y-0.5">
             <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-muted-foreground block">
-              WAKTU SEDUH
+              STEEP TIME
             </span>
             <span className="text-lg font-black text-foreground block">
-              {guide.steep_time || '2-3 Menit'}
+              {guide.steep_time || '2-3 Minutes'}
             </span>
             <span className="text-[11px] text-muted-foreground block">
-              Keseimbangan rasa tanpa sepat
+              Balanced flavor, never bitter
             </span>
           </div>
         </div>
@@ -59,13 +59,13 @@ export function BrewingGuideBox({ guide }: BrewingGuideBoxProps) {
           </div>
           <div className="space-y-0.5">
             <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-muted-foreground block">
-              TAKARAN AIR
+              WATER VOLUME
             </span>
             <span className="text-lg font-black text-foreground block">
               {guide.serving_size || '250ml - 300ml'}
             </span>
             <span className="text-[11px] text-muted-foreground block">
-              Satu kantong teh herbal murni
+              Per single plastic-free sachet
             </span>
           </div>
         </div>
@@ -75,7 +75,7 @@ export function BrewingGuideBox({ guide }: BrewingGuideBoxProps) {
         <div className="pt-2 flex items-start gap-3 text-xs sm:text-sm text-foreground">
           <Info className="w-4 h-4 text-primary shrink-0 mt-0.5" />
           <p className="leading-relaxed">
-            <strong className="font-bold text-foreground">Saran Penyajian Praktis:</strong>{' '}
+            <strong className="font-bold text-foreground">Brew Bar Recommendation:</strong>{' '}
             <span className="text-muted-foreground">{guide.notes}</span>
           </p>
         </div>

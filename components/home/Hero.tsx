@@ -122,8 +122,8 @@ export function Hero({ content: _content }: HeroProps = {}) {
               type="button"
               onClick={togglePlay}
               className="w-10 h-10 rounded-full border border-white/30 bg-black/35 backdrop-blur-md text-white flex items-center justify-center hover:bg-white/20 hover:border-white transition-all active:scale-90 cursor-pointer shadow-md"
-              aria-label={isPlaying ? 'Jeda video' : 'Putar video'}
-              title={isPlaying ? 'Jeda video' : 'Putar video'}
+              aria-label={isPlaying ? 'Pause video' : 'Play video'}
+              title={isPlaying ? 'Pause video' : 'Play video'}
             >
               {isPlaying ? (
                 <Pause className="w-4 h-4" />
@@ -136,8 +136,8 @@ export function Hero({ content: _content }: HeroProps = {}) {
               type="button"
               onClick={toggleMute}
               className="w-10 h-10 rounded-full border border-white/30 bg-black/35 backdrop-blur-md text-white flex items-center justify-center hover:bg-white/20 hover:border-white transition-all active:scale-90 cursor-pointer shadow-md"
-              aria-label={isMuted ? 'Aktifkan suara' : 'Bisukan suara'}
-              title={isMuted ? 'Aktifkan suara' : 'Bisukan suara'}
+              aria-label={isMuted ? 'Unmute audio' : 'Mute audio'}
+              title={isMuted ? 'Unmute audio' : 'Mute audio'}
             >
               {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
             </button>
@@ -147,9 +147,9 @@ export function Hero({ content: _content }: HeroProps = {}) {
         <a
           href="#highlights"
           className="flex items-center gap-1.5 text-white/60 hover:text-white transition-colors text-[10px] font-mono tracking-[0.25em] uppercase pt-1"
-          aria-label="Gulir ke bagian konten berikutnya"
+          aria-label="Scroll down to exploration"
         >
-          <span>EKSPLORASI</span>
+          <span>EXPLORE</span>
           <ArrowDown className="w-3 h-3 animate-bounce" />
         </a>
       </div>

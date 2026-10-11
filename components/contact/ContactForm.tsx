@@ -5,10 +5,10 @@ import { contactFormSchema, ContactFormData, getFieldErrors } from '@/lib/valida
 import { CheckCircle2, AlertCircle, Send, Sparkles } from 'lucide-react';
 
 const SUBJECT_PRESETS = [
-  'Konsultasi Racikan Teh',
-  'Peluang Kemitraan Kafe',
-  'Pesanan Khusus / Hampers',
-  'Pertanyaan Bahan & Kualitas',
+  'Tea Blend Consultation',
+  'Cafe & Retail Partnership',
+  'Bulk & Corporate Orders',
+  'Ingredient & Quality Questions',
 ];
 
 export function ContactForm() {
@@ -73,9 +73,9 @@ export function ContactForm() {
       const data = await res.json();
 
       if (!res.ok || !data.success) {
-        setServerError(data.error || 'Gagal mengirim pesan. Silakan coba lagi.');
+        setServerError(data.error || 'Failed to send message. Please try again.');
       } else {
-        setSuccessMessage(data.message);
+        setSuccessMessage(data.message || 'Your message has been sent successfully.');
         setFormData({
           name: '',
           email: '',
@@ -84,7 +84,7 @@ export function ContactForm() {
         });
       }
     } catch {
-      setServerError('Terjadi gangguan jaringan. Silakan coba sesaat lagi.');
+      setServerError('Network error. Please try again in a moment.');
     } finally {
       setIsLoading(false);
     }
@@ -95,13 +95,13 @@ export function ContactForm() {
       <div className="mb-8 space-y-2">
         <div className="flex items-center gap-2 text-primary text-[11px] font-mono tracking-widest uppercase font-semibold">
           <Sparkles className="w-3.5 h-3.5" />
-          <span>KORESPONDENSI RESMI</span>
+          <span>OFFICIAL CORRESPONDENCE</span>
         </div>
         <h3 className="text-2xl sm:text-3xl font-sans font-black uppercase tracking-tight text-foreground">
-          Kirimkan Pesan Anda
+          Send Your Message
         </h3>
         <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-          Tuliskan kebutuhan atau pertanyaan Anda. Tim kurator CHANGKEER akan meninjau dan membalas dalam kurun waktu 1x24 jam kerja.
+          Tell us about your inquiry. The Changkeer concierge team will review and reply within 24 business hours.
         </p>
       </div>
 
@@ -109,7 +109,7 @@ export function ContactForm() {
         <div className="mb-6 p-4 rounded-xl bg-primary/10 border border-primary/20 flex items-start gap-3">
           <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
           <div className="text-xs">
-            <h5 className="font-bold text-foreground">Pesan Berhasil Terkirim</h5>
+            <h5 className="font-bold text-foreground">Message Sent Successfully</h5>
             <p className="text-muted-foreground mt-0.5">{successMessage}</p>
           </div>
         </div>
@@ -119,7 +119,7 @@ export function ContactForm() {
         <div className="mb-6 p-4 rounded-xl bg-red-50 border border-red-200 text-red-800 flex items-start gap-3">
           <AlertCircle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
           <div className="text-xs">
-            <h5 className="font-bold">Gagal Mengirim</h5>
+            <h5 className="font-bold">Failed to Send</h5>
             <p className="mt-0.5">{serverError}</p>
           </div>
         </div>
@@ -133,7 +133,7 @@ export function ContactForm() {
               htmlFor="name"
               className="block text-[11px] font-mono font-bold uppercase tracking-wider text-foreground mb-2"
             >
-              NAMA LENGKAP <span className="text-red-500">*</span>
+              FULL NAME <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
@@ -141,7 +141,7 @@ export function ContactForm() {
               name="name"
               value={formData.name}
               onChange={handleChange}
-              placeholder="Nama Anda"
+              placeholder="Your Name"
               disabled={isLoading}
               className={`w-full px-4 py-3 text-xs bg-white border rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary transition-colors ${
                 errors.name ? 'border-red-500' : 'border-border/80'
@@ -158,7 +158,7 @@ export function ContactForm() {
               htmlFor="email"
               className="block text-[11px] font-mono font-bold uppercase tracking-wider text-foreground mb-2"
             >
-              ALAMAT EMAIL <span className="text-red-500">*</span>
+              EMAIL ADDRESS <span className="text-red-500">*</span>
             </label>
             <input
               type="email"
@@ -166,7 +166,7 @@ export function ContactForm() {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              placeholder="nama@domain.com"
+              placeholder="name@example.com"
               disabled={isLoading}
               className={`w-full px-4 py-3 text-xs bg-white border rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary transition-colors ${
                 errors.email ? 'border-red-500' : 'border-border/80'
@@ -184,7 +184,7 @@ export function ContactForm() {
             htmlFor="subject"
             className="block text-[11px] font-mono font-bold uppercase tracking-wider text-foreground mb-2"
           >
-            SUBJEK PESAN <span className="text-red-500">*</span>
+            SUBJECT <span className="text-red-500">*</span>
           </label>
 
           {/* Quick preset chips */}
@@ -211,7 +211,7 @@ export function ContactForm() {
             name="subject"
             value={formData.subject}
             onChange={handleChange}
-            placeholder="Ketik atau pilih subjek pesan di atas"
+            placeholder="Type or select a subject above"
             disabled={isLoading}
             className={`w-full px-4 py-3 text-xs bg-white border rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary transition-colors ${
               errors.subject ? 'border-red-500' : 'border-border/80'
@@ -228,7 +228,7 @@ export function ContactForm() {
             htmlFor="message"
             className="block text-[11px] font-mono font-bold uppercase tracking-wider text-foreground mb-2"
           >
-            ISI PESAN ATAU KEBUTUHAN <span className="text-red-500">*</span>
+            YOUR MESSAGE <span className="text-red-500">*</span>
           </label>
           <textarea
             id="message"
@@ -236,7 +236,7 @@ export function ContactForm() {
             rows={5}
             value={formData.message}
             onChange={handleChange}
-            placeholder="Jelaskan kebutuhan Anda secara rinci..."
+            placeholder="Detail your inquiry, custom order, or partnership idea..."
             disabled={isLoading}
             className={`w-full px-4 py-3 text-xs bg-white border rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary transition-colors resize-y ${
               errors.message ? 'border-red-500' : 'border-border/80'
@@ -254,10 +254,10 @@ export function ContactForm() {
           className="w-full inline-flex items-center justify-center gap-2 text-xs font-mono font-bold tracking-widest uppercase bg-primary text-white px-8 py-4 rounded-xl hover:bg-primary-hover active:scale-[0.99] transition-all shadow-sm cursor-pointer disabled:opacity-60"
         >
           {isLoading ? (
-            <span>MENGIRIM PESAN...</span>
+            <span>SENDING MESSAGE...</span>
           ) : (
             <>
-              <span>KIRIM PESAN SEKARANG</span>
+              <span>SEND MESSAGE NOW</span>
               <Send className="w-4 h-4" />
             </>
           )}
