@@ -16,6 +16,7 @@ import {
   SEASONS_CONFIG,
   type SolarTermBlend,
 } from '@/lib/data/solarTerms';
+import { SeasonalCanvas3D } from './SeasonalCanvas3D';
 
 // Wheel Geometry Constants
 const C = 200;
@@ -53,7 +54,7 @@ export function SeasonalWheelExplorer() {
   const [hoveredTermIndex, setHoveredTermIndex] = useState<number | null>(null);
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
-  // Swipe / Drag handling for carousel
+  // Swipe / Drag handling for product navigation
   const [dragOffset, setDragOffset] = useState<number>(0);
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const startXRef = useRef<number | null>(null);
@@ -85,7 +86,6 @@ export function SeasonalWheelExplorer() {
 
   const handleSelectSeason = useCallback(
     (seasonId: 'spring' | 'summer' | 'autumn' | 'winter') => {
-      // Find the first term of that season or currently brewing if in that season
       const firstTermIdx = SOLAR_TERM_BLENDS.findIndex(
         (b) => b.season === seasonId && b.isBrewingNow
       );
@@ -131,7 +131,7 @@ export function SeasonalWheelExplorer() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isExpanded, handleNextBlend, handlePrevBlend]);
 
-  // Touch / Drag events
+  // Touch / Drag events for product
   const onDragStart = (clientX: number) => {
     startXRef.current = clientX;
     setIsDragging(true);
@@ -178,11 +178,11 @@ export function SeasonalWheelExplorer() {
               Every two weeks, a new seasonal blend arrives matched to Jakarta&apos;s climate.
               {!isExpanded ? (
                 <span className="font-semibold text-primary ml-1">
-                  Click on the wheel or select a season below to view blends.
+                  Click on the wheel or select a season below to explore blends.
                 </span>
               ) : (
                 <span className="text-foreground ml-1">
-                  Click segments on the wheel to switch blends or swipe through the carousel.
+                  Click segments on the wheel to switch blends or swipe through the products.
                 </span>
               )}
             </p>
@@ -227,24 +227,29 @@ export function SeasonalWheelExplorer() {
           </div>
         </div>
 
-        {/* Dynamic Interactive Stage: Transitions between Center Layout and Split Screen */}
+        {/* Dynamic Interactive Stage: Smooth Layout Transition between Center & Split Screen */}
         <div
           className={`transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
             isExpanded
-              ? 'grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center'
+              ? 'grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center'
               : 'flex flex-col items-center justify-center max-w-xl mx-auto'
           }`}
         >
           {/* ========================================================
-              THE 24 SOLAR TERMS WHEEL (Left when expanded, Center initially)
+              LEFT COLUMN (or CENTER): THE 24 SOLAR TERMS WHEEL WITH 3D BACKGROUND
               ======================================================== */}
           <div
-            className={`w-full flex flex-col items-center justify-center transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+            className={`w-full flex flex-col items-center justify-center relative transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
               isExpanded ? 'lg:col-span-5' : 'max-w-md'
             }`}
           >
+            {/* 3D Three.js Object Canvas Background positioned behind the wheel */}
+            <div className="absolute -inset-8 sm:-inset-14 md:-inset-18 pointer-events-none -z-10 overflow-hidden">
+              <SeasonalCanvas3D season={activeSeason} />
+            </div>
+
             {/* SVG Wheel Wrapper */}
-            <div className="relative w-full max-w-[360px] sm:max-w-[420px] aspect-square flex items-center justify-center drop-shadow-sm">
+            <div className="relative w-full max-w-[340px] sm:max-w-[400px] aspect-square flex items-center justify-center drop-shadow-sm">
               <svg
                 viewBox="0 0 400 400"
                 className="w-full h-full overflow-visible transition-transform duration-500 ease-out"
@@ -460,174 +465,127 @@ export function SeasonalWheelExplorer() {
           </div>
 
           {/* ========================================================
-              SEASONAL PRODUCT CAROUSEL (Appears on the Right upon click)
+              RIGHT COLUMN: REVISED MINIMALIST PRODUCT DISPLAY (NO CARDBOX)
+              Pure Transparent Product Cutout with Season Aura, Symbol, Title, & Price
               ======================================================== */}
           {isExpanded && (
-            <div className="lg:col-span-7 w-full animate-in fade-in slide-in-from-right-6 duration-500 ease-out">
+            <div className="lg:col-span-7 w-full flex flex-col items-center justify-center text-center animate-in fade-in slide-in-from-right-8 duration-700 ease-out py-6 lg:py-2">
               <div
-                className="relative bg-[#0c0b11] text-white rounded-3xl p-6 sm:p-8 lg:p-10 overflow-hidden shadow-2xl border border-white/10 card-boundary flex flex-col justify-between min-h-[520px] sm:min-h-[560px]"
+                key={currentTerm.term}
+                className="relative flex flex-col items-center justify-center w-full max-w-md transition-all duration-500 ease-out"
                 onTouchStart={(e) => onDragStart(e.touches[0].clientX)}
                 onTouchMove={(e) => onDragMove(e.touches[0].clientX)}
                 onTouchEnd={onDragEnd}
                 onMouseDown={(e) => onDragStart(e.clientX)}
                 onMouseMove={(e) => onDragMove(e.clientX)}
                 onMouseUp={onDragEnd}
+                style={{
+                  transform: isDragging ? `translateX(${dragOffset}px)` : undefined,
+                }}
               >
-                {/* Background Atmosphere & Radial Glow matching current blend season */}
-                <div className="absolute inset-0 pointer-events-none -z-1 overflow-hidden">
+                {/* 1. SIMBOL (Season Badge + Solar Term Chinese Glyph Symbol) */}
+                <div className="flex flex-col items-center gap-1.5 mb-2 sm:mb-3 animate-in fade-in slide-in-from-top-3 duration-500">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-neutral-100 border border-neutral-200/80 text-foreground text-xs font-mono font-bold tracking-wider uppercase shadow-2xs">
+                    <span
+                      className="w-2.5 h-2.5 rounded-full inline-block"
+                      style={{ backgroundColor: currentTerm.ringColor }}
+                    />
+                    <span>
+                      {currentTerm.seasonName} · {currentTerm.term}
+                    </span>
+                    <span className="text-muted-foreground font-mono">
+                      ({currentTerm.starts})
+                    </span>
+                  </div>
+
+                  {/* Elegant Large Chinese Glyph Symbol */}
                   <div
-                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[520px] h-[520px] rounded-full blur-[140px] transition-all duration-1000 ease-out opacity-85"
-                    style={{ background: currentTerm.glowColor }}
-                  />
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_25%,rgba(12,11,17,0.92)_85%)]" />
+                    className="text-4xl sm:text-5xl font-serif font-black tracking-tight select-none mt-1 transition-colors duration-500"
+                    style={{ color: currentTerm.ringColor }}
+                  >
+                    {currentTerm.termChinese}
+                  </div>
                 </div>
 
-                {/* Giant Watermark Typography behind product */}
-                <div
-                  className="absolute inset-0 flex items-center justify-center pointer-events-none -z-1 overflow-hidden"
-                  aria-hidden="true"
-                >
-                  <span className="font-sans font-black text-[22vw] sm:text-[18vw] lg:text-[10vw] tracking-tighter text-white/[0.04] uppercase select-none leading-none">
-                    {currentTerm.watermark}
+                {/* 2. GAMBAR PRODUK TANPA BACKGROUND DENGAN AURA SESUAI SEASON */}
+                <div className="relative w-full flex items-center justify-center my-2 sm:my-3 min-h-[260px] sm:min-h-[300px]">
+                  {/* Dynamic Glowing Season Aura behind cutout image */}
+                  <div
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[240px] sm:w-[300px] md:w-[340px] h-[240px] sm:h-[300px] md:h-[340px] rounded-full blur-[65px] sm:blur-[85px] pointer-events-none -z-1 transition-all duration-1000 ease-out opacity-75"
+                    style={{
+                      background: currentTerm.glowColor
+                        .replace('0.25', '0.55')
+                        .replace('0.35', '0.65'),
+                    }}
+                  />
+
+                  {/* Concentric Subtle Halo Rings matching season */}
+                  <div
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[220px] sm:w-[270px] md:w-[300px] h-[220px] sm:h-[270px] md:h-[300px] rounded-full border border-neutral-200/80 pointer-events-none -z-1 transition-all duration-700"
+                    style={{
+                      boxShadow: `0 0 50px -10px ${currentTerm.glowColor}`,
+                    }}
+                  />
+                  <div
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140px] sm:w-[170px] md:w-[190px] h-[140px] sm:h-[170px] md:h-[190px] rounded-full border-2 pointer-events-none -z-1 opacity-50 transition-colors duration-700"
+                    style={{ borderColor: currentTerm.ringColor }}
+                  />
+
+                  {/* Cutout Product Image (No Background) with Smooth Float & Hover */}
+                  <div className="relative w-[200px] sm:w-[250px] md:w-[280px] h-[240px] sm:h-[290px] md:h-[320px] flex items-center justify-center animate-in zoom-in-95 duration-500">
+                    <Image
+                      src={currentTerm.image}
+                      alt={currentTerm.blend}
+                      fill
+                      sizes="(max-width: 640px) 200px, (max-width: 1024px) 250px, 280px"
+                      className="object-contain drop-shadow-[0_20px_35px_rgba(0,0,0,0.2)] filter hover:scale-105 transition-transform duration-500 ease-out pointer-events-none"
+                      priority
+                    />
+                  </div>
+                </div>
+
+                {/* 3. JUDUL PRODUK */}
+                <div className="space-y-1 mt-1 animate-in fade-in slide-in-from-bottom-2 duration-500">
+                  <h3 className="text-2xl sm:text-3xl md:text-4xl font-sans font-black uppercase tracking-tight text-foreground leading-tight">
+                    {currentTerm.blend}
+                  </h3>
+                  {currentTerm.isBrewingNow && (
+                    <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-[#B3305A] text-white text-[10px] font-mono font-bold uppercase tracking-wider shadow-xs">
+                      <Sparkles className="w-3 h-3" />
+                      <span>Brewing Now</span>
+                    </span>
+                  )}
+                </div>
+
+                {/* 4. HARGA PRODUK */}
+                <div className="mt-3 flex items-center justify-center gap-2.5 font-mono text-sm sm:text-base font-bold text-foreground animate-in fade-in slide-in-from-bottom-3 duration-500">
+                  <span className="px-3.5 py-1 rounded-full bg-neutral-100 border border-neutral-200/80 text-neutral-900 shadow-2xs">
+                    Hot: {currentTerm.hotPrice}{' '}
+                    <span className="text-[11px] font-normal text-muted-foreground">
+                      (350ml)
+                    </span>
+                  </span>
+                  <span className="text-muted-foreground/60">·</span>
+                  <span className="px-3.5 py-1 rounded-full bg-neutral-100 border border-neutral-200/80 text-neutral-900 shadow-2xs">
+                    Iced: {currentTerm.icedPrice}{' '}
+                    <span className="text-[11px] font-normal text-muted-foreground">
+                      (450ml)
+                    </span>
                   </span>
                 </div>
 
-                {/* 1. CAROUSEL TOP BAR */}
-                <div className="relative z-10 flex items-center justify-between gap-4 border-b border-white/10 pb-4">
-                  <div className="flex items-center gap-2.5">
-                    <span
-                      className="w-3 h-3 rounded-full"
-                      style={{ backgroundColor: currentTerm.ringColor }}
-                    />
-                    <span className="text-xs font-mono font-bold uppercase tracking-wider text-white/90">
-                      {currentTerm.seasonName} · {currentTerm.termChinese} {currentTerm.term}
-                    </span>
-                    <span className="text-xs text-white/50 font-mono">
-                      (Starts {currentTerm.starts})
-                    </span>
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    {currentTerm.isBrewingNow && (
-                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#B3305A] text-white text-[10px] font-mono font-bold uppercase tracking-wider shadow-sm animate-pulse">
-                        <Sparkles className="w-3 h-3" />
-                        <span>Now Brewing</span>
-                      </span>
-                    )}
-                    <span className="text-xs font-mono text-white/60">
-                      {String(currentSeasonIndex + 1).padStart(2, '0')} / {String(seasonBlends.length).padStart(2, '0')}
-                    </span>
-                  </div>
-                </div>
-
-                {/* 2. CAROUSEL MAIN STAGE: Centered Product with Left Title & Right Price */}
-                <div
-                  className="relative z-10 my-auto py-6 sm:py-8 grid grid-cols-1 md:grid-cols-12 gap-6 items-center transition-transform duration-200"
-                  style={{
-                    transform: isDragging ? `translateX(${dragOffset}px)` : undefined,
-                  }}
-                >
-                  {/* Left Column: Blend Title & Flavor Notes */}
-                  <div className="md:col-span-5 space-y-3 text-left">
-                    <span className="text-[11px] font-mono tracking-widest uppercase text-white/60 block">
-                      SEASONAL INFUSION
-                    </span>
-                    <h3 className="text-2xl sm:text-3xl lg:text-4xl font-black uppercase tracking-tight text-white leading-tight">
-                      {currentTerm.blend}
-                    </h3>
-                    <p className="text-xs sm:text-sm text-white/80 leading-relaxed font-normal">
-                      {currentTerm.note}
-                    </p>
-
-                    {/* Ingredients Chips */}
-                    <div className="flex flex-wrap gap-1.5 pt-1">
-                      {currentTerm.ingredients.map((ing) => (
-                        <span
-                          key={ing}
-                          className="px-2.5 py-1 rounded-full bg-white/10 text-white/90 text-[11px] font-medium border border-white/5"
-                        >
-                          {ing}
-                        </span>
-                      ))}
-                    </div>
-
-                    <div className="text-[11px] font-mono text-white/50 pt-0.5">
-                      Recommended: <span className="text-white/80">{currentTerm.temperature}</span> · Caffeine-Free
-                    </div>
-                  </div>
-
-                  {/* Center Column: High Quality Transparent Product Cutout with Halo Rings */}
-                  <div className="md:col-span-4 flex items-center justify-center relative min-h-[220px] sm:min-h-[260px]">
-                    {/* Concentric Halo Rings */}
-                    <div
-                      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[220px] sm:w-[250px] h-[220px] sm:h-[250px] rounded-full border border-white/10 pointer-events-none -z-1 transition-all duration-700"
-                      style={{
-                        boxShadow: `0 0 65px -10px ${currentTerm.glowColor}`,
-                      }}
-                    />
-                    <div
-                      className="absolute top-[42%] left-[56%] -translate-x-1/2 -translate-y-1/2 w-[90px] sm:w-[110px] h-[90px] sm:h-[110px] rounded-full border-2 pointer-events-none -z-1 opacity-70 transition-colors duration-700"
-                      style={{ borderColor: currentTerm.ringColor }}
-                    />
-
-                    {/* Cutout Image */}
-                    <div className="relative w-[180px] sm:w-[220px] lg:w-[240px] h-[220px] sm:h-[260px] lg:h-[280px]">
-                      <Image
-                        src={currentTerm.image}
-                        alt={currentTerm.blend}
-                        fill
-                        sizes="(max-width: 640px) 180px, 240px"
-                        className="object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.85)] filter hover:scale-105 transition-transform duration-500 ease-out"
-                        priority
-                      />
-                    </div>
-                  </div>
-
-                  {/* Right Column: Pricing & Quick WhatsApp Order */}
-                  <div className="md:col-span-3 flex flex-col justify-center items-start md:items-end text-left md:text-right space-y-4">
-                    <div className="space-y-1">
-                      <span className="text-[10px] font-mono uppercase tracking-widest text-white/60 block">
-                        HOT (350ML)
-                      </span>
-                      <div className="text-2xl sm:text-3xl font-black text-white tracking-tight font-mono">
-                        {currentTerm.hotPrice}
-                      </div>
-                    </div>
-
-                    <div className="space-y-1">
-                      <span className="text-[10px] font-mono uppercase tracking-widest text-white/60 block">
-                        ICED (450ML)
-                      </span>
-                      <div className="text-xl sm:text-2xl font-black text-white/90 tracking-tight font-mono">
-                        {currentTerm.icedPrice}
-                      </div>
-                    </div>
-
-                    <a
-                      href={whatsappUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-white text-neutral-950 hover:bg-neutral-100 font-bold text-xs uppercase tracking-wider transition-all shadow-md hover:scale-102 cursor-pointer mt-2"
-                    >
-                      <Coffee className="w-3.5 h-3.5 text-primary" />
-                      <span>Order Cup</span>
-                    </a>
-                  </div>
-                </div>
-
-                {/* 3. CAROUSEL FOOTER CONTROLS */}
-                <div className="relative z-10 flex items-center justify-between gap-4 pt-4 border-t border-white/10 mt-auto">
-                  {/* Prev Button */}
+                {/* Minimalist Controls: Prev/Next & Stepper Dots */}
+                <div className="flex items-center justify-center gap-4 mt-5">
                   <button
                     onClick={handlePrevBlend}
-                    className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 active:scale-95 text-white flex items-center justify-center transition-all cursor-pointer border border-white/10"
+                    className="w-9 h-9 rounded-full bg-neutral-100 hover:bg-neutral-200 active:scale-95 text-neutral-800 flex items-center justify-center transition-all cursor-pointer border border-neutral-200/80 shadow-2xs"
                     aria-label="Previous Blend"
                   >
                     <ChevronLeft className="w-5 h-5" />
                   </button>
 
-                  {/* Dot Indicators for Season Blends */}
-                  <div className="flex items-center gap-2">
+                  {/* Stepper Dots */}
+                  <div className="flex items-center gap-1.5">
                     {seasonBlends.map((blend) => {
                       const isActive = blend.term === currentTerm.term;
                       return (
@@ -641,8 +599,8 @@ export function SeasonalWheelExplorer() {
                           }}
                           className={`transition-all duration-300 rounded-full cursor-pointer ${
                             isActive
-                              ? 'w-7 h-2.5 bg-white'
-                              : 'w-2.5 h-2.5 bg-white/30 hover:bg-white/60'
+                              ? 'w-6 h-2 bg-neutral-900'
+                              : 'w-2 h-2 bg-neutral-300 hover:bg-neutral-400'
                           }`}
                           aria-label={`Go to ${blend.blend}`}
                         />
@@ -650,14 +608,26 @@ export function SeasonalWheelExplorer() {
                     })}
                   </div>
 
-                  {/* Next Button */}
                   <button
                     onClick={handleNextBlend}
-                    className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 active:scale-95 text-white flex items-center justify-center transition-all cursor-pointer border border-white/10"
+                    className="w-9 h-9 rounded-full bg-neutral-100 hover:bg-neutral-200 active:scale-95 text-neutral-800 flex items-center justify-center transition-all cursor-pointer border border-neutral-200/80 shadow-2xs"
                     aria-label="Next Blend"
                   >
                     <ChevronRight className="w-5 h-5" />
                   </button>
+                </div>
+
+                {/* Clean WhatsApp Order CTA */}
+                <div className="mt-4">
+                  <a
+                    href={whatsappUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-neutral-900 hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-wider transition-all shadow-sm hover:shadow-md cursor-pointer hover:gap-2.5"
+                  >
+                    <Coffee className="w-3.5 h-3.5 text-primary" />
+                    <span>Order This Blend</span>
+                  </a>
                 </div>
               </div>
             </div>
