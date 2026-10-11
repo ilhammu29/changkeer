@@ -25,7 +25,7 @@ export function ArticleCard({ article }: ArticleCardProps) {
       });
 
   return (
-    <article className="group relative aspect-[4/5] sm:aspect-[3/4] w-full rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-border/60">
+    <article className="group relative aspect-[4/5] sm:aspect-[3/4] w-full rounded-2xl overflow-hidden bg-white shadow-md hover:shadow-2xl transition-all duration-500 border border-border/70 font-sans card-boundary">
       {/* Full Background Image */}
       <Image
         src={imageSrc}
@@ -55,7 +55,7 @@ export function ArticleCard({ article }: ArticleCardProps) {
         </div>
 
         {/* Title */}
-        <h3 className="font-bold text-base sm:text-lg text-white tracking-tight leading-snug line-clamp-2 group-hover:text-purple-200 transition-colors">
+        <h3 className="font-sans font-black text-base sm:text-lg text-white tracking-tight leading-snug line-clamp-2 group-hover:text-purple-200 transition-colors">
           <Link href={`/media-berita/${article.slug}`}>
             {article.title}
           </Link>

@@ -141,7 +141,7 @@ export default async function ArticleDetailPage({
   const blocks = parseArticleBlocks(article.content);
 
   return (
-    <div className="pb-20 bg-white text-foreground">
+    <div className="pb-20 bg-white text-foreground font-sans">
       {/* Section 1: Full-Bleed Hero Banner with Featured Image as Background */}
       <section className="relative w-full py-20 sm:py-28 md:py-32 bg-neutral-950 overflow-hidden border-b border-border">
         {/* Full Image Background */}
@@ -182,7 +182,7 @@ export default async function ArticleDetailPage({
             </div>
 
             {/* Main Headline */}
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-serif font-bold text-white tracking-tight leading-[1.1] pt-1">
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-sans font-black text-white tracking-tight leading-[1.1] pt-1">
               {article.title}
             </h1>
 
@@ -233,7 +233,7 @@ export default async function ArticleDetailPage({
             if (block.type === 'heading') {
               return (
                 <div key={idx} className="pt-8 pb-3">
-                  <h3 className="text-2xl sm:text-3xl font-serif font-bold uppercase tracking-tight text-foreground pb-2 border-b border-border/80">
+                  <h3 className="text-2xl sm:text-3xl font-sans font-extrabold uppercase tracking-tight text-foreground pb-2 border-b border-border/80">
                     {block.text}
                   </h3>
                 </div>
@@ -258,7 +258,7 @@ export default async function ArticleDetailPage({
               return (
                 <p
                   key={idx}
-                  className="first-letter:float-left first-letter:text-6xl sm:first-letter:text-7xl first-letter:font-serif first-letter:font-bold first-letter:mr-4 first-letter:leading-none first-letter:text-primary leading-[1.9]"
+                  className="first-letter:float-left first-letter:text-6xl sm:first-letter:text-7xl font-sans first-letter:font-sans first-letter:font-bold first-letter:mr-4 first-letter:leading-none first-letter:text-primary leading-[1.9]"
                 >
                   {renderFormattedText(block.text)}
                 </p>
@@ -274,7 +274,7 @@ export default async function ArticleDetailPage({
         </article>
 
         {/* Author Bio Box */}
-        <div className="mt-16 p-6 sm:p-8 rounded-2xl bg-white border border-border/80 shadow-sm card-boundary flex flex-col sm:flex-row items-start sm:items-center gap-5">
+        <div className="mt-16 p-6 sm:p-8 rounded-2xl bg-white border border-border/80 shadow-md card-boundary flex flex-col sm:flex-row items-start sm:items-center gap-5">
           <div className="relative w-12 h-12 rounded-full overflow-hidden border border-border shrink-0 bg-primary/10 flex items-center justify-center font-bold text-sm text-primary">
             CK
           </div>
@@ -301,7 +301,7 @@ export default async function ArticleDetailPage({
               <span className="text-[11px] font-mono font-bold tracking-[0.25em] uppercase text-muted-foreground block mb-1">
                 BACAAN LAINNYA
               </span>
-              <h2 className="text-2xl sm:text-3xl font-serif font-bold uppercase tracking-tight text-foreground">
+              <h2 className="text-2xl sm:text-3xl font-sans font-extrabold uppercase tracking-tight text-foreground">
                 ARTIKEL TERKAIT
               </h2>
             </div>

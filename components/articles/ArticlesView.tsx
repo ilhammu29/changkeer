@@ -31,9 +31,9 @@ export function ArticlesView({ articles, categories }: ArticlesViewProps) {
   }, [articles, searchQuery, selectedCategory]);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 font-sans">
       {/* Controls Bar */}
-      <div className="flex flex-col md:flex-row gap-4 justify-between items-stretch md:items-center bg-surface/60 p-4 sm:p-5 rounded-2xl border border-border/80 shadow-xs">
+      <div className="flex flex-col md:flex-row gap-4 justify-between items-stretch md:items-center bg-white p-4 sm:p-5 rounded-2xl border border-border/80 shadow-md card-boundary">
         {/* Search */}
         <div className="relative flex-1">
           <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
@@ -42,7 +42,7 @@ export function ArticlesView({ articles, categories }: ArticlesViewProps) {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Cari artikel, topik, atau kata kunci..."
-            className="w-full pl-10 pr-4 py-2.5 text-xs bg-background border border-border rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary transition-colors"
+            className="w-full pl-10 pr-4 py-2.5 text-xs bg-white border border-border rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary transition-colors"
           />
         </div>
 
@@ -53,8 +53,8 @@ export function ArticlesView({ articles, categories }: ArticlesViewProps) {
             onClick={() => setSelectedCategory('all')}
             className={`text-xs font-mono font-bold uppercase tracking-wider px-4 py-2 rounded-xl transition-all cursor-pointer ${
               selectedCategory === 'all'
-                ? 'bg-primary text-primary-foreground shadow-xs'
-                : 'bg-background border border-border/80 text-foreground hover:bg-surface-hover'
+                ? 'bg-primary text-primary-foreground shadow-sm'
+                : 'bg-white border border-border/80 text-foreground hover:bg-neutral-50 shadow-xs card-boundary'
             }`}
           >
             SEMUA
@@ -66,8 +66,8 @@ export function ArticlesView({ articles, categories }: ArticlesViewProps) {
               onClick={() => setSelectedCategory(cat.id)}
               className={`text-xs font-mono font-bold uppercase tracking-wider px-4 py-2 rounded-xl transition-all cursor-pointer ${
                 selectedCategory === cat.id
-                  ? 'bg-primary text-primary-foreground shadow-xs'
-                  : 'bg-background border border-border/80 text-foreground hover:bg-surface-hover'
+                  ? 'bg-primary text-primary-foreground shadow-sm'
+                  : 'bg-white border border-border/80 text-foreground hover:bg-neutral-50 shadow-xs card-boundary'
               }`}
             >
               {cat.name}
@@ -84,7 +84,7 @@ export function ArticlesView({ articles, categories }: ArticlesViewProps) {
           ))}
         </div>
       ) : (
-        <div className="bg-surface border border-border rounded-lg p-12 text-center space-y-4 my-8">
+        <div className="bg-white border border-border rounded-2xl p-12 text-center space-y-4 my-8 shadow-md card-boundary">
           <div className="w-12 h-12 rounded-full bg-muted mx-auto flex items-center justify-center text-muted-foreground">
             <BookOpen className="w-6 h-6" />
           </div>

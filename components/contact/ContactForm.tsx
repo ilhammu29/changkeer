@@ -91,13 +91,13 @@ export function ContactForm() {
   };
 
   return (
-    <div className="bg-white border border-border/80 rounded-3xl p-7 sm:p-10 lg:p-12 shadow-sm card-boundary">
+    <div className="bg-white border border-border/80 rounded-3xl p-7 sm:p-10 lg:p-12 shadow-md card-boundary font-sans">
       <div className="mb-8 space-y-2">
         <div className="flex items-center gap-2 text-primary text-[11px] font-mono tracking-widest uppercase font-semibold">
           <Sparkles className="w-3.5 h-3.5" />
           <span>KORESPONDENSI RESMI</span>
         </div>
-        <h3 className="text-2xl sm:text-3xl font-serif font-bold uppercase tracking-tight text-foreground">
+        <h3 className="text-2xl sm:text-3xl font-sans font-black uppercase tracking-tight text-foreground">
           Kirimkan Pesan Anda
         </h3>
         <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">

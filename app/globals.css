@@ -112,15 +112,31 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Luxury Editorial Headings */
-h1, h2, h3, h4 {
+/* Luxury Editorial Headings (Serif for specific editorial sections) */
+h1.font-serif, h2.font-serif, h3.font-serif, h4.font-serif,
+.font-serif h1, .font-serif h2, .font-serif h3, .font-serif h4 {
   font-family: var(--font-serif), serif;
   letter-spacing: -0.015em;
 }
 
-/* Subtle boundary shadow for components on white background */
+/* Enforce Plus Jakarta Sans on font-sans containers */
+.font-sans,
+.font-sans h1,
+.font-sans h2,
+.font-sans h3,
+.font-sans h4,
+.font-sans h5,
+.font-sans h6 {
+  font-family: var(--font-sans), sans-serif !important;
+}
+
+/* Distinct boundary shadow for components on pure white background */
 .card-boundary {
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.07), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+}
+
+.card-boundary-lg {
+  box-shadow: 0 10px 30px -4px rgba(0, 0, 0, 0.09), 0 4px 8px -2px rgba(0, 0, 0, 0.04);
 }
 
 /* Accessible focus outline using design tokens */

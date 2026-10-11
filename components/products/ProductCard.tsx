@@ -24,7 +24,7 @@ export function ProductCard({ product }: ProductCardProps) {
     <article className="h-full">
       <Link
         href={`/katalog/${product.slug}`}
-        className="block group relative aspect-[3/4] sm:aspect-[4/5] rounded-2xl overflow-hidden bg-muted border border-border/60 shadow-xs hover:shadow-xl transition-all duration-500"
+        className="block group relative aspect-[3/4] sm:aspect-[4/5] rounded-2xl overflow-hidden bg-white border border-border/70 shadow-md hover:shadow-2xl transition-all duration-500 font-sans card-boundary"
       >
         {/* Full Product Photo */}
         <Image
@@ -57,7 +57,7 @@ export function ProductCard({ product }: ProductCardProps) {
             {product.category?.name || 'RACIKAN BOTANI'}
           </span>
 
-          <h3 className="font-extrabold text-sm sm:text-base uppercase tracking-wide text-white group-hover:text-amber-200 transition-colors line-clamp-1 leading-snug">
+          <h3 className="font-sans font-black text-sm sm:text-base uppercase tracking-wide text-white group-hover:text-amber-200 transition-colors line-clamp-1 leading-snug">
             {product.name}
           </h3>
 

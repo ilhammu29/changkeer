@@ -19,7 +19,7 @@ export default async function KatalogPage() {
   ]);
 
   return (
-    <div className="pb-16 sm:pb-24">
+    <div className="pb-16 sm:pb-24 bg-white font-sans text-foreground">
       {/* Section 1: Hero Banner with Background Image */}
       <section className="relative w-full py-16 sm:py-20 md:py-24 bg-neutral-950 overflow-hidden border-b border-border mb-12 sm:mb-16">
         <Image
@@ -37,7 +37,7 @@ export default async function KatalogPage() {
             <span className="text-[11px] font-mono font-bold tracking-[0.25em] uppercase text-purple-300 block">
               KOLEKSI RESMI
             </span>
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black uppercase tracking-tight text-white leading-tight">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-sans font-black uppercase tracking-tight text-white leading-tight">
               KATALOG TEH HERBAL
             </h1>
             <p className="text-sm sm:text-base text-white/80 leading-relaxed font-normal">

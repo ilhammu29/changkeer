@@ -38,9 +38,9 @@ export function CatalogView({ products, categories }: CatalogViewProps) {
   }, [products, searchQuery, selectedCategory, sortOrder]);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 font-sans">
       {/* Search Bar & Filter Controls */}
-      <div className="flex flex-col md:flex-row gap-4 justify-between items-stretch md:items-center bg-surface p-4 sm:p-5 rounded-2xl border border-border shadow-xs">
+      <div className="flex flex-col md:flex-row gap-4 justify-between items-stretch md:items-center bg-white p-4 sm:p-5 rounded-2xl border border-border/80 shadow-md card-boundary">
         {/* Search Input */}
         <div className="relative flex-1">
           <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
@@ -49,7 +49,7 @@ export function CatalogView({ products, categories }: CatalogViewProps) {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Cari racikan herbal, bahan (melati, serai, mint, teh hitam)..."
-            className="w-full pl-10 pr-4 py-2.5 text-xs bg-background border border-border rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary transition-colors"
+            className="w-full pl-10 pr-4 py-2.5 text-xs bg-white border border-border rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary transition-colors"
           />
         </div>
 
@@ -59,7 +59,7 @@ export function CatalogView({ products, categories }: CatalogViewProps) {
           <select
             value={sortOrder}
             onChange={(e) => setSortOrder(e.target.value as any)}
-            className="text-xs font-mono uppercase bg-background border border-border rounded-xl px-3.5 py-2.5 text-foreground focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer"
+            className="text-xs font-mono uppercase bg-white border border-border rounded-xl px-3.5 py-2.5 text-foreground focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer"
           >
             <option value="featured">Urutan: Kurasi Unggulan</option>
             <option value="price-asc">Harga: Terendah</option>
@@ -75,8 +75,8 @@ export function CatalogView({ products, categories }: CatalogViewProps) {
           onClick={() => setSelectedCategory('all')}
           className={`text-[11px] font-mono font-bold uppercase tracking-wider px-4 py-2 rounded-full transition-all cursor-pointer ${
             selectedCategory === 'all'
-              ? 'bg-primary text-primary-foreground shadow-xs'
-              : 'bg-surface border border-border text-foreground hover:bg-surface-hover'
+              ? 'bg-primary text-primary-foreground shadow-sm'
+              : 'bg-white border border-border text-foreground hover:bg-neutral-50 shadow-xs card-boundary'
           }`}
         >
           SEMUA VARIAN ({products.length})
@@ -96,8 +96,8 @@ export function CatalogView({ products, categories }: CatalogViewProps) {
               onClick={() => setSelectedCategory(cat.id)}
               className={`text-[11px] font-mono font-bold uppercase tracking-wider px-4 py-2 rounded-full transition-all cursor-pointer ${
                 selectedCategory === cat.id
-                  ? 'bg-primary text-primary-foreground shadow-xs'
-                  : 'bg-surface border border-border text-foreground hover:bg-surface-hover'
+                  ? 'bg-primary text-primary-foreground shadow-sm'
+                  : 'bg-white border border-border text-foreground hover:bg-neutral-50 shadow-xs card-boundary'
               }`}
             >
               {cat.name} ({count})
@@ -120,7 +120,7 @@ export function CatalogView({ products, categories }: CatalogViewProps) {
         </div>
       ) : (
         /* Empty State */
-        <div className="bg-surface border border-border rounded-2xl p-12 text-center space-y-4 my-8 shadow-xs">
+        <div className="bg-white border border-border/80 rounded-2xl p-12 text-center space-y-4 my-8 shadow-md card-boundary">
           <div className="w-12 h-12 rounded-full bg-muted mx-auto flex items-center justify-center text-muted-foreground">
             <PackageSearch className="w-6 h-6" />
           </div>
@@ -138,7 +138,7 @@ export function CatalogView({ products, categories }: CatalogViewProps) {
               setSearchQuery('');
               setSelectedCategory('all');
             }}
-            className="inline-flex text-xs font-mono font-bold uppercase tracking-wider bg-primary text-primary-foreground px-5 py-2.5 rounded-full hover:bg-primary-hover transition-colors cursor-pointer"
+            className="inline-flex text-xs font-mono font-bold uppercase tracking-wider bg-primary text-primary-foreground px-5 py-2.5 rounded-full hover:bg-primary-hover transition-colors cursor-pointer shadow-sm"
           >
             RESET PENCARIAN
           </button>

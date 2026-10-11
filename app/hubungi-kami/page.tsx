@@ -16,7 +16,7 @@ export default async function HubungiKamiPage() {
   const settings = await getSiteSettings();
 
   return (
-    <div className="pb-20 bg-white text-foreground">
+    <div className="pb-20 bg-white text-foreground font-sans">
       {/* Section 1: Hero Banner with Background Image */}
       <section className="relative w-full py-16 sm:py-24 md:py-28 bg-neutral-950 overflow-hidden border-b border-border mb-12 sm:mb-16">
         <Image
@@ -34,7 +34,7 @@ export default async function HubungiKamiPage() {
             <span className="text-[11px] font-mono font-bold tracking-[0.25em] uppercase text-purple-300 block">
               PUSAT KOMUNIKASI
             </span>
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold uppercase tracking-tight text-white leading-tight">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-sans font-black uppercase tracking-tight text-white leading-tight">
               HUBUNGI KAMI
             </h1>
             <p className="text-sm sm:text-base text-white/85 leading-relaxed font-normal">
@@ -48,12 +48,12 @@ export default async function HubungiKamiPage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
           {/* Left Column: Bespoke Atelier & Concierge Information */}
           <div className="lg:col-span-5 space-y-6">
-            <div className="bg-white border border-border/80 rounded-3xl p-7 sm:p-9 space-y-6 shadow-sm card-boundary">
+            <div className="bg-white border border-border/80 rounded-3xl p-7 sm:p-9 space-y-6 shadow-md card-boundary">
               <div className="space-y-2 border-b border-border/70 pb-5">
                 <span className="text-[10px] font-mono tracking-widest uppercase text-primary font-bold block">
                   ATELIER BOTANI CHANGKEER
                 </span>
-                <h3 className="text-xl sm:text-2xl font-serif font-bold uppercase tracking-tight text-foreground">
+                <h3 className="text-xl sm:text-2xl font-sans font-extrabold uppercase tracking-tight text-foreground">
                   Koordinat Resmi
                 </h3>
                 <p className="text-xs text-muted-foreground leading-relaxed pt-1">
@@ -124,7 +124,7 @@ export default async function HubungiKamiPage() {
             </div>
 
             {/* Atelier Commitment Card */}
-            <div className="p-6 rounded-2xl bg-white border border-border/80 shadow-sm card-boundary space-y-2.5">
+            <div className="p-6 rounded-2xl bg-white border border-border/80 shadow-md card-boundary space-y-2.5">
               <div className="flex items-center gap-2 text-primary">
                 <Sparkles className="w-4 h-4" />
                 <span className="text-xs font-mono font-bold uppercase tracking-wider">
