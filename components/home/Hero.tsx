@@ -227,14 +227,16 @@ export function Hero({ content }: HeroProps) {
                 ✕ TUTUP
               </button>
             </div>
-            <div className="mt-4 aspect-video bg-muted flex flex-col items-center justify-center p-6 text-center rounded-sm">
-              <Play className="w-12 h-12 text-muted-foreground mb-3 opacity-60" />
-              <p className="text-sm font-bold text-foreground">
-                Video Dokumenter Resmi CHANGKEER
-              </p>
-              <p className="text-xs text-muted-foreground max-w-md mt-1">
-                Aset video produksi resolusi tinggi sedang dalam tahap finalisasi kurasi pascaproduksi.
-              </p>
+            <div className="mt-4 aspect-video bg-black flex items-center justify-center rounded-sm overflow-hidden relative">
+              <video
+                src="/videos/hero-video.mp4"
+                controls
+                autoPlay
+                playsInline
+                className="w-full h-full object-contain"
+              >
+                Browser Anda tidak mendukung pemutar video HTML5.
+              </video>
             </div>
           </div>
         </div>
