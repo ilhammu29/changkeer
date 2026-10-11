@@ -552,49 +552,54 @@ export function ProductDetailInteractive({
       </div>
 
       {/* ========================================================================= */}
-      {/* POP-UP SLIDE CAROUSEL MODAL */}
+      {/* POP-UP SLIDE CAROUSEL MODAL (REDESIGNED & FIT VIEWPORT) */}
       {/* ========================================================================= */}
       {isGalleryModalOpen && (
         <div
           role="dialog"
           aria-modal="true"
-          className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-200"
+          className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 animate-in fade-in duration-200"
           onClick={() => setIsGalleryModalOpen(false)}
         >
-          {/* Modal Container */}
+          {/* Modal Container: Viewport-constrained to prevent clipping */}
           <div
-            className="relative w-full max-w-2xl bg-white rounded-3xl overflow-hidden shadow-2xl p-5 sm:p-7 flex flex-col space-y-4 font-sans"
+            className="relative w-full max-w-3xl max-h-[92vh] bg-white rounded-3xl overflow-hidden shadow-2xl p-4 sm:p-6 flex flex-col space-y-3 sm:space-y-4 font-sans"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
-            <div className="flex items-center justify-between pb-3 border-b border-border/70">
-              <div>
+            <div className="flex items-center justify-between pb-2.5 border-b border-border/70 shrink-0">
+              <div className="space-y-0.5">
                 <span className="text-[10px] font-mono tracking-widest uppercase text-primary font-bold block">
-                  OFFICIAL PHOTO GALLERY
+                  OFFICIAL BOTANICAL GALLERY
                 </span>
-                <h3 className="text-base sm:text-lg font-sans font-bold uppercase tracking-tight text-foreground">
+                <h3 className="text-base sm:text-lg font-sans font-bold uppercase tracking-tight text-foreground line-clamp-1">
                   {product.name}
                 </h3>
               </div>
 
-              <button
-                type="button"
-                onClick={() => setIsGalleryModalOpen(false)}
-                className="w-9 h-9 rounded-full bg-muted/70 hover:bg-muted flex items-center justify-center text-foreground transition-colors cursor-pointer"
-                aria-label="Close gallery"
-              >
-                <X className="w-4 h-4" />
-              </button>
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-mono font-bold bg-neutral-100 text-foreground px-2.5 py-1 rounded-full border border-border/60">
+                  {activeModalIndex + 1} / {images.length}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setIsGalleryModalOpen(false)}
+                  className="w-8 h-8 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-foreground transition-colors cursor-pointer"
+                  aria-label="Close gallery"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
             </div>
 
-            {/* Slide Stage with Aspect Ratio */}
-            <div className="relative aspect-[4/3] w-full bg-muted/30 rounded-2xl overflow-hidden border border-border/60 flex items-center justify-center">
+            {/* Slide Stage with Viewport Height Cap */}
+            <div className="relative w-full h-[40vh] sm:h-[48vh] md:h-[52vh] max-h-[500px] bg-neutral-950 rounded-2xl overflow-hidden border border-neutral-800 flex items-center justify-center shrink-0">
               <Image
                 src={images[activeModalIndex]}
                 alt={`${product.name} photo ${activeModalIndex + 1}`}
                 fill
-                sizes="(max-width: 768px) 100vw, 672px"
-                className="object-cover object-center transition-all duration-300"
+                sizes="(max-width: 768px) 100vw, 768px"
+                className="object-contain transition-all duration-300"
                 priority
               />
 
@@ -604,7 +609,7 @@ export function ProductDetailInteractive({
                   <button
                     type="button"
                     onClick={prevModalImage}
-                    className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 backdrop-blur-md border border-border/80 text-foreground flex items-center justify-center hover:bg-white shadow-md transition-all active:scale-95 cursor-pointer"
+                    className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-black/60 hover:bg-black/85 backdrop-blur-md text-white border border-white/20 flex items-center justify-center shadow-lg transition-all active:scale-95 cursor-pointer z-10"
                     aria-label="Previous image"
                   >
                     <ChevronLeft className="w-5 h-5" />
@@ -613,32 +618,27 @@ export function ProductDetailInteractive({
                   <button
                     type="button"
                     onClick={nextModalImage}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 backdrop-blur-md border border-border/80 text-foreground flex items-center justify-center hover:bg-white shadow-md transition-all active:scale-95 cursor-pointer"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-black/60 hover:bg-black/85 backdrop-blur-md text-white border border-white/20 flex items-center justify-center shadow-lg transition-all active:scale-95 cursor-pointer z-10"
                     aria-label="Next image"
                   >
                     <ChevronRight className="w-5 h-5" />
                   </button>
                 </>
               )}
-
-              {/* Counter Badge */}
-              <div className="absolute bottom-3 right-3 bg-black/75 backdrop-blur-md text-white text-[10px] font-mono px-3 py-1 rounded-full">
-                {activeModalIndex + 1} / {images.length}
-              </div>
             </div>
 
-            {/* Thumbnails Row */}
+            {/* Thumbnails Strip */}
             {images.length > 1 && (
-              <div className="flex items-center gap-2.5 overflow-x-auto pt-1 pb-1">
+              <div className="flex items-center gap-2 overflow-x-auto pt-1 pb-1 shrink-0 scrollbar-none">
                 {images.map((img, idx) => (
                   <button
                     key={img + idx}
                     type="button"
                     onClick={() => setActiveModalIndex(idx)}
-                    className={`relative w-16 h-16 rounded-xl overflow-hidden border-2 transition-all shrink-0 cursor-pointer ${
+                    className={`relative w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 transition-all shrink-0 cursor-pointer ${
                       activeModalIndex === idx
-                        ? 'border-primary ring-2 ring-primary/20 scale-105'
-                        : 'border-border/80 opacity-60 hover:opacity-100'
+                        ? 'border-primary ring-2 ring-primary/20 scale-102 opacity-100'
+                        : 'border-border/80 opacity-50 hover:opacity-90'
                     }`}
                   >
                     <Image

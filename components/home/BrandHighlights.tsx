@@ -31,22 +31,7 @@ export function BrandHighlights({ highlights: _highlights }: BrandHighlightsProp
                 />
 
                 {/* Subtle Gradient Scrim at bottom */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
-
-                {/* Microplastic-free Badge Overlay */}
-                <div className="absolute bottom-5 left-5 right-5 bg-surface/95 backdrop-blur-md p-3.5 rounded-xl border border-white/20 shadow-lg flex items-center justify-between">
-                  <div className="flex flex-col">
-                    <span className="text-[9px] font-mono tracking-[0.25em] uppercase text-muted-foreground font-semibold">
-                      PACKAGING INTEGRITY
-                    </span>
-                    <span className="text-xs font-bold uppercase tracking-wider text-foreground">
-                      100% Microplastic-Free
-                    </span>
-                  </div>
-                  <span className="text-[10px] uppercase font-mono tracking-wider px-2 py-0.5 rounded-full bg-primary/10 text-primary font-bold">
-                    Paper &amp; Muslin
-                  </span>
-                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent pointer-events-none" />
               </div>
 
               {/* Decorative Subtle Background Aura */}

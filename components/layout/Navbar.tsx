@@ -67,8 +67,20 @@ export function Navbar() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Detect if current page uses dark cinematic atmosphere (Home & Tentang Produk)
+  // Detect pages that start with a dark cinematic hero banner
+  const hasDarkHero =
+    pathname === '/' ||
+    pathname === '/tentang-produk' ||
+    pathname === '/katalog' ||
+    pathname === '/tentang-kami' ||
+    pathname.startsWith('/media-berita') ||
+    pathname === '/hubungi-kami';
+
   const isDarkPage = pathname === '/' || pathname === '/tentang-produk';
+
+  // Determine if navbar should render dark or light text/buttons based on scroll and page
+  const isDarkTheme =
+    (!isScrolled && hasDarkHero) || (isScrolled && isDarkPage);
 
   // Check if current route is active
   const isActive = (href: string) => {
@@ -83,16 +95,14 @@ export function Navbar() {
 
   return (
     <header
-      className={`${
-        isDarkPage ? 'fixed top-0 inset-x-0' : 'sticky top-0'
-      } z-40 w-full transition-all duration-300 ease-out font-sans ${
-        isDarkPage
+      className={`fixed top-0 inset-x-0 z-40 w-full transition-all duration-300 ease-out font-sans ${
+        isDarkTheme
           ? isScrolled
             ? 'bg-[#111216]/90 backdrop-blur-md border-b border-white/10 shadow-xl text-white'
             : 'bg-transparent border-b border-transparent text-white'
           : isScrolled
-          ? 'bg-white/95 backdrop-blur-md border-b border-border shadow-xs text-foreground'
-          : 'bg-white/90 backdrop-blur-xs border-b border-transparent text-foreground'
+          ? 'bg-white/95 backdrop-blur-md border-b border-border shadow-md text-foreground'
+          : 'bg-white/95 backdrop-blur-md border-b border-border shadow-xs text-foreground'
       }`}
     >
       <Container size="wide">
@@ -111,17 +121,10 @@ export function Navbar() {
             <div className="flex flex-col">
               <span
                 className={`font-black text-xs sm:text-sm tracking-[0.18em] uppercase leading-none transition-colors ${
-                  isDarkPage ? 'text-white' : 'text-foreground'
+                  isDarkTheme ? 'text-white' : 'text-foreground'
                 }`}
               >
                 CHANGKEER
-              </span>
-              <span
-                className={`text-[8px] sm:text-[9px] tracking-[0.24em] uppercase font-semibold mt-0.5 transition-colors ${
-                  isDarkPage ? 'text-white/70' : 'text-muted-foreground'
-                }`}
-              >
-                HERBAL CRAFT
               </span>
             </div>
           </Link>
@@ -135,7 +138,7 @@ export function Navbar() {
                   key={link.href}
                   href={link.href}
                   className={`text-[11px] font-semibold tracking-[0.18em] uppercase transition-colors py-2 relative ${
-                    isDarkPage
+                    isDarkTheme
                       ? active
                         ? 'text-white font-bold'
                         : 'text-white/75 hover:text-white'
@@ -148,7 +151,7 @@ export function Navbar() {
                   {active && (
                     <span
                       className={`absolute bottom-0 left-0 right-0 h-[2px] transition-colors ${
-                        isDarkPage ? 'bg-white' : 'bg-foreground'
+                        isDarkTheme ? 'bg-white' : 'bg-foreground'
                       }`}
                     />
                   )}
@@ -162,7 +165,7 @@ export function Navbar() {
             <Link
               href="/katalog"
               className={`hidden sm:inline-flex text-[11px] font-bold tracking-[0.16em] uppercase px-4 py-2 rounded-full transition-all items-center gap-1.5 shadow-xs active:scale-95 ${
-                isDarkPage
+                isDarkTheme
                   ? 'bg-white text-black hover:bg-neutral-200'
                   : 'bg-primary text-primary-foreground hover:bg-primary-hover'
               }`}
@@ -175,7 +178,7 @@ export function Navbar() {
             <button
               type="button"
               className={`lg:hidden inline-flex items-center gap-2 px-3.5 py-2 rounded-full border transition-all cursor-pointer ${
-                isDarkPage
+                isDarkTheme
                   ? 'border-white/20 text-white hover:bg-white/10 active:scale-95'
                   : 'border-border/80 text-foreground hover:bg-neutral-100 active:scale-95'
               }`}
@@ -225,9 +228,6 @@ export function Navbar() {
                   <div className="flex flex-col">
                     <span className="font-extrabold text-xs tracking-[0.18em] uppercase text-white">
                       CHANGKEER
-                    </span>
-                    <span className="text-[8px] tracking-[0.2em] uppercase text-white/60">
-                      HERBAL CRAFT &bull; JAKARTA
                     </span>
                   </div>
                 </Link>

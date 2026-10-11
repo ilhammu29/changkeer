@@ -51,7 +51,7 @@ export default async function ProductDetailPage({
     .slice(0, 3);
 
   return (
-    <div className="pt-4 sm:pt-6 pb-16 sm:pb-24 bg-white text-foreground">
+    <div className="pt-24 sm:pt-28 pb-16 sm:pb-24 bg-white text-foreground">
       <Container size="wide">
         {/* Product Visual Showcase & Interactive Order Section */}
         <ProductDetailInteractive

@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Container } from '@/components/ui/Container';
+import { TeamCarousel } from '@/components/about/TeamCarousel';
 import { ArrowUpRight, Sparkles, MapPin, ShieldCheck } from 'lucide-react';
 
 export const metadata: Metadata = {
@@ -138,46 +139,8 @@ export default function AboutChangkeerPage() {
             </p>
           </div>
 
-          {/* Redesigned 5-Member Architectural Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7">
-            {teamMembers.map((member) => (
-              <div
-                key={member.num}
-                className="group relative bg-white border border-border/80 rounded-2xl p-7 shadow-md hover:shadow-2xl transition-all duration-300 card-boundary flex flex-col justify-between space-y-6 hover:-translate-y-1"
-              >
-                {/* Top Row: Numeral & Circular Monogram Badge */}
-                <div className="flex items-center justify-between">
-                  <span className="font-mono text-2xl sm:text-3xl font-light text-primary/40 block group-hover:text-primary transition-colors">
-                    {member.num}
-                  </span>
-                  <div className="w-11 h-11 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center font-mono font-bold text-xs text-primary shadow-2xs group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300">
-                    {member.initials}
-                  </div>
-                </div>
-
-                {/* Center Content: Full Name & Co-founder Pill */}
-                <div className="space-y-2">
-                  <h3 className="font-sans font-black text-base sm:text-lg uppercase tracking-tight text-foreground leading-snug group-hover:text-primary transition-colors">
-                    {member.name}
-                  </h3>
-                  <div className="flex items-center gap-2">
-                    <span className="text-[10px] font-mono font-bold tracking-widest uppercase px-3 py-0.5 rounded-full bg-neutral-100 text-foreground border border-border/60">
-                      {member.role}
-                    </span>
-                  </div>
-                  <p className="text-xs text-muted-foreground leading-relaxed pt-1">
-                    {member.note}
-                  </p>
-                </div>
-
-                {/* Bottom Border Accent */}
-                <div className="pt-2 border-t border-border/60 flex items-center justify-between text-[10px] font-mono text-muted-foreground uppercase tracking-wider">
-                  <span>CHANGKEER FOUNDING TEAM</span>
-                  <span className="text-primary font-bold">JAKARTA</span>
-                </div>
-              </div>
-            ))}
-          </div>
+          {/* Looping 3D Center-Enlarging Team Carousel */}
+          <TeamCarousel members={teamMembers} />
         </Container>
       </section>
 

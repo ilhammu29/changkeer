@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowUpRight, Sparkles } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import { Product } from '@/types';
 
 interface ProductCardProps {
@@ -38,13 +38,6 @@ export function ProductCard({ product }: ProductCardProps) {
         {/* Subtle Gradient Scrim at Bottom for Minimal Text */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent pointer-events-none transition-opacity duration-300" />
 
-        {/* Top Badges */}
-        {product.is_featured && (
-          <div className="absolute top-3.5 left-3.5 bg-black/40 backdrop-blur-md border border-white/20 text-white text-[9px] font-mono tracking-widest uppercase px-2.5 py-1 rounded-full flex items-center gap-1 font-semibold">
-            <Sparkles className="w-2.5 h-2.5 text-amber-300" />
-            <span>FEATURED</span>
-          </div>
-        )}
 
         {/* Top Right Quick Action Icon */}
         <div className="absolute top-3.5 right-3.5 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 w-8 h-8 rounded-full bg-white/90 backdrop-blur-xs text-black flex items-center justify-center shadow-md">

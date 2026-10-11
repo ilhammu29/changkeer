@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { contactFormSchema, ContactFormData, getFieldErrors } from '@/lib/validation/schemas';
-import { CheckCircle2, AlertCircle, Send, Sparkles } from 'lucide-react';
+import { CheckCircle2, AlertCircle, Send } from 'lucide-react';
 
 const SUBJECT_PRESETS = [
   'Tea Blend Consultation',
@@ -93,8 +93,7 @@ export function ContactForm() {
   return (
     <div className="bg-white border border-border/80 rounded-3xl p-7 sm:p-10 lg:p-12 shadow-md card-boundary font-sans">
       <div className="mb-8 space-y-2">
-        <div className="flex items-center gap-2 text-primary text-[11px] font-mono tracking-widest uppercase font-semibold">
-          <Sparkles className="w-3.5 h-3.5" />
+        <div className="text-primary text-[11px] font-mono tracking-widest uppercase font-semibold">
           <span>OFFICIAL CORRESPONDENCE</span>
         </div>
         <h3 className="text-2xl sm:text-3xl font-sans font-black uppercase tracking-tight text-foreground">

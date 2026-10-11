@@ -59,13 +59,17 @@ export function FeaturedProducts({ products }: FeaturedProductsProps) {
 
   const scrollToIndex = (index: number) => {
     const el = carouselRef.current;
-    if (!el || !el.children[index]) return;
+    if (!el) return;
 
-    const targetChild = el.children[index] as HTMLElement;
+    const children = Array.from(el.children) as HTMLElement[];
+    if (!children[index]) return;
+
+    const targetChild = children[index];
     el.scrollTo({
       left: targetChild.offsetLeft - el.offsetLeft,
       behavior: 'smooth',
     });
+    setActiveIndex(index);
   };
 
   // Auto-glide carousel effect with pause on hover
@@ -229,19 +233,23 @@ export function FeaturedProducts({ products }: FeaturedProductsProps) {
 
           {/* Dots Indicator for Carousel Navigation */}
           {displayProducts.length > 1 && (
-            <div className="flex justify-center items-center gap-1.5 mt-8">
+            <div className="relative z-20 flex justify-center items-center gap-1 mt-6">
               {displayProducts.map((p, idx) => (
                 <button
                   key={p.id}
                   type="button"
                   onClick={() => scrollToIndex(idx)}
-                  className={`h-1.5 rounded-full transition-all duration-300 ${
-                    activeIndex === idx
-                      ? 'w-7 bg-foreground'
-                      : 'w-1.5 bg-border-strong/40 hover:bg-border-strong'
-                  }`}
+                  className="p-2.5 flex items-center justify-center cursor-pointer group focus:outline-none"
                   aria-label={`Open product number ${idx + 1}`}
-                />
+                >
+                  <span
+                    className={`h-2 rounded-full transition-all duration-300 block ${
+                      activeIndex === idx
+                        ? 'w-8 bg-foreground shadow-xs'
+                        : 'w-2 bg-neutral-300 group-hover:bg-neutral-500'
+                    }`}
+                  />
+                </button>
               ))}
             </div>
           )}
