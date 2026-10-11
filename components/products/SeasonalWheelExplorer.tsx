@@ -6,9 +6,8 @@ import {
   ChevronLeft,
   ChevronRight,
   Sparkles,
-  Coffee,
-  ArrowRight,
   Minimize2,
+  ArrowUpRight,
 } from 'lucide-react';
 import {
   SOLAR_TERM_BLENDS,
@@ -55,11 +54,17 @@ const getLabelCoords = (i: number): [number, number] => {
 
 export function SeasonalWheelExplorer() {
   // Default to term 16: Cold Dew (First Rain) which is currently brewing
-  const [selectedTermIndex, setSelectedTermIndex] = useState<number>(16);
+  const defaultIdx = 16;
+  const [selectedTermIndex, setSelectedTermIndex] = useState<number>(defaultIdx);
   const [hoveredTermIndex, setHoveredTermIndex] = useState<number | null>(null);
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
-  // Swipe / Drag handling for product navigation
+  // Shortest path rotation angle for the dial
+  const [rotationAngle, setRotationAngle] = useState<number>(
+    -(defaultIdx * 15 + 7.5)
+  );
+
+  // Touch / Drag handling for product navigation
   const [dragOffset, setDragOffset] = useState<number>(0);
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const startXRef = useRef<number | null>(null);
@@ -79,14 +84,21 @@ export function SeasonalWheelExplorer() {
     return idx >= 0 ? idx : 0;
   }, [seasonBlends, currentTerm.term]);
 
-  const activeSeasonConfig = useMemo(
-    () => SEASONS_CONFIG.find((s) => s.id === activeSeason) || SEASONS_CONFIG[0],
-    [activeSeason]
-  );
+  // Compute shortest angular path for smooth dial rotation
+  const computeShortestRotation = (currentAngle: number, targetIdx: number) => {
+    const desiredRaw = -(targetIdx * 15 + 7.5);
+    const currentMod = ((currentAngle % 360) + 360) % 360;
+    const desiredMod = ((desiredRaw % 360) + 360) % 360;
+    let delta = desiredMod - currentMod;
+    if (delta > 180) delta -= 360;
+    if (delta < -180) delta += 360;
+    return currentAngle + delta;
+  };
 
   const handleSelectTerm = useCallback((idx: number) => {
     setSelectedTermIndex(idx);
     setIsExpanded(true);
+    setRotationAngle((prev) => computeShortestRotation(prev, idx));
   }, []);
 
   const handleSelectSeason = useCallback(
@@ -99,11 +111,10 @@ export function SeasonalWheelExplorer() {
           ? firstTermIdx
           : SOLAR_TERM_BLENDS.findIndex((b) => b.season === seasonId);
       if (targetIdx >= 0) {
-        setSelectedTermIndex(targetIdx);
-        setIsExpanded(true);
+        handleSelectTerm(targetIdx);
       }
     },
-    []
+    [handleSelectTerm]
   );
 
   const handleNextBlend = useCallback(() => {
@@ -112,8 +123,8 @@ export function SeasonalWheelExplorer() {
     const fullIdx = SOLAR_TERM_BLENDS.findIndex(
       (b) => b.term === targetBlend.term
     );
-    if (fullIdx >= 0) setSelectedTermIndex(fullIdx);
-  }, [currentSeasonIndex, seasonBlends]);
+    if (fullIdx >= 0) handleSelectTerm(fullIdx);
+  }, [currentSeasonIndex, seasonBlends, handleSelectTerm]);
 
   const handlePrevBlend = useCallback(() => {
     const prevSeasonIdx =
@@ -122,8 +133,8 @@ export function SeasonalWheelExplorer() {
     const fullIdx = SOLAR_TERM_BLENDS.findIndex(
       (b) => b.term === targetBlend.term
     );
-    if (fullIdx >= 0) setSelectedTermIndex(fullIdx);
-  }, [currentSeasonIndex, seasonBlends]);
+    if (fullIdx >= 0) handleSelectTerm(fullIdx);
+  }, [currentSeasonIndex, seasonBlends, handleSelectTerm]);
 
   // Keyboard navigation
   useEffect(() => {
@@ -131,12 +142,13 @@ export function SeasonalWheelExplorer() {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowRight') handleNextBlend();
       if (e.key === 'ArrowLeft') handlePrevBlend();
+      if (e.key === 'Escape') setIsExpanded(false);
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isExpanded, handleNextBlend, handlePrevBlend]);
 
-  // Touch / Drag events for product
+  // Touch / Drag events for mobile swiping
   const onDragStart = (clientX: number) => {
     startXRef.current = clientX;
     setIsDragging(true);
@@ -144,8 +156,7 @@ export function SeasonalWheelExplorer() {
 
   const onDragMove = (clientX: number) => {
     if (!isDragging || startXRef.current === null) return;
-    const diff = clientX - startXRef.current;
-    setDragOffset(diff * 0.4);
+    setDragOffset(clientX - startXRef.current);
   };
 
   const onDragEnd = () => {
@@ -201,7 +212,7 @@ export function SeasonalWheelExplorer() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header: Centered & Clean (No Badge) */}
-        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16 space-y-3">
+        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14 space-y-3">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-sans font-black uppercase tracking-tight text-foreground">
             Taste The 24 Solar Terms
           </h2>
@@ -209,11 +220,11 @@ export function SeasonalWheelExplorer() {
             Every two weeks, a new seasonal blend arrives matched to Jakarta&apos;s climate.
             {!isExpanded ? (
               <span className="font-semibold text-primary ml-1">
-                Click on the wheel or select a season below to explore blends.
+                Click on the wheel to reveal the seasonal blend in the center.
               </span>
             ) : (
               <span className="text-foreground ml-1">
-                Click segments on the wheel to switch blends or swipe through the products.
+                Click any segment on the dial to rotate the wheel to that blend.
               </span>
             )}
           </p>
@@ -225,7 +236,11 @@ export function SeasonalWheelExplorer() {
               return (
                 <button
                   key={s.id}
-                  onClick={() => handleSelectSeason(s.id as 'spring' | 'summer' | 'autumn' | 'winter')}
+                  onClick={() =>
+                    handleSelectSeason(
+                      s.id as 'spring' | 'summer' | 'autumn' | 'winter'
+                    )
+                  }
                   className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold tracking-wide transition-all duration-500 shadow-xs cursor-pointer ${
                     isSeasonActive
                       ? 'bg-neutral-900 text-white ring-2 ring-neutral-900/30 font-bold scale-105'
@@ -237,465 +252,379 @@ export function SeasonalWheelExplorer() {
                     style={{ backgroundColor: s.color }}
                   />
                   <span>{s.name}</span>
-                  <span className="text-[11px] opacity-75 font-serif">{s.chinese}</span>
+                  <span className="text-[11px] opacity-75 font-serif">
+                    {s.chinese}
+                  </span>
                 </button>
               );
             })}
-
-            {isExpanded && (
-              <button
-                onClick={() => setIsExpanded(false)}
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white/80 hover:bg-white text-neutral-700 border border-neutral-200/80 text-xs font-medium transition-all duration-300 ml-1 cursor-pointer shadow-xs"
-                title="Collapse view and re-center the wheel"
-              >
-                <Minimize2 className="w-3.5 h-3.5" />
-                <span>Center View</span>
-              </button>
-            )}
           </div>
         </div>
 
-        {/* Dynamic Interactive Stage: Smooth Interpolated Layout Movement */}
-        <div className="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-14 transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)]">
-          {/* ========================================================
-              WHEEL CONTAINER: Centered Initially, Transitions to Left Smoothly
-              ======================================================== */}
+        {/* ========================================================
+            CENTERED INTERACTIVE SEASONAL WHEEL WITH DEAD-CENTER PRODUCT
+            - Scales up smoothly on click ("agak membesar")
+            - Dead-center product appearance with cutout image & price
+            - Translucent bottom gradient ("lingkaran bagian bawah agak transparan")
+            - Smooth rotation to active term ("lingkaran itu berputar smooth gitu")
+            ======================================================== */}
+        <div className="flex flex-col items-center justify-center w-full my-4">
           <div
-            className={`flex flex-col items-center justify-center relative transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+            className={`relative flex items-center justify-center transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
               isExpanded
-                ? 'w-full lg:w-[420px] shrink-0'
-                : 'w-full max-w-md mx-auto'
-            }`}
+                ? 'w-[360px] sm:w-[470px] md:w-[520px] lg:w-[540px]'
+                : 'w-[320px] sm:w-[380px] md:w-[420px]'
+            } aspect-square`}
           >
-            {/* Seasonal Wheel with Dynamic 4-Season Background Layer */}
-            <div className="relative w-full flex items-center justify-center">
-              <div className="relative w-full max-w-[340px] sm:max-w-[400px] aspect-square flex items-center justify-center drop-shadow-md">
-                {/* Glowing Season Aura Halo framing the circle */}
-                <div
-                  className="absolute -inset-3 sm:-inset-5 rounded-full blur-[26px] pointer-events-none -z-10 transition-all duration-1200 ease-in-out opacity-55"
-                  style={{
-                    background: currentTerm.glowColor.replace('0.25', '0.65').replace('0.35', '0.75'),
-                  }}
-                />
+            {/* 1. Glowing Season Aura Halo framing the circle */}
+            <div
+              className="absolute -inset-3 sm:-inset-6 rounded-full blur-[28px] sm:blur-[36px] pointer-events-none -z-10 transition-all duration-1200 ease-in-out opacity-60"
+              style={{
+                background: currentTerm.glowColor
+                  .replace('0.25', '0.65')
+                  .replace('0.35', '0.75'),
+              }}
+            />
 
-                {/* 4-Season Photographic Background on the Circle (Smooth 1200ms Crossfade) */}
-                <div className="absolute inset-0 rounded-full overflow-hidden pointer-events-none z-0 shadow-inner">
-                  {SEASON_BACKGROUNDS.map((bg) => {
-                    const isActive = activeSeason === bg.id;
-                    return (
-                      <div
-                        key={bg.id}
-                        className={`absolute inset-0 transition-all duration-1200 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                          isActive
-                            ? 'opacity-100 scale-100'
-                            : 'opacity-0 scale-105 pointer-events-none'
-                        }`}
-                      >
-                        <Image
-                          src={bg.image}
-                          alt={`${bg.name} season background`}
-                          fill
-                          sizes="(max-width: 640px) 340px, 400px"
-                          className="object-cover object-center filter brightness-[0.94] contrast-[1.08]"
-                          priority
-                        />
-                        {/* Soft atmospheric overlay */}
-                        <div className="absolute inset-0 bg-white/20 backdrop-blur-[0.5px]" />
-                        <div className="absolute inset-0 bg-radial from-transparent via-black/10 to-black/35" />
-                      </div>
-                    );
-                  })}
-                </div>
-
-                {/* SVG Wheel overlay on top of the seasonal background */}
-                <svg
-                  viewBox="0 0 400 400"
-                  className="w-full h-full overflow-visible transition-transform duration-700 ease-out relative z-10"
-                  role="group"
-                  aria-label="24 Solar Terms Seasonal Wheel Calendar"
-                >
-                  {/* 24 Segments */}
-                  {SOLAR_TERM_BLENDS.map((term, i) => {
-                    const isSelected = selectedTermIndex === i;
-                    const isHovered = hoveredTermIndex === i;
-                    const isNow = term.isBrewingNow;
-                    const [lx, ly] = getLabelCoords(i);
-                    const seasonCfg = SEASONS_CONFIG.find(
-                      (s) => s.id === term.season
-                    );
-                    const baseFill = isNow ? '#B3305A' : seasonCfg?.color || '#888';
-
-                    return (
-                      <g
-                        key={term.term}
-                        onClick={() => handleSelectTerm(i)}
-                        onMouseEnter={() => setHoveredTermIndex(i)}
-                        onMouseLeave={() => setHoveredTermIndex(null)}
-                        className="cursor-pointer outline-none focus:outline-none transition-transform"
-                        tabIndex={0}
-                        role="button"
-                        aria-label={`${term.term} (${term.termChinese}): ${term.blend}`}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter' || e.key === ' ') {
-                            e.preventDefault();
-                            handleSelectTerm(i);
-                          }
-                        }}
-                      >
-                        {/* Segment Arc */}
-                        <path
-                          d={getArcPath(i)}
-                          fill={baseFill}
-                          fillOpacity={isSelected ? 1 : isHovered ? 0.78 : 0.42}
-                          stroke={
-                            isSelected
-                              ? '#111827'
-                              : isNow
-                              ? '#B3305A'
-                              : '#ffffff'
-                          }
-                          strokeWidth={isSelected ? 2.5 : 1.5}
-                          className="transition-all duration-300"
-                        />
-                        {/* Chinese Character Label */}
-                        <text
-                          x={lx}
-                          y={ly}
-                          textAnchor="middle"
-                          dominantBaseline="central"
-                          fill={
-                            isSelected || isNow
-                              ? '#ffffff'
-                              : '#1D2A24'
-                          }
-                          fontSize={11.5}
-                          fontWeight={isSelected || isNow ? 700 : 500}
-                          className="font-serif select-none pointer-events-none transition-colors"
-                        >
-                          {term.termChinese}
-                        </text>
-                      </g>
-                    );
-                  })}
-
-                  {/* Center Hub */}
-                  <circle
-                    cx={C}
-                    cy={C}
-                    r={RI - 8}
-                    fill="#FFFFFF"
-                    fillOpacity="0.88"
-                    stroke="#E5E7EB"
-                    strokeWidth="1.5"
-                    className="drop-shadow-xs cursor-pointer"
-                    onClick={() => {
-                      if (!isExpanded) setIsExpanded(true);
-                    }}
-                  />
-
-                  {/* Inner Ring Glow if Selected is Brewing Now */}
-                  {currentTerm.isBrewingNow && (
-                    <circle
-                      cx={C}
-                      cy={C}
-                      r={RI - 12}
-                      fill="none"
-                      stroke="#B3305A"
-                      strokeWidth="1.2"
-                      strokeDasharray="4 3"
-                      className="animate-spin-slow opacity-60"
-                    />
-                  )}
-
-                  {/* Center Text Group */}
-                  <g
-                    className="cursor-pointer select-none"
-                    onClick={() => {
-                      if (!isExpanded) setIsExpanded(true);
-                    }}
+            {/* 2. 4-Season Photographic Background on the Circle (Smooth 1200ms Crossfade) */}
+            <div className="absolute inset-0 rounded-full overflow-hidden pointer-events-none z-0 shadow-inner">
+              {SEASON_BACKGROUNDS.map((bg) => {
+                const isActive = activeSeason === bg.id;
+                return (
+                  <div
+                    key={bg.id}
+                    className={`absolute inset-0 transition-all duration-1200 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                      isActive
+                        ? 'opacity-100 scale-100'
+                        : 'opacity-0 scale-105 pointer-events-none'
+                    }`}
                   >
-                    {/* Status / Timing */}
-                    <text
-                      x={C}
-                      y={150}
-                      textAnchor="middle"
-                      fill={currentTerm.isBrewingNow ? '#B3305A' : '#6B7280'}
-                      fontSize={10}
-                      fontWeight={700}
-                      letterSpacing="0.14em"
-                      className="font-mono uppercase"
-                    >
-                      {currentTerm.isBrewingNow
-                        ? 'NOW BREWING'
-                        : `FROM ${currentTerm.starts.toUpperCase()}`}
-                    </text>
+                    <Image
+                      src={bg.image}
+                      alt={`${bg.name} season background`}
+                      fill
+                      sizes="(max-width: 640px) 360px, (max-width: 1024px) 470px, 540px"
+                      className="object-cover object-center filter brightness-[0.94] contrast-[1.08]"
+                      priority
+                    />
+                    {/* Soft atmospheric overlay */}
+                    <div className="absolute inset-0 bg-white/20 backdrop-blur-[0.5px]" />
+                    <div className="absolute inset-0 bg-radial from-transparent via-black/10 to-black/35" />
+                  </div>
+                );
+              })}
 
-                    {/* Chinese Glyph */}
-                    <text
-                      x={C}
-                      y={186}
-                      textAnchor="middle"
-                      fill={currentTerm.isBrewingNow ? '#B3305A' : '#111827'}
-                      fontSize={26}
-                      fontWeight={700}
-                      className="font-serif"
-                    >
-                      {currentTerm.termChinese}
-                    </text>
-
-                    {/* Blend Name */}
-                    <text
-                      x={C}
-                      y={216}
-                      textAnchor="middle"
-                      fill="#111827"
-                      fontSize={17}
-                      fontWeight={800}
-                      className="font-sans"
-                    >
-                      {currentTerm.blend}
-                    </text>
-
-                    {/* Term Details */}
-                    <text
-                      x={C}
-                      y={238}
-                      textAnchor="middle"
-                      fill="#6B7280"
-                      fontSize={11}
-                      fontWeight={500}
-                      className="font-mono"
-                    >
-                      {currentTerm.term} · {currentTerm.starts}
-                    </text>
-
-                    {/* Micro Interaction Hint */}
-                    <text
-                      x={C}
-                      y={258}
-                      textAnchor="middle"
-                      fill="#9CA3AF"
-                      fontSize={9.5}
-                      fontWeight={500}
-                      className="font-mono uppercase tracking-widest"
-                    >
-                      {isExpanded ? 'Season Cycle' : 'Click to explore →'}
-                    </text>
-                  </g>
-                </svg>
-              </div>
+              {/* Bottom Translucency Gradient on Circle: "lingkaran bagian bawah agak transparan" */}
+              <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-white/40 via-white/15 to-transparent pointer-events-none" />
             </div>
 
-            {/* Wheel Legend */}
-            <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-xs text-muted-foreground mt-4 relative z-10">
-              <span className="inline-flex items-center gap-1.5">
-                <i className="w-2.5 h-2.5 rounded-full bg-[#7DAE77]" />
-                Spring
-              </span>
-              <span className="inline-flex items-center gap-1.5">
-                <i className="w-2.5 h-2.5 rounded-full bg-[#E2849B]" />
-                Summer
-              </span>
-              <span className="inline-flex items-center gap-1.5">
-                <i className="w-2.5 h-2.5 rounded-full bg-[#E2AA3E]" />
-                Autumn
-              </span>
-              <span className="inline-flex items-center gap-1.5">
-                <i className="w-2.5 h-2.5 rounded-full bg-[#88A2B5]" />
-                Winter
-              </span>
-              <span className="inline-flex items-center gap-1.5 font-semibold text-foreground">
-                <i className="w-2.5 h-2.5 rounded-full bg-[#B3305A]" />
-                Brewing now
-              </span>
-            </div>
+            {/* 3. SVG Wheel Layer */}
+            <svg
+              viewBox="0 0 400 400"
+              className="w-full h-full overflow-visible relative z-10 select-none"
+              role="group"
+              aria-label="24 Solar Terms Seasonal Wheel Calendar"
+            >
+              <defs>
+                {/* Center Hub Translucent Bottom Gradient */}
+                <linearGradient id="centerHubGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.96" />
+                  <stop offset="42%" stopColor="#FFFFFF" stopOpacity="0.88" />
+                  <stop offset="72%" stopColor="#FFFFFF" stopOpacity="0.45" />
+                  <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0.12" />
+                </linearGradient>
+              </defs>
 
-            {/* Call to action when centered */}
-            {!isExpanded && (
-              <div className="mt-6 text-center relative z-10">
-                <button
-                  onClick={() => setIsExpanded(true)}
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-neutral-900 hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-wider transition-all duration-300 hover:gap-3 shadow-md hover:shadow-lg cursor-pointer"
-                >
-                  <span>Explore {activeSeasonConfig.name} Blends</span>
-                  <ArrowRight className="w-4 h-4 text-primary" />
-                </button>
-              </div>
-            )}
-          </div>
-
-          {/* ========================================================
-              RIGHT COLUMN: PURE TRANSPARENT PRODUCT DISPLAY (NO CARDBOX)
-              Smooth 1000ms Continuous Slide-In with Season Aura
-              ======================================================== */}
-          <div
-            className={`transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-              isExpanded
-                ? 'w-full lg:flex-1 opacity-100 translate-x-0 scale-100 max-h-[900px] visible pointer-events-auto'
-                : 'w-0 lg:w-0 opacity-0 translate-x-12 scale-95 max-h-0 invisible pointer-events-none overflow-hidden'
-            }`}
-          >
-            <div className="w-full flex flex-col items-center justify-center text-center py-6 lg:py-2">
-              <div
-                key={currentTerm.term}
-                className="relative flex flex-col items-center justify-center w-full max-w-md transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] animate-fade-in-scale"
-                onTouchStart={(e) => onDragStart(e.touches[0].clientX)}
-                onTouchMove={(e) => onDragMove(e.touches[0].clientX)}
-                onTouchEnd={onDragEnd}
-                onMouseDown={(e) => onDragStart(e.clientX)}
-                onMouseMove={(e) => onDragMove(e.clientX)}
-                onMouseUp={onDragEnd}
+              {/* ROTATING GROUP: 24 Segments Rotate Smoothly When Term is Clicked */}
+              <g
                 style={{
-                  transform: isDragging ? `translateX(${dragOffset}px)` : undefined,
+                  transform: `rotate(${rotationAngle}deg)`,
+                  transformOrigin: '200px 200px',
+                  transition: 'transform 900ms cubic-bezier(0.16, 1, 0.3, 1)',
                 }}
               >
-                {/* 1. SIMBOL (Season Badge + Solar Term Chinese Glyph Symbol) */}
-                <div className="flex flex-col items-center gap-1.5 mb-2 sm:mb-3 transition-all duration-700 ease-out animate-fade-in-scale">
-                  <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/90 border border-neutral-200/80 text-foreground text-xs font-mono font-bold tracking-wider uppercase shadow-2xs">
-                    <span
-                      className="w-2.5 h-2.5 rounded-full inline-block"
-                      style={{ backgroundColor: currentTerm.ringColor }}
-                    />
-                    <span>
-                      {currentTerm.seasonName} · {currentTerm.term}
-                    </span>
-                    <span className="text-muted-foreground font-mono">
-                      ({currentTerm.starts})
-                    </span>
-                  </div>
+                {SOLAR_TERM_BLENDS.map((term, i) => {
+                  const isSelected = selectedTermIndex === i;
+                  const isHovered = hoveredTermIndex === i;
+                  const isNow = term.isBrewingNow;
+                  const [lx, ly] = getLabelCoords(i);
+                  const seasonCfg = SEASONS_CONFIG.find(
+                    (s) => s.id === term.season
+                  );
+                  const baseFill = isNow ? '#B3305A' : seasonCfg?.color || '#888';
 
-                  {/* Elegant Large Chinese Glyph Symbol */}
-                  <div
-                    className="text-4xl sm:text-5xl font-serif font-black tracking-tight select-none mt-1 transition-colors duration-700"
+                  return (
+                    <g
+                      key={term.term}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleSelectTerm(i);
+                      }}
+                      onMouseEnter={() => setHoveredTermIndex(i)}
+                      onMouseLeave={() => setHoveredTermIndex(null)}
+                      className="cursor-pointer outline-none focus:outline-none transition-transform"
+                      tabIndex={0}
+                      role="button"
+                      aria-label={`${term.term} (${term.termChinese}): ${term.blend}`}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          handleSelectTerm(i);
+                        }
+                      }}
+                    >
+                      {/* Segment Arc */}
+                      <path
+                        d={getArcPath(i)}
+                        fill={baseFill}
+                        fillOpacity={isSelected ? 1 : isHovered ? 0.78 : 0.42}
+                        stroke={
+                          isSelected
+                            ? '#111827'
+                            : isNow
+                            ? '#B3305A'
+                            : '#ffffff'
+                        }
+                        strokeWidth={isSelected ? 2.5 : 1.5}
+                        className="transition-all duration-300"
+                      />
+                      {/* Chinese Character Label */}
+                      <text
+                        x={lx}
+                        y={ly}
+                        textAnchor="middle"
+                        dominantBaseline="central"
+                        fill={
+                          isSelected || isNow ? '#ffffff' : '#1D2A24'
+                        }
+                        fontSize={11.5}
+                        fontWeight={isSelected || isNow ? 700 : 500}
+                        className="font-serif select-none pointer-events-none transition-colors"
+                      >
+                        {term.termChinese}
+                      </text>
+                    </g>
+                  );
+                })}
+              </g>
+
+              {/* NON-ROTATING CENTER HUB: Translucent Bottom ("lingkaran bagian bawah agak transparan") */}
+              <circle
+                cx={C}
+                cy={C}
+                r={RI - 4}
+                fill="url(#centerHubGradient)"
+                stroke="rgba(255, 255, 255, 0.85)"
+                strokeWidth="1.5"
+                className="drop-shadow-xs cursor-pointer"
+                onClick={() => {
+                  if (!isExpanded) setIsExpanded(true);
+                }}
+              />
+
+              {/* Inner Ring Glow if Selected is Brewing Now */}
+              {currentTerm.isBrewingNow && (
+                <circle
+                  cx={C}
+                  cy={C}
+                  r={RI - 8}
+                  fill="none"
+                  stroke="#B3305A"
+                  strokeWidth="1.2"
+                  strokeDasharray="4 3"
+                  className="animate-spin-slow opacity-60 pointer-events-none"
+                />
+              )}
+
+              {/* Top Pointer Needle indicating selected term at 12 o'clock */}
+              <g className="pointer-events-none">
+                <polygon
+                  points="195,6 205,6 200,16"
+                  fill={currentTerm.ringColor}
+                  className="transition-colors duration-700"
+                />
+                <circle cx="200" cy="5" r="2" fill="#FFFFFF" />
+              </g>
+            </svg>
+
+            {/* 4. DEAD-CENTER PRODUCT / CONTENT DISPLAY (HTML OVERLAY) */}
+            <div
+              className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full flex flex-col items-center justify-center text-center z-20 pointer-events-auto transition-all duration-700 ${
+                isExpanded
+                  ? 'w-[68%] h-[68%] p-2 sm:p-3'
+                  : 'w-[64%] h-[64%] p-3 sm:p-4 cursor-pointer'
+              }`}
+              onClick={() => {
+                if (!isExpanded) setIsExpanded(true);
+              }}
+            >
+              {!isExpanded ? (
+                // Compact Initial State Before Click
+                <div className="flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-700 animate-fade-in-scale group">
+                  <span
+                    className="text-[9px] sm:text-[10px] font-mono font-bold tracking-[0.2em] uppercase transition-colors"
+                    style={{
+                      color: currentTerm.isBrewingNow ? '#B3305A' : '#6B7280',
+                    }}
+                  >
+                    {currentTerm.isBrewingNow
+                      ? 'NOW BREWING'
+                      : `FROM ${currentTerm.starts.toUpperCase()}`}
+                  </span>
+
+                  <span
+                    className="text-3xl sm:text-4xl md:text-5xl font-serif font-black tracking-tight my-1 transition-transform group-hover:scale-110 duration-500"
                     style={{ color: currentTerm.ringColor }}
                   >
                     {currentTerm.termChinese}
-                  </div>
-                </div>
+                  </span>
 
-                {/* 2. GAMBAR PRODUK TANPA BACKGROUND DENGAN AURA SESUAI SEASON */}
-                <div className="relative w-full flex items-center justify-center my-3 sm:my-4 min-h-[260px] sm:min-h-[300px]">
-                  {/* Dynamic Glowing Season Aura behind cutout image */}
-                  <div
-                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[260px] sm:w-[320px] md:w-[360px] h-[260px] sm:h-[320px] md:h-[360px] rounded-full blur-[70px] sm:blur-[90px] pointer-events-none -z-10 transition-all duration-1200 ease-out opacity-85"
-                    style={{
-                      background: currentTerm.glowColor
-                        .replace('0.25', '0.55')
-                        .replace('0.35', '0.65'),
-                    }}
-                  />
-
-                  {/* Concentric Subtle Halo Rings matching season */}
-                  <div
-                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[220px] sm:w-[270px] md:w-[310px] h-[220px] sm:h-[270px] md:h-[310px] rounded-full border border-neutral-200/80 pointer-events-none -z-10 transition-all duration-1000"
-                    style={{
-                      boxShadow: `0 0 55px -10px ${currentTerm.glowColor}`,
-                    }}
-                  />
-                  <div
-                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140px] sm:w-[170px] md:w-[190px] h-[140px] sm:h-[170px] md:h-[190px] rounded-full border-2 pointer-events-none -z-10 opacity-50 transition-colors duration-1000"
-                    style={{ borderColor: currentTerm.ringColor }}
-                  />
-
-                  {/* Cutout Product Image (No Background) with Smooth Float */}
-                  <div className="relative w-[210px] sm:w-[260px] md:w-[290px] h-[250px] sm:h-[300px] md:h-[330px] flex items-center justify-center transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]">
-                    <Image
-                      src={currentTerm.image}
-                      alt={currentTerm.blend}
-                      fill
-                      sizes="(max-width: 640px) 210px, (max-width: 1024px) 260px, 290px"
-                      className="object-contain drop-shadow-[0_22px_38px_rgba(0,0,0,0.22)] filter hover:scale-105 transition-transform duration-700 ease-out pointer-events-none"
-                      priority
-                    />
-                  </div>
-                </div>
-
-                {/* 3. JUDUL PRODUK */}
-                <div className="space-y-1 mt-1 transition-all duration-700 animate-in fade-in slide-in-from-bottom-3">
-                  <h3 className="text-2xl sm:text-3xl md:text-4xl font-sans font-black uppercase tracking-tight text-foreground leading-tight">
+                  <h3 className="text-base sm:text-lg font-sans font-black uppercase tracking-tight text-foreground">
                     {currentTerm.blend}
                   </h3>
-                  {currentTerm.isBrewingNow && (
-                    <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-[#B3305A] text-white text-[10px] font-mono font-bold uppercase tracking-wider shadow-xs">
-                      <Sparkles className="w-3 h-3" />
-                      <span>Brewing Now</span>
-                    </span>
-                  )}
+
+                  <p className="text-[10px] sm:text-xs font-mono text-muted-foreground mt-0.5">
+                    {currentTerm.term} · {currentTerm.starts}
+                  </p>
+
+                  <div className="mt-2.5 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/90 border border-neutral-200/80 text-[10px] font-mono font-semibold uppercase tracking-wider text-foreground shadow-2xs group-hover:bg-neutral-900 group-hover:text-white transition-all">
+                    <Sparkles className="w-3 h-3 text-primary group-hover:text-amber-300" />
+                    <span>Click to reveal blend</span>
+                  </div>
                 </div>
-
-                {/* 4. HARGA PRODUK */}
-                <div className="mt-3 flex items-center justify-center gap-2.5 font-mono text-sm sm:text-base font-bold text-foreground transition-all duration-700 animate-in fade-in slide-in-from-bottom-4">
-                  <span className="px-3.5 py-1.5 rounded-full bg-white/90 border border-neutral-200/80 text-neutral-900 shadow-2xs">
-                    Hot: {currentTerm.hotPrice}{' '}
-                    <span className="text-[11px] font-normal text-muted-foreground">
-                      (350ml)
-                    </span>
-                  </span>
-                  <span className="text-muted-foreground/60">·</span>
-                  <span className="px-3.5 py-1.5 rounded-full bg-white/90 border border-neutral-200/80 text-neutral-900 shadow-2xs">
-                    Iced: {currentTerm.icedPrice}{' '}
-                    <span className="text-[11px] font-normal text-muted-foreground">
-                      (450ml)
-                    </span>
-                  </span>
-                </div>
-
-                {/* Minimalist Navigation Controls: Prev/Next & Stepper Dots */}
-                <div className="flex items-center justify-center gap-4 mt-6">
-                  <button
-                    onClick={handlePrevBlend}
-                    className="w-10 h-10 rounded-full bg-white/90 hover:bg-white active:scale-95 text-neutral-800 flex items-center justify-center transition-all cursor-pointer border border-neutral-200/80 shadow-2xs"
-                    aria-label="Previous Blend"
-                  >
-                    <ChevronLeft className="w-5 h-5" />
-                  </button>
-
-                  {/* Stepper Dots */}
-                  <div className="flex items-center gap-2">
-                    {seasonBlends.map((blend) => {
-                      const isActive = blend.term === currentTerm.term;
-                      return (
-                        <button
-                          key={blend.term}
-                          onClick={() => {
-                            const fullIdx = SOLAR_TERM_BLENDS.findIndex(
-                              (b) => b.term === blend.term
-                            );
-                            if (fullIdx >= 0) setSelectedTermIndex(fullIdx);
-                          }}
-                          className={`transition-all duration-500 rounded-full cursor-pointer ${
-                            isActive
-                              ? 'w-7 h-2 bg-neutral-900'
-                              : 'w-2 h-2 bg-neutral-300 hover:bg-neutral-400'
-                          }`}
-                          aria-label={`Go to ${blend.blend}`}
-                        />
-                      );
-                    })}
+              ) : (
+                // Full Expanded Product State Inside the Dead-Center of the Wheel
+                <div
+                  key={currentTerm.term}
+                  className="relative flex flex-col items-center justify-between w-full h-full p-1 sm:p-2 transition-all duration-700 animate-fade-in-scale"
+                  onTouchStart={(e) => onDragStart(e.touches[0].clientX)}
+                  onTouchMove={(e) => onDragMove(e.touches[0].clientX)}
+                  onTouchEnd={onDragEnd}
+                  style={{
+                    transform: isDragging
+                      ? `translateX(${dragOffset}px)`
+                      : undefined,
+                  }}
+                >
+                  {/* Season Badge & Chinese Character */}
+                  <div className="flex flex-col items-center gap-0.5 pt-0.5">
+                    <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/95 border border-neutral-200/80 text-foreground text-[10px] sm:text-[11px] font-mono font-bold tracking-wider uppercase shadow-2xs">
+                      <span
+                        className="w-2 h-2 rounded-full inline-block"
+                        style={{ backgroundColor: currentTerm.ringColor }}
+                      />
+                      <span>
+                        {currentTerm.seasonName} · {currentTerm.term}
+                      </span>
+                      <span className="text-[10px] opacity-75 font-serif font-bold">
+                        ({currentTerm.termChinese})
+                      </span>
+                    </div>
                   </div>
 
+                  {/* Cutout Product Image with Glowing Season Aura */}
+                  <div className="relative w-full flex-1 flex items-center justify-center my-0.5 min-h-[110px] sm:min-h-[140px]">
+                    {/* Glowing season halo */}
+                    <div
+                      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[130px] sm:w-[170px] md:w-[190px] h-[130px] sm:h-[170px] md:h-[190px] rounded-full blur-[35px] sm:blur-[45px] pointer-events-none -z-10 transition-all duration-1000 opacity-85"
+                      style={{
+                        background: currentTerm.glowColor
+                          .replace('0.25', '0.6')
+                          .replace('0.35', '0.7'),
+                      }}
+                    />
+
+                    {/* Concentric subtle halo ring */}
+                    <div
+                      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100px] sm:w-[130px] md:w-[150px] h-[100px] sm:h-[130px] md:h-[150px] rounded-full border border-white/60 pointer-events-none -z-10"
+                      style={{
+                        boxShadow: `0 0 30px -5px ${currentTerm.glowColor}`,
+                      }}
+                    />
+
+                    {/* Cutout Product Image */}
+                    <div className="relative w-[100px] sm:w-[135px] md:w-[155px] h-[100px] sm:h-[135px] md:h-[155px] flex items-center justify-center transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]">
+                      <Image
+                        src={currentTerm.image}
+                        alt={currentTerm.blend}
+                        fill
+                        sizes="(max-width: 640px) 100px, (max-width: 1024px) 135px, 155px"
+                        className="object-contain drop-shadow-[0_16px_28px_rgba(0,0,0,0.24)] filter hover:scale-105 transition-transform duration-500 pointer-events-none"
+                        priority
+                      />
+                    </div>
+                  </div>
+
+                  {/* Title, Prices, & Actions */}
+                  <div className="flex flex-col items-center gap-1 pb-1">
+                    <h3 className="text-xs sm:text-sm md:text-base font-sans font-black uppercase tracking-tight text-foreground leading-tight">
+                      {currentTerm.blend}
+                    </h3>
+
+                    {/* Hot & Iced Prices */}
+                    <div className="flex items-center justify-center gap-1 font-mono text-[9px] sm:text-[10px] md:text-[11px] font-bold text-foreground">
+                      <span className="px-2 py-0.5 rounded-full bg-white/95 border border-neutral-200/80 text-neutral-900 shadow-2xs">
+                        Hot: {currentTerm.hotPrice}
+                      </span>
+                      <span className="text-muted-foreground/60">·</span>
+                      <span className="px-2 py-0.5 rounded-full bg-white/95 border border-neutral-200/80 text-neutral-900 shadow-2xs">
+                        Iced: {currentTerm.icedPrice}
+                      </span>
+                    </div>
+
+                    {/* Chevrons and Order Button */}
+                    <div className="flex items-center justify-center gap-2 mt-0.5">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handlePrevBlend();
+                        }}
+                        className="w-6 h-6 rounded-full bg-white/90 hover:bg-white active:scale-95 text-neutral-800 flex items-center justify-center border border-neutral-200 shadow-2xs transition-all cursor-pointer"
+                        aria-label="Previous Blend"
+                        title="Previous blend"
+                      >
+                        <ChevronLeft className="w-3.5 h-3.5" />
+                      </button>
+
+                      <a
+                        href={whatsappUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-neutral-900 hover:bg-neutral-800 text-white font-mono text-[9px] sm:text-[10px] font-bold uppercase tracking-wider shadow-2xs active:scale-95 transition-all"
+                      >
+                        <span>ORDER</span>
+                        <ArrowUpRight className="w-2.5 h-2.5 text-primary-foreground" />
+                      </a>
+
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleNextBlend();
+                        }}
+                        className="w-6 h-6 rounded-full bg-white/90 hover:bg-white active:scale-95 text-neutral-800 flex items-center justify-center border border-neutral-200 shadow-2xs transition-all cursor-pointer"
+                        aria-label="Next Blend"
+                        title="Next blend"
+                      >
+                        <ChevronRight className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Subtle minimize icon button */}
                   <button
-                    onClick={handleNextBlend}
-                    className="w-10 h-10 rounded-full bg-white/90 hover:bg-white active:scale-95 text-neutral-800 flex items-center justify-center transition-all cursor-pointer border border-neutral-200/80 shadow-2xs"
-                    aria-label="Next Blend"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setIsExpanded(false);
+                    }}
+                    className="absolute top-0 right-0 w-6 h-6 rounded-full bg-white/90 hover:bg-white text-neutral-600 hover:text-neutral-900 border border-neutral-200 flex items-center justify-center shadow-2xs transition-all cursor-pointer active:scale-95"
+                    title="Minimize view"
+                    aria-label="Minimize view"
                   >
-                    <ChevronRight className="w-5 h-5" />
+                    <Minimize2 className="w-3 h-3" />
                   </button>
                 </div>
-
-                {/* Clean WhatsApp Order CTA */}
-                <div className="mt-4">
-                  <a
-                    href={whatsappUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-neutral-900 hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-wider transition-all duration-300 shadow-sm hover:shadow-md cursor-pointer hover:gap-3"
-                  >
-                    <Coffee className="w-3.5 h-3.5 text-primary" />
-                    <span>Order This Blend</span>
-                  </a>
-                </div>
-              </div>
+              )}
             </div>
           </div>
         </div>
