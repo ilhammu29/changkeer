@@ -2,7 +2,13 @@
 
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import Image from 'next/image';
-import { ChevronLeft, ChevronRight, ArrowUpRight } from 'lucide-react';
+import {
+  ChevronLeft,
+  ChevronRight,
+  ArrowUpRight,
+  Sparkles,
+  Minimize2,
+} from 'lucide-react';
 import {
   SOLAR_TERM_BLENDS,
   SEASONS_CONFIG,
@@ -52,6 +58,9 @@ export function SeasonalWheelExplorer() {
   const [selectedTermIndex, setSelectedTermIndex] = useState<number>(defaultIdx);
   const [hoveredTermIndex, setHoveredTermIndex] = useState<number | null>(null);
 
+  // Initial state: circle alone without product; when clicked, expands and reveals product
+  const [isExpanded, setIsExpanded] = useState<boolean>(false);
+
   // Shortest path rotation angle for the dial (aligns active term at 12 o'clock needle)
   const [rotationAngle, setRotationAngle] = useState<number>(
     -(defaultIdx * 15 + 7.5)
@@ -85,6 +94,7 @@ export function SeasonalWheelExplorer() {
 
   const handleSelectTerm = useCallback((idx: number) => {
     setSelectedTermIndex(idx);
+    setIsExpanded(true);
     setRotationAngle((prev) => computeShortestRotation(prev, idx));
   }, []);
 
@@ -180,7 +190,15 @@ export function SeasonalWheelExplorer() {
           </h2>
           <p className="text-xs sm:text-sm md:text-base text-muted-foreground leading-relaxed max-w-2xl mx-auto font-normal">
             Every two weeks, a new seasonal blend arrives matched to Jakarta&apos;s climate.
-            Click any segment on the dial to rotate to that blend.
+            {!isExpanded ? (
+              <span className="font-semibold text-primary ml-1">
+                Click the wheel to expand and reveal the blend.
+              </span>
+            ) : (
+              <span className="text-foreground ml-1">
+                Click any segment on the dial to rotate to that blend.
+              </span>
+            )}
           </p>
 
           {/* Centered Season Filter Tabs */}
@@ -212,110 +230,104 @@ export function SeasonalWheelExplorer() {
                 </button>
               );
             })}
+
+            {isExpanded && (
+              <button
+                onClick={() => setIsExpanded(false)}
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white/80 hover:bg-white text-neutral-700 border border-neutral-200/80 text-xs font-medium transition-all duration-300 ml-1 cursor-pointer shadow-xs active:scale-95"
+                title="Collapse to compact dial"
+              >
+                <Minimize2 className="w-3.5 h-3.5" />
+                <span>Compact View</span>
+              </button>
+            )}
           </div>
         </div>
 
         {/* ========================================================
-            3-PART LUXURY EDITORIAL STAGE:
-            - Kiri: Harga diluar lingkaran (Price & Specs + Order via WhatsApp)
-            - Tengah: Lingkaran melebar & sedikit kepotong transparan + Produk besar
-            - Kanan: Nama produk diluar lingkaran (Blend name, Glyph, Solar Term & Botanicals)
+            STAGE:
+            - Lingkaran dulu tanpa produk (Initial State)
+            - Ketika diklik, lingkaran membesar dan menampilkan produk di tengah
+            - Kiri & kanan muncul TANPA CARDBOX:
+              * Kiri: hanya harga untuk ice dan hot
+              * Kanan: hanya judul dan simbol
             ======================================================== */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-6 xl:gap-8 items-center max-w-7xl mx-auto pt-2">
+        <div className="w-full max-w-6xl mx-auto flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12 xl:gap-16 pt-2">
           {/* ========================================================
-              SISI KIRI: HARGA DILUAR LINGKARAN
+              SISI KIRI: HANYA HARGA UNTUK ICE DAN HOT (TANPA CARDBOX)
               ======================================================== */}
-          <div className="order-2 lg:order-1 lg:col-span-3">
-            <div className="w-full bg-white/95 backdrop-blur-md border border-neutral-200/90 rounded-3xl p-6 sm:p-7 shadow-md card-boundary space-y-5 transition-all duration-700 animate-fade-in-scale">
-              {/* Header Info */}
-              <div className="space-y-1.5 border-b border-neutral-200/70 pb-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-mono font-bold tracking-[0.2em] uppercase text-primary block">
-                    PRICE &amp; SPECS
-                  </span>
-                  <span className="text-[10px] font-mono text-muted-foreground font-semibold px-2 py-0.5 rounded-full bg-neutral-100">
-                    {currentTerm.temperature}
-                  </span>
-                </div>
-                <h3 className="text-lg sm:text-xl font-sans font-black uppercase tracking-tight text-foreground">
-                  Brew Bar Pricing
-                </h3>
-                <p className="text-xs text-muted-foreground leading-relaxed font-normal">
-                  All blends are unsweetened by default. Made in plastic-free sachets.
-                </p>
+          <div
+            className={`transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+              isExpanded
+                ? 'w-full lg:w-48 xl:w-56 opacity-100 translate-x-0 pointer-events-auto'
+                : 'w-0 opacity-0 -translate-x-8 pointer-events-none overflow-hidden max-h-0 lg:max-h-none'
+            }`}
+          >
+            <div className="flex flex-col items-center lg:items-end text-center lg:text-right space-y-4 select-none">
+              {/* Hot Price */}
+              <div className="space-y-0.5">
+                <span className="text-[11px] font-mono font-bold tracking-[0.2em] uppercase text-muted-foreground block">
+                  HOT · 350ML
+                </span>
+                <span className="text-3xl sm:text-4xl lg:text-5xl font-mono font-black text-foreground tracking-tight block">
+                  {currentTerm.hotPrice}
+                </span>
               </div>
 
-              {/* Hot & Iced Price Breakdown */}
-              <div className="space-y-3">
-                {/* Hot Cup */}
-                <div className="flex items-center justify-between p-3.5 rounded-2xl bg-neutral-50/80 border border-neutral-200/70 hover:border-neutral-300 transition-all">
-                  <div className="space-y-0.5">
-                    <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-muted-foreground block">
-                      HOT CUP (350 ML)
-                    </span>
-                    <span className="text-[11px] text-muted-foreground">
-                      Steeped at 95°C · 3 mins
-                    </span>
-                  </div>
-                  <div className="text-xl sm:text-2xl font-mono font-black text-foreground">
-                    {currentTerm.hotPrice}
-                  </div>
-                </div>
+              <div className="w-12 h-px bg-neutral-200/90 hidden lg:block" />
 
-                {/* Iced Cup */}
-                <div className="flex items-center justify-between p-3.5 rounded-2xl bg-neutral-50/80 border border-neutral-200/70 hover:border-neutral-300 transition-all">
-                  <div className="space-y-0.5">
-                    <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-muted-foreground block">
-                      ICED CUP (450 ML)
-                    </span>
-                    <span className="text-[11px] text-muted-foreground">
-                      Chilled botanical infusion
-                    </span>
-                  </div>
-                  <div className="text-xl sm:text-2xl font-mono font-black text-foreground">
-                    {currentTerm.icedPrice}
-                  </div>
-                </div>
+              {/* Iced Price */}
+              <div className="space-y-0.5">
+                <span className="text-[11px] font-mono font-bold tracking-[0.2em] uppercase text-muted-foreground block">
+                  ICED · 450ML
+                </span>
+                <span className="text-3xl sm:text-4xl lg:text-5xl font-mono font-black text-foreground tracking-tight block">
+                  {currentTerm.icedPrice}
+                </span>
               </div>
 
-              {/* Order via WhatsApp */}
-              <div className="pt-2">
+              {/* Order & Navigation Controls */}
+              <div className="pt-2 flex items-center gap-3">
+                <button
+                  onClick={handlePrevBlend}
+                  className="inline-flex items-center gap-1 font-mono text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors cursor-pointer active:scale-95"
+                  aria-label="Previous Blend"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                  <span>PREV</span>
+                </button>
+
                 <a
                   href={whatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full inline-flex items-center justify-center gap-2 py-3.5 px-5 rounded-2xl bg-neutral-900 hover:bg-neutral-800 text-white font-mono text-xs font-bold tracking-wider uppercase transition-all shadow-md active:scale-95 text-center cursor-pointer"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-neutral-900 hover:bg-neutral-800 text-white font-mono text-[10px] font-bold uppercase tracking-wider shadow-xs active:scale-95 transition-all cursor-pointer"
                 >
-                  <span>ORDER VIA WHATSAPP</span>
-                  <ArrowUpRight className="w-3.5 h-3.5 text-primary-foreground" />
+                  <span>ORDER</span>
+                  <ArrowUpRight className="w-3 h-3 text-primary-foreground" />
                 </a>
-              </div>
-
-              {/* Prev Blend Navigation */}
-              <div className="pt-2 flex items-center justify-between text-xs text-muted-foreground border-t border-neutral-200/60">
-                <button
-                  onClick={handlePrevBlend}
-                  className="inline-flex items-center gap-1.5 font-mono text-[11px] font-semibold hover:text-foreground transition-colors cursor-pointer active:scale-95"
-                  aria-label="Previous Blend"
-                >
-                  <ChevronLeft className="w-3.5 h-3.5" />
-                  <span>PREV BLEND</span>
-                </button>
-                <span className="text-[10px] font-mono opacity-60">
-                  {(selectedTermIndex + 1).toString().padStart(2, '0')}/24
-                </span>
               </div>
             </div>
           </div>
 
           {/* ========================================================
-              TENGAH: LINGKARAN KEPOTONG TRANSPARAN DENGAN PRODUK BESAR
-              - Lingkaran melebar & sedikit kepotong di bagian bawah dengan transparan
-              - Produk di tengah agak dibesarkan (hero size cutout cup image)
+              TENGAH: LINGKARAN MEMBESAR SAAT DIKLIK & MENAMPILKAN PRODUK
+              - Sedikit kepotong transparan di bagian bawah
+              - Lingkaran membesar saat diklik
+              - Menampilkan produk cangkir besar di tengah saat diklik
               ======================================================== */}
-          <div className="order-1 lg:order-2 lg:col-span-6 flex flex-col items-center justify-center relative my-2 lg:my-0">
-            {/* The Cut-Off Translucent Circular Wheel Wrapper */}
-            <div className="relative flex items-center justify-center w-[330px] sm:w-[420px] md:w-[460px] lg:w-[480px] xl:w-[510px] aspect-square select-none">
+          <div className="flex flex-col items-center justify-center shrink-0 relative my-2 lg:my-0">
+            {/* The Cut-Off Translucent Circular Wheel Container */}
+            <div
+              className={`relative flex items-center justify-center aspect-square select-none transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                isExpanded
+                  ? 'w-[360px] sm:w-[450px] md:w-[490px] lg:w-[520px]'
+                  : 'w-[310px] sm:w-[370px] md:w-[400px] cursor-pointer'
+              }`}
+              onClick={() => {
+                if (!isExpanded) setIsExpanded(true);
+              }}
+            >
               {/* Glowing Season Aura Halo framing the wheel */}
               <div
                 className="absolute -inset-3 sm:-inset-6 rounded-full blur-[30px] sm:blur-[42px] pointer-events-none -z-10 transition-all duration-1200 ease-in-out opacity-65"
@@ -344,7 +356,7 @@ export function SeasonalWheelExplorer() {
                         src={bg.image}
                         alt={`${bg.name} season background`}
                         fill
-                        sizes="(max-width: 640px) 330px, (max-width: 1024px) 460px, 510px"
+                        sizes="(max-width: 640px) 360px, (max-width: 1024px) 490px, 520px"
                         className="object-cover object-center filter brightness-[0.94] contrast-[1.08]"
                         priority
                       />
@@ -397,7 +409,10 @@ export function SeasonalWheelExplorer() {
                     return (
                       <g
                         key={term.term}
-                        onClick={() => handleSelectTerm(i)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleSelectTerm(i);
+                        }}
                         onMouseEnter={() => setHoveredTermIndex(i)}
                         onMouseLeave={() => setHoveredTermIndex(null)}
                         className="cursor-pointer outline-none focus:outline-none transition-transform"
@@ -480,128 +495,144 @@ export function SeasonalWheelExplorer() {
                 </g>
               </svg>
 
-              {/* 3. HERO ENLARGED PRODUCT FLOATING IN THE CENTER (Produk Agak Dibesarkan) */}
-              <div
-                key={currentTerm.term}
-                className="absolute inset-0 flex items-center justify-center pointer-events-none z-20 animate-fade-in-scale"
-              >
-                {/* Glowing Season Halo behind cutout cup */}
+              {/* ========================================================
+                  CENTER CONTENT:
+                  - SEBELUM DIKLIK: Lingkaran dulu tanpa produk (Clean Dial Hub)
+                  - KETIKA DIKLIK: Menampilkan produk cangkir besar di tengah
+                  ======================================================== */}
+              {!isExpanded ? (
+                // 1. Initial State: Tanpa Produk (Dial Hub Preview)
                 <div
-                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[220px] sm:w-[270px] md:w-[310px] h-[220px] sm:h-[270px] md:h-[310px] rounded-full blur-[45px] sm:blur-[60px] pointer-events-none -z-10 transition-all duration-1000 opacity-85"
-                  style={{
-                    background: currentTerm.glowColor
-                      .replace('0.25', '0.65')
-                      .replace('0.35', '0.75'),
-                  }}
-                />
+                  className="absolute inset-0 flex flex-col items-center justify-center text-center select-none z-20 p-4 transition-all duration-700 animate-fade-in-scale group"
+                  onClick={() => setIsExpanded(true)}
+                >
+                  <span
+                    className="text-[10px] font-mono font-bold tracking-[0.2em] uppercase transition-colors"
+                    style={{
+                      color: currentTerm.isBrewingNow ? '#B3305A' : '#6B7280',
+                    }}
+                  >
+                    {currentTerm.isBrewingNow
+                      ? 'NOW BREWING'
+                      : currentTerm.seasonName.toUpperCase()}
+                  </span>
 
-                {/* Concentric Subtle Halo Ring */}
-                <div
-                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[180px] sm:w-[220px] md:w-[250px] h-[180px] sm:h-[220px] md:h-[250px] rounded-full border border-white/70 pointer-events-none -z-10"
-                  style={{
-                    boxShadow: `0 0 45px -8px ${currentTerm.glowColor}`,
-                  }}
-                />
+                  <span
+                    className="text-4xl sm:text-5xl font-serif font-black tracking-tight my-1.5 transition-transform group-hover:scale-110 duration-500"
+                    style={{ color: currentTerm.ringColor }}
+                  >
+                    {currentTerm.termChinese}
+                  </span>
 
-                {/* Large Cutout Product Cup Image */}
-                <div className="relative w-[210px] sm:w-[260px] md:w-[290px] lg:w-[310px] h-[220px] sm:h-[270px] md:h-[300px] lg:h-[320px] flex items-center justify-center transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]">
-                  <Image
-                    src={currentTerm.image}
-                    alt={currentTerm.blend}
-                    fill
-                    sizes="(max-width: 640px) 210px, (max-width: 1024px) 290px, 310px"
-                    className="object-contain drop-shadow-[0_22px_36px_rgba(0,0,0,0.25)] hover:scale-105 transition-transform duration-500 pointer-events-auto"
-                    priority
-                  />
+                  <h3 className="text-base sm:text-lg font-sans font-black uppercase tracking-tight text-foreground">
+                    {currentTerm.blend}
+                  </h3>
+
+                  <span className="text-[10px] sm:text-xs font-mono text-muted-foreground mt-0.5">
+                    {currentTerm.term} · {currentTerm.starts}
+                  </span>
+
+                  <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/90 border border-neutral-200/80 text-[10px] font-mono font-bold uppercase tracking-wider text-foreground shadow-2xs group-hover:bg-neutral-900 group-hover:text-white transition-all">
+                    <Sparkles className="w-3 h-3 text-primary group-hover:text-amber-300" />
+                    <span>Click to reveal blend</span>
+                  </div>
                 </div>
-              </div>
+              ) : (
+                // 2. Activated State: Menampilkan Produk Besar di Tengah Lingkaran
+                <div
+                  key={currentTerm.term}
+                  className="absolute inset-0 flex items-center justify-center pointer-events-none z-20 animate-fade-in-scale"
+                >
+                  {/* Glowing Season Halo behind cutout cup */}
+                  <div
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[220px] sm:w-[270px] md:w-[310px] h-[220px] sm:h-[270px] md:h-[310px] rounded-full blur-[45px] sm:blur-[60px] pointer-events-none -z-10 transition-all duration-1000 opacity-85"
+                    style={{
+                      background: currentTerm.glowColor
+                        .replace('0.25', '0.65')
+                        .replace('0.35', '0.75'),
+                    }}
+                  />
+
+                  {/* Concentric Subtle Halo Ring */}
+                  <div
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[180px] sm:w-[220px] md:w-[250px] h-[180px] sm:h-[220px] md:h-[250px] rounded-full border border-white/70 pointer-events-none -z-10"
+                    style={{
+                      boxShadow: `0 0 45px -8px ${currentTerm.glowColor}`,
+                    }}
+                  />
+
+                  {/* Large Cutout Product Cup Image */}
+                  <div className="relative w-[210px] sm:w-[260px] md:w-[290px] lg:w-[320px] h-[220px] sm:h-[270px] md:h-[300px] lg:h-[330px] flex items-center justify-center transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]">
+                    <Image
+                      src={currentTerm.image}
+                      alt={currentTerm.blend}
+                      fill
+                      sizes="(max-width: 640px) 210px, (max-width: 1024px) 290px, 320px"
+                      className="object-contain drop-shadow-[0_22px_36px_rgba(0,0,0,0.25)] hover:scale-105 transition-transform duration-500 pointer-events-auto"
+                      priority
+                    />
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
           {/* ========================================================
-              SISI KANAN: NAMA PRODUK DILUAR LINGKARAN
+              SISI KANAN: HANYA JUDUL DAN SIMBOL (TANPA CARDBOX)
               ======================================================== */}
-          <div className="order-3 lg:order-3 lg:col-span-3">
-            <div className="w-full bg-white/95 backdrop-blur-md border border-neutral-200/90 rounded-3xl p-6 sm:p-7 shadow-md card-boundary space-y-5 transition-all duration-700 animate-fade-in-scale">
-              {/* Header Info */}
-              <div className="space-y-2 border-b border-neutral-200/70 pb-4">
-                {/* Season & Brewing Status Badge */}
-                <div className="flex items-center justify-between">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-neutral-100 border border-neutral-200/80 text-foreground text-[10px] font-mono font-bold tracking-wider uppercase shadow-2xs">
-                    <span
-                      className="w-2 h-2 rounded-full inline-block"
-                      style={{ backgroundColor: currentTerm.ringColor }}
-                    />
-                    <span>
-                      {currentTerm.seasonName} · {currentTerm.term}
-                    </span>
-                  </div>
+          <div
+            className={`transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+              isExpanded
+                ? 'w-full lg:w-48 xl:w-60 opacity-100 translate-x-0 pointer-events-auto'
+                : 'w-0 opacity-0 translate-x-8 pointer-events-none overflow-hidden max-h-0 lg:max-h-none'
+            }`}
+          >
+            <div className="flex flex-col items-center lg:items-start text-center lg:text-left space-y-3 select-none">
+              {/* Simbol: Chinese Glyph Symbol + Season info */}
+              <div className="flex flex-col items-center lg:items-start gap-1">
+                <div className="inline-flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-muted-foreground">
+                  <span
+                    className="w-2.5 h-2.5 rounded-full inline-block"
+                    style={{ backgroundColor: currentTerm.ringColor }}
+                  />
+                  <span>
+                    {currentTerm.seasonName} · {currentTerm.term}
+                  </span>
                   {currentTerm.isBrewingNow && (
-                    <span className="text-[9px] font-mono font-bold uppercase tracking-widest text-[#B3305A] animate-pulse">
-                      NOW BREWING
+                    <span className="text-[10px] font-bold text-[#B3305A] uppercase tracking-widest">
+                      · BREWING
                     </span>
                   )}
                 </div>
 
-                {/* Large Chinese Glyph Character */}
+                {/* Large Chinese Glyph Symbol */}
                 <div
-                  className="text-4xl sm:text-5xl font-serif font-black tracking-tight mt-2 select-none transition-colors duration-700"
+                  className="text-5xl sm:text-6xl lg:text-7xl font-serif font-black tracking-tight select-none my-1 transition-colors duration-700 leading-none"
                   style={{ color: currentTerm.ringColor }}
                 >
                   {currentTerm.termChinese}
                 </div>
+              </div>
 
-                {/* Blend Name */}
-                <h3 className="text-2xl sm:text-3xl font-sans font-black uppercase tracking-tight text-foreground leading-tight">
+              {/* Judul: Blend Title & Date */}
+              <div className="space-y-1">
+                <h3 className="text-3xl sm:text-4xl lg:text-5xl font-sans font-black uppercase tracking-tight text-foreground leading-tight">
                   {currentTerm.blend}
                 </h3>
-
-                <p className="text-xs font-mono text-muted-foreground">
-                  Starts {currentTerm.starts} · Solar Term {(selectedTermIndex + 1).toString().padStart(2, '0')} of 24
+                <p className="text-xs sm:text-sm font-mono text-muted-foreground">
+                  Starts {currentTerm.starts} · Term {(selectedTermIndex + 1).toString().padStart(2, '0')}/24
                 </p>
               </div>
 
-              {/* Botanical Story / Notes */}
-              <div className="space-y-1.5">
-                <span className="text-[10px] font-mono font-bold tracking-[0.2em] uppercase text-muted-foreground block">
-                  FLAVOUR &amp; CHARACTER
-                </span>
-                <p className="text-xs text-foreground/85 leading-relaxed font-normal">
-                  {currentTerm.note}
-                </p>
-              </div>
-
-              {/* Whole Botanicals List */}
-              {currentTerm.ingredients && currentTerm.ingredients.length > 0 && (
-                <div className="space-y-1.5 pt-1">
-                  <span className="text-[10px] font-mono font-bold tracking-[0.2em] uppercase text-muted-foreground block">
-                    REAL BOTANICALS
-                  </span>
-                  <div className="flex flex-wrap gap-1.5">
-                    {currentTerm.ingredients.map((ing) => (
-                      <span
-                        key={ing}
-                        className="px-2.5 py-0.5 rounded-full bg-neutral-100 border border-neutral-200/70 text-[10px] font-mono text-neutral-800"
-                      >
-                        {ing}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Next Blend Navigation */}
-              <div className="pt-2 flex items-center justify-between text-xs text-muted-foreground border-t border-neutral-200/60">
-                <span className="text-[10px] font-mono opacity-60">
-                  {currentTerm.seasonName} Cycle
-                </span>
+              {/* Next Navigation Control */}
+              <div className="pt-2">
                 <button
                   onClick={handleNextBlend}
-                  className="inline-flex items-center gap-1.5 font-mono text-[11px] font-semibold hover:text-foreground transition-colors cursor-pointer active:scale-95"
+                  className="inline-flex items-center gap-1 font-mono text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors cursor-pointer active:scale-95"
                   aria-label="Next Blend"
                 >
-                  <span>NEXT BLEND</span>
-                  <ChevronRight className="w-3.5 h-3.5" />
+                  <span>NEXT</span>
+                  <ChevronRight className="w-4 h-4" />
                 </button>
               </div>
             </div>
