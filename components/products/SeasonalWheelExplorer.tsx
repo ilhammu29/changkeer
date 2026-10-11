@@ -16,6 +16,13 @@ import {
   type SolarTermBlend,
 } from '@/lib/data/solarTerms';
 
+export const SEASON_BACKGROUNDS = [
+  { id: 'spring', name: 'Spring', image: '/images/seasons/spring.jpg' },
+  { id: 'summer', name: 'Summer', image: '/images/seasons/summer.jpg' },
+  { id: 'autumn', name: 'Autumn', image: '/images/seasons/autumn.jpg' },
+  { id: 'winter', name: 'Winter', image: '/images/seasons/winter.jpg' },
+] as const;
+
 // Wheel Geometry Constants
 const C = 200;
 const RO = 194;
@@ -233,12 +240,50 @@ export function SeasonalWheelExplorer() {
               isExpanded ? 'lg:col-span-5' : 'max-w-md'
             }`}
           >
-            {/* Clean SVG Wheel Wrapper */}
+            {/* Seasonal Wheel Wrapper with Dynamic 4-Season Background Layer */}
             <div className="relative w-full flex items-center justify-center">
-              <div className="relative w-full max-w-[340px] sm:max-w-[400px] aspect-square flex items-center justify-center drop-shadow-sm">
+              <div className="relative w-full max-w-[340px] sm:max-w-[400px] aspect-square flex items-center justify-center drop-shadow-md">
+                {/* Glowing Season Aura Halo framing the circle */}
+                <div
+                  className="absolute -inset-3 sm:-inset-5 rounded-full blur-[24px] pointer-events-none -z-1 transition-all duration-1000 ease-in-out opacity-50"
+                  style={{
+                    background: currentTerm.glowColor.replace('0.25', '0.65').replace('0.35', '0.75'),
+                  }}
+                />
+
+                {/* 4-Season Photographic Background on the Circle (Smooth 1000ms Crossfade) */}
+                <div className="absolute inset-0 rounded-full overflow-hidden pointer-events-none z-0 shadow-inner">
+                  {SEASON_BACKGROUNDS.map((bg) => {
+                    const isActive = activeSeason === bg.id;
+                    return (
+                      <div
+                        key={bg.id}
+                        className={`absolute inset-0 transition-all duration-1000 ease-in-out ${
+                          isActive
+                            ? 'opacity-100 scale-100'
+                            : 'opacity-0 scale-105 pointer-events-none'
+                        }`}
+                      >
+                        <Image
+                          src={bg.image}
+                          alt={`${bg.name} season background`}
+                          fill
+                          sizes="(max-width: 640px) 340px, 400px"
+                          className="object-cover object-center filter brightness-[0.94] contrast-[1.08]"
+                          priority
+                        />
+                        {/* Soft atmospheric overlay */}
+                        <div className="absolute inset-0 bg-white/20 backdrop-blur-[0.5px]" />
+                        <div className="absolute inset-0 bg-radial from-transparent via-black/10 to-black/35" />
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* SVG Wheel overlay on top of the seasonal background */}
                 <svg
                   viewBox="0 0 400 400"
-                  className="w-full h-full overflow-visible transition-transform duration-700 ease-out"
+                  className="w-full h-full overflow-visible transition-transform duration-700 ease-out relative z-10"
                   role="group"
                   aria-label="24 Solar Terms Seasonal Wheel Calendar"
                 >
