@@ -131,28 +131,48 @@ body {
   animation: subtleFloat 6s ease-in-out infinite;
 }
 
-/* Hero Title Slow Fade-in Animation */
-@keyframes heroFadeInSlow {
+/* Hero Heading Appears First, Then Fades Out as Video Enters */
+@keyframes heroHeadingRevealThenFade {
   0% {
     opacity: 0;
-    transform: translateY(16px) scale(0.97);
-    letter-spacing: 0.15em;
-    filter: blur(6px);
+    transform: translateY(16px) scale(0.96);
+    filter: blur(10px);
+    letter-spacing: 0.16em;
   }
-  50% {
-    opacity: 0.75;
-    filter: blur(2px);
-  }
-  100% {
+  25%, 48% {
     opacity: 1;
     transform: translateY(0) scale(1);
-    letter-spacing: 0.26em;
     filter: blur(0px);
+    letter-spacing: 0.28em;
+  }
+  72%, 100% {
+    opacity: 0;
+    transform: translateY(-8px) scale(1.05);
+    filter: blur(8px);
+    letter-spacing: 0.32em;
+    visibility: hidden;
+    pointer-events: none;
   }
 }
 
-.animate-hero-fade-in {
-  animation: heroFadeInSlow 2.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+.animate-hero-heading-sequence {
+  animation: heroHeadingRevealThenFade 4.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+/* Video Fades in smoothly after the heading text reveals */
+@keyframes heroVideoEnter {
+  0%, 46% {
+    opacity: 0;
+    transform: scale(1.02);
+  }
+  74%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-hero-video-enter {
+  animation: heroVideoEnter 4.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @media (prefers-reduced-motion: reduce) {

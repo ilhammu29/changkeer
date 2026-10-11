@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowUpRight, Sparkles } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import { Product } from '@/types';
 
 interface ProductCardProps {
@@ -33,13 +33,6 @@ export function ProductCard({ product }: ProductCardProps) {
           fill
           className="object-contain p-4 transition-transform duration-500 group-hover:scale-105"
         />
-
-        {product.is_featured && (
-          <div className="absolute top-3 left-3 bg-primary text-primary-foreground text-[10px] font-bold tracking-widest uppercase px-2.5 py-1 rounded-sm flex items-center gap-1">
-            <Sparkles className="w-3 h-3 text-accent" />
-            <span>PILIHAN</span>
-          </div>
-        )}
 
         <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-surface/90 backdrop-blur-sm p-2 rounded-full border border-border text-foreground">
           <ArrowUpRight className="w-4 h-4" />

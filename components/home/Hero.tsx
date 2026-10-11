@@ -73,19 +73,18 @@ export function Hero({ content: _content }: HeroProps = {}) {
   };
 
   return (
-    <section className="relative w-full h-[100svh] min-h-[580px] flex items-center justify-center overflow-hidden bg-black select-none">
+    <section className="relative w-full h-[100svh] min-h-[580px] flex items-center justify-center overflow-hidden bg-[#0c0b11] select-none">
       {/* Background Video Layer (Full-Bleed 100svh using VIDEO-LANDING-PAGE-V2.mp4) */}
-      <div className="absolute inset-0 w-full h-full -z-20 overflow-hidden bg-black">
-        {/* High-Resolution Poster Image as permanent backdrop */}
-        <Image
-          src="/images/hero/hero-video-poster.jpg"
-          alt="CHANGKEER Cinematic Tea Craft"
-          fill
-          priority
-          className="object-cover object-center"
-        />
-
-        {!reducedMotion && (
+      <div className="absolute inset-0 w-full h-full z-0 overflow-hidden bg-[#0c0b11]">
+        {reducedMotion ? (
+          <Image
+            src="/images/hero/hero-video-poster.jpg"
+            alt="CHANGKEER Cinematic Tea Craft"
+            fill
+            priority
+            className="object-cover object-center"
+          />
+        ) : (
           <video
             ref={videoRef}
             src="/videos/VIDEO-LANDING-PAGE-V2.mp4"
@@ -95,25 +94,21 @@ export function Hero({ content: _content }: HeroProps = {}) {
             muted
             playsInline
             preload="auto"
-            className="w-full h-full object-cover object-center"
+            className="absolute inset-0 w-full h-full object-cover object-center animate-hero-video-enter"
           >
             <source src="/videos/VIDEO-LANDING-PAGE-V2.mp4" type="video/mp4" />
-            <source src="/videos/hero-video.mp4" type="video/mp4" />
           </video>
         )}
       </div>
 
-      {/* Cinematic Vignette */}
-      <div className="absolute inset-0 bg-radial from-black/10 via-black/35 to-black/75 -z-10 pointer-events-none" />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/50 -z-10 pointer-events-none" />
+      {/* Subtle Cinematic Vignette */}
+      <div className="absolute inset-0 bg-radial from-transparent via-black/15 to-black/50 z-10 pointer-events-none" />
+      <div className="absolute bottom-0 inset-x-0 h-24 bg-gradient-to-t from-background via-background/40 to-transparent z-10 pointer-events-none" />
 
-      {/* Bottom Gentle Fade into Page Content */}
-      <div className="absolute bottom-0 inset-x-0 h-28 bg-gradient-to-t from-background via-background/40 to-transparent -z-10 pointer-events-none" />
-
-      {/* Center Hero Heading 1 Only with Slow Reveal Animation */}
-      <Container size="wide" className="relative z-10 px-4 sm:px-6">
+      {/* Center Hero Heading 1 (Appears First, Then Dissolves as Video Enters) */}
+      <Container size="wide" className="relative z-20 px-4 sm:px-6 pointer-events-none">
         <div className="max-w-4xl mx-auto text-center flex flex-col items-center justify-center">
-          <h1 className="font-serif sm:font-sans font-black text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl uppercase tracking-[0.22em] sm:tracking-[0.28em] text-white leading-none drop-shadow-2xl animate-hero-fade-in select-none">
+          <h1 className="font-serif sm:font-sans font-black text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl uppercase tracking-[0.22em] sm:tracking-[0.28em] text-white leading-none drop-shadow-2xl animate-hero-heading-sequence select-none">
             CHANGKEER
           </h1>
         </div>
