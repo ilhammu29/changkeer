@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, Sparkles } from 'lucide-react';
 import { Product } from '@/types';
 
 interface ProductCardProps {
@@ -18,66 +18,59 @@ export function ProductCard({ product }: ProductCardProps) {
   const imageSrc =
     product.featured_image ||
     (product.gallery && product.gallery[0]) ||
-    '/images/products/changkeer-lemongrass-ginger.jpg';
+    '/images/assets/jasmine_tea_produk.jpg';
 
   return (
-    <article className="group flex flex-col bg-surface border border-border rounded-md overflow-hidden transition-all duration-300 hover:border-border-strong hover:shadow-lg">
-      {/* Image Container with Hover Scale */}
+    <article className="h-full">
       <Link
         href={`/katalog/${product.slug}`}
-        className="relative aspect-square w-full bg-muted overflow-hidden flex items-center justify-center p-6"
+        className="block group relative aspect-[3/4] sm:aspect-[4/5] rounded-2xl overflow-hidden bg-muted border border-border/60 shadow-xs hover:shadow-xl transition-all duration-500"
       >
+        {/* Full Product Photo */}
         <Image
           src={imageSrc}
           alt={product.name}
           fill
-          className="object-contain p-4 transition-transform duration-500 group-hover:scale-105"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-106"
         />
 
-        <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-surface/90 backdrop-blur-sm p-2 rounded-full border border-border text-foreground">
+        {/* Subtle Gradient Scrim at Bottom for Minimal Text */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent pointer-events-none transition-opacity duration-300" />
+
+        {/* Top Badges */}
+        {product.is_featured && (
+          <div className="absolute top-3.5 left-3.5 bg-black/40 backdrop-blur-md border border-white/20 text-white text-[9px] font-mono tracking-widest uppercase px-2.5 py-1 rounded-full flex items-center gap-1 font-semibold">
+            <Sparkles className="w-2.5 h-2.5 text-amber-300" />
+            <span>UNGGULAN</span>
+          </div>
+        )}
+
+        {/* Top Right Quick Action Icon */}
+        <div className="absolute top-3.5 right-3.5 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 w-8 h-8 rounded-full bg-white/90 backdrop-blur-xs text-black flex items-center justify-center shadow-md">
           <ArrowUpRight className="w-4 h-4" />
         </div>
-      </Link>
 
-      {/* Info Content */}
-      <div className="p-5 flex flex-col flex-1 justify-between space-y-4">
-        <div className="space-y-1.5">
-          <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-muted-foreground block">
-            {product.category?.name || 'RACIKAN HERBAL'}
+        {/* Minimalist Card Text at Bottom */}
+        <div className="absolute bottom-0 inset-x-0 p-5 flex flex-col justify-end space-y-1 text-white">
+          <span className="text-[10px] font-mono tracking-[0.22em] uppercase text-white/70 block">
+            {product.category?.name || 'RACIKAN BOTANI'}
           </span>
 
-          <h3 className="font-bold text-base text-foreground tracking-tight group-hover:text-primary transition-colors line-clamp-1">
-            <Link href={`/katalog/${product.slug}`}>
-              {product.name}
-            </Link>
+          <h3 className="font-extrabold text-sm sm:text-base uppercase tracking-wide text-white group-hover:text-amber-200 transition-colors line-clamp-1 leading-snug">
+            {product.name}
           </h3>
 
-          {product.tagline && (
-            <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
-              {product.tagline}
-            </p>
-          )}
-        </div>
-
-        {/* Footer Meta & Price */}
-        <div className="pt-3 border-t border-border flex items-center justify-between">
-          <div className="flex flex-col">
-            <span className="text-[9px] uppercase tracking-wider text-muted-foreground font-semibold">
-              HARGA RESMI
-            </span>
-            <span className="font-extrabold text-sm sm:text-base text-foreground">
+          <div className="pt-1 flex items-center justify-between">
+            <span className="text-xs sm:text-sm font-semibold text-white/95 tracking-wide">
               {formattedPrice}
             </span>
+            <span className="text-[10px] font-mono uppercase tracking-wider text-white/60 group-hover:text-white transition-colors">
+              Lihat Detail &rarr;
+            </span>
           </div>
-
-          <Link
-            href={`/katalog/${product.slug}`}
-            className="text-xs font-bold tracking-wider uppercase text-foreground group-hover:text-primary flex items-center gap-1 underline underline-offset-4"
-          >
-            <span>DETAIL</span>
-          </Link>
         </div>
-      </div>
+      </Link>
     </article>
   );
 }

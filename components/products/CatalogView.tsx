@@ -40,7 +40,7 @@ export function CatalogView({ products, categories }: CatalogViewProps) {
   return (
     <div className="space-y-8">
       {/* Search Bar & Filter Controls */}
-      <div className="flex flex-col md:flex-row gap-4 justify-between items-stretch md:items-center bg-surface p-4 sm:p-5 rounded-lg border border-border">
+      <div className="flex flex-col md:flex-row gap-4 justify-between items-stretch md:items-center bg-surface p-4 sm:p-5 rounded-2xl border border-border shadow-xs">
         {/* Search Input */}
         <div className="relative flex-1">
           <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
@@ -48,8 +48,8 @@ export function CatalogView({ products, categories }: CatalogViewProps) {
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Cari varian, bahan (serai, jahe, rosella, chamomile)..."
-            className="w-full pl-10 pr-4 py-2.5 text-xs bg-background border border-border rounded-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring transition-colors"
+            placeholder="Cari racikan herbal, bahan (melati, serai, mint, teh hitam)..."
+            className="w-full pl-10 pr-4 py-2.5 text-xs bg-background border border-border rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary transition-colors"
           />
         </div>
 
@@ -59,9 +59,9 @@ export function CatalogView({ products, categories }: CatalogViewProps) {
           <select
             value={sortOrder}
             onChange={(e) => setSortOrder(e.target.value as any)}
-            className="text-xs bg-background border border-border rounded-sm px-3 py-2.5 text-foreground focus:outline-none focus:ring-1 focus:ring-ring"
+            className="text-xs font-mono uppercase bg-background border border-border rounded-xl px-3.5 py-2.5 text-foreground focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer"
           >
-            <option value="featured">Urutan: Rekomendasi</option>
+            <option value="featured">Urutan: Kurasi Unggulan</option>
             <option value="price-asc">Harga: Terendah</option>
             <option value="price-desc">Harga: Tertinggi</option>
           </select>
@@ -73,9 +73,9 @@ export function CatalogView({ products, categories }: CatalogViewProps) {
         <button
           type="button"
           onClick={() => setSelectedCategory('all')}
-          className={`text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-sm transition-all cursor-pointer ${
+          className={`text-[11px] font-mono font-bold uppercase tracking-wider px-4 py-2 rounded-full transition-all cursor-pointer ${
             selectedCategory === 'all'
-              ? 'bg-primary text-primary-foreground shadow-sm'
+              ? 'bg-primary text-primary-foreground shadow-xs'
               : 'bg-surface border border-border text-foreground hover:bg-surface-hover'
           }`}
         >
@@ -92,9 +92,9 @@ export function CatalogView({ products, categories }: CatalogViewProps) {
               key={cat.id}
               type="button"
               onClick={() => setSelectedCategory(cat.id)}
-              className={`text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-sm transition-all cursor-pointer ${
+              className={`text-[11px] font-mono font-bold uppercase tracking-wider px-4 py-2 rounded-full transition-all cursor-pointer ${
                 selectedCategory === cat.id
-                  ? 'bg-primary text-primary-foreground shadow-sm'
+                  ? 'bg-primary text-primary-foreground shadow-xs'
                   : 'bg-surface border border-border text-foreground hover:bg-surface-hover'
               }`}
             >
@@ -105,7 +105,7 @@ export function CatalogView({ products, categories }: CatalogViewProps) {
       </div>
 
       {/* Product Results Count */}
-      <div className="text-xs text-muted-foreground font-medium">
+      <div className="text-xs font-mono text-muted-foreground">
         Menampilkan {filteredProducts.length} dari {products.length} racikan herbal tersedia
       </div>
 
@@ -118,7 +118,7 @@ export function CatalogView({ products, categories }: CatalogViewProps) {
         </div>
       ) : (
         /* Empty State */
-        <div className="bg-surface border border-border rounded-lg p-12 text-center space-y-4 my-8">
+        <div className="bg-surface border border-border rounded-2xl p-12 text-center space-y-4 my-8 shadow-xs">
           <div className="w-12 h-12 rounded-full bg-muted mx-auto flex items-center justify-center text-muted-foreground">
             <PackageSearch className="w-6 h-6" />
           </div>
@@ -127,7 +127,7 @@ export function CatalogView({ products, categories }: CatalogViewProps) {
               Tidak Ada Racikan yang Sesuai
             </h4>
             <p className="text-xs text-muted-foreground max-w-sm mx-auto">
-              Tidak ditemukan produk untuk kata kunci &quot;{searchQuery}&quot;. Coba gunakan kata kunci umum seperti &quot;jahe&quot;, &quot;mint&quot;, atau reset filter kategori.
+              Tidak ditemukan produk untuk kata kunci &quot;{searchQuery}&quot;. Coba gunakan kata kunci umum seperti &quot;melati&quot;, &quot;mint&quot;, atau reset filter kategori.
             </p>
           </div>
           <button
@@ -136,7 +136,7 @@ export function CatalogView({ products, categories }: CatalogViewProps) {
               setSearchQuery('');
               setSelectedCategory('all');
             }}
-            className="inline-flex text-xs font-bold uppercase tracking-wider bg-primary text-primary-foreground px-5 py-2.5 rounded-sm hover:bg-primary-hover"
+            className="inline-flex text-xs font-mono font-bold uppercase tracking-wider bg-primary text-primary-foreground px-5 py-2.5 rounded-full hover:bg-primary-hover transition-colors cursor-pointer"
           >
             RESET PENCARIAN
           </button>

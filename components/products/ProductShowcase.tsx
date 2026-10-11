@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Image from 'next/image';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { Container } from '@/components/ui/Container';
 
 interface ProductShowcaseItem {
@@ -51,7 +50,11 @@ const FEATURED_PRODUCTS: ProductShowcaseItem[] = [
 
 export function ProductShowcase() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const touchStartX = useRef<number | null>(null);
+  const [isPaused, setIsPaused] = useState(false);
+  const [dragOffset, setDragOffset] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+
+  const startXRef = useRef<number | null>(null);
 
   const total = FEATURED_PRODUCTS.length;
   const current = FEATURED_PRODUCTS[currentIndex];
@@ -64,6 +67,17 @@ export function ProductShowcase() {
     setCurrentIndex((prev) => (prev - 1 + total) % total);
   }, [total]);
 
+  // Automatic slide transition every 4.5 seconds (paused when interacting/hovering)
+  useEffect(() => {
+    if (isPaused || isDragging) return;
+
+    const interval = setInterval(() => {
+      handleNext();
+    }, 4500);
+
+    return () => clearInterval(interval);
+  }, [handleNext, isPaused, isDragging]);
+
   // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -74,26 +88,52 @@ export function ProductShowcase() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleNext, handlePrev]);
 
-  // Touch swipe support for mobile
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX;
+  // Gesture drag & swipe handling (supports both mouse and touch)
+  const onDragStart = (clientX: number) => {
+    startXRef.current = clientX;
+    setIsDragging(true);
+    setIsPaused(true);
   };
 
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    if (touchStartX.current === null) return;
-    const diff = touchStartX.current - e.changedTouches[0].clientX;
-    if (Math.abs(diff) > 40) {
-      if (diff > 0) handleNext();
-      else handlePrev();
+  const onDragMove = (clientX: number) => {
+    if (!isDragging || startXRef.current === null) return;
+    const diff = clientX - startXRef.current;
+    // dampen drag offset
+    setDragOffset(diff * 0.4);
+  };
+
+  const onDragEnd = () => {
+    if (!isDragging || startXRef.current === null) return;
+
+    if (dragOffset < -35) {
+      handleNext();
+    } else if (dragOffset > 35) {
+      handlePrev();
     }
-    touchStartX.current = null;
+
+    startXRef.current = null;
+    setIsDragging(false);
+    setDragOffset(0);
+
+    // Resume auto-play after short delay
+    setTimeout(() => {
+      setIsPaused(false);
+    }, 2000);
   };
 
   return (
     <section
-      className="relative w-full min-h-[calc(100vh-5rem)] max-h-[880px] flex flex-col justify-between pt-20 pb-4 sm:pb-6 bg-[#0c0b11] text-white overflow-hidden select-none"
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
+      className="relative w-full min-h-[calc(100vh-5rem)] max-h-[860px] flex flex-col justify-center pt-20 pb-8 bg-[#0c0b11] text-white overflow-hidden select-none cursor-grab active:cursor-grabbing"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => {
+        if (!isDragging) setIsPaused(false);
+      }}
+      onTouchStart={(e) => onDragStart(e.touches[0].clientX)}
+      onTouchMove={(e) => onDragMove(e.touches[0].clientX)}
+      onTouchEnd={onDragEnd}
+      onMouseDown={(e) => onDragStart(e.clientX)}
+      onMouseMove={(e) => onDragMove(e.clientX)}
+      onMouseUp={onDragEnd}
     >
       {/* Background Atmosphere & Ambient Glow */}
       <div className="absolute inset-0 pointer-events-none -z-10 overflow-hidden">
@@ -107,9 +147,9 @@ export function ProductShowcase() {
       </div>
 
       {/* Main Stage: Minimalist Composition (Left: Title Only, Center: Large Product, Right: Price Only) */}
-      <div className="relative z-10 flex-1 flex items-center w-full mt-1 sm:mt-2 mb-2">
+      <div className="relative z-10 flex items-center w-full my-auto">
         <Container size="wide" className="w-full">
-          <div className="relative grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-4 items-center min-h-[400px] sm:min-h-[460px] lg:min-h-[500px]">
+          <div className="relative grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-4 items-center min-h-[420px] sm:min-h-[480px] lg:min-h-[520px]">
             {/* Giant Watermark Typography behind the product (smooth cross-fade) */}
             {FEATURED_PRODUCTS.map((prod, idx) => {
               const isActive = idx === currentIndex;
@@ -129,7 +169,7 @@ export function ProductShowcase() {
             })}
 
             {/* LEFT COLUMN: ONLY Product Title (smooth transition, no extra text/badges) */}
-            <div className="lg:col-span-4 flex flex-col justify-center text-left order-2 lg:order-1 relative h-20 sm:h-24 lg:h-32">
+            <div className="lg:col-span-4 flex flex-col justify-center text-left order-2 lg:order-1 relative h-20 sm:h-24 lg:h-32 pointer-events-none">
               {FEATURED_PRODUCTS.map((prod, idx) => {
                 const isActive = idx === currentIndex;
                 return (
@@ -137,10 +177,10 @@ export function ProductShowcase() {
                     key={prod.id}
                     className={`absolute inset-x-0 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                       isActive
-                        ? 'opacity-100 translate-y-0 pointer-events-auto'
+                        ? 'opacity-100 translate-y-0'
                         : idx < currentIndex
-                        ? 'opacity-0 -translate-y-8 pointer-events-none'
-                        : 'opacity-0 translate-y-8 pointer-events-none'
+                        ? 'opacity-0 -translate-y-8'
+                        : 'opacity-0 translate-y-8'
                     }`}
                   >
                     <h1 className="text-2xl sm:text-3xl lg:text-5xl font-black uppercase tracking-tight text-white leading-tight">
@@ -151,7 +191,7 @@ export function ProductShowcase() {
               })}
             </div>
 
-            {/* CENTER COLUMN: Hero Product with Transparent Cutout & Halo Ring (Enlarged Size, No-glitch Animation) */}
+            {/* CENTER COLUMN: Hero Product with Transparent Cutout & Halo Ring (Automatic Slide + Draggable) */}
             <div className="lg:col-span-4 flex items-center justify-center relative order-1 lg:order-2 my-2 sm:my-0">
               {/* Minimalist Graphic Accent Rings */}
               <div
@@ -165,27 +205,13 @@ export function ProductShowcase() {
                 style={{ borderColor: current.ringColor }}
               />
 
-              {/* Mobile Arrows Floating beside the Product */}
-              <button
-                type="button"
-                onClick={handlePrev}
-                className="lg:hidden absolute left-0 z-30 w-10 h-10 rounded-full border border-white/20 bg-black/60 backdrop-blur-md text-white flex items-center justify-center active:scale-90"
-                aria-label="Varian sebelumnya"
+              {/* Stacked Product Cutouts: Pre-mounted in DOM with Auto-Glide and Interactive Drag */}
+              <div
+                className="relative w-[300px] sm:w-[380px] lg:w-[440px] xl:w-[460px] h-[360px] sm:h-[440px] lg:h-[480px] xl:h-[520px] flex items-center justify-center transition-transform duration-200"
+                style={{
+                  transform: isDragging ? `translateX(${dragOffset}px)` : undefined,
+                }}
               >
-                <ArrowLeft className="w-4 h-4" />
-              </button>
-
-              <button
-                type="button"
-                onClick={handleNext}
-                className="lg:hidden absolute right-0 z-30 w-10 h-10 rounded-full border border-white/20 bg-black/60 backdrop-blur-md text-white flex items-center justify-center active:scale-90"
-                aria-label="Varian berikutnya"
-              >
-                <ArrowRight className="w-4 h-4" />
-              </button>
-
-              {/* Stacked Product Cutouts: Pre-mounted in DOM for 100% glitch-free smooth glide */}
-              <div className="relative w-[300px] sm:w-[380px] lg:w-[440px] xl:w-[460px] h-[360px] sm:h-[440px] lg:h-[480px] xl:h-[520px] flex items-center justify-center">
                 {FEATURED_PRODUCTS.map((prod, idx) => {
                   const isActive = idx === currentIndex;
                   return (
@@ -199,7 +225,7 @@ export function ProductShowcase() {
                           : 'opacity-0 scale-95 translate-x-14 z-10 pointer-events-none'
                       }`}
                     >
-                      <div className="relative w-full h-full">
+                      <div className="relative w-full h-full pointer-events-none">
                         <Image
                           src={prod.image}
                           alt={prod.name}
@@ -216,7 +242,7 @@ export function ProductShowcase() {
             </div>
 
             {/* RIGHT COLUMN: ONLY Price (smooth transition, no extra specs/badges) */}
-            <div className="lg:col-span-4 flex flex-col justify-center text-left lg:text-right order-3 relative h-20 sm:h-24 lg:h-32">
+            <div className="lg:col-span-4 flex flex-col justify-center text-left lg:text-right order-3 relative h-20 sm:h-24 lg:h-32 pointer-events-none">
               {FEATURED_PRODUCTS.map((prod, idx) => {
                 const isActive = idx === currentIndex;
                 return (
@@ -224,10 +250,10 @@ export function ProductShowcase() {
                     key={prod.id}
                     className={`absolute inset-x-0 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                       isActive
-                        ? 'opacity-100 translate-y-0 pointer-events-auto'
+                        ? 'opacity-100 translate-y-0'
                         : idx < currentIndex
-                        ? 'opacity-0 -translate-y-8 pointer-events-none'
-                        : 'opacity-0 translate-y-8 pointer-events-none'
+                        ? 'opacity-0 -translate-y-8'
+                        : 'opacity-0 translate-y-8'
                     }`}
                   >
                     <div className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight">
@@ -240,61 +266,6 @@ export function ProductShowcase() {
           </div>
         </Container>
       </div>
-
-      {/* BOTTOM BAR: Carousel Selector Pills & Minimalist Desktop Arrow Controls */}
-      <Container size="wide" className="relative z-10 pt-2 pb-1">
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-white/[0.08] pt-3">
-          {/* Minimalist Prev Button (Desktop) */}
-          <button
-            type="button"
-            onClick={handlePrev}
-            className="hidden lg:flex w-10 h-10 rounded-full border border-white/20 bg-white/[0.04] hover:bg-white/15 text-white items-center justify-center transition-all duration-200 active:scale-90 cursor-pointer shadow-md"
-            aria-label="Varian sebelumnya"
-            title="Produk Sebelumnya (←)"
-          >
-            <ArrowLeft className="w-4 h-4" />
-          </button>
-
-          {/* Minimalist Pills */}
-          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
-            {FEATURED_PRODUCTS.map((prod, idx) => {
-              const isActive = currentIndex === idx;
-              return (
-                <button
-                  key={prod.id}
-                  type="button"
-                  onClick={() => setCurrentIndex(idx)}
-                  className={`group flex items-center gap-2 px-4 py-2 rounded-full text-xs transition-all duration-300 cursor-pointer ${
-                    isActive
-                      ? 'bg-white text-black font-bold shadow-md scale-105'
-                      : 'bg-white/[0.04] hover:bg-white/[0.08] text-white/60 hover:text-white border border-white/[0.08]'
-                  }`}
-                >
-                  <span
-                    className={`w-1.5 h-1.5 rounded-full transition-colors ${
-                      isActive ? 'bg-black' : 'bg-white/40 group-hover:bg-white'
-                    }`}
-                  />
-                  <span className="font-mono text-[11px] tracking-wider uppercase">
-                    {prod.shortName}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Minimalist Next Button (Desktop) */}
-          <button
-            type="button"
-            onClick={handleNext}
-            className="hidden lg:flex w-10 h-10 rounded-full border border-white/20 bg-white/[0.04] hover:bg-white/15 text-white items-center justify-center transition-all duration-200 active:scale-90 cursor-pointer shadow-md"
-            aria-label="Varian berikutnya"
-            title="Produk Berikutnya (→)"
-          >
-            <ArrowRight className="w-4 h-4" />
-          </button>
-        </div>
-      </Container>
     </section>
   );
 }

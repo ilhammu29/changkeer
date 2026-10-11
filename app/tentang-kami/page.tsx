@@ -47,10 +47,10 @@ export default async function TentangKamiPage() {
             <span className="text-[11px] font-bold tracking-[0.25em] uppercase text-accent block">
               01 // IDENTITAS &amp; FILOSOFI
             </span>
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black uppercase tracking-tight text-foreground leading-[0.95]">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black uppercase tracking-tight text-foreground leading-tight">
               {manifesto.title}
             </h1>
-            <p className="text-lg sm:text-2xl font-light text-foreground/80 leading-relaxed pt-2">
+            <p className="text-sm sm:text-base font-normal text-muted-foreground leading-relaxed pt-1">
               &quot;{manifesto.subtitle}&quot;
             </p>
           </div>

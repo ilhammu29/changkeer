@@ -25,7 +25,7 @@ export default async function MediaBeritaPage() {
           <span className="text-[11px] font-bold tracking-[0.25em] uppercase text-accent block mb-2">
             ARSIP EDUKASI &amp; BERITA
           </span>
-          <h1 className="text-4xl sm:text-6xl font-black uppercase tracking-tight text-foreground">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black uppercase tracking-tight text-foreground">
             MEDIA &amp; BERITA
           </h1>
           <p className="text-sm sm:text-base text-muted-foreground mt-2 max-w-2xl">
