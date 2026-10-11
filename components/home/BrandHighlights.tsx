@@ -1,9 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { Container } from '@/components/ui/Container';
 import { Reveal } from '@/components/ui/Reveal';
-import { ArrowUpRight, CheckCircle2 } from 'lucide-react';
 
 interface HighlightItem {
   title: string;
@@ -16,10 +14,10 @@ interface BrandHighlightsProps {
 
 export function BrandHighlights({ highlights: _highlights }: BrandHighlightsProps) {
   return (
-    <section id="highlights" className="w-full bg-surface border-b border-border py-24 sm:py-32 lg:py-36 scroll-mt-20 overflow-hidden">
+    <section id="highlights" className="w-full bg-surface border-b border-border py-16 sm:py-20 lg:py-24 scroll-mt-20 overflow-hidden">
       <Container size="wide">
         <Reveal>
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
             {/* Left: Foto Produk Asli CHANGKEER */}
             <div className="lg:col-span-5 relative">
               <div className="relative aspect-[4/5] sm:aspect-square lg:aspect-[4/5] w-full max-w-md mx-auto rounded-2xl overflow-hidden bg-background border border-border/80 shadow-md group">
@@ -55,75 +53,20 @@ export function BrandHighlights({ highlights: _highlights }: BrandHighlightsProp
               <div className="absolute -top-10 -left-10 w-48 h-48 bg-accent/10 rounded-full blur-3xl pointer-events-none -z-10" />
             </div>
 
-            {/* Right: Tentang Kami (Headline Sedang + Deskripsi Singkat Font Kecil) */}
-            <div className="lg:col-span-7 flex flex-col justify-center space-y-6 lg:pl-4">
-              <div className="space-y-2">
-                <span className="text-[11px] font-bold tracking-[0.25em] uppercase text-accent block">
-                  01 // TENTANG KAMI
-                </span>
-                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold uppercase tracking-tight text-foreground leading-[1.15]">
-                  Tradisi Seduh Alami untuk Kejernihan Hidup Modern
-                </h2>
-              </div>
+            {/* Right: Tentang Kami (Heading Sedang + Deskripsi Rapi) */}
+            <div className="lg:col-span-7 flex flex-col justify-center space-y-4 lg:pl-4">
+              <h2 className="text-lg sm:text-xl lg:text-2xl font-bold uppercase tracking-wide text-foreground leading-snug">
+                Tradisi Seduh Alami untuk Kejernihan Hidup Modern
+              </h2>
 
-              {/* Deskripsi Singkat dengan Font Kecil & Halus */}
+              {/* Deskripsi Singkat Font Bersih & Rapi */}
               <div className="space-y-3.5 text-xs sm:text-sm text-muted-foreground leading-relaxed font-normal">
                 <p>
                   CHANGKEER lahir dari dedikasi menghadirkan jeda yang menenangkan di tengah ritme keseharian yang serba cepat. Kami meracik daun teh utuh, kelopak bunga melati, dan rempah alami nusantara tanpa pemutih kimiawi maupun kantong plastik berbahaya.
                 </p>
                 <p>
-                  Setiap racikan dipermanis lembut dengan gula sorgum alami dan madu hutan murni rendah glikemik. Tanpa daun senna keras, sangat aman dan nyaman dikonsumsi setiap hari untuk menjaga hidrasi serta ketenangan pikiran Anda.
+                  Setiap racikan dipermanis lembut dengan gula sorgum alami dan madu hutan murni rendah glikemik. Bebas daun senna keras sehingga sangat aman dan nyaman dikonsumsi setiap hari untuk menjaga hidrasi alami serta ketenangan pikiran Anda.
                 </p>
-              </div>
-
-              {/* 3 Karakter Kunci Font Kecil */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-2">
-                <div className="p-3 rounded-lg bg-background border border-border/60 space-y-1">
-                  <div className="flex items-center gap-1.5 text-primary">
-                    <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
-                    <span className="text-[11px] font-bold uppercase tracking-wider text-foreground">
-                      Bahan Utuh
-                    </span>
-                  </div>
-                  <p className="text-[10px] text-muted-foreground leading-normal">
-                    Kuntum melati &amp; daun teh utuh tanpa perisa sintetis.
-                  </p>
-                </div>
-
-                <div className="p-3 rounded-lg bg-background border border-border/60 space-y-1">
-                  <div className="flex items-center gap-1.5 text-primary">
-                    <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
-                    <span className="text-[11px] font-bold uppercase tracking-wider text-foreground">
-                      Pemanis Alami
-                    </span>
-                  </div>
-                  <p className="text-[10px] text-muted-foreground leading-normal">
-                    Gula sorgum &amp; madu murni rendah glikemik.
-                  </p>
-                </div>
-
-                <div className="p-3 rounded-lg bg-background border border-border/60 space-y-1">
-                  <div className="flex items-center gap-1.5 text-primary">
-                    <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
-                    <span className="text-[11px] font-bold uppercase tracking-wider text-foreground">
-                      Seduh Cepat
-                    </span>
-                  </div>
-                  <p className="text-[10px] text-muted-foreground leading-normal">
-                    Format praktis &lt; 3 menit siap minum kapan saja.
-                  </p>
-                </div>
-              </div>
-
-              {/* Action Link */}
-              <div className="pt-2">
-                <Link
-                  href="/tentang-kami"
-                  className="inline-flex items-center gap-2 text-xs font-bold tracking-widest uppercase bg-primary text-primary-foreground px-6 py-3 rounded-full hover:bg-primary-hover transition-all shadow-sm active:scale-95"
-                >
-                  <span>PELAJARI FILOSOFI KAMI</span>
-                  <ArrowUpRight className="w-3.5 h-3.5" />
-                </Link>
               </div>
             </div>
           </div>
