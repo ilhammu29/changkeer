@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="100%" height="100%">
+  <rect width="800" height="500" fill="#f6f3ee"/>
+  <rect x="50" y="50" width="700" height="400" rx="12" fill="#ebe6dd"/>
+  <!-- Botanical leaf icon -->
+  <circle cx="400" cy="220" r="90" fill="#ffffff"/>
+  <path d="M 400 150 C 440 180 440 260 400 290 C 360 260 360 180 400 150 Z" fill="#2d372e"/>
+  <line x1="400" y1="160" x2="400" y2="280" stroke="#ffffff" stroke-width="2"/>
+  <text x="400" y="370" font-family="sans-serif" font-size="16" font-weight="800" fill="#1b211c" text-anchor="middle" letter-spacing="1">EKSPLORASI REMPAH NUSANTARA</text>
+  <text x="400" y="395" font-family="sans-serif" font-size="12" fill="#756b5f" text-anchor="middle">HARMONI JAHE MERAH &amp; SERAI WANGI</text>
+</svg>

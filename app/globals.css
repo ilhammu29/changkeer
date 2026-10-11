@@ -1,0 +1,137 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    /* ==========================================================================
+       CHANGKEER CENTRALIZED SEMANTIC DESIGN TOKENS
+       All visual elements, colors, borders, and accents are mapped to these tokens.
+       When final color palette is provided, changes only need to occur here.
+       ========================================================================== */
+    --background: #fcfcfb;
+    --foreground: #111211;
+    --surface: #ffffff;
+    --surface-hover: #f5f6f4;
+    --surface-elevated: #ffffff;
+
+    --primary: #151a16;
+    --primary-foreground: #f8faf8;
+    --primary-hover: #262e27;
+
+    --accent: #2e3a2f;
+    --accent-foreground: #ffffff;
+    --accent-subtle: #edf1ed;
+
+    --muted: #f2f3f1;
+    --muted-foreground: #676e67;
+
+    --border: #e3e6e2;
+    --border-strong: #c2c7c1;
+
+    --ring: #2e3a2f;
+
+    /* Radius & Spacing Scales */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 16px;
+    --radius-full: 9999px;
+
+    /* Motion Duration Tokens */
+    --motion-fast: 150ms;
+    --motion-normal: 300ms;
+    --motion-slow: 700ms;
+  }
+
+  .dark {
+    --background: #0c0e0c;
+    --foreground: #f4f6f4;
+    --surface: #141714;
+    --surface-hover: #1c211c;
+    --surface-elevated: #1a1f1a;
+
+    --primary: #e6ebe6;
+    --primary-foreground: #0c0e0c;
+    --primary-hover: #f3f7f3;
+
+    --accent: #a3b5a4;
+    --accent-foreground: #0c0e0c;
+    --accent-subtle: #19201a;
+
+    --muted: #191d19;
+    --muted-foreground: #8a928a;
+
+    --border: #252b25;
+    --border-strong: #394239;
+
+    --ring: #a3b5a4;
+  }
+}
+
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-hover: var(--primary-hover);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent-subtle: var(--accent-subtle);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-ring: var(--ring);
+
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-full: var(--radius-full);
+}
+
+/* Custom Base Utilities */
+html {
+  scroll-behavior: smooth;
+  color-scheme: light;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  min-height: 100vh;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Accessible focus outline using design tokens */
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* Parallax and editorial graphic helpers */
+@keyframes subtleFloat {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(0.5deg);
+  }
+}
+
+.animate-subtle-float {
+  animation: subtleFloat 6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

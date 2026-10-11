@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="100%" height="100%">
+  <defs>
+    <linearGradient id="canisterGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#181c19"/>
+      <stop offset="25%" stop-color="#242b25"/>
+      <stop offset="60%" stop-color="#1b211c"/>
+      <stop offset="100%" stop-color="#111412"/>
+    </linearGradient>
+    <linearGradient id="lidGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#2c332d"/>
+      <stop offset="40%" stop-color="#3d473e"/>
+      <stop offset="100%" stop-color="#1f2420"/>
+    </linearGradient>
+    <linearGradient id="goldAcc" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#d4af37"/>
+      <stop offset="100%" stop-color="#aa8520"/>
+    </linearGradient>
+    <filter id="canisterShadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="24" stdDeviation="20" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <!-- Background Geometric Layers -->
+  <circle cx="300" cy="420" r="260" fill="#f0f2ee" opacity="0.6"/>
+  <rect x="180" y="80" width="280" height="620" rx="140" fill="none" stroke="#e0e4dd" stroke-width="2" stroke-dasharray="8 6"/>
+
+  <!-- Canister Body with Shadow -->
+  <g filter="url(#canisterShadow)">
+    <!-- Main Cylinder -->
+    <rect x="170" y="180" width="260" height="460" rx="20" fill="url(#canisterGrad)"/>
+    
+    <!-- Top Lid -->
+    <rect x="160" y="140" width="280" height="55" rx="14" fill="url(#lidGrad)"/>
+    <line x1="160" y1="195" x2="440" y2="195" stroke="#121513" stroke-width="2"/>
+
+    <!-- Gold Accent Rim -->
+    <rect x="170" y="210" width="260" height="4" fill="url(#goldAcc)"/>
+
+    <!-- Central Minimalist Label -->
+    <rect x="195" y="240" width="210" height="320" rx="8" fill="#fcfcfb"/>
+    
+    <!-- Botanical Motif on Label -->
+    <path d="M300 270 C290 285 275 300 275 315 C275 330 288 340 300 345 C312 340 325 330 325 315 C325 300 310 285 300 270 Z" fill="#242b25"/>
+    <circle cx="300" cy="308" r="4" fill="#d4af37"/>
+
+    <!-- Typography on Label -->
+    <text x="300" y="380" font-family="sans-serif" font-size="20" font-weight="900" fill="#181c19" text-anchor="middle" letter-spacing="4">CHANGKEER</text>
+    <text x="300" y="405" font-family="sans-serif" font-size="10" font-weight="700" fill="#676e67" text-anchor="middle" letter-spacing="2">BOTANICAL HERBAL INFUSION</text>
+    
+    <line x1="225" y1="425" x2="375" y2="425" stroke="#e3e6e2" stroke-width="1.5"/>
+
+    <text x="300" y="450" font-family="sans-serif" font-size="12" font-weight="800" fill="#181c19" text-anchor="middle">VITALITY BLEND</text>
+    <text x="300" y="470" font-family="sans-serif" font-size="9" font-weight="500" fill="#676e67" text-anchor="middle">LEMONGRASS &amp; GINGER</text>
+
+    <!-- Bottom Specs on Label -->
+    <text x="220" y="525" font-family="sans-serif" font-size="8" font-weight="700" fill="#888">15 SACHETS</text>
+    <text x="380" y="525" font-family="sans-serif" font-size="8" font-weight="700" fill="#888" text-anchor="end">NET WT 60G</text>
+
+    <!-- Base Shadow Accent -->
+    <ellipse cx="300" cy="635" rx="120" ry="12" fill="#0c0e0c" opacity="0.4"/>
+  </g>
+</svg>

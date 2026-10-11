@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="100%" height="100%">
+  <rect width="800" height="500" fill="#f4f5f2"/>
+  <rect x="50" y="50" width="700" height="400" rx="12" fill="#eaece7"/>
+  <!-- Brewing icon/diagram -->
+  <circle cx="400" cy="220" r="90" fill="#ffffff"/>
+  <path d="M 360 250 C 360 280 440 280 440 250 L 440 200 L 360 200 Z" fill="#2d372e"/>
+  <path d="M 440 215 C 460 215 460 235 440 235" fill="none" stroke="#2d372e" stroke-width="6"/>
+  <path d="M 390 180 Q 400 160 395 140" fill="none" stroke="#c49a38" stroke-width="4" stroke-linecap="round"/>
+  <path d="M 410 180 Q 420 160 415 140" fill="none" stroke="#c49a38" stroke-width="4" stroke-linecap="round"/>
+  <text x="400" y="370" font-family="sans-serif" font-size="16" font-weight="800" fill="#1b211c" text-anchor="middle" letter-spacing="1">SENI MENYEDUH TEH HERBAL</text>
+  <text x="400" y="395" font-family="sans-serif" font-size="12" fill="#676e67" text-anchor="middle">SUHU &amp; WAKTU EKSTRAKSI SEMPURNA</text>
+</svg>
