@@ -1,497 +1,439 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
   ArrowLeft,
   ArrowRight,
-  ArrowDown,
   ArrowUpRight,
-  Check,
   ShieldCheck,
-  Leaf,
   Clock,
-  Sparkles,
-  Plus,
-  Minus,
+  Leaf,
 } from 'lucide-react';
 import { Container } from '@/components/ui/Container';
 
-interface ProductItem {
+interface ProductShowcaseItem {
   id: string;
   name: string;
   shortName: string;
-  subtitle: string;
+  watermark: string;
+  category: string;
   tagline: string;
   description: string;
+  price: string;
+  priceRaw: number;
+  weight: string;
   image: string;
-  tasteProfile: string;
-  benefits: string;
-  ingredients: string[];
+  tasteNotes: string[];
   brewing: string;
-  badges: string[];
+  benefits: string;
   slug: string;
-  archGradient: string;
-  accentGlow: string;
-  accentRing: string;
+  ringColor: string;
+  glowColor: string;
+  accentText: string;
 }
 
-const AUTHENTIC_PRODUCTS: ProductItem[] = [
+const FEATURED_PRODUCTS: ProductShowcaseItem[] = [
   {
     id: 'jasmine-tea',
-    name: 'CHANGKEER JASMINE TEA',
+    name: 'JASMINE TEA',
     shortName: 'Jasmine Tea',
-    subtitle: 'SOLAR-TERM BOTANICAL INFUSION',
+    watermark: 'JASMINE',
+    category: 'TEH HERBAL ALAMI',
     tagline: 'Harmoni Daun Teh Pilihan & Kelopak Melati Utuh',
     description:
-      'Terinspirasi dari tradisi teh herbal Tiongkok yang disederhanakan untuk ritme hidup aktif modern grab-and-go. Menggunakan daun teh pilihan, kuntum melati utuh, serta alternatif pemanis sehat gula sorgum dan madu murni. 100% bebas mikroplastik dan tanpa daun senna keras.',
-    image: '/images/assets/jasmine_tea_produk.jpg',
-    tasteProfile: 'Harum melati alami semerbak, rasa manis lembut seimbang tanpa rasa pahit pekat.',
-    benefits:
-      'Menenangkan pikiran, menjaga kejernihan fokus, serta melindungi sel tubuh dengan antioksidan polifenol alami tanpa efek lonjakan asam lambung.',
-    ingredients: [
-      'Daun Teh Hijau Pilihan (Camellia sinensis)',
-      'Kuntum Bunga Melati Utuh (Jasminum sambac)',
-      'Gula Sorgum Organik Rendah Glikemik',
-      'Madu Hutan Murni Nusantara',
-    ],
-    brewing: 'Suhu 85-90°C • Waktu seduh < 3 Menit • 250-300ml Air • Nikmat disajikan hangat atau dengan es batu.',
-    badges: ['100% Bebas Mikroplastik', 'Bebas Daun Senna', 'Pemanis Sorgum & Madu', 'Seduh < 3 Menit'],
+      'Terinspirasi tradisi teh herbal fungsional nusantara. Memadukan daun teh pilihan dengan kuntum melati utuh, pemanis alami gula sorgum rendah glikemik, serta madu hutan murni. 100% bebas mikroplastik.',
+    price: 'Rp 45.000',
+    priceRaw: 45000,
+    weight: '250g Loose Leaf',
+    image: '/images/products-nobg/jasmine-tea.png',
+    tasteNotes: ['Harum Melati Alami', 'Manis Lembut Seimbang', 'Bebas Pahit Pekat'],
+    brewing: '85-90°C • Seduh < 3 Menit',
+    benefits: 'Menenangkan pikiran, menjaga kejernihan fokus tanpa memicu asam lambung.',
     slug: '/katalog/solar-term-jasmine-herbal-tea',
-    archGradient: 'from-[#4D4566]/50 via-[#2E2840]/40 to-[#181622]/70',
-    accentGlow: 'bg-[#544D79]/25',
-    accentRing: 'text-[#544D79]',
+    ringColor: '#c49a45',
+    glowColor: 'rgba(196, 154, 69, 0.18)',
+    accentText: 'text-[#e5bf65]',
   },
   {
     id: 'english-breakfast-tea',
-    name: 'CHANGKEER ENGLISH BREAKFAST',
+    name: 'ENGLISH BREAKFAST',
     shortName: 'English Breakfast',
-    subtitle: 'CLASSIC ROBUST BOTANICAL CRAFT',
-    tagline: 'Racikan Teh Hitam Berkarakter Kuat & Pemanis Rendah Glikemik',
+    watermark: 'BREAKFAST',
+    category: 'TEH HITAM BOTANIKAL',
+    tagline: 'Karakter Teh Hitam Bold & Energi Bersih Tahan Lama',
     description:
-      'Seduhan teh hitam berkarakter bold dan kaya rasa yang terinspirasi tradisi sarapan klasik, diracik dengan dedikasi kearifan nusantara. Menghadirkan dorongan energi bersih tahan lama tanpa lonjakan asam lambung atau crash. Dikemas bebas mikroplastik dengan gula sorgum dan madu murni. 100% bebas daun senna.',
-    image: '/images/assets/english_breakfast_tea_produk.jpg',
-    tasteProfile: 'Aroma malted tea hangat mendalam dengan sentuhan rasa manis karamel sorgum yang lembut.',
-    benefits:
-      'Meningkatkan konsentrasi dan stamina kerja pagi hari secara stabil tanpa memicu debar jantung berlebih.',
-    ingredients: [
-      'Daun Teh Hitam Pilihan Nusantara (Camellia sinensis var. assamica)',
-      'Pemanis Alami Gula Sorgum Organik',
-      'Madu Hutan Murni Nusantara',
-    ],
-    brewing: 'Suhu 95°C • Waktu seduh < 3 Menit • 250-300ml Air • Sempurna dinikmati murni atau dengan susu nabati.',
-    badges: ['100% Bebas Mikroplastik', 'Bebas Daun Senna', 'Energi Bersih Tahan Lama', 'Seduh < 3 Menit'],
+      'Seduhan teh hitam berkarakter kaya rasa yang terinspirasi tradisi sarapan klasik. Diracik dengan dedikasi kearifan nusantara untuk stamina kerja harian tanpa crash atau debar jantung berlebih.',
+    price: 'Rp 48.000',
+    priceRaw: 48000,
+    weight: '250g Loose Leaf',
+    image: '/images/products-nobg/english-breakfast-tea.png',
+    tasteNotes: ['Aroma Malted Hangat', 'Sentuhan Karamel Sorgum', 'Bold & Full-Bodied'],
+    brewing: '95°C • Seduh < 3 Menit',
+    benefits: 'Meningkatkan konsentrasi dan energi bersih stabil sepanjang pagi hingga siang.',
     slug: '/katalog/english-breakfast-tea',
-    archGradient: 'from-[#5A453B]/50 via-[#362720]/40 to-[#181622]/70',
-    accentGlow: 'bg-[#6E5448]/25',
-    accentRing: 'text-[#8C6B5B]',
+    ringColor: '#a85b3b',
+    glowColor: 'rgba(168, 91, 59, 0.18)',
+    accentText: 'text-[#e88965]',
   },
   {
     id: 'vanilla-mint-tea',
-    name: 'CHANGKEER VANILLA MINT TEA',
+    name: 'VANILLA MINT TEA',
     shortName: 'Vanilla Mint',
-    subtitle: 'REFRESHING BOTANICAL HARMONY',
+    watermark: 'VANILLA',
+    category: 'TISANE HERBAL SEGAR',
     tagline: 'Sensasi Semilir Dingin Daun Mint & Kelembutan Vanilla Menenangkan',
     description:
-      'Kombinasi harmonis antara sensasi sejuk segar daun mint alami dan kelembutan aroma vanilla alami. Dirancang untuk meredakan kepenatan harian, menyegarkan saluran pernapasan, dan menjaga relaksasi tanpa efek samping pencernaan. Dikemas dalam kantung bebas mikroplastik dengan alternatif pemanis sehat sorgum dan madu murni.',
-    image: '/images/assets/vanilla_mint_tea_produk.jpg',
-    tasteProfile: 'Sensasi dingin menyegarkan di lidah berpadu aroma manis creamy vanilla yang lembut menenangkan.',
-    benefits:
-      'Melegakan pernapasan, menurunkan tingkat stres setelah beraktivitas, serta menyegarkan napas secara alami.',
-    ingredients: [
-      'Daun Teh Pilihan (Camellia sinensis)',
-      'Daun Mint Kering Alami (Mentha piperita)',
-      'Ekstrak Polong Vanilla Alami',
-      'Gula Sorgum Rendah Kalori',
-      'Madu Hutan Alami',
-    ],
-    brewing: 'Suhu 90°C • Waktu seduh < 3 Menit • 250-300ml Air • Ekstra segar bila dinikmati dingin dengan es batu.',
-    badges: ['100% Bebas Mikroplastik', 'Bebas Daun Senna', 'Menyejukkan Pernapasan', 'Seduh < 3 Menit'],
+      'Kombinasi harmonis antara sensasi sejuk segar daun mint alami dan kelembutan aroma polong vanilla alami nusantara. Melegakan pernapasan dan meredakan kepenatan aktivitas aktif harian.',
+    price: 'Rp 48.000',
+    priceRaw: 48000,
+    weight: '250g Loose Leaf',
+    image: '/images/products-nobg/vanilla-mint-tea.png',
+    tasteNotes: ['Sensasi Semilir Dingin', 'Aroma Creamy Lembut', 'Napas Segar Alami'],
+    brewing: '90°C • Seduh < 3 Menit',
+    benefits: 'Melegakan saluran pernapasan dan menurunkan tingkat ketegangan setelah beraktivitas.',
     slug: '/katalog/vanilla-mint-tea',
-    archGradient: 'from-[#3B544E]/50 via-[#21332F]/40 to-[#181622]/70',
-    accentGlow: 'bg-[#4D6D65]/25',
-    accentRing: 'text-[#4D6D65]',
+    ringColor: '#4d8f78',
+    glowColor: 'rgba(77, 143, 120, 0.18)',
+    accentText: 'text-[#7ad1b2]',
   },
 ];
 
 export function ProductShowcase() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(false);
-  const [openAccordion, setOpenAccordion] = useState<string>('ingredients');
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [slideDirection, setSlideDirection] = useState<'next' | 'prev'>('next');
+  const touchStartX = useRef<number | null>(null);
 
-  const total = AUTHENTIC_PRODUCTS.length;
-  const current = AUTHENTIC_PRODUCTS[currentIndex];
+  const total = FEATURED_PRODUCTS.length;
+  const current = FEATURED_PRODUCTS[currentIndex];
+
+  const changeSlide = useCallback(
+    (newIndex: number, direction: 'next' | 'prev') => {
+      if (isAnimating || newIndex === currentIndex) return;
+      setSlideDirection(direction);
+      setIsAnimating(true);
+      setCurrentIndex(newIndex);
+      const timer = setTimeout(() => {
+        setIsAnimating(false);
+      }, 450);
+      return () => clearTimeout(timer);
+    },
+    [currentIndex, isAnimating]
+  );
 
   const handleNext = useCallback(() => {
-    if (isTransitioning) return;
-    setIsTransitioning(true);
-    setCurrentIndex((prev) => (prev + 1) % total);
-    setTimeout(() => setIsTransitioning(false), 400);
-  }, [isTransitioning, total]);
+    const nextIdx = (currentIndex + 1) % total;
+    changeSlide(nextIdx, 'next');
+  }, [changeSlide, currentIndex, total]);
 
   const handlePrev = useCallback(() => {
-    if (isTransitioning) return;
-    setIsTransitioning(true);
-    setCurrentIndex((prev) => (prev - 1 + total) % total);
-    setTimeout(() => setIsTransitioning(false), 400);
-  }, [isTransitioning, total]);
+    const prevIdx = (currentIndex - 1 + total) % total;
+    changeSlide(prevIdx, 'prev');
+  }, [changeSlide, currentIndex, total]);
 
   // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowRight') {
-        handleNext();
-      } else if (e.key === 'ArrowLeft') {
-        handlePrev();
-      }
+      if (e.key === 'ArrowRight') handleNext();
+      if (e.key === 'ArrowLeft') handlePrev();
     };
-
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleNext, handlePrev]);
 
-  const toggleAccordion = (section: string) => {
-    setOpenAccordion((prev) => (prev === section ? '' : section));
+  // Touch swipe support for mobile
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const diff = touchStartX.current - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 40) {
+      if (diff > 0) handleNext();
+      else handlePrev();
+    }
+    touchStartX.current = null;
   };
 
   return (
-    <section className="relative w-full pt-24 pb-16 lg:pt-28 lg:pb-24 bg-[#111216] text-white overflow-hidden select-none">
-      {/* Dynamic Ambient Background Glows */}
-      <div
-        className={`absolute -top-32 left-1/2 -translate-x-1/2 w-[700px] h-[700px] rounded-full blur-[140px] pointer-events-none transition-all duration-1000 -z-10 ${current.accentGlow}`}
-      />
-      <div className="absolute top-1/3 -right-40 w-[500px] h-[500px] rounded-full bg-[#544D79]/15 blur-[120px] pointer-events-none -z-10" />
+    <section
+      className="relative w-full min-h-[82vh] lg:min-h-[88vh] flex flex-col justify-between pt-24 pb-12 lg:pt-28 lg:pb-16 bg-[#0c0b11] text-white overflow-hidden select-none"
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+    >
+      {/* Background Atmosphere & Ambient Vignette */}
+      <div className="absolute inset-0 pointer-events-none -z-10 overflow-hidden">
+        {/* Subtle radial ambient glow matching active product */}
+        <div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full blur-[140px] transition-all duration-1000 ease-out"
+          style={{ background: current.glowColor }}
+        />
+        {/* Dark radial vignette */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_20%,rgba(12,11,17,0.85)_80%)]" />
+      </div>
 
-      <Container size="wide">
-        {/* Main Exhibition Showcase: 3-Column Asymmetrical Reference 4 Layout */}
-        <div className="relative rounded-3xl border border-white/10 bg-[#16151E]/90 backdrop-blur-xl p-6 sm:p-10 lg:p-12 shadow-2xl">
-          {/* Top Bar of the Exhibition Frame */}
-          <div className="flex items-center justify-between pb-6 mb-6 sm:pb-8 sm:mb-8 border-b border-white/10 text-xs text-white/60">
-            <div className="flex items-center gap-3 sm:gap-6">
-              <span className="font-mono uppercase tracking-[0.2em] sm:tracking-[0.25em] text-white/80 font-bold text-[11px] sm:text-xs">
-                CHANGKEER EXHIBITION
-              </span>
-              <span className="hidden sm:inline text-white/30">•</span>
-              <span className="hidden sm:inline font-mono tracking-widest uppercase">
-                SOLAR-TERM BOTANICALS
-              </span>
-            </div>
-
-            {/* Mobile Arrows & Stepper Dots */}
-            <div className="flex items-center gap-3 sm:gap-4">
-              <div className="flex items-center gap-1.5 lg:hidden">
-                <button
-                  type="button"
-                  onClick={handlePrev}
-                  className="w-8 h-8 rounded-full border border-white/20 bg-white/5 text-white flex items-center justify-center active:scale-90"
-                  aria-label="Produk Sebelumnya"
-                >
-                  <ArrowLeft className="w-3.5 h-3.5" />
-                </button>
-                <span className="font-mono text-xs text-white/70 px-1 font-bold">
-                  0{currentIndex + 1}/0{total}
-                </span>
-                <button
-                  type="button"
-                  onClick={handleNext}
-                  className="w-8 h-8 rounded-full border border-white/20 bg-white/5 text-white flex items-center justify-center active:scale-90"
-                  aria-label="Produk Berikutnya"
-                >
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </button>
-              </div>
-
-              {/* Stepper Dots (Ref 4 style top center/right pill indicator) */}
-              <div className="hidden sm:flex items-center gap-2">
-                {AUTHENTIC_PRODUCTS.map((prod, idx) => (
-                  <button
-                    key={prod.id}
-                    type="button"
-                    onClick={() => {
-                      if (currentIndex !== idx) {
-                        setIsTransitioning(true);
-                        setCurrentIndex(idx);
-                        setTimeout(() => setIsTransitioning(false), 400);
-                      }
-                    }}
-                    className={`h-2 transition-all duration-300 rounded-full cursor-pointer ${
-                      currentIndex === idx ? 'w-8 bg-white' : 'w-2 bg-white/30 hover:bg-white/60'
-                    }`}
-                    aria-label={`Pilih produk ${prod.shortName}`}
-                  />
-                ))}
-              </div>
-            </div>
+      {/* Top Subtle Sub-header */}
+      <Container size="wide" className="relative z-10 mb-4 sm:mb-6">
+        <div className="flex items-center justify-between border-b border-white/[0.08] pb-3 text-[11px] font-mono tracking-[0.25em] text-white/50 uppercase">
+          <div className="flex items-center gap-3">
+            <span className="text-white/80 font-bold">CHANGKEER</span>
+            <span className="text-white/25">/</span>
+            <span className="hidden sm:inline">KOLEKSI TEH BOTANIKAL</span>
           </div>
 
-          {/* 3-Column Asymmetrical Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-            {/* COLUMN 1 (LEFT): Product Title, Highlights & Primary CTA */}
+          <div className="flex items-center gap-4">
+            <span className="text-white/70">
+              0{currentIndex + 1} <span className="text-white/30">/</span> 0{total}
+            </span>
+          </div>
+        </div>
+      </Container>
+
+      {/* Main Showcase Stage (Reference: revisi-halaman_tentang_produk_v2.jpg) */}
+      <div className="relative z-10 flex-1 flex items-center w-full my-auto">
+        <Container size="wide" className="w-full">
+          <div className="relative grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-4 items-center min-h-[460px] sm:min-h-[520px] lg:min-h-[560px]">
+            {/* Giant Watermark Typography behind the product */}
             <div
-              className={`lg:col-span-4 space-y-6 transition-all duration-500 ${
-                isTransitioning ? 'opacity-40 -translate-x-2' : 'opacity-100 translate-x-0'
+              className={`absolute inset-0 flex items-center justify-center pointer-events-none -z-5 transition-opacity duration-700 ${
+                isAnimating ? 'opacity-0' : 'opacity-100'
+              }`}
+              aria-hidden="true"
+            >
+              <span className="font-sans font-black text-[13vw] sm:text-[11vw] tracking-tighter text-white/[0.035] uppercase select-none leading-none">
+                {current.watermark}
+              </span>
+            </div>
+
+            {/* LEFT COLUMN: Tea Name & Minimal Information */}
+            <div
+              className={`lg:col-span-4 flex flex-col justify-center space-y-4 sm:space-y-5 text-left order-2 lg:order-1 transition-all duration-500 ease-out ${
+                isAnimating
+                  ? slideDirection === 'next'
+                    ? 'opacity-30 -translate-x-3'
+                    : 'opacity-30 translate-x-3'
+                  : 'opacity-100 translate-x-0'
               }`}
             >
-              {/* Category Eyebrow */}
-              <div className="inline-flex items-center gap-2 text-[10px] font-mono tracking-[0.3em] uppercase text-white/60">
-                <Sparkles className="w-3.5 h-3.5 text-accent-subtle" />
-                <span>{current.subtitle}</span>
+              {/* Category pill */}
+              <div className="inline-flex items-center gap-2 text-[10px] sm:text-[11px] font-mono tracking-[0.22em] uppercase text-white/60">
+                <span className="w-1.5 h-1.5 rounded-full bg-white/70" />
+                <span>{current.category}</span>
               </div>
 
-              {/* Expressive Editorial Product Title with Reference 4 Style Oval Scribble */}
-              <div className="space-y-3">
-                <div className="relative inline-block">
-                  {/* Reference 4 Stylized Oval Accent Outline */}
-                  <span className="relative z-10 px-3 py-1 font-mono text-xs uppercase tracking-widest text-[#9EE4B8] font-bold">
-                    HERBAL Tisane
-                  </span>
-                  <svg
-                    className="absolute inset-0 w-full h-full text-[#4E8765] stroke-current fill-none -translate-y-0.5"
-                    viewBox="0 0 140 40"
-                    preserveAspectRatio="none"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M 10,20 C 10,6 130,6 130,20 C 130,34 10,34 10,20 Z"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                    />
-                  </svg>
+              {/* Title & Mobile Price Row */}
+              <div className="flex items-start justify-between gap-4">
+                <div className="space-y-1">
+                  <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black uppercase tracking-tight text-white leading-tight">
+                    {current.name}
+                  </h1>
+                  <p className="text-xs sm:text-sm text-white/75 font-normal leading-relaxed max-w-sm">
+                    {current.tagline}
+                  </p>
                 </div>
 
-                <h1 className="text-2xl sm:text-3xl lg:text-5xl font-black uppercase tracking-tight text-white leading-tight break-words">
-                  {current.name}
-                </h1>
-
-                <p className="text-sm font-medium text-white/75 italic">
-                  {current.tagline}
-                </p>
+                {/* Mobile-only Price Display */}
+                <div className="lg:hidden text-right flex-shrink-0 pt-1">
+                  <span className="text-[9px] font-mono tracking-widest text-white/40 uppercase block">
+                    HARGA
+                  </span>
+                  <div className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+                    {current.price}
+                  </div>
+                  <span className="text-[10px] font-mono text-white/50">
+                    {current.weight}
+                  </span>
+                </div>
               </div>
 
-              {/* Price / Specification Badge */}
-              <div className="flex items-baseline gap-3 pt-1">
-                <span className="font-mono text-2xl sm:text-3xl font-black text-white tracking-tight">
-                  250g Loose Leaf
-                </span>
-                <span className="text-xs text-white/50 font-mono tracking-wider">
-                  / SEDUH &lt; 3 MENIT
-                </span>
-              </div>
-
-              {/* Narrative Excerpt */}
-              <p className="text-xs sm:text-sm text-white/70 leading-relaxed font-normal">
+              {/* Description (concise, small font) */}
+              <p className="text-xs text-white/60 leading-relaxed max-w-sm font-light">
                 {current.description}
               </p>
 
-              {/* Reference 4 Style High-Contrast Pill CTA */}
+              {/* Tasting notes chips */}
+              <div className="flex flex-wrap gap-1.5 pt-1">
+                {current.tasteNotes.map((note) => (
+                  <span
+                    key={note}
+                    className="text-[10px] font-mono tracking-wider px-2.5 py-1 rounded-full bg-white/[0.05] border border-white/[0.08] text-white/75"
+                  >
+                    {note}
+                  </span>
+                ))}
+              </div>
+
+              {/* Catalog Link */}
               <div className="pt-2">
                 <Link
                   href={current.slug}
-                  className="inline-flex items-center justify-center gap-2.5 text-xs font-bold tracking-widest uppercase bg-white text-black hover:bg-neutral-200 px-8 py-4 rounded-full transition-all duration-300 active:scale-95 shadow-xl cursor-pointer"
+                  className="inline-flex items-center gap-2 text-xs font-semibold tracking-wider uppercase text-white/90 hover:text-white group transition-colors"
                 >
-                  <Check className="w-4 h-4 stroke-[3]" />
-                  <span>JELAJAHI DI KATALOG</span>
-                  <ArrowUpRight className="w-3.5 h-3.5 ml-1" />
+                  <span className="border-b border-white/40 group-hover:border-white pb-0.5 transition-all">
+                    Detail Racikan Lengkap
+                  </span>
+                  <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </Link>
               </div>
             </div>
 
-            {/* COLUMN 2 (CENTER): Iconic Architectural Arch Window with Authentic Product Photo */}
-            <div className="lg:col-span-4 flex flex-col items-center justify-center relative my-4 lg:my-0">
-              {/* Distinctive Reference 4 Arch Window Backdrop */}
+            {/* CENTER COLUMN: Hero Product with Transparent Cutout & Accent Ring */}
+            <div className="lg:col-span-4 flex items-center justify-center relative order-1 lg:order-2 my-2 sm:my-0">
+              {/* Minimalist Graphic Accent Ring (Reference: revisi-halaman_tentang_produk_v2.jpg) */}
               <div
-                className={`relative w-full max-w-[340px] sm:max-w-[380px] h-[480px] sm:h-[540px] rounded-t-[140px] sm:rounded-t-[180px] rounded-b-3xl bg-gradient-to-b ${current.archGradient} border border-white/15 backdrop-blur-md shadow-2xl flex items-center justify-center p-4 sm:p-6 overflow-hidden transition-all duration-700`}
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[220px] sm:w-[280px] lg:w-[320px] h-[220px] sm:h-[280px] lg:h-[320px] rounded-full border border-white/10 pointer-events-none -z-2 transition-all duration-700"
+                style={{
+                  boxShadow: `0 0 60px -10px ${current.glowColor}`,
+                }}
+              />
+              <div
+                className="absolute top-[38%] left-[58%] -translate-x-1/2 -translate-y-1/2 w-[90px] sm:w-[120px] h-[90px] sm:h-[120px] rounded-full border-2 pointer-events-none -z-1 opacity-75 transition-colors duration-700"
+                style={{ borderColor: current.ringColor }}
+              />
+
+              {/* Mobile Arrow Controls overlay on sides of product */}
+              <button
+                type="button"
+                onClick={handlePrev}
+                className="lg:hidden absolute left-0 z-20 w-9 h-9 rounded-full border border-white/20 bg-black/60 backdrop-blur-md text-white flex items-center justify-center active:scale-90"
+                aria-label="Varian sebelumnya"
               >
-                {/* Floating Authentic Detail Badge 1 (Top Right - Reference 4 style chip) */}
-                <div className="absolute top-8 right-2 sm:right-4 z-20 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/75 backdrop-blur-md border border-white/20 text-[9px] sm:text-[10px] font-medium text-white shadow-xl animate-subtle-float">
-                  <ShieldCheck className="w-3.5 h-3.5 text-[#9EE4B8] flex-shrink-0" />
-                  <span>100% Bebas Mikroplastik</span>
-                </div>
+                <ArrowLeft className="w-4 h-4" />
+              </button>
 
-                {/* Floating Authentic Detail Badge 2 (Bottom Left - Reference 4 style chip) */}
-                <div
-                  className="absolute bottom-16 left-2 sm:left-4 z-20 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/75 backdrop-blur-md border border-white/20 text-[9px] sm:text-[10px] font-medium text-white shadow-xl animate-subtle-float"
-                  style={{ animationDelay: '1.5s' }}
-                >
-                  <Leaf className="w-3.5 h-3.5 text-[#9EE4B8] flex-shrink-0" />
-                  <span>Gula Sorgum &amp; Madu</span>
-                </div>
+              <button
+                type="button"
+                onClick={handleNext}
+                className="lg:hidden absolute right-0 z-20 w-9 h-9 rounded-full border border-white/20 bg-black/60 backdrop-blur-md text-white flex items-center justify-center active:scale-90"
+                aria-label="Varian berikutnya"
+              >
+                <ArrowRight className="w-4 h-4" />
+              </button>
 
-                {/* Authentic Packaging Product Photograph (896x1200 Unclipped Natural Composition) */}
-                <div
-                  className={`relative w-full h-[90%] max-h-[460px] rounded-2xl overflow-hidden transition-all duration-500 ease-out transform ${
-                    isTransitioning ? 'opacity-30 scale-95 blur-xs' : 'opacity-100 scale-100'
-                  }`}
-                >
-                  <Image
-                    src={current.image}
-                    alt={`Kemasan Resmi ${current.name} CHANGKEER`}
-                    fill
-                    sizes="(max-width: 768px) 320px, 380px"
-                    priority
-                    className="object-contain object-center drop-shadow-[0_20px_30px_rgba(0,0,0,0.6)] transition-transform duration-700 hover:scale-105"
-                  />
-                </div>
-
-                {/* Downward Scroll Indicator Circle (Reference 4 arch bottom control) */}
-                <a
-                  href="#pillars"
-                  className="absolute bottom-3 z-20 w-9 h-9 rounded-full border border-white/30 bg-black/50 backdrop-blur-md text-white flex items-center justify-center hover:bg-white/25 hover:border-white transition-all active:scale-95 shadow-md"
-                  aria-label="Gulir ke rincian komitmen dan seduh"
-                  title="Gulir ke Rincian"
-                >
-                  <ArrowDown className="w-4 h-4 animate-bounce" />
-                </a>
+              {/* Product Cutout Image with Smooth Carousel Transitions */}
+              <div
+                className={`relative w-[280px] sm:w-[340px] lg:w-[380px] h-[360px] sm:h-[430px] lg:h-[470px] flex items-center justify-center transition-all duration-500 ease-out transform ${
+                  isAnimating
+                    ? slideDirection === 'next'
+                      ? 'opacity-20 scale-95 translate-x-4'
+                      : 'opacity-20 scale-95 -translate-x-4'
+                    : 'opacity-100 scale-100 translate-x-0'
+                }`}
+              >
+                <Image
+                  src={current.image}
+                  alt={current.name}
+                  fill
+                  priority
+                  sizes="(max-width: 640px) 280px, (max-width: 1024px) 340px, 380px"
+                  className="object-contain drop-shadow-[0_25px_45px_rgba(0,0,0,0.85)] filter hover:scale-105 transition-transform duration-700 ease-out"
+                />
               </div>
             </div>
 
-            {/* COLUMN 3 (RIGHT): Navigation Controls & Interactive Expandable Accordion Menu */}
-            <div className="lg:col-span-4 space-y-6">
-              {/* Top Navigation Arrows & Counter (Exact Reference 4 Placement) */}
-              <div className="flex items-center justify-between pb-4 border-b border-white/10">
-                <div className="font-mono text-sm tracking-widest text-white/50">
-                  <span className="font-bold text-white text-lg">0{currentIndex + 1}</span>
-                  <span> / 0{total}</span>
+            {/* RIGHT COLUMN: Price & Navigation Controls */}
+            <div
+              className={`lg:col-span-4 hidden lg:flex flex-col justify-center space-y-5 text-right order-3 transition-all duration-500 ease-out ${
+                isAnimating
+                  ? slideDirection === 'next'
+                    ? 'opacity-30 translate-x-3'
+                    : 'opacity-30 -translate-x-3'
+                  : 'opacity-100 translate-x-0'
+              }`}
+            >
+              {/* Price Block */}
+              <div className="space-y-1">
+                <span className="text-[10px] font-mono tracking-[0.25em] text-white/50 uppercase block">
+                  HARGA RESMI
+                </span>
+                <div className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight">
+                  {current.price}
                 </div>
-
-                {/* Left & Right Arrow Buttons */}
-                <div className="flex items-center gap-3">
-                  <button
-                    type="button"
-                    onClick={handlePrev}
-                    className="w-10 h-10 rounded-full border border-white/25 bg-white/5 hover:bg-white/20 text-white flex items-center justify-center transition-all duration-200 active:scale-90 cursor-pointer shadow-md"
-                    aria-label="Lihat produk sebelumnya (Panah Kiri)"
-                    title="Produk Sebelumnya (Keyboard: ←)"
-                  >
-                    <ArrowLeft className="w-4 h-4" />
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={handleNext}
-                    className="w-10 h-10 rounded-full border border-white/25 bg-white/5 hover:bg-white/20 text-white flex items-center justify-center transition-all duration-200 active:scale-90 cursor-pointer shadow-md"
-                    aria-label="Lihat produk berikutnya (Panah Kanan)"
-                    title="Produk Berikutnya (Keyboard: →)"
-                  >
-                    <ArrowRight className="w-4 h-4" />
-                  </button>
+                <div className="text-xs font-mono text-white/60 tracking-wider">
+                  {current.weight}
                 </div>
               </div>
 
-              {/* Reference 4 Style Accordion List */}
-              <div className="space-y-3 pt-2">
-                {/* 1. Description / Profil Rasa */}
-                <div className="border border-white/10 rounded-2xl bg-white/5 overflow-hidden transition-colors">
-                  <button
-                    type="button"
-                    onClick={() => toggleAccordion('description')}
-                    className="w-full p-4 flex items-center justify-between text-left cursor-pointer hover:bg-white/5 transition-colors"
-                  >
-                    <span className="text-xs font-bold uppercase tracking-wider text-white">
-                      Description &amp; Profil Rasa
-                    </span>
-                    {openAccordion === 'description' ? (
-                      <Minus className="w-4 h-4 text-white/70" />
-                    ) : (
-                      <Plus className="w-4 h-4 text-white/70" />
-                    )}
-                  </button>
-                  {openAccordion === 'description' && (
-                    <div className="px-4 pb-4 text-xs text-white/75 leading-relaxed space-y-2 border-t border-white/5 pt-3 animate-in fade-in duration-200">
-                      <p>{current.tasteProfile}</p>
-                      <p className="text-[11px] text-white/60">{current.description}</p>
-                    </div>
-                  )}
+              {/* Quick Specs / Brewing info */}
+              <div className="space-y-2 text-xs text-white/65 lg:ml-auto max-w-xs">
+                <div className="flex items-center gap-2 lg:justify-end">
+                  <Clock className="w-3.5 h-3.5 text-white/50 flex-shrink-0" />
+                  <span>{current.brewing}</span>
                 </div>
+                <div className="flex items-center gap-2 lg:justify-end">
+                  <ShieldCheck className="w-3.5 h-3.5 text-white/50 flex-shrink-0" />
+                  <span>100% Bebas Mikroplastik & Senna</span>
+                </div>
+                <div className="flex items-center gap-2 lg:justify-end">
+                  <Leaf className="w-3.5 h-3.5 text-white/50 flex-shrink-0" />
+                  <span>Pemanis Sorgum & Madu Murni</span>
+                </div>
+              </div>
 
-                {/* 2. Manfaat & Fungsionalitas Organ */}
-                <div className="border border-white/10 rounded-2xl bg-white/5 overflow-hidden transition-colors">
-                  <button
-                    type="button"
-                    onClick={() => toggleAccordion('benefits')}
-                    className="w-full p-4 flex items-center justify-between text-left cursor-pointer hover:bg-white/5 transition-colors"
-                  >
-                    <span className="text-xs font-bold uppercase tracking-wider text-white">
-                      Khasiat &amp; Manfaat Organ
-                    </span>
-                    {openAccordion === 'benefits' ? (
-                      <Minus className="w-4 h-4 text-white/70" />
-                    ) : (
-                      <Plus className="w-4 h-4 text-white/70" />
-                    )}
-                  </button>
-                  {openAccordion === 'benefits' && (
-                    <div className="px-4 pb-4 text-xs text-white/75 leading-relaxed border-t border-white/5 pt-3 animate-in fade-in duration-200">
-                      <p>{current.benefits}</p>
-                    </div>
-                  )}
-                </div>
+              {/* Minimalist Navigation Arrow (Reference style) */}
+              <div className="flex items-center gap-3 pt-3 lg:justify-end">
+                <button
+                  type="button"
+                  onClick={handlePrev}
+                  className="w-11 h-11 rounded-full border border-white/20 bg-white/[0.04] hover:bg-white/15 text-white flex items-center justify-center transition-all duration-200 active:scale-90 cursor-pointer shadow-lg"
+                  aria-label="Varian sebelumnya"
+                  title="Produk Sebelumnya (←)"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                </button>
 
-                {/* 3. Komposisi Alami (Ingredients) - Open by Default */}
-                <div className="border border-white/10 rounded-2xl bg-white/5 overflow-hidden transition-colors">
-                  <button
-                    type="button"
-                    onClick={() => toggleAccordion('ingredients')}
-                    className="w-full p-4 flex items-center justify-between text-left cursor-pointer hover:bg-white/5 transition-colors"
-                  >
-                    <span className="text-xs font-bold uppercase tracking-wider text-white">
-                      Komposisi Alami (Ingredients)
-                    </span>
-                    {openAccordion === 'ingredients' ? (
-                      <Minus className="w-4 h-4 text-white/70" />
-                    ) : (
-                      <Plus className="w-4 h-4 text-white/70" />
-                    )}
-                  </button>
-                  {openAccordion === 'ingredients' && (
-                    <div className="px-4 pb-4 space-y-2 border-t border-white/5 pt-3 animate-in fade-in duration-200">
-                      <p className="text-[11px] text-white/50 mb-2 font-mono uppercase tracking-wider">
-                        100% BOTANICAL TANPA PERISA SINTETIS:
-                      </p>
-                      <div className="space-y-1.5">
-                        {current.ingredients.map((ing) => (
-                          <div key={ing} className="flex items-start gap-2 text-xs text-white/90">
-                            <Check className="w-3.5 h-3.5 text-[#9EE4B8] flex-shrink-0 mt-0.5" />
-                            <span>{ing}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* 4. Panduan Seduh Cepat (< 3 Menit) */}
-                <div className="border border-white/10 rounded-2xl bg-white/5 overflow-hidden transition-colors">
-                  <button
-                    type="button"
-                    onClick={() => toggleAccordion('brewing')}
-                    className="w-full p-4 flex items-center justify-between text-left cursor-pointer hover:bg-white/5 transition-colors"
-                  >
-                    <span className="text-xs font-bold uppercase tracking-wider text-white">
-                      Petunjuk Seduh (&lt; 3 Menit)
-                    </span>
-                    {openAccordion === 'brewing' ? (
-                      <Minus className="w-4 h-4 text-white/70" />
-                    ) : (
-                      <Plus className="w-4 h-4 text-white/70" />
-                    )}
-                  </button>
-                  {openAccordion === 'brewing' && (
-                    <div className="px-4 pb-4 text-xs text-white/75 leading-relaxed border-t border-white/5 pt-3 space-y-2 animate-in fade-in duration-200">
-                      <div className="flex items-center gap-2 text-white font-medium">
-                        <Clock className="w-4 h-4 text-accent-subtle" />
-                        <span>{current.brewing}</span>
-                      </div>
-                      <p className="text-[11px] text-white/60">
-                        Kantung sachet biodegradable bebas klorin dan bebas mikroplastik. Tutup cangkir saat menyeduh untuk mengunci minyak atsiri alami.
-                      </p>
-                    </div>
-                  )}
-                </div>
+                <button
+                  type="button"
+                  onClick={handleNext}
+                  className="w-11 h-11 rounded-full border border-white/20 bg-white/[0.04] hover:bg-white/15 text-white flex items-center justify-center transition-all duration-200 active:scale-90 cursor-pointer shadow-lg"
+                  aria-label="Varian berikutnya"
+                  title="Produk Berikutnya (→)"
+                >
+                  <ArrowRight className="w-4 h-4" />
+                </button>
               </div>
             </div>
           </div>
+        </Container>
+      </div>
+
+      {/* BOTTOM SELECTOR: Minimalist Product Pills / Carousel Selector */}
+      <Container size="wide" className="relative z-10 pt-4 sm:pt-6">
+        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-4 border-t border-white/[0.08] pt-4">
+          {FEATURED_PRODUCTS.map((prod, idx) => {
+            const isActive = currentIndex === idx;
+            return (
+              <button
+                key={prod.id}
+                type="button"
+                onClick={() => changeSlide(idx, idx > currentIndex ? 'next' : 'prev')}
+                className={`group flex items-center gap-2.5 px-3.5 py-2 rounded-full text-xs transition-all duration-300 cursor-pointer ${
+                  isActive
+                    ? 'bg-white text-black font-semibold shadow-md'
+                    : 'bg-white/[0.04] hover:bg-white/[0.08] text-white/60 hover:text-white border border-white/[0.08]'
+                }`}
+              >
+                <span
+                  className={`w-1.5 h-1.5 rounded-full transition-colors ${
+                    isActive ? 'bg-black' : 'bg-white/40 group-hover:bg-white'
+                  }`}
+                />
+                <span className="font-mono text-[11px] tracking-wider uppercase">
+                  {prod.shortName}
+                </span>
+                <span
+                  className={`text-[10px] font-mono ${
+                    isActive ? 'text-black/70' : 'text-white/40'
+                  }`}
+                >
+                  {prod.price}
+                </span>
+              </button>
+            );
+          })}
         </div>
       </Container>
     </section>
