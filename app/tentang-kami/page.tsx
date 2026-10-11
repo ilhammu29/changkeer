@@ -1,6 +1,7 @@
 import React from 'react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Container } from '@/components/ui/Container';
 import { getPageContent } from '@/lib/data/pages';
 import { ArrowUpRight } from 'lucide-react';
@@ -39,18 +40,28 @@ export default async function TentangKamiPage() {
   ];
 
   return (
-    <div className="py-12 md:py-20">
-      {/* Editorial Intro */}
-      <section className="pb-20 border-b border-border">
-        <Container size="wide">
-          <div className="max-w-4xl space-y-6">
-            <span className="text-[11px] font-bold tracking-[0.25em] uppercase text-accent block">
+    <div className="pb-16 sm:pb-24">
+      {/* Editorial Intro with Background Image */}
+      <section className="relative w-full py-16 sm:py-20 md:py-24 bg-neutral-950 overflow-hidden border-b border-border mb-16 sm:mb-20">
+        <Image
+          src="/images/assets/banner.jpg"
+          alt="Filosofi CHANGKEER"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/92 via-black/75 to-black/40 pointer-events-none" />
+
+        <Container size="wide" className="relative z-10">
+          <div className="max-w-3xl space-y-3.5">
+            <span className="text-[11px] font-mono font-bold tracking-[0.25em] uppercase text-purple-300 block">
               01 // IDENTITAS &amp; FILOSOFI
             </span>
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black uppercase tracking-tight text-foreground leading-tight">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black uppercase tracking-tight text-white leading-tight">
               {manifesto.title}
             </h1>
-            <p className="text-sm sm:text-base font-normal text-muted-foreground leading-relaxed pt-1">
+            <p className="text-sm sm:text-base font-normal text-white/80 leading-relaxed pt-1">
               &quot;{manifesto.subtitle}&quot;
             </p>
           </div>

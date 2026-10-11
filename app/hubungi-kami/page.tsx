@@ -1,5 +1,6 @@
 import React from 'react';
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import { Container } from '@/components/ui/Container';
 import { ContactForm } from '@/components/contact/ContactForm';
 import { getSiteSettings } from '@/lib/data/settings';
@@ -15,21 +16,35 @@ export default async function HubungiKamiPage() {
   const settings = await getSiteSettings();
 
   return (
-    <div className="py-12 md:py-20">
-      <Container size="wide">
-        {/* Page Header */}
-        <div className="mb-14 pb-8 border-b border-border">
-          <span className="text-[11px] font-bold tracking-[0.25em] uppercase text-accent block mb-2">
-            PUSAT KOMUNIKASI
-          </span>
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black uppercase tracking-tight text-foreground">
-            HUBUNGI KAMI
-          </h1>
-          <p className="text-sm sm:text-base text-muted-foreground mt-2 max-w-2xl">
-            Kami menyambut setiap pertanyaan, masukan, dan peluang kemitraan dengan tangan terbuka.
-          </p>
-        </div>
+    <div className="pb-16 sm:pb-24">
+      {/* Section 1: Hero Banner with Background Image */}
+      <section className="relative w-full py-16 sm:py-20 md:py-24 bg-neutral-950 overflow-hidden border-b border-border mb-12 sm:mb-16">
+        <Image
+          src="/images/assets/english_breakfast_tea_produk.jpg"
+          alt="Hubungi Kami CHANGKEER"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-[center_35%]"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/92 via-black/75 to-black/40 pointer-events-none" />
 
+        <Container size="wide" className="relative z-10">
+          <div className="max-w-2xl space-y-3">
+            <span className="text-[11px] font-mono font-bold tracking-[0.25em] uppercase text-purple-300 block">
+              PUSAT KOMUNIKASI
+            </span>
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black uppercase tracking-tight text-white leading-tight">
+              HUBUNGI KAMI
+            </h1>
+            <p className="text-sm sm:text-base text-white/80 leading-relaxed font-normal">
+              Kami menyambut setiap pertanyaan, masukan, dan peluang kemitraan dengan tangan terbuka.
+            </p>
+          </div>
+        </Container>
+      </section>
+
+      <Container size="wide">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           {/* Left Column: Direct Contact Info & Support Hours */}
           <div className="lg:col-span-5 space-y-8">
