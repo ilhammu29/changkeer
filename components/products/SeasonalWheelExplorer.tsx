@@ -15,7 +15,6 @@ import {
   SEASONS_CONFIG,
   type SolarTermBlend,
 } from '@/lib/data/solarTerms';
-import { SeasonalCanvas3D } from './SeasonalCanvas3D';
 
 // Wheel Geometry Constants
 const C = 200;
@@ -234,15 +233,9 @@ export function SeasonalWheelExplorer() {
               isExpanded ? 'lg:col-span-5' : 'max-w-md'
             }`}
           >
-            {/* Isolated Stacking Context for 3D Canvas (z-0 behind SVG wheel at z-10) */}
-            <div className="relative w-full flex items-center justify-center isolate">
-              {/* 3D Three.js Object Canvas Background floating behind the wheel */}
-              <div className="absolute w-[440px] sm:w-[520px] md:w-[580px] h-[440px] sm:h-[520px] md:h-[580px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-0 overflow-visible flex items-center justify-center">
-                <SeasonalCanvas3D season={activeSeason} />
-              </div>
-
-              {/* SVG Wheel Wrapper with z-10 */}
-              <div className="relative z-10 w-full max-w-[340px] sm:max-w-[400px] aspect-square flex items-center justify-center drop-shadow-sm">
+            {/* Clean SVG Wheel Wrapper */}
+            <div className="relative w-full flex items-center justify-center">
+              <div className="relative w-full max-w-[340px] sm:max-w-[400px] aspect-square flex items-center justify-center drop-shadow-sm">
                 <svg
                   viewBox="0 0 400 400"
                   className="w-full h-full overflow-visible transition-transform duration-700 ease-out"
