@@ -61,20 +61,8 @@ export default async function BlendsAndPricesPage() {
       <SeasonalWheelExplorer />
 
       {/* 3. Interactive Signature Grab-and-Go Catalog */}
-      <section className="my-16 sm:my-20">
+      <section className="my-12 sm:my-16">
         <Container size="wide">
-          <div className="mb-8 space-y-1.5">
-            <span className="text-[10px] font-mono font-bold tracking-[0.25em] uppercase text-primary block">
-              SIGNATURE GRAB-AND-GO
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-foreground">
-              Always Brewing &amp; Ready in &lt; 3 Minutes
-            </h2>
-            <p className="text-xs sm:text-sm text-muted-foreground">
-              Our core loose-leaf infusions crafted for effortless daily ritual.
-            </p>
-          </div>
-
           <CatalogView products={products} categories={categories} />
         </Container>
       </section>
@@ -181,102 +169,148 @@ export default async function BlendsAndPricesPage() {
       </section>
 
       {/* 5. Add-ons & Customizations Atelier */}
-      <section className="mb-12">
+      <section className="mb-16 sm:mb-20">
         <Container size="wide">
-          <div className="max-w-2xl mb-12 space-y-2">
+          <div className="max-w-2xl mb-10 sm:mb-14 space-y-2.5">
             <span className="text-[11px] font-mono font-bold tracking-[0.25em] uppercase text-primary block">
-              CUSTOMIZE YOUR CUP
+              CUSTOMIZE YOUR CUP · THE BOTANICAL ATELIER
             </span>
-            <h2 className="text-2xl sm:text-4xl font-black uppercase tracking-tight text-foreground">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black uppercase tracking-tight text-foreground">
               Botanical Add-ons
             </h2>
-            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-              Enhance aroma, therapeutic depth, and natural sweetness with wholesome sun-dried botanicals.
+            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed font-normal">
+              Enhance aroma, therapeutic depth, and natural sweetness with wholesome sun-dried botanicals and unrefined sweeteners.
             </p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Dried Fruits Card */}
-            <div className="bg-white border border-border/80 rounded-2xl p-6 sm:p-7 shadow-md card-boundary space-y-5">
-              <div className="border-b border-border/70 pb-3 flex items-center justify-between">
-                <div>
-                  <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground font-semibold block">
-                    CATEGORY 01
-                  </span>
-                  <h3 className="text-lg font-black uppercase tracking-tight text-foreground">
-                    Dried Fruits
-                  </h3>
-                </div>
-                <Leaf className="w-5 h-5 text-primary" />
-              </div>
+            {/* 1. Dried Fruits Card */}
+            <div className="bg-white border border-neutral-200/90 rounded-3xl p-7 sm:p-8 shadow-xs hover:shadow-xl transition-all duration-500 hover:-translate-y-1 relative overflow-hidden flex flex-col justify-between group card-boundary">
+              <div className="absolute top-0 right-0 w-36 h-36 bg-gradient-to-br from-amber-500/10 via-amber-500/5 to-transparent rounded-bl-full pointer-events-none" />
 
-              <div className="divide-y divide-border/60 text-xs sm:text-sm">
-                {DRIED_FRUITS.map((item) => (
-                  <div key={item.name} className="py-2.5 flex items-center justify-between gap-3">
-                    <div>
-                      <span className="font-bold text-foreground block">{item.name}</span>
-                      <span className="text-[11px] text-muted-foreground block">{item.noteOrTaste}</span>
-                    </div>
-                    <span className="font-mono font-bold text-primary shrink-0 text-xs">
-                      {item.price}
+              <div className="space-y-6">
+                <div className="border-b border-neutral-100 pb-5 flex items-center justify-between">
+                  <div className="space-y-1">
+                    <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-amber-700 font-bold block">
+                      ATELIER 01
                     </span>
+                    <h3 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-foreground">
+                      Sun-Dried Fruits
+                    </h3>
+                    <p className="text-[11px] text-muted-foreground">
+                      Dehydrated whole fruits for natural tartness &amp; fruit depth
+                    </p>
                   </div>
-                ))}
+                  <div className="w-10 h-10 rounded-2xl bg-amber-50 border border-amber-200/60 text-amber-700 flex items-center justify-center shrink-0 shadow-2xs">
+                    <Leaf className="w-5 h-5" />
+                  </div>
+                </div>
+
+                <div className="divide-y divide-neutral-100/80 text-xs sm:text-sm">
+                  {DRIED_FRUITS.map((item) => (
+                    <div
+                      key={item.name}
+                      className="py-3 flex items-center justify-between gap-3 group/row hover:bg-neutral-50/70 -mx-3 px-3 rounded-xl transition-colors"
+                    >
+                      <div className="space-y-0.5">
+                        <span className="font-bold text-foreground group-hover/row:text-primary transition-colors block">
+                          {item.name}
+                        </span>
+                        <span className="text-[11px] text-muted-foreground block font-normal">
+                          {item.noteOrTaste}
+                        </span>
+                      </div>
+                      <span className="font-mono font-bold text-xs px-2.5 py-1 rounded-full bg-neutral-100 group-hover/row:bg-neutral-900 group-hover/row:text-white transition-all shrink-0">
+                        {item.price}
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
 
-            {/* Dried Flowers Card */}
-            <div className="bg-white border border-border/80 rounded-2xl p-6 sm:p-7 shadow-md card-boundary space-y-5">
-              <div className="border-b border-border/70 pb-3 flex items-center justify-between">
-                <div>
-                  <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground font-semibold block">
-                    CATEGORY 02
-                  </span>
-                  <h3 className="text-lg font-black uppercase tracking-tight text-foreground">
-                    Dried Flowers
-                  </h3>
-                </div>
-                <Sparkles className="w-5 h-5 text-primary" />
-              </div>
+            {/* 2. Dried Flowers Card */}
+            <div className="bg-white border border-neutral-200/90 rounded-3xl p-7 sm:p-8 shadow-xs hover:shadow-xl transition-all duration-500 hover:-translate-y-1 relative overflow-hidden flex flex-col justify-between group card-boundary">
+              <div className="absolute top-0 right-0 w-36 h-36 bg-gradient-to-br from-rose-500/10 via-rose-500/5 to-transparent rounded-bl-full pointer-events-none" />
 
-              <div className="divide-y divide-border/60 text-xs sm:text-sm">
-                {DRIED_FLOWERS.map((item) => (
-                  <div key={item.name} className="py-2.5 flex items-center justify-between gap-3">
-                    <div>
-                      <span className="font-bold text-foreground block">{item.name}</span>
-                      <span className="text-[11px] text-muted-foreground block">{item.noteOrTaste}</span>
-                    </div>
-                    <span className="font-mono font-bold text-primary shrink-0 text-xs">
-                      {item.price}
+              <div className="space-y-6">
+                <div className="border-b border-neutral-100 pb-5 flex items-center justify-between">
+                  <div className="space-y-1">
+                    <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-rose-700 font-bold block">
+                      ATELIER 02
                     </span>
+                    <h3 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-foreground">
+                      Dried Flowers
+                    </h3>
+                    <p className="text-[11px] text-muted-foreground">
+                      Whole aromatic petals sourced from highland growers
+                    </p>
                   </div>
-                ))}
+                  <div className="w-10 h-10 rounded-2xl bg-rose-50 border border-rose-200/60 text-rose-700 flex items-center justify-center shrink-0 shadow-2xs">
+                    <Sparkles className="w-5 h-5" />
+                  </div>
+                </div>
+
+                <div className="divide-y divide-neutral-100/80 text-xs sm:text-sm">
+                  {DRIED_FLOWERS.map((item) => (
+                    <div
+                      key={item.name}
+                      className="py-3 flex items-center justify-between gap-3 group/row hover:bg-neutral-50/70 -mx-3 px-3 rounded-xl transition-colors"
+                    >
+                      <div className="space-y-0.5">
+                        <span className="font-bold text-foreground group-hover/row:text-primary transition-colors block">
+                          {item.name}
+                        </span>
+                        <span className="text-[11px] text-muted-foreground block font-normal">
+                          {item.noteOrTaste}
+                        </span>
+                      </div>
+                      <span className="font-mono font-bold text-xs px-2.5 py-1 rounded-full bg-neutral-100 group-hover/row:bg-neutral-900 group-hover/row:text-white transition-all shrink-0">
+                        {item.price}
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
 
-            {/* Sweeteners Card */}
-            <div className="bg-white border border-border/80 rounded-2xl p-6 sm:p-7 shadow-md card-boundary space-y-5 flex flex-col justify-between">
-              <div className="space-y-5">
-                <div className="border-b border-border/70 pb-3 flex items-center justify-between">
-                  <div>
-                    <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground font-semibold block">
-                      CATEGORY 03
+            {/* 3. Natural Sweeteners Card */}
+            <div className="bg-white border border-neutral-200/90 rounded-3xl p-7 sm:p-8 shadow-xs hover:shadow-xl transition-all duration-500 hover:-translate-y-1 relative overflow-hidden flex flex-col justify-between group card-boundary">
+              <div className="absolute top-0 right-0 w-36 h-36 bg-gradient-to-br from-emerald-500/10 via-emerald-500/5 to-transparent rounded-bl-full pointer-events-none" />
+
+              <div className="space-y-6">
+                <div className="border-b border-neutral-100 pb-5 flex items-center justify-between">
+                  <div className="space-y-1">
+                    <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-emerald-700 font-bold block">
+                      ATELIER 03
                     </span>
-                    <h3 className="text-lg font-black uppercase tracking-tight text-foreground">
+                    <h3 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-foreground">
                       Sweetener
                     </h3>
+                    <p className="text-[11px] text-muted-foreground">
+                      Unsweetened by default · 0g refined white sugar
+                    </p>
                   </div>
-                  <Coffee className="w-5 h-5 text-primary" />
+                  <div className="w-10 h-10 rounded-2xl bg-emerald-50 border border-emerald-200/60 text-emerald-700 flex items-center justify-center shrink-0 shadow-2xs">
+                    <Coffee className="w-5 h-5" />
+                  </div>
                 </div>
 
-                <div className="divide-y divide-border/60 text-xs sm:text-sm">
+                <div className="divide-y divide-neutral-100/80 text-xs sm:text-sm">
                   {SWEETENERS.map((item) => (
-                    <div key={item.name} className="py-2.5 flex items-center justify-between gap-3">
-                      <div>
-                        <span className="font-bold text-foreground block">{item.name}</span>
-                        <span className="text-[11px] text-muted-foreground block">{item.noteOrTaste}</span>
+                    <div
+                      key={item.name}
+                      className="py-3 flex items-center justify-between gap-3 group/row hover:bg-neutral-50/70 -mx-3 px-3 rounded-xl transition-colors"
+                    >
+                      <div className="space-y-0.5">
+                        <span className="font-bold text-foreground group-hover/row:text-primary transition-colors block">
+                          {item.name}
+                        </span>
+                        <span className="text-[11px] text-muted-foreground block font-normal">
+                          {item.noteOrTaste}
+                        </span>
                       </div>
-                      <span className="font-mono font-bold text-primary shrink-0 text-xs">
+                      <span className="font-mono font-bold text-xs px-2.5 py-1 rounded-full bg-neutral-100 group-hover/row:bg-neutral-900 group-hover/row:text-white transition-all shrink-0">
                         {item.price}
                       </span>
                     </div>
@@ -284,29 +318,35 @@ export default async function BlendsAndPricesPage() {
                 </div>
               </div>
 
-              <div className="p-3.5 rounded-xl bg-neutral-100/80 border border-border/80 text-[11px] text-foreground space-y-1 mt-4">
-                <span className="font-mono font-bold uppercase tracking-wider block text-primary">
-                  SWEETNESS LEVEL FOR SWEETENED CUPS:
+              {/* Sweetness Guidance Banner */}
+              <div className="p-4 rounded-2xl bg-neutral-900 text-white space-y-1 mt-6 shadow-sm">
+                <span className="font-mono font-bold text-[10px] uppercase tracking-[0.18em] text-primary block">
+                  SWEETNESS LEVEL FOR SWEETENED CUPS
                 </span>
-                <p className="text-muted-foreground leading-relaxed">
-                  Choose <strong className="text-foreground">less sweet</strong> or <strong className="text-foreground">normal</strong>. Strictly no refined white sugar on the menu.
+                <p className="text-xs text-white/80 leading-relaxed font-normal">
+                  Choose <strong className="text-white font-bold">less sweet</strong> or <strong className="text-white font-bold">normal</strong>. Strictly no refined white sugar on our menu.
                 </p>
               </div>
             </div>
           </div>
 
-          {/* Health & Safety Cautions Banner */}
-          <div className="mt-8 p-6 sm:p-7 rounded-2xl bg-amber-50/70 border border-amber-200/80 text-xs sm:text-sm text-amber-950 space-y-3 shadow-xs">
-            <div className="flex items-center gap-2 text-amber-800 font-mono font-bold uppercase tracking-wider text-xs">
-              <AlertTriangle className="w-4 h-4 text-amber-700" />
+          {/* Health & Safety Cautions Banner (Luxury Redesign) */}
+          <div className="mt-10 sm:mt-12 p-7 sm:p-8 rounded-3xl bg-amber-50/80 border border-amber-200/90 shadow-xs relative overflow-hidden">
+            <div className="flex items-center gap-2.5 text-amber-900 font-mono font-bold uppercase tracking-wider text-xs mb-4">
+              <div className="w-7 h-7 rounded-full bg-amber-200/70 text-amber-800 flex items-center justify-center">
+                <AlertTriangle className="w-4 h-4 text-amber-800" />
+              </div>
               <span>HEALTH &amp; ALLERGY CAUTIONS</span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs text-amber-900/90 leading-relaxed">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs text-amber-950 leading-relaxed">
               {HEALTH_CAUTIONS.map((caution, i) => (
-                <div key={i} className="flex items-start gap-2">
-                  <span className="text-amber-600 font-bold">•</span>
-                  <span>{caution}</span>
+                <div
+                  key={i}
+                  className="p-3.5 rounded-2xl bg-white/80 border border-amber-200/70 shadow-2xs flex items-start gap-2.5"
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-600 mt-1.5 shrink-0" />
+                  <span className="font-medium">{caution}</span>
                 </div>
               ))}
             </div>

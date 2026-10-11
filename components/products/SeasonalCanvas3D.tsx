@@ -9,7 +9,7 @@ interface SeasonalCanvas3DProps {
 }
 
 interface ParticleItem {
-  mesh: THREE.Mesh;
+  mesh: THREE.Object3D;
   rotSpeed: THREE.Vector3;
   velocity: THREE.Vector3;
   baseY: number;
@@ -20,7 +20,6 @@ interface ParticleItem {
 
 export function SeasonalCanvas3D({ season, className = '' }: SeasonalCanvas3DProps) {
   const mountRef = useRef<HTMLDivElement>(null);
-  const sceneRef = useRef<THREE.Scene | null>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const animFrameId = useRef<number | null>(null);
   const particlesGroupRef = useRef<THREE.Group | null>(null);
@@ -30,18 +29,16 @@ export function SeasonalCanvas3D({ season, className = '' }: SeasonalCanvas3DPro
     const container = mountRef.current;
     if (!container) return;
 
-    // Dimensions
-    const width = container.clientWidth || 400;
-    const height = container.clientHeight || 400;
+    // Use generous bounding box so 3D elements extend well beyond the wheel
+    const width = container.clientWidth || 520;
+    const height = container.clientHeight || 520;
 
     // Scene & Camera
     const scene = new THREE.Scene();
-    sceneRef.current = scene;
-
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
-    camera.position.set(0, 0, 10);
+    camera.position.set(0, 0, 9);
 
-    // Renderer with transparency
+    // Renderer with full alpha transparency
     const renderer = new THREE.WebGLRenderer({
       alpha: true,
       antialias: true,
@@ -50,22 +47,25 @@ export function SeasonalCanvas3D({ season, className = '' }: SeasonalCanvas3DPro
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setClearColor(0x000000, 0);
+    renderer.domElement.style.width = '100%';
+    renderer.domElement.style.height = '100%';
+    renderer.domElement.style.display = 'block';
     container.appendChild(renderer.domElement);
     rendererRef.current = renderer;
 
-    // Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.4);
+    // Lighting: Bright and vibrant so materials are clear against white background
+    const ambientLight = new THREE.AmbientLight(0xffffff, 2.2);
     scene.add(ambientLight);
 
-    const dirLight1 = new THREE.DirectionalLight(0xffffff, 1.6);
-    dirLight1.position.set(5, 8, 6);
+    const dirLight1 = new THREE.DirectionalLight(0xffffff, 2.8);
+    dirLight1.position.set(6, 8, 8);
     scene.add(dirLight1);
 
-    const dirLight2 = new THREE.DirectionalLight(0xffffff, 0.8);
-    dirLight2.position.set(-5, -4, 4);
+    const dirLight2 = new THREE.DirectionalLight(0xffffff, 1.4);
+    dirLight2.position.set(-6, -6, 5);
     scene.add(dirLight2);
 
-    const pointLight = new THREE.PointLight(0xffffff, 2, 15);
+    const pointLight = new THREE.PointLight(0xffffff, 3.5, 20);
     pointLight.position.set(0, 0, 5);
     scene.add(pointLight);
 
@@ -81,8 +81,8 @@ export function SeasonalCanvas3D({ season, className = '' }: SeasonalCanvas3DPro
       animFrameId.current = requestAnimationFrame(animate);
       const elapsed = clock.getElapsedTime();
 
-      // Slowly rotate the entire seasonal universe
-      particlesGroup.rotation.z = elapsed * 0.04;
+      // Gentle global rotation
+      particlesGroup.rotation.z = elapsed * 0.035;
 
       // Animate individual particles
       const items = particlesRef.current;
@@ -92,11 +92,11 @@ export function SeasonalCanvas3D({ season, className = '' }: SeasonalCanvas3DPro
         p.mesh.rotation.y += p.rotSpeed.y;
         p.mesh.rotation.z += p.rotSpeed.z;
 
-        // Radial orbit or drift
-        p.angle += p.velocity.x * 0.01;
+        // Smooth orbital drift around the wheel
+        p.angle += p.velocity.x * 0.008;
         p.mesh.position.x = Math.cos(p.angle) * p.radius;
-        p.mesh.position.y = Math.sin(p.angle) * p.radius + Math.sin(elapsed * 1.5 + p.phase) * 0.35;
-        p.mesh.position.z = Math.sin(p.angle * 2) * 1.2;
+        p.mesh.position.y = Math.sin(p.angle) * p.radius + Math.sin(elapsed * 1.4 + p.phase) * 0.35;
+        p.mesh.position.z = Math.sin(p.angle * 2 + p.phase) * 0.9;
       }
 
       renderer.render(scene, camera);
@@ -104,15 +104,15 @@ export function SeasonalCanvas3D({ season, className = '' }: SeasonalCanvas3DPro
 
     animate();
 
-    // Resize Observer
+    // Resize Handler
     const handleResize = () => {
       if (!container || !rendererRef.current) return;
-      const newWidth = container.clientWidth;
-      const newHeight = container.clientHeight;
-      if (newWidth === 0 || newHeight === 0) return;
-      camera.aspect = newWidth / newHeight;
+      const w = container.clientWidth || 520;
+      const h = container.clientHeight || 520;
+      if (w === 0 || h === 0) return;
+      camera.aspect = w / h;
       camera.updateProjectionMatrix();
-      rendererRef.current.setSize(newWidth, newHeight);
+      rendererRef.current.setSize(w, h);
     };
 
     window.addEventListener('resize', handleResize);
@@ -147,41 +147,43 @@ export function SeasonalCanvas3D({ season, className = '' }: SeasonalCanvas3DPro
     }
     particlesRef.current = [];
 
-    // Helper to generate seasonal 3D meshes
     const newItems: ParticleItem[] = [];
 
     if (season === 'spring') {
-      // SPRING: 3D Floating Botanical Leaves & Sakura/Jasmine Petals
+      // SPRING: 3D Botanical Leaves & Jasmine Blossom Petals
       const leafShape = new THREE.Shape();
       leafShape.moveTo(0, 0);
-      leafShape.quadraticCurveTo(0.35, 0.45, 0, 1.1);
-      leafShape.quadraticCurveTo(-0.35, 0.45, 0, 0);
+      leafShape.quadraticCurveTo(0.45, 0.6, 0, 1.4);
+      leafShape.quadraticCurveTo(-0.45, 0.6, 0, 0);
       const leafGeo = new THREE.ShapeGeometry(leafShape);
 
-      const colors = [0x7dae77, 0x8fc289, 0xa3d99d, 0x6e9f69];
+      const colors = [0x4e9f3d, 0x7dae77, 0x68bb59, 0xa8e6cf];
 
-      for (let i = 0; i < 28; i++) {
+      for (let i = 0; i < 32; i++) {
         const color = colors[i % colors.length];
         const mat = new THREE.MeshStandardMaterial({
           color,
+          emissive: 0x225522,
+          emissiveIntensity: 0.35,
           side: THREE.DoubleSide,
-          roughness: 0.35,
+          roughness: 0.3,
           metalness: 0.1,
           transparent: true,
-          opacity: 0.8,
+          opacity: 0.88,
         });
 
         const mesh = new THREE.Mesh(leafGeo, mat);
-        const scale = 0.35 + Math.random() * 0.45;
+        const scale = 0.55 + Math.random() * 0.45;
         mesh.scale.set(scale, scale, scale);
 
-        const radius = 3.2 + Math.random() * 2.8;
-        const angle = Math.random() * Math.PI * 2;
+        // Position in orbit around the 400px circle (radius 2.3 to 4.8 in 3D units)
+        const radius = 2.4 + Math.random() * 2.5;
+        const angle = (i / 32) * Math.PI * 2 + Math.random() * 0.2;
 
         mesh.position.set(
           Math.cos(angle) * radius,
           Math.sin(angle) * radius,
-          (Math.random() - 0.5) * 3
+          (Math.random() - 0.5) * 2.2
         );
 
         mesh.rotation.set(
@@ -194,8 +196,8 @@ export function SeasonalCanvas3D({ season, className = '' }: SeasonalCanvas3DPro
         newItems.push({
           mesh,
           rotSpeed: new THREE.Vector3(
-            (Math.random() - 0.5) * 0.02,
             (Math.random() - 0.5) * 0.025,
+            (Math.random() - 0.5) * 0.03,
             (Math.random() - 0.5) * 0.02
           ),
           velocity: new THREE.Vector3(0.5 + Math.random() * 0.5, 0, 0),
@@ -206,52 +208,68 @@ export function SeasonalCanvas3D({ season, className = '' }: SeasonalCanvas3DPro
         });
       }
     } else if (season === 'summer') {
-      // SUMMER: 3D Radiant Sun Crystals, Lotus Petals & Solar Torus Rings
-      // 1. Concentric Glowing Torus Ring
-      const ringGeo = new THREE.TorusGeometry(3.8, 0.04, 16, 80);
-      const ringMat = new THREE.MeshStandardMaterial({
+      // SUMMER: 3D Celestial Solar Rings & Sparkling Sun Octahedrons
+      // 1. Two Concentric Radiant Torus Rings
+      const ringGeo1 = new THREE.TorusGeometry(3.6, 0.05, 16, 90);
+      const ringMat1 = new THREE.MeshStandardMaterial({
         color: 0xe2849b,
-        emissive: 0x6e1b30,
-        roughness: 0.2,
+        emissive: 0x8a243e,
+        emissiveIntensity: 0.5,
+        roughness: 0.15,
         metalness: 0.5,
         transparent: true,
-        opacity: 0.5,
+        opacity: 0.65,
       });
-      const ringMesh = new THREE.Mesh(ringGeo, ringMat);
-      ringMesh.rotation.x = Math.PI / 3;
-      group.add(ringMesh);
+      const ringMesh1 = new THREE.Mesh(ringGeo1, ringMat1);
+      ringMesh1.rotation.x = Math.PI / 4;
+      group.add(ringMesh1);
+
+      const ringGeo2 = new THREE.TorusGeometry(4.2, 0.03, 16, 90);
+      const ringMat2 = new THREE.MeshStandardMaterial({
+        color: 0xffb703,
+        emissive: 0x8a5a00,
+        emissiveIntensity: 0.5,
+        roughness: 0.2,
+        metalness: 0.6,
+        transparent: true,
+        opacity: 0.55,
+      });
+      const ringMesh2 = new THREE.Mesh(ringGeo2, ringMat2);
+      ringMesh2.rotation.y = -Math.PI / 3;
+      group.add(ringMesh2);
 
       // 2. Floating Octahedron Sun Crystals
-      const crystalGeo = new THREE.OctahedronGeometry(0.3, 0);
-      const colors = [0xe2849b, 0xf4a261, 0xffb703, 0xf28482];
+      const crystalGeo = new THREE.OctahedronGeometry(0.38, 0);
+      const colors = [0xe2849b, 0xff758f, 0xffb703, 0xf4a261];
 
-      for (let i = 0; i < 24; i++) {
+      for (let i = 0; i < 26; i++) {
         const mat = new THREE.MeshStandardMaterial({
           color: colors[i % colors.length],
-          emissive: 0x331018,
+          emissive: 0x4a1824,
+          emissiveIntensity: 0.45,
           roughness: 0.15,
           metalness: 0.4,
           transparent: true,
-          opacity: 0.85,
+          opacity: 0.9,
         });
 
         const mesh = new THREE.Mesh(crystalGeo, mat);
-        const scale = 0.4 + Math.random() * 0.5;
+        const scale = 0.5 + Math.random() * 0.45;
         mesh.scale.set(scale, scale, scale);
 
-        const radius = 3.3 + Math.random() * 2.6;
-        const angle = Math.random() * Math.PI * 2;
+        const radius = 2.4 + Math.random() * 2.4;
+        const angle = (i / 26) * Math.PI * 2;
 
         mesh.position.set(
           Math.cos(angle) * radius,
           Math.sin(angle) * radius,
-          (Math.random() - 0.5) * 2.5
+          (Math.random() - 0.5) * 2.2
         );
 
         group.add(mesh);
         newItems.push({
           mesh,
-          rotSpeed: new THREE.Vector3(0.015, 0.02, 0.01),
+          rotSpeed: new THREE.Vector3(0.02, 0.025, 0.015),
           velocity: new THREE.Vector3(0.6 + Math.random() * 0.5, 0, 0),
           baseY: mesh.position.y,
           phase: Math.random() * Math.PI * 2,
@@ -260,42 +278,44 @@ export function SeasonalCanvas3D({ season, className = '' }: SeasonalCanvas3DPro
         });
       }
     } else if (season === 'autumn') {
-      // AUTUMN: 3D Golden Amber Maple/Ginkgo Leaves
+      // AUTUMN: 3D Golden Amber Maple & Ginkgo Leaves
       const mapleShape = new THREE.Shape();
       mapleShape.moveTo(0, 0);
-      mapleShape.lineTo(0.25, 0.4);
-      mapleShape.lineTo(0.55, 0.45);
-      mapleShape.lineTo(0.3, 0.85);
-      mapleShape.lineTo(0, 1.2);
-      mapleShape.lineTo(-0.3, 0.85);
-      mapleShape.lineTo(-0.55, 0.45);
-      mapleShape.lineTo(-0.25, 0.4);
+      mapleShape.lineTo(0.3, 0.45);
+      mapleShape.lineTo(0.65, 0.5);
+      mapleShape.lineTo(0.35, 0.95);
+      mapleShape.lineTo(0, 1.35);
+      mapleShape.lineTo(-0.35, 0.95);
+      mapleShape.lineTo(-0.65, 0.5);
+      mapleShape.lineTo(-0.3, 0.45);
       mapleShape.closePath();
       const mapleGeo = new THREE.ShapeGeometry(mapleShape);
 
-      const colors = [0xe2aa3e, 0xd4a03b, 0xc87d20, 0xb06c15];
+      const colors = [0xe2aa3e, 0xf4a261, 0xbc6c25, 0xd4a03b, 0xc87d20];
 
-      for (let i = 0; i < 28; i++) {
+      for (let i = 0; i < 32; i++) {
         const mat = new THREE.MeshStandardMaterial({
           color: colors[i % colors.length],
+          emissive: 0x5a340a,
+          emissiveIntensity: 0.38,
           side: THREE.DoubleSide,
-          roughness: 0.3,
+          roughness: 0.25,
           metalness: 0.15,
           transparent: true,
-          opacity: 0.85,
+          opacity: 0.9,
         });
 
         const mesh = new THREE.Mesh(mapleGeo, mat);
-        const scale = 0.38 + Math.random() * 0.45;
+        const scale = 0.5 + Math.random() * 0.45;
         mesh.scale.set(scale, scale, scale);
 
-        const radius = 3.2 + Math.random() * 2.9;
-        const angle = Math.random() * Math.PI * 2;
+        const radius = 2.4 + Math.random() * 2.5;
+        const angle = (i / 32) * Math.PI * 2;
 
         mesh.position.set(
           Math.cos(angle) * radius,
           Math.sin(angle) * radius,
-          (Math.random() - 0.5) * 3
+          (Math.random() - 0.5) * 2.4
         );
 
         group.add(mesh);
@@ -303,10 +323,10 @@ export function SeasonalCanvas3D({ season, className = '' }: SeasonalCanvas3DPro
           mesh,
           rotSpeed: new THREE.Vector3(
             (Math.random() - 0.5) * 0.025,
-            (Math.random() - 0.5) * 0.03,
+            (Math.random() - 0.5) * 0.035,
             (Math.random() - 0.5) * 0.02
           ),
-          velocity: new THREE.Vector3(0.45 + Math.random() * 0.45, 0, 0),
+          velocity: new THREE.Vector3(0.5 + Math.random() * 0.45, 0, 0),
           baseY: mesh.position.y,
           phase: Math.random() * Math.PI * 2,
           radius,
@@ -314,37 +334,39 @@ export function SeasonalCanvas3D({ season, className = '' }: SeasonalCanvas3DPro
         });
       }
     } else {
-      // WINTER: 3D Crystalline Ice Prisms & Frost Snowflakes
-      const iceGeo = new THREE.IcosahedronGeometry(0.28, 0);
-      const colors = [0x88a2b5, 0xa4c3d2, 0xbed4e0, 0x6e889b];
+      // WINTER: 3D Faceted Ice Prisms & Frost Crystalline Snowflakes
+      const iceGeo = new THREE.IcosahedronGeometry(0.35, 0);
+      const colors = [0x88a2b5, 0x48cae4, 0x90e0ef, 0xade8f4];
 
-      for (let i = 0; i < 26; i++) {
+      for (let i = 0; i < 30; i++) {
         const mat = new THREE.MeshStandardMaterial({
           color: colors[i % colors.length],
+          emissive: 0x1d4e68,
+          emissiveIntensity: 0.45,
           roughness: 0.1,
-          metalness: 0.5,
+          metalness: 0.45,
           transparent: true,
-          opacity: 0.8,
+          opacity: 0.88,
         });
 
         const mesh = new THREE.Mesh(iceGeo, mat);
-        const scale = 0.4 + Math.random() * 0.5;
+        const scale = 0.5 + Math.random() * 0.5;
         mesh.scale.set(scale, scale, scale);
 
-        const radius = 3.3 + Math.random() * 2.7;
-        const angle = Math.random() * Math.PI * 2;
+        const radius = 2.4 + Math.random() * 2.5;
+        const angle = (i / 30) * Math.PI * 2;
 
         mesh.position.set(
           Math.cos(angle) * radius,
           Math.sin(angle) * radius,
-          (Math.random() - 0.5) * 2.5
+          (Math.random() - 0.5) * 2.2
         );
 
         group.add(mesh);
         newItems.push({
           mesh,
-          rotSpeed: new THREE.Vector3(0.012, 0.018, 0.012),
-          velocity: new THREE.Vector3(0.4 + Math.random() * 0.4, 0, 0),
+          rotSpeed: new THREE.Vector3(0.015, 0.02, 0.015),
+          velocity: new THREE.Vector3(0.45 + Math.random() * 0.45, 0, 0),
           baseY: mesh.position.y,
           phase: Math.random() * Math.PI * 2,
           radius,
@@ -359,7 +381,7 @@ export function SeasonalCanvas3D({ season, className = '' }: SeasonalCanvas3DPro
   return (
     <div
       ref={mountRef}
-      className={`absolute inset-0 pointer-events-none select-none overflow-hidden ${className}`}
+      className={`w-full h-full relative pointer-events-none select-none overflow-visible ${className}`}
       aria-hidden="true"
     />
   );
