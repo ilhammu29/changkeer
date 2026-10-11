@@ -91,7 +91,7 @@ export function ProductShowcase() {
 
   return (
     <section
-      className="relative w-full min-h-[80vh] lg:min-h-[86vh] flex flex-col justify-between pt-20 pb-10 lg:pt-24 lg:pb-14 bg-[#0c0b11] text-white overflow-hidden select-none"
+      className="relative w-full min-h-[calc(100vh-5rem)] max-h-[880px] flex flex-col justify-between pt-20 pb-4 sm:pb-6 bg-[#0c0b11] text-white overflow-hidden select-none"
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
@@ -107,9 +107,9 @@ export function ProductShowcase() {
       </div>
 
       {/* Main Stage: Minimalist Composition (Left: Title Only, Center: Large Product, Right: Price Only) */}
-      <div className="relative z-10 flex-1 flex items-center w-full my-auto">
+      <div className="relative z-10 flex-1 flex items-center w-full mt-1 sm:mt-2 mb-2">
         <Container size="wide" className="w-full">
-          <div className="relative grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-4 items-center min-h-[480px] sm:min-h-[540px] lg:min-h-[600px]">
+          <div className="relative grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-4 items-center min-h-[400px] sm:min-h-[460px] lg:min-h-[500px]">
             {/* Giant Watermark Typography behind the product (smooth cross-fade) */}
             {FEATURED_PRODUCTS.map((prod, idx) => {
               const isActive = idx === currentIndex;
@@ -185,7 +185,7 @@ export function ProductShowcase() {
               </button>
 
               {/* Stacked Product Cutouts: Pre-mounted in DOM for 100% glitch-free smooth glide */}
-              <div className="relative w-[320px] sm:w-[420px] lg:w-[480px] h-[400px] sm:h-[500px] lg:h-[580px] flex items-center justify-center">
+              <div className="relative w-[300px] sm:w-[380px] lg:w-[440px] xl:w-[460px] h-[360px] sm:h-[440px] lg:h-[480px] xl:h-[520px] flex items-center justify-center">
                 {FEATURED_PRODUCTS.map((prod, idx) => {
                   const isActive = idx === currentIndex;
                   return (
@@ -205,7 +205,7 @@ export function ProductShowcase() {
                           alt={prod.name}
                           fill
                           priority
-                          sizes="(max-width: 640px) 320px, (max-width: 1024px) 420px, 480px"
+                          sizes="(max-width: 640px) 300px, (max-width: 1024px) 380px, 440px"
                           className="object-contain drop-shadow-[0_25px_50px_rgba(0,0,0,0.85)] filter hover:scale-105 transition-transform duration-700 ease-out"
                         />
                       </div>
@@ -242,8 +242,8 @@ export function ProductShowcase() {
       </div>
 
       {/* BOTTOM BAR: Carousel Selector Pills & Minimalist Desktop Arrow Controls */}
-      <Container size="wide" className="relative z-10 pt-4">
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-white/[0.08] pt-4">
+      <Container size="wide" className="relative z-10 pt-2 pb-1">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-white/[0.08] pt-3">
           {/* Minimalist Prev Button (Desktop) */}
           <button
             type="button"
