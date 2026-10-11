@@ -1,4 +1,5 @@
 import { createServerSupabaseClient } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { getSupabaseEnv } from '@/lib/supabase/env';
 import { AdminProfile } from '@/types';
 import { cookies } from 'next/headers';
@@ -44,7 +45,9 @@ export async function getCurrentAdmin(): Promise<{ user: any; profile: AdminProf
       return null;
     }
 
-    const { data: profile, error: profileError } = await supabase
+    const { serviceKey } = getSupabaseEnv();
+    const clientForProfile = serviceKey ? createAdminClient() : supabase;
+    const { data: profile, error: profileError } = await clientForProfile
       .from('admin_profiles')
       .select('*')
       .eq('id', user.id)

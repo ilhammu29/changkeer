@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { adminLoginSchema, getFirstErrorMessage } from '@/lib/validation/schemas';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { getSupabaseEnv } from '@/lib/supabase/env';
 import { cookies } from 'next/headers';
 
@@ -57,14 +58,16 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Verify admin role in admin_profiles
-    const { data: profile, error: profileError } = await supabase
+    // Verify admin role in admin_profiles using adminClient (bypasses RLS recursion)
+    const { serviceKey } = getSupabaseEnv();
+    const clientForProfile = serviceKey ? createAdminClient() : supabase;
+    const { data: profile, error: profileError } = await clientForProfile
       .from('admin_profiles')
       .select('id, role')
       .eq('id', authData.user.id)
       .single();
 
-    if (profileError || !profile) {
+    if (profileError || !profile || !['admin', 'super_admin'].includes(profile.role)) {
       // User is authenticated in Auth, but is NOT an authorized admin in admin_profiles
       await supabase.auth.signOut();
       return NextResponse.json(
@@ -72,6 +75,15 @@ export async function POST(req: NextRequest) {
         { status: 403 }
       );
     }
+
+    const cookieStore = await cookies();
+    cookieStore.set('changkeer_admin_session', 'dev_authorized', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 60 * 60 * 24, // 1 day
+    });
 
     return NextResponse.json({
       success: true,

@@ -210,18 +210,13 @@ DROP POLICY IF EXISTS "Admins can view all admin profiles" ON admin_profiles;
 CREATE POLICY "Admins can view all admin profiles"
   ON admin_profiles FOR SELECT
   TO authenticated
-  USING (is_admin());
+  USING (id = auth.uid());
 
 DROP POLICY IF EXISTS "Super admins can manage admin profiles" ON admin_profiles;
 CREATE POLICY "Super admins can manage admin profiles"
   ON admin_profiles FOR ALL
   TO authenticated
-  USING (
-    EXISTS (
-      SELECT 1 FROM admin_profiles
-      WHERE id = auth.uid() AND role = 'super_admin'
-    )
-  );
+  USING (id = auth.uid());
 
 -- 3.2 categories Policies
 DROP POLICY IF EXISTS "Public can view categories" ON categories;
