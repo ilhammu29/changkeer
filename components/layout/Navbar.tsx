@@ -38,6 +38,9 @@ export function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Detect if current page uses dark cinematic atmosphere (Home & Tentang Produk)
+  const isDarkPage = pathname === '/' || pathname === '/tentang-produk';
+
   // Check if current route is active
   const isActive = (href: string) => {
     if (href === '/') return pathname === '/';
@@ -51,24 +54,45 @@ export function Navbar() {
 
   return (
     <header
-      className={`sticky top-0 z-50 w-full transition-all duration-300 ease-out ${
-        isScrolled
-          ? 'bg-background/95 backdrop-blur-md border-b border-border shadow-xs'
-          : 'bg-background/80 backdrop-blur-xs border-b border-transparent'
+      className={`${
+        isDarkPage ? 'fixed top-0 inset-x-0' : 'sticky top-0'
+      } z-50 w-full transition-all duration-300 ease-out ${
+        isDarkPage
+          ? isScrolled
+            ? 'bg-[#111216]/90 backdrop-blur-md border-b border-white/10 shadow-xl text-white'
+            : 'bg-transparent border-b border-transparent text-white'
+          : isScrolled
+          ? 'bg-background/95 backdrop-blur-md border-b border-border shadow-xs text-foreground'
+          : 'bg-background/80 backdrop-blur-xs border-b border-transparent text-foreground'
       }`}
     >
       <Container size="wide">
         <div className="flex items-center justify-between h-20">
-          {/* Logo on the left */}
+          {/* Logo on the left with CHANGKEER Brand Seal */}
           <Link href="/" className="group flex items-center gap-3">
-            <div className="w-8 h-8 rounded-sm bg-primary text-primary-foreground flex items-center justify-center font-black tracking-tighter text-sm transition-transform duration-300 group-hover:scale-105">
-              CK
+            <div
+              className={`w-9 h-9 rounded-md flex items-center justify-center font-bold text-sm transition-transform duration-300 group-hover:scale-105 border ${
+                isDarkPage
+                  ? 'bg-white/10 border-white/25 text-white backdrop-blur-sm'
+                  : 'bg-primary border-primary text-primary-foreground shadow-xs'
+              }`}
+            >
+              {/* Hexagon / Tea Ideogram Seal */}
+              <span className="font-serif text-base tracking-normal">茶</span>
             </div>
             <div className="flex flex-col">
-              <span className="font-black text-xl tracking-[0.2em] uppercase text-foreground leading-none">
+              <span
+                className={`font-black text-xl tracking-[0.2em] uppercase leading-none transition-colors ${
+                  isDarkPage ? 'text-white' : 'text-foreground'
+                }`}
+              >
                 CHANGKEER
               </span>
-              <span className="text-[9px] tracking-[0.3em] uppercase text-muted-foreground font-semibold mt-1">
+              <span
+                className={`text-[9px] tracking-[0.3em] uppercase font-semibold mt-1 transition-colors ${
+                  isDarkPage ? 'text-white/70' : 'text-muted-foreground'
+                }`}
+              >
                 HERBAL CRAFT
               </span>
             </div>
@@ -83,25 +107,37 @@ export function Navbar() {
                   key={link.href}
                   href={link.href}
                   className={`text-xs font-semibold tracking-widest transition-colors py-2 relative ${
-                    active
-                      ? 'text-foreground'
+                    isDarkPage
+                      ? active
+                        ? 'text-white font-bold'
+                        : 'text-white/75 hover:text-white'
+                      : active
+                      ? 'text-foreground font-bold'
                       : 'text-muted-foreground hover:text-foreground'
                   }`}
                 >
                   {link.name}
                   {active && (
-                    <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-foreground" />
+                    <span
+                      className={`absolute bottom-0 left-0 right-0 h-[2px] transition-colors ${
+                        isDarkPage ? 'bg-white' : 'bg-foreground'
+                      }`}
+                    />
                   )}
                 </Link>
               );
             })}
           </nav>
 
-          {/* Right Action / CTA */}
+          {/* Right Action / CTA Button */}
           <div className="hidden sm:flex items-center gap-4">
             <Link
               href="/katalog"
-              className="text-xs font-bold tracking-widest uppercase bg-primary text-primary-foreground px-5 py-2.5 rounded-sm hover:bg-primary-hover transition-all flex items-center gap-1.5"
+              className={`text-xs font-bold tracking-widest uppercase px-5 py-2.5 rounded-full transition-all flex items-center gap-1.5 shadow-sm active:scale-95 ${
+                isDarkPage
+                  ? 'bg-white text-black hover:bg-neutral-200'
+                  : 'bg-primary text-primary-foreground hover:bg-primary-hover'
+              }`}
             >
               <span>TEMUKAN TEH</span>
               <ArrowUpRight className="w-3.5 h-3.5" />
@@ -111,7 +147,11 @@ export function Navbar() {
           {/* Mobile Menu Button */}
           <button
             type="button"
-            className="lg:hidden p-2 text-foreground hover:bg-surface-hover rounded-sm transition-colors"
+            className={`lg:hidden p-2 rounded-md transition-colors ${
+              isDarkPage
+                ? 'text-white hover:bg-white/10'
+                : 'text-foreground hover:bg-surface-hover'
+            }`}
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Buka menu navigasi"
           >
@@ -122,15 +162,27 @@ export function Navbar() {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-surface border-b border-border px-6 py-6 shadow-xl animate-in fade-in slide-in-from-top-2 duration-200">
+        <div
+          className={`lg:hidden border-b px-6 py-6 shadow-2xl animate-in fade-in slide-in-from-top-2 duration-200 ${
+            isDarkPage
+              ? 'bg-[#15131E] border-white/10 text-white'
+              : 'bg-surface border-border text-foreground'
+          }`}
+        >
           <nav className="flex flex-col space-y-4">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className={`text-sm font-semibold tracking-wider py-2 border-b border-border/40 ${
-                  isActive(link.href) ? 'text-foreground font-bold' : 'text-muted-foreground'
+                className={`text-sm font-semibold tracking-wider py-2 border-b ${
+                  isDarkPage
+                    ? `border-white/10 ${
+                        isActive(link.href) ? 'text-white font-bold' : 'text-white/70'
+                      }`
+                    : `border-border/40 ${
+                        isActive(link.href) ? 'text-foreground font-bold' : 'text-muted-foreground'
+                      }`
                 }`}
               >
                 {link.name}
@@ -140,7 +192,11 @@ export function Navbar() {
               <Link
                 href="/katalog"
                 onClick={() => setMobileMenuOpen(false)}
-                className="w-full text-center block text-xs font-bold tracking-widest uppercase bg-primary text-primary-foreground py-3.5 rounded-sm"
+                className={`w-full text-center block text-xs font-bold tracking-widest uppercase py-3.5 rounded-full ${
+                  isDarkPage
+                    ? 'bg-white text-black hover:bg-neutral-200'
+                    : 'bg-primary text-primary-foreground hover:bg-primary-hover'
+                }`}
               >
                 TEMUKAN TEH
               </Link>

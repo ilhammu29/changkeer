@@ -5,7 +5,7 @@ import { Container } from '@/components/ui/Container';
 import { ProductShowcase } from '@/components/products/ProductShowcase';
 import { ProductCard } from '@/components/products/ProductCard';
 import { getPublishedProducts } from '@/lib/data/products';
-import { Leaf, ShieldCheck, Clock, Recycle, ArrowUpRight, Sparkles } from 'lucide-react';
+import { Leaf, ShieldCheck, Clock, Recycle, ArrowUpRight } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Tentang Produk',
@@ -50,32 +50,12 @@ export default async function TentangProdukPage() {
   ];
 
   return (
-    <div className="py-8 md:py-16">
-      {/* Editorial Title Banner */}
-      <section className="pb-8 border-b border-border">
-        <Container size="wide">
-          <div className="max-w-4xl space-y-4">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-surface border border-border rounded-sm text-[11px] font-bold tracking-[0.25em] uppercase text-accent">
-              <Sparkles className="w-3.5 h-3.5 text-accent" />
-              <span>BOTANICAL PURITY ARCHIVE</span>
-            </div>
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black uppercase tracking-tight text-foreground leading-[0.95]">
-              KEMURNIAN HERBAL DI SETIAP SEDUHAN
-            </h1>
-            <p className="text-base sm:text-lg text-muted-foreground leading-relaxed pt-2">
-              Koleksi racikan teh fungsional CHANGKEER yang lahir dari filosofi Tutup Cangkir. 
-              Mengutamakan daun dan bunga asli, 100% bebas mikroplastik, tanpa daun senna keras, 
-              dan siap saji dalam waktu kurang dari 3 menit.
-            </p>
-          </div>
-        </Container>
-      </section>
-
-      {/* Full-Screen Interactive Product Showcase */}
+    <div className="w-full bg-[#111216]">
+      {/* 1. Main Exhibition Showcase (Reference 4) Starts Directly Under Navigation */}
       <ProductShowcase />
 
-      {/* 4 Core Pillars of Brand Integrity from PDF */}
-      <section className="py-20 border-y border-border bg-surface">
+      {/* 2. 4 Core Pillars of Brand Integrity from PDF */}
+      <section id="pillars" className="py-20 border-t border-border/20 bg-background text-foreground scroll-mt-20">
         <Container size="wide">
           <div className="max-w-3xl mb-12">
             <span className="text-[11px] font-mono font-bold tracking-[0.25em] uppercase text-accent block mb-2">
@@ -90,7 +70,7 @@ export default async function TentangProdukPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="space-y-4 p-6 rounded-xl bg-background border border-border">
+            <div className="space-y-4 p-6 rounded-2xl bg-surface border border-border shadow-xs">
               <div className="w-10 h-10 rounded-sm bg-primary text-primary-foreground flex items-center justify-center">
                 <Recycle className="w-5 h-5" />
               </div>
@@ -102,7 +82,7 @@ export default async function TentangProdukPage() {
               </p>
             </div>
 
-            <div className="space-y-4 p-6 rounded-xl bg-background border border-border">
+            <div className="space-y-4 p-6 rounded-2xl bg-surface border border-border shadow-xs">
               <div className="w-10 h-10 rounded-sm bg-primary text-primary-foreground flex items-center justify-center">
                 <ShieldCheck className="w-5 h-5" />
               </div>
@@ -114,7 +94,7 @@ export default async function TentangProdukPage() {
               </p>
             </div>
 
-            <div className="space-y-4 p-6 rounded-xl bg-background border border-border">
+            <div className="space-y-4 p-6 rounded-2xl bg-surface border border-border shadow-xs">
               <div className="w-10 h-10 rounded-sm bg-primary text-primary-foreground flex items-center justify-center">
                 <Leaf className="w-5 h-5" />
               </div>
@@ -126,7 +106,7 @@ export default async function TentangProdukPage() {
               </p>
             </div>
 
-            <div className="space-y-4 p-6 rounded-xl bg-background border border-border">
+            <div className="space-y-4 p-6 rounded-2xl bg-surface border border-border shadow-xs">
               <div className="w-10 h-10 rounded-sm bg-primary text-primary-foreground flex items-center justify-center">
                 <Clock className="w-5 h-5" />
               </div>
@@ -141,8 +121,8 @@ export default async function TentangProdukPage() {
         </Container>
       </section>
 
-      {/* Universal Brewing Ritual */}
-      <section className="py-20 border-b border-border bg-background">
+      {/* 3. Universal Brewing Ritual */}
+      <section className="py-20 border-b border-border bg-surface text-foreground">
         <Container size="wide">
           <div className="max-w-3xl mx-auto text-center space-y-4 mb-16">
             <span className="text-[11px] font-mono font-bold tracking-[0.25em] uppercase text-accent block">
@@ -157,7 +137,7 @@ export default async function TentangProdukPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="p-8 rounded-2xl bg-surface border border-border text-center space-y-3 shadow-xs">
+            <div className="p-8 rounded-2xl bg-background border border-border text-center space-y-3 shadow-xs">
               <span className="font-mono text-3xl font-black text-primary">01</span>
               <h4 className="font-bold text-base uppercase tracking-tight text-foreground">
                 Siapkan Air Panas 85-95°C
@@ -167,7 +147,7 @@ export default async function TentangProdukPage() {
               </p>
             </div>
 
-            <div className="p-8 rounded-2xl bg-surface border border-border text-center space-y-3 shadow-xs">
+            <div className="p-8 rounded-2xl bg-background border border-border text-center space-y-3 shadow-xs">
               <span className="font-mono text-3xl font-black text-primary">02</span>
               <h4 className="font-bold text-base uppercase tracking-tight text-foreground">
                 Tutup Cangkir &amp; Seduh &lt; 3 Menit
@@ -177,7 +157,7 @@ export default async function TentangProdukPage() {
               </p>
             </div>
 
-            <div className="p-8 rounded-2xl bg-surface border border-border text-center space-y-3 shadow-xs">
+            <div className="p-8 rounded-2xl bg-background border border-border text-center space-y-3 shadow-xs">
               <span className="font-mono text-3xl font-black text-primary">03</span>
               <h4 className="font-bold text-base uppercase tracking-tight text-foreground">
                 Nikmati Hangat atau Dingin
@@ -190,8 +170,8 @@ export default async function TentangProdukPage() {
         </Container>
       </section>
 
-      {/* Raw Ingredients Explorer */}
-      <section className="py-20 border-b border-border bg-surface">
+      {/* 4. Raw Ingredients Explorer */}
+      <section className="py-20 border-b border-border bg-background text-foreground">
         <Container size="wide">
           <div className="mb-12">
             <span className="text-[11px] font-mono font-bold tracking-[0.25em] uppercase text-accent block mb-2">
@@ -209,7 +189,7 @@ export default async function TentangProdukPage() {
             {ingredientsShowcase.map((item) => (
               <div
                 key={item.name}
-                className="p-6 rounded-xl bg-background border border-border flex flex-col justify-between space-y-4 hover:border-border-strong transition-colors"
+                className="p-6 rounded-2xl bg-surface border border-border flex flex-col justify-between space-y-4 hover:border-border-strong transition-colors"
               >
                 <div>
                   <span className="text-[10px] font-mono uppercase tracking-widest text-accent block mb-1">
@@ -228,8 +208,8 @@ export default async function TentangProdukPage() {
         </Container>
       </section>
 
-      {/* Catalog Link */}
-      <section className="py-20 bg-background">
+      {/* 5. Catalog Link */}
+      <section className="py-20 bg-surface text-foreground">
         <Container size="wide">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4">
             <div>
