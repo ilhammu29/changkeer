@@ -29,6 +29,7 @@ CREATE TABLE IF NOT EXISTS admin_profiles (
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+DROP TRIGGER IF EXISTS trigger_admin_profiles_updated_at ON admin_profiles;
 CREATE TRIGGER trigger_admin_profiles_updated_at
   BEFORE UPDATE ON admin_profiles
   FOR EACH ROW EXECUTE FUNCTION set_updated_at();
@@ -75,6 +76,7 @@ CREATE INDEX IF NOT EXISTS idx_products_status ON products(status);
 CREATE INDEX IF NOT EXISTS idx_products_category ON products(category_id);
 CREATE INDEX IF NOT EXISTS idx_products_featured ON products(is_featured);
 
+DROP TRIGGER IF EXISTS trigger_products_updated_at ON products;
 CREATE TRIGGER trigger_products_updated_at
   BEFORE UPDATE ON products
   FOR EACH ROW EXECUTE FUNCTION set_updated_at();
@@ -104,6 +106,7 @@ CREATE INDEX IF NOT EXISTS idx_articles_status ON articles(status);
 CREATE INDEX IF NOT EXISTS idx_articles_category ON articles(category_id);
 CREATE INDEX IF NOT EXISTS idx_articles_published_at ON articles(published_at DESC);
 
+DROP TRIGGER IF EXISTS trigger_articles_updated_at ON articles;
 CREATE TRIGGER trigger_articles_updated_at
   BEFORE UPDATE ON articles
   FOR EACH ROW EXECUTE FUNCTION set_updated_at();
@@ -121,6 +124,7 @@ CREATE TABLE IF NOT EXISTS pages (
 
 CREATE INDEX IF NOT EXISTS idx_pages_slug ON pages(slug);
 
+DROP TRIGGER IF EXISTS trigger_pages_updated_at ON pages;
 CREATE TRIGGER trigger_pages_updated_at
   BEFORE UPDATE ON pages
   FOR EACH ROW EXECUTE FUNCTION set_updated_at();
@@ -156,6 +160,7 @@ CREATE TABLE IF NOT EXISTS site_settings (
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+DROP TRIGGER IF EXISTS trigger_site_settings_updated_at ON site_settings;
 CREATE TRIGGER trigger_site_settings_updated_at
   BEFORE UPDATE ON site_settings
   FOR EACH ROW EXECUTE FUNCTION set_updated_at();
@@ -201,11 +206,13 @@ END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
 -- 3.1 admin_profiles Policies
+DROP POLICY IF EXISTS "Admins can view all admin profiles" ON admin_profiles;
 CREATE POLICY "Admins can view all admin profiles"
   ON admin_profiles FOR SELECT
   TO authenticated
   USING (is_admin());
 
+DROP POLICY IF EXISTS "Super admins can manage admin profiles" ON admin_profiles;
 CREATE POLICY "Super admins can manage admin profiles"
   ON admin_profiles FOR ALL
   TO authenticated
@@ -217,11 +224,13 @@ CREATE POLICY "Super admins can manage admin profiles"
   );
 
 -- 3.2 categories Policies
+DROP POLICY IF EXISTS "Public can view categories" ON categories;
 CREATE POLICY "Public can view categories"
   ON categories FOR SELECT
   TO anon, authenticated
   USING (true);
 
+DROP POLICY IF EXISTS "Admins can manage categories" ON categories;
 CREATE POLICY "Admins can manage categories"
   ON categories FOR ALL
   TO authenticated
@@ -229,11 +238,13 @@ CREATE POLICY "Admins can manage categories"
   WITH CHECK (is_admin());
 
 -- 3.3 products Policies
+DROP POLICY IF EXISTS "Public can view published products" ON products;
 CREATE POLICY "Public can view published products"
   ON products FOR SELECT
   TO anon, authenticated
   USING (status = 'published');
 
+DROP POLICY IF EXISTS "Admins have full access to products" ON products;
 CREATE POLICY "Admins have full access to products"
   ON products FOR ALL
   TO authenticated
@@ -241,11 +252,13 @@ CREATE POLICY "Admins have full access to products"
   WITH CHECK (is_admin());
 
 -- 3.4 articles Policies
+DROP POLICY IF EXISTS "Public can view published articles" ON articles;
 CREATE POLICY "Public can view published articles"
   ON articles FOR SELECT
   TO anon, authenticated
   USING (status = 'published');
 
+DROP POLICY IF EXISTS "Admins have full access to articles" ON articles;
 CREATE POLICY "Admins have full access to articles"
   ON articles FOR ALL
   TO authenticated
@@ -253,11 +266,13 @@ CREATE POLICY "Admins have full access to articles"
   WITH CHECK (is_admin());
 
 -- 3.5 pages Policies
+DROP POLICY IF EXISTS "Public can view pages" ON pages;
 CREATE POLICY "Public can view pages"
   ON pages FOR SELECT
   TO anon, authenticated
   USING (true);
 
+DROP POLICY IF EXISTS "Admins can manage pages" ON pages;
 CREATE POLICY "Admins can manage pages"
   ON pages FOR ALL
   TO authenticated
@@ -265,11 +280,13 @@ CREATE POLICY "Admins can manage pages"
   WITH CHECK (is_admin());
 
 -- 3.6 media_assets Policies
+DROP POLICY IF EXISTS "Public can view media assets" ON media_assets;
 CREATE POLICY "Public can view media assets"
   ON media_assets FOR SELECT
   TO anon, authenticated
   USING (true);
 
+DROP POLICY IF EXISTS "Admins can manage media assets" ON media_assets;
 CREATE POLICY "Admins can manage media assets"
   ON media_assets FOR ALL
   TO authenticated
@@ -277,11 +294,13 @@ CREATE POLICY "Admins can manage media assets"
   WITH CHECK (is_admin());
 
 -- 3.7 site_settings Policies
+DROP POLICY IF EXISTS "Public can view site settings" ON site_settings;
 CREATE POLICY "Public can view site settings"
   ON site_settings FOR SELECT
   TO anon, authenticated
   USING (true);
 
+DROP POLICY IF EXISTS "Admins can manage site settings" ON site_settings;
 CREATE POLICY "Admins can manage site settings"
   ON site_settings FOR ALL
   TO authenticated
@@ -289,22 +308,26 @@ CREATE POLICY "Admins can manage site settings"
   WITH CHECK (is_admin());
 
 -- 3.8 contact_messages Policies (STRICT SECURITY)
+DROP POLICY IF EXISTS "Public can submit contact messages" ON contact_messages;
 CREATE POLICY "Public can submit contact messages"
   ON contact_messages FOR INSERT
   TO anon, authenticated
   WITH CHECK (true);
 
+DROP POLICY IF EXISTS "Only admins can view contact messages" ON contact_messages;
 CREATE POLICY "Only admins can view contact messages"
   ON contact_messages FOR SELECT
   TO authenticated
   USING (is_admin());
 
+DROP POLICY IF EXISTS "Only admins can update or delete contact messages" ON contact_messages;
 CREATE POLICY "Only admins can update or delete contact messages"
   ON contact_messages FOR UPDATE
   TO authenticated
   USING (is_admin())
   WITH CHECK (is_admin());
 
+DROP POLICY IF EXISTS "Only admins can delete contact messages" ON contact_messages;
 CREATE POLICY "Only admins can delete contact messages"
   ON contact_messages FOR DELETE
   TO authenticated
@@ -326,11 +349,13 @@ ON CONFLICT (id) DO UPDATE SET
   allowed_mime_types = EXCLUDED.allowed_mime_types;
 
 -- Storage RLS Policies
+DROP POLICY IF EXISTS "Public Access for Public Buckets" ON storage.objects;
 CREATE POLICY "Public Access for Public Buckets"
   ON storage.objects FOR SELECT
   TO anon, authenticated
   USING (bucket_id IN ('product-images', 'article-images', 'site-media'));
 
+DROP POLICY IF EXISTS "Admin Upload Access for Buckets" ON storage.objects;
 CREATE POLICY "Admin Upload Access for Buckets"
   ON storage.objects FOR INSERT
   TO authenticated
@@ -339,6 +364,7 @@ CREATE POLICY "Admin Upload Access for Buckets"
     AND is_admin()
   );
 
+DROP POLICY IF EXISTS "Admin Update Access for Buckets" ON storage.objects;
 CREATE POLICY "Admin Update Access for Buckets"
   ON storage.objects FOR UPDATE
   TO authenticated
@@ -347,6 +373,7 @@ CREATE POLICY "Admin Update Access for Buckets"
     AND is_admin()
   );
 
+DROP POLICY IF EXISTS "Admin Delete Access for Buckets" ON storage.objects;
 CREATE POLICY "Admin Delete Access for Buckets"
   ON storage.objects FOR DELETE
   TO authenticated
@@ -359,51 +386,87 @@ CREATE POLICY "Admin Delete Access for Buckets"
 -- 5. Seed Data (Categories, Initial Products, Articles, Pages, Settings)
 -- ==============================================================================
 
--- Categories Seed
+-- Categories Seed (Deterministic RFC 4122 v4 UUIDs for foreign key stability)
 INSERT INTO categories (id, name, slug, description, type)
 VALUES
-  ('c0000000-0000-0000-0000-000000000001', 'Signature Herbal Infusion', 'signature-herbal', 'Racikan daun herbal murni pilihan dengan cita rasa seimbang dan kaya antioksidan.', 'product'),
-  ('c0000000-0000-0000-0000-000000000002', 'Artisan Tisane & Flora', 'artisan-tisane', 'Perpaduan kelopak bunga kering organik dan rempah tropis aromatik.', 'product'),
-  ('c0000000-0000-0000-0000-000000000003', 'Wellness & Vitality', 'wellness-vitality', 'Formula fungsional alami untuk kesegaran tubuh dan kejernihan pikiran.', 'product'),
-  ('c0000000-0000-0000-0000-000000000010', 'Edukasi & Tradisi Teh', 'edukasi-tradisi', 'Wawasan seputar tanaman herbal nusantara, teknik seduh, dan filosofi hidup selaras alam.', 'article'),
-  ('c0000000-0000-0000-0000-000000000011', 'Gaya Hidup Sehat', 'gaya-hidup-sehat', 'Inspirasi rutinitas harian bernutrisi dan kesadaran mind-body.', 'article')
+  ('c0000000-0000-4000-8000-000000000001', 'Signature Herbal Infusion', 'signature-herbal', 'Racikan daun herbal murni pilihan dengan cita rasa seimbang dan kaya antioksidan.', 'product'),
+  ('c0000000-0000-4000-8000-000000000002', 'Artisan Tisane & Flora', 'artisan-tisane', 'Perpaduan kelopak bunga kering organik dan rempah tropis aromatik.', 'product'),
+  ('c0000000-0000-4000-8000-000000000003', 'Wellness & Vitality', 'wellness-vitality', 'Formula fungsional alami untuk kesegaran tubuh dan kejernihan pikiran.', 'product'),
+  ('c0000000-0000-4000-8000-000000000010', 'Edukasi & Tradisi Teh', 'edukasi-tradisi', 'Wawasan seputar tanaman herbal nusantara, teknik seduh, dan filosofi hidup selaras alam.', 'article'),
+  ('c0000000-0000-4000-8000-000000000011', 'Gaya Hidup Sehat', 'gaya-hidup-sehat', 'Inspirasi rutinitas harian bernutrisi dan kesadaran mind-body.', 'article')
 ON CONFLICT (slug) DO NOTHING;
 
--- Products Seed
+-- Products Seed (Database-generated gen_random_uuid() for primary keys, dynamic subqueries for foreign keys)
 INSERT INTO products (
-  id, name, slug, tagline, description, category_id,
+  name, slug, tagline, description, category_id,
   ingredients, brewing_guide, characteristics, packaging_info,
   price, weight_grams, featured_image, gallery, is_featured, status,
   seo_title, seo_description
 )
 VALUES
   (
-    'p0000000-0000-0000-0000-000000000000',
-    'CHANGKEER Solar-Term Jasmine Herbal Tea',
+    'CHANGKEER Jasmine Tea',
     'solar-term-jasmine-herbal-tea',
     'Daun Teh Utuh & Bunga Melati Asli dengan Gula Sorgum & Madu',
     'Racikan teh herbal fungsional terinspirasi tradisi teh Tiongkok yang disederhanakan untuk gaya hidup modern grab-and-go. Menggunakan daun teh pilihan dan kuntum melati utuh dengan pemanis alami gula sorgum serta madu murni. Bebas kantong teh pemutih dan 100% bebas mikroplastik. Tidak mengandung daun senna keras sehingga sangat aman untuk dikonsumsi harian.',
-    'c0000000-0000-0000-0000-000000000001',
+    (SELECT id FROM categories WHERE slug = 'signature-herbal'),
     '["Daun Teh Hijau Pilihan (Camellia sinensis)", "Kuntum Bunga Melati Utuh (Jasminum sambac)", "Pemanis Alami Gula Sorgum Organik", "Madu Hutan Murni Nusantara"]'::jsonb,
     '{"water_temp": "85°C - 90°C", "steep_time": "2-3 Menit", "serving_size": "250ml - 300ml air panas", "notes": "Dirancang praktis untuk penyajian cepat di bawah 3 menit tanpa ampas mengganggu."}'::jsonb,
     '{"aroma": "Bunga melati segar semerbak alami", "taste": "Manis lembut seimbang tanpa rasa pahit berlebih", "body": "Silky smooth", "caffeine": "Sangat Rendah (< 10mg)"}'::jsonb,
     'Kemasan botol & sachet eksklusif bebas mikroplastik (microplastic-free & toxic-free packaging).',
     49000,
     50,
-    '/images/assets/jasmine_tea_produk.png',
-    '["/images/assets/jasmine_tea_produk.png", "/images/assets/biji_teh_jasmine_tea.png", "/images/assets/bungkus_teh.png"]'::jsonb,
+    '/images/assets/jasmine_tea_produk.jpg',
+    '["/images/assets/jasmine_tea_produk.jpg", "/images/assets/jasmine_tea_produk.png", "/images/assets/biji_teh_jasmine_tea.png", "/images/assets/bungkus_teh.png"]'::jsonb,
     true,
     'published',
-    'CHANGKEER Solar-Term Jasmine Herbal Tea - Teh Herbal Melati Alami',
+    'CHANGKEER Jasmine Tea - Teh Herbal Melati Alami',
     'Nikmati teh herbal melati CHANGKEER dengan daun teh utuh, gula sorgum, dan madu murni. Bebas kantong teh pemutih dan bebas mikroplastik.'
   ),
   (
-    'p0000000-0000-0000-0000-000000000001',
+    'CHANGKEER English Breakfast Tea',
+    'english-breakfast-tea',
+    'Racikan Teh Hitam Kuat & Berkarakter dengan Pemanis Alami Rendah Glikemik',
+    'Seduhan teh hitam berkarakter bold dan kaya rasa yang terinspirasi tradisi sarapan klasik, diracik dengan dedikasi kearifan nusantara. Menghadirkan dorongan energi alami yang bersih tanpa menyebabkan lonjakan asam lambung. Menggunakan kantong teh bebas mikroplastik dan bebas pemutih kimiawi (bleach-free), dipermanis secara seimbang dengan gula sorgum dan madu hutan murni. 100% bebas daun senna, aman dikonsumsi harian untuk mengawali hari aktif Anda.',
+    (SELECT id FROM categories WHERE slug = 'signature-herbal'),
+    '["Daun Teh Hitam Pilihan Nusantara (Camellia sinensis var. assamica)", "Pemanis Alami Gula Sorgum Organik", "Madu Hutan Murni Nusantara"]'::jsonb,
+    '{"water_temp": "95°C", "steep_time": "2-3 Menit", "serving_size": "250ml - 300ml air panas", "notes": "Penyajian instan praktis kurang dari 3 menit untuk gaya hidup modern yang serba cepat."}'::jsonb,
+    '{"aroma": "Aroma malted tea hangat dan mendalam", "taste": "Kuat, gurih, dengan rasa manis karamel sorgum lembut", "body": "Full-bodied & rich", "caffeine": "Sedang (~25mg, energi stabil tanpa crash)"}'::jsonb,
+    'Kemasan ramah lingkungan bebas mikroplastik dan bebas zat kimia pemutih (microplastic-free & bleach-free).',
+    49000,
+    50,
+    '/images/assets/english_breakfast_tea_produk.jpg',
+    '["/images/assets/english_breakfast_tea_produk.jpg", "/images/assets/banner.jpg"]'::jsonb,
+    true,
+    'published',
+    'CHANGKEER English Breakfast Tea - Teh Hitam Herbal Nusantara',
+    'Teh hitam klasik berenergi bersih CHANGKEER dengan daun teh utuh, gula sorgum dan madu murni. Bebas mikroplastik dan tanpa daun senna.'
+  ),
+  (
+    'CHANGKEER Vanilla Mint Tea',
+    'vanilla-mint-tea',
+    'Kesegaran Dingin Daun Mint Alami Berpadu Aroma Vanilla Lembut Menenangkan',
+    'Kombinasi harmonis antara semilir dingin daun mint pegunungan dan kelembutan aroma vanilla alami. Dirancang untuk meredakan ketegangan pikiran dan menyegarkan sistem pernapasan setelah aktivitas padat. Tanpa kandungan daun senna yang keras, aman untuk lambung dan pencernaan. Dikemas dalam kantung bebas mikroplastik dengan alternatif pemanis sehat gula sorgum dan madu.',
+    (SELECT id FROM categories WHERE slug = 'artisan-tisane'),
+    '["Daun Teh Pilihan (Camellia sinensis)", "Daun Mint Kering Alami (Mentha piperita)", "Ekstrak Polong Vanilla Organik", "Gula Sorgum Rendah Kalori", "Madu Murni Alami"]'::jsonb,
+    '{"water_temp": "90°C", "steep_time": "2-3 Menit", "serving_size": "250ml - 300ml air panas atau dingin", "notes": "Dapat dinikmati hangat atau ditambahkan es batu untuk kesegaran ganda kurang dari 3 menit."}'::jsonb,
+    '{"aroma": "Mint segar semilir berpadu vanilla manis lembut", "taste": "Dingin menyegarkan di tenggorokan dengan sentuhan manis vanilla creamy", "body": "Medium-crisp", "caffeine": "Rendah (< 10mg)"}'::jsonb,
+    'Kemasan eksklusif bebas racun & mikroplastik (non-toxic teabag).',
+    49000,
+    50,
+    '/images/assets/vanilla_mint_tea_produk.jpg',
+    '["/images/assets/vanilla_mint_tea_produk.jpg", "/images/assets/banner2.jpg"]'::jsonb,
+    true,
+    'published',
+    'CHANGKEER Vanilla Mint Tea - Teh Herbal Dingin Segar & Lembut',
+    'Segarkan hari Anda dengan perpaduan daun mint alami dan aroma manis vanilla dari CHANGKEER. Bebas mikroplastik dan aman tanpa daun senna.'
+  ),
+  (
     'CHANGKEER Lemongrass Ginger Vitality',
     'lemongrass-ginger-vitality',
     'Kehangatan Jahe Merah & Kesegaran Serai Wangi Alami',
     'Perpaduan serai wangi pilihan dan jahe merah organik dari lereng pegunungan. Menghadirkan rasa pedas hangat yang lembut dengan aroma sitrus menyegarkan. Sempurna untuk mengembalikan energi tubuh setelah hari yang panjang tanpa kandungan kafein.',
-    'c0000000-0000-0000-0000-000000000001',
+    (SELECT id FROM categories WHERE slug = 'signature-herbal'),
     '["Serai Wangi Kering (Cymbopogon citratus)", "Jahe Merah Iris (Zingiber officinale var. rubrum)", "Daun Pandan Organik", "Secang Serut"]'::jsonb,
     '{"water_temp": "95°C", "steep_time": "4-5 Menit", "serving_size": "250ml air panas", "notes": "Tambahkan satu sendok madu hutan murni untuk sensasi kehangatan yang lebih kaya."}'::jsonb,
     '{"aroma": "Sitrus segar dengan aksen rempah hangat", "taste": "Sedikit pedas lembut, bersih di tenggorokan", "body": "Medium-rich", "caffeine": "Bebas Kafein (0mg)"}'::jsonb,
@@ -418,12 +481,11 @@ VALUES
     'Nikmati perpaduan serai wangi dan jahe merah organik CHANGKEER. Racikan herbal murni bebas kafein untuk mengembalikan kebugaran harian.'
   ),
   (
-    'p0000000-0000-0000-0000-000000000002',
     'CHANGKEER Rosella Mint Refresh',
     'rosella-mint-refresh',
     'Kesegaran Asam Alami Bunga Rosella Berpadu Daun Mint Dingin',
     'Kuntum bunga rosella merah kaya vitamin C berpadu dengan daun mint pegunungan. Menghasilkan seduhan berwarna merah delima berkilau dengan rasa asam segar yang membangkitkan fokus seketika.',
-    'c0000000-0000-0000-0000-000000000002',
+    (SELECT id FROM categories WHERE slug = 'artisan-tisane'),
     '["Kelopak Rosella Merah Utuh (Hibiscus sabdariffa)", "Daun Spearmint Kering (Mentha spicata)", "Kulit Jeruk Purut"]'::jsonb,
     '{"water_temp": "90°C", "steep_time": "3-4 Menit", "serving_size": "250ml air panas atau dingin", "notes": "Sangat nikmat disajikan dingin dengan es batu di cuaca terik."}'::jsonb,
     '{"aroma": "Floral segar dengan hembusan mint dingin", "taste": "Asam segar seimbang dengan sentuhan manis alami", "body": "Light-crisp", "caffeine": "Bebas Kafein (0mg)"}'::jsonb,
@@ -438,12 +500,11 @@ VALUES
     'Seduhan tisane merah delima dari kelopak rosella utuh dan daun mint segar. Bebas kafein, menyegarkan hari Anda.'
   ),
   (
-    'p0000000-0000-0000-0000-000000000003',
     'CHANGKEER Chamomile Lavender Serenity',
     'chamomile-lavender-serenity',
     'Relaksasi Alami Tanpa Kafein Menjelang Istirahat Malam',
     'Perpaduan lembut bunga chamomile utuh Jerman dan kuntum lavender liar. Menghadirkan aroma manis menenangkan yang dirancang untuk menemani ritual malam Anda, meredakan ketegangan, dan menyambut tidur yang berkualitas.',
-    'c0000000-0000-0000-0000-000000000003',
+    (SELECT id FROM categories WHERE slug = 'wellness-vitality'),
     '["Bunga Chamomile Utuh (Matricaria chamomilla)", "Kuntum Lavender Kering (Lavandula angustifolia)", "Daun Lemon Balm"]'::jsonb,
     '{"water_temp": "85-90°C", "steep_time": "5-6 Menit", "serving_size": "250ml air panas", "notes": "Nikmati 30-45 menit sebelum beristirahat di ruangan redup yang tenang."}'::jsonb,
     '{"aroma": "Bunga apel manis berpadu aroma herba lavender", "taste": "Sangat lembut, menenangkan, tidak pahit", "body": "Silky-smooth", "caffeine": "Bebas Kafein (0mg)"}'::jsonb,
@@ -458,12 +519,11 @@ VALUES
     'Temukan ketenangan malam bersama racikan chamomile dan lavender murni CHANGKEER. Relaksasi alami sebelum istirahat.'
   ),
   (
-    'p0000000-0000-0000-0000-000000000004',
     'CHANGKEER Moringa Green Harmony',
     'moringa-green-harmony',
     'Daun Kelor Superfood & Teh Hijau Jawa Berkualitas Tinggi',
     'Kombinasi daun kelor muda yang dikeringkan pada suhu rendah untuk mempertahankan nutrisi alami, dipadukan dengan daun teh hijau pegunungan Jawa. Menghadirkan rasa earthy yang bersih dan menyegarkan.',
-    'c0000000-0000-0000-0000-000000000003',
+    (SELECT id FROM categories WHERE slug = 'wellness-vitality'),
     '["Daun Kelor Kering Rendah Suhu (Moringa oleifera)", "Teh Hijau Pucuk Pilihan (Camellia sinensis)", "Melati Putih"]'::jsonb,
     '{"water_temp": "80°C", "steep_time": "2-3 Menit", "serving_size": "250ml air panas", "notes": "Hindari menggunakan air mendidih langsung agar rasa tetap manis dan tidak pekat."}'::jsonb,
     '{"aroma": "Earthy alami dengan wangi melati samar", "taste": "Rasa hijau segar, umami ringan, bersih di lidah", "body": "Light-medium", "caffeine": "Kafein Rendah (~15mg)"}'::jsonb,
@@ -479,15 +539,14 @@ VALUES
   )
 ON CONFLICT (slug) DO NOTHING;
 
--- Articles Seed
+-- Articles Seed (Database-generated gen_random_uuid(), dynamic subquery for category foreign key)
 INSERT INTO articles (
-  id, title, slug, excerpt, content, category_id,
+  title, slug, excerpt, content, category_id,
   featured_image, author_name, read_time_minutes, is_featured, status,
   seo_title, seo_description, published_at
 )
 VALUES
   (
-    'a0000000-0000-0000-0000-000000000001',
     'Seni Menyeduh Teh Herbal: Panduan Suhu dan Waktu untuk Ekstraksi Rasa Maksimal',
     'seni-menyeduh-teh-herbal-panduan-suhu-dan-waktu',
     'Setiap tanaman herbal memiliki sensitivitas berbeda terhadap temperatur air. Simak panduan lengkap agar aroma dan kebaikan alaminya tetap terjaga seutuhnya.',
@@ -502,7 +561,7 @@ Secara umum, bagian tanaman yang digunakan dapat dibagi menjadi dua kelompok:
 Berbeda dari daun Camellia sinensis (teh hitam/hijau) yang bisa menjadi sangat pahit bila diseduh terlalu lama karena tanin tinggi, sebagian besar herbal tisane bebas tanin pahit. Rata-rata waktu seduh optimal adalah 4 hingga 6 menit dengan wadah tertutup.
 
 Menutup cangkir saat proses penyeduhan sangat penting agar minyak esensial yang mudah menguap tidak hilang bersama uap air.',
-    'c0000000-0000-0000-0000-000000000010',
+    (SELECT id FROM categories WHERE slug = 'edukasi-tradisi'),
     '/images/articles/brewing-guide.jpg',
     'Master Blender CHANGKEER',
     4,
@@ -513,7 +572,6 @@ Menutup cangkir saat proses penyeduhan sangat penting agar minyak esensial yang 
     NOW() - INTERVAL '3 days'
   ),
   (
-    'a0000000-0000-0000-0000-000000000002',
     'Eksplorasi Rempah Nusantara: Mengapa Jahe Merah dan Serai Menjadi Pasangan Abadi',
     'eksplorasi-rempah-nusantara-jahe-merah-dan-serai',
     'Kombinasi klasik jahe merah dan serai telah menemani masyarakat kepulauan nusantara selama berabad-abad. Berikut alasan ilmiah dan gastronominya.',
@@ -522,7 +580,7 @@ Menutup cangkir saat proses penyeduhan sangat penting agar minyak esensial yang 
 Jahe merah memiliki karakter rasa yang tajam, pekat, dan pedas berkat kandungan gingerol dan shogaol. Di sisi lain, serai menyumbangkan senyawa citral yang memberikan aroma segar seperti lemon tanpa rasa masam.
 
 Ketika disatukan dalam proporsi yang tepat, serai memotong ketajaman jahe sehingga rasa yang tertinggal di lidah terasa bersih, hangat, dan menenangkan.',
-    'c0000000-0000-0000-0000-000000000010',
+    (SELECT id FROM categories WHERE slug = 'edukasi-tradisi'),
     '/images/articles/herbs-exploration.jpg',
     'Tim Riset Botani CHANGKEER',
     5,
@@ -542,10 +600,10 @@ VALUES
     'Homepage',
     '{
       "hero": {
-        "eyebrow": "HERBAL TEA REVOLUTION",
+        "eyebrow": "SOLAR-TERM HERBAL REVOLUTION",
         "headline_line1": "MORE THAN TEA.",
         "headline_line2": "A BETTER YOU.",
-        "subheadline": "Seduhan teh herbal murni tanpa kompromi. Diramu dari tanaman rempah dan kelopak bunga terbaik nusantara untuk energi jernih dan ketenangan sejati.",
+        "subheadline": "Seduhan teh herbal fungsional murni tanpa kompromi. Diramu dari tanaman rempah, bunga, dan daun teh terbaik nusantara dengan gula sorgum & madu murni. 100% bebas mikroplastik & tanpa daun senna.",
         "primary_cta_text": "JELAJAHI KATALOG",
         "primary_cta_link": "/katalog",
         "secondary_cta_text": "TENTANG PRODUK",
@@ -553,9 +611,10 @@ VALUES
         "video_caption": "Saksikan ritual panen & racikan alami CHANGKEER"
       },
       "highlights": [
-        {"title": "100% Tanaman Alami", "desc": "Bebas perisa buatan, pewarna sintetis, dan bahan pengawet."},
-        {"title": "Bebas Kafein Murni", "desc": "Energi stabil tanpa lonjakan degup jantung atau crash."},
-        {"title": "Piramida Biodegradable", "desc": "Kantung teh ramah lingkungan tanpa mikroplastik berbahaya."}
+        {"title": "100% Bebas Mikroplastik", "desc": "Kemasan toxic-free & bleach-free tanpa pelepasan mikroplastik ke cangkir seduhan Anda."},
+        {"title": "Bebas Daun Senna (Aman Harian)", "desc": "Formula herbal fungsional murni tanpa pencahar keras yang merusak ritme alami tubuh."},
+        {"title": "Gula Sorgum & Madu Murni", "desc": "Alternatif pemanis sehat rendah glikemik untuk energi stabil dan kebugaran organ."},
+        {"title": "Seduh Cepat < 3 Menit", "desc": "Kepraktisan grab-and-go modern dengan kenikmatan daun & kelopak bunga utuh bernutrisi."}
       ],
       "story_teaser": {
         "tag": "FILOSOFI KAMI",
@@ -574,12 +633,12 @@ VALUES
     '{
       "intro": {
         "title": "Kemurnian Botani di Setiap Seduhan",
-        "description": "Setiap varian CHANGKEER dirancang dengan menghormati karakteristik alami tanaman, menghasilkan profil rasa yang seimbang tanpa pemanis tambahan."
+        "description": "Setiap varian CHANGKEER dirancang dengan menghormati karakteristik alami tanaman, menghasilkan profil rasa yang seimbang tanpa pemanis sintetis."
       },
       "quality_pillars": [
         {"title": "Bahan Baku Lokal Terpilih", "desc": "Bekerja sama langsung dengan petani tanaman herbal lokal yang menjaga kelestarian tanah."},
         {"title": "Pengeringan Higienis Suhu Terkendali", "desc": "Menjaga keutuhan minyak atsiri dan warna alami kelopak bunga."},
-        {"title": "Kemasan Berkelanjutan", "desc": "Bahan ramah lingkungan yang melindungi kesegaran daun tanpa merusak bumi."}
+        {"title": "Kemasan Berkelanjutan", "desc": "Bahan ramah lingkungan bebas mikroplastik yang melindungi kesegaran daun tanpa merusak bumi."}
       ]
     }'::jsonb,
     'Tentang Produk CHANGKEER - Standar Kualitas & Komposisi Alami',
@@ -590,21 +649,30 @@ VALUES
     'Tentang Kami',
     '{
       "manifesto": {
-        "title": "Harmoni Tradisi dan Gaya Hidup Modern",
-        "subtitle": "Sebuah cangkir yang mengingatkan kita untuk bernapas lebih dalam.",
+        "title": "Lahir Dari Kejujuran: Warisan Tutup Cangkir Menuju CHANGKEER",
+        "subtitle": "Kearifan tradisi teh herbal fungsional untuk gaya hidup sehat modern.",
         "paragraphs": [
-          "CHANGKEER bermula dari sebuah kesadaran sederhana: minuman yang kita konsumsi sehari-hari harus memberi makan jiwa dan menyelaraskan tubuh, bukan sekadar memacu detak jantung.",
-          "Kami mengangkat kekayaan botani nusantara ke dalam cangkir modern. Dari serai wangi di perbukitan Jawa Barat hingga jahe merah dan kelopak rosella tropis, setiap racikan kami lewati uji rasa berulang untuk memastikan pengalaman minum yang menenangkan."
+          "CHANGKEER berakar dari inisiatif \"Tutup Cangkir\", sebuah pergerakan yang diprakarsai oleh Almaidah Chaerudin Putri, Annisha Humaira, Jogi Manaon Hutabarat, Johana Abigael Rumbiak, dan Keyla Putri Adisty.",
+          "Kelahiran kami dilandasi oleh keprihatinan nyata terhadap industri teh: maraknya klaim detox berlebihan, kantong teh konvensional yang melepaskan miliaran partikel mikroplastik, penggunaan zat kimia pemutih (bleach), kadar gula sintetis berlebih, serta penyalahgunaan daun senna (daun jati cina) pencahar keras yang membahayakan tubuh.",
+          "Kami menghadirkan standar baru yang berani: menyeduh daun teh utuh, kelopak bunga, dan rempah alami nusantara dengan formulasi solar-term herbal untuk organ tubuh, dipadukan pemanis ramah indeks glikemik seperti gula sorgum dan madu murni. Bebas mikroplastik, tanpa daun senna, dan siap dinikmati dalam waktu kurang dari 3 menit untuk ritme hidup aktif Anda."
         ]
       },
+      "founders": [
+        {"name": "Almaidah Chaerudin Putri", "role": "Co-Founder"},
+        {"name": "Annisha Humaira", "role": "Co-Founder"},
+        {"name": "Jogi Manaon Hutabarat", "role": "Co-Founder"},
+        {"name": "Johana Abigael Rumbiak", "role": "Co-Founder"},
+        {"name": "Keyla Putri Adisty", "role": "Co-Founder"}
+      ],
       "values": [
-        {"name": "Integritas Bahan", "desc": "Hanya menggunakan tanaman herbal murni tanpa tambahan perisa kimiawi."},
-        {"name": "Keberlanjutan", "desc": "Mendukung ekosistem pertanian ramah lingkungan dan kemasan biodegradable."},
-        {"name": "Keseimbangan", "desc": "Membantu Anda menemukan ritme hidup yang lebih tenang dan fokus."}
+        {"name": "Bebas Mikroplastik & Bleach", "desc": "Kemasan bebas plastik sintetis dan bebas pemutih kimiawi klorin demi keamanan kesehatan jangka panjang."},
+        {"name": "100% Bebas Daun Senna", "desc": "Menolak keras penggunaan laksatif buatan agar teh aman dikonsumsi harian tanpa efek samping pencernaan."},
+        {"name": "Pemanis Alami Rendah Glikemik", "desc": "Mengganti gula tebu rafinasi dengan kebaikan gula sorgum organik dan madu hutan murni nusantara."},
+        {"name": "Penyajian Cepat < 3 Menit", "desc": "Kemudahan grab-and-go modern dengan ekstraksi rasa dan aroma botani maksimal secara instan."}
       ]
     }'::jsonb,
-    'Tentang Kami - Filosofi & Cerita CHANGKEER',
-    'Mengenal visi, nilai, dan filosofi teh herbal CHANGKEER dalam menemani gaya hidup seimbang masyarakat modern.'
+    'Tentang Kami - Filosofi, Pendiri & Integritas CHANGKEER',
+    'Pelajari kisah pendiri CHANGKEER (Tutup Cangkir), komitmen bebas mikroplastik & daun senna, serta filosofi teh herbal fungsional.'
   ),
   (
     'hubungi-kami',

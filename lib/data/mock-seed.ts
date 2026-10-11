@@ -2,7 +2,7 @@ import { Category, Product, Article, PageContent, SiteSettings } from '@/types';
 
 export const SEED_CATEGORIES: Category[] = [
   {
-    id: 'c0000000-0000-0000-0000-000000000001',
+    id: 'c0000000-0000-4000-8000-000000000001',
     name: 'Signature Herbal Infusion',
     slug: 'signature-herbal',
     description: 'Racikan daun herbal murni pilihan dengan cita rasa seimbang dan kaya antioksidan.',
@@ -10,7 +10,7 @@ export const SEED_CATEGORIES: Category[] = [
     created_at: new Date().toISOString(),
   },
   {
-    id: 'c0000000-0000-0000-0000-000000000002',
+    id: 'c0000000-0000-4000-8000-000000000002',
     name: 'Artisan Tisane & Flora',
     slug: 'artisan-tisane',
     description: 'Perpaduan kelopak bunga kering organik dan rempah tropis aromatik.',
@@ -18,7 +18,7 @@ export const SEED_CATEGORIES: Category[] = [
     created_at: new Date().toISOString(),
   },
   {
-    id: 'c0000000-0000-0000-0000-000000000003',
+    id: 'c0000000-0000-4000-8000-000000000003',
     name: 'Wellness & Vitality',
     slug: 'wellness-vitality',
     description: 'Formula fungsional alami untuk kesegaran tubuh dan kejernihan pikiran.',
@@ -26,7 +26,7 @@ export const SEED_CATEGORIES: Category[] = [
     created_at: new Date().toISOString(),
   },
   {
-    id: 'c0000000-0000-0000-0000-000000000010',
+    id: 'c0000000-0000-4000-8000-000000000010',
     name: 'Edukasi & Tradisi Teh',
     slug: 'edukasi-tradisi',
     description: 'Wawasan seputar tanaman herbal nusantara, teknik seduh, dan filosofi hidup selaras alam.',
@@ -34,7 +34,7 @@ export const SEED_CATEGORIES: Category[] = [
     created_at: new Date().toISOString(),
   },
   {
-    id: 'c0000000-0000-0000-0000-000000000011',
+    id: 'c0000000-0000-4000-8000-000000000011',
     name: 'Gaya Hidup Sehat',
     slug: 'gaya-hidup-sehat',
     description: 'Inspirasi rutinitas harian bernutrisi dan kesadaran mind-body.',
@@ -45,12 +45,12 @@ export const SEED_CATEGORIES: Category[] = [
 
 export const SEED_PRODUCTS: Product[] = [
   {
-    id: 'p0000000-0000-0000-0000-000000000000',
-    name: 'CHANGKEER Solar-Term Jasmine Herbal Tea',
+    id: 'b0000000-0000-4000-8000-000000000001',
+    name: 'CHANGKEER Jasmine Tea',
     slug: 'solar-term-jasmine-herbal-tea',
     tagline: 'Daun Teh Utuh & Bunga Melati Asli dengan Gula Sorgum & Madu',
     description: 'Racikan teh herbal fungsional terinspirasi tradisi teh Tiongkok yang disederhanakan untuk gaya hidup modern grab-and-go. Menggunakan daun teh pilihan dan kuntum melati utuh dengan pemanis alami gula sorgum serta madu murni. Bebas kantong teh pemutih dan 100% bebas mikroplastik. Tidak mengandung daun senna keras sehingga sangat aman untuk dikonsumsi harian.',
-    category_id: 'c0000000-0000-0000-0000-000000000001',
+    category_id: 'c0000000-0000-4000-8000-000000000001',
     category: SEED_CATEGORIES[0],
     ingredients: [
       'Daun Teh Hijau Pilihan (Camellia sinensis)',
@@ -88,12 +88,12 @@ export const SEED_PRODUCTS: Product[] = [
     updated_at: new Date().toISOString(),
   },
   {
-    id: 'p0000000-0000-0000-0000-00000000000a',
+    id: 'b0000000-0000-4000-8000-000000000002',
     name: 'CHANGKEER English Breakfast Tea',
     slug: 'english-breakfast-tea',
     tagline: 'Racikan Teh Hitam Kuat & Berkarakter dengan Pemanis Alami Rendah Glikemik',
     description: 'Seduhan teh hitam berkarakter bold dan kaya rasa yang terinspirasi tradisi sarapan klasik, diracik dengan dedikasi kearifan nusantara. Menghadirkan dorongan energi alami yang bersih tanpa menyebabkan lonjakan asam lambung. Menggunakan kantong teh bebas mikroplastik dan bebas pemutih kimiawi (bleach-free), dipermanis secara seimbang dengan gula sorgum dan madu hutan murni. 100% bebas daun senna, aman dikonsumsi harian untuk mengawali hari aktif Anda.',
-    category_id: 'c0000000-0000-0000-0000-000000000001',
+    category_id: 'c0000000-0000-4000-8000-000000000001',
     category: SEED_CATEGORIES[0],
     ingredients: [
       'Daun Teh Hitam Pilihan Nusantara (Camellia sinensis var. assamica)',
@@ -128,12 +128,12 @@ export const SEED_PRODUCTS: Product[] = [
     updated_at: new Date().toISOString(),
   },
   {
-    id: 'p0000000-0000-0000-0000-00000000000b',
+    id: 'b0000000-0000-4000-8000-000000000003',
     name: 'CHANGKEER Vanilla Mint Tea',
     slug: 'vanilla-mint-tea',
     tagline: 'Kesegaran Dingin Daun Mint Alami Berpadu Aroma Vanilla Lembut Menenangkan',
     description: 'Kombinasi harmonis antara semilir dingin daun mint pegunungan dan kelembutan aroma vanilla alami. Dirancang untuk meredakan ketegangan pikiran dan menyegarkan sistem pernapasan setelah aktivitas padat. Tanpa kandungan daun senna yang keras, aman untuk lambung dan pencernaan. Dikemas dalam kantung bebas mikroplastik dengan alternatif pemanis sehat gula sorgum dan madu.',
-    category_id: 'c0000000-0000-0000-0000-000000000002',
+    category_id: 'c0000000-0000-4000-8000-000000000002',
     category: SEED_CATEGORIES[1],
     ingredients: [
       'Daun Teh Pilihan (Camellia sinensis)',
@@ -170,12 +170,12 @@ export const SEED_PRODUCTS: Product[] = [
     updated_at: new Date().toISOString(),
   },
   {
-    id: 'p0000000-0000-0000-0000-000000000001',
+    id: 'b0000000-0000-4000-8000-000000000004',
     name: 'CHANGKEER Lemongrass Ginger Vitality',
     slug: 'lemongrass-ginger-vitality',
     tagline: 'Kehangatan Jahe Merah & Kesegaran Serai Wangi Alami',
     description: 'Perpaduan serai wangi pilihan dan jahe merah organik dari lereng pegunungan. Menghadirkan rasa pedas hangat yang lembut dengan aroma sitrus menyegarkan. Sempurna untuk mengembalikan energi tubuh setelah hari yang panjang tanpa kandungan kafein sintetis.',
-    category_id: 'c0000000-0000-0000-0000-000000000001',
+    category_id: 'c0000000-0000-4000-8000-000000000001',
     category: SEED_CATEGORIES[0],
     ingredients: [
       'Serai Wangi Kering (Cymbopogon citratus)',
@@ -211,12 +211,12 @@ export const SEED_PRODUCTS: Product[] = [
     updated_at: new Date().toISOString(),
   },
   {
-    id: 'p0000000-0000-0000-0000-000000000002',
+    id: 'b0000000-0000-4000-8000-000000000005',
     name: 'CHANGKEER Rosella Mint Refresh',
     slug: 'rosella-mint-refresh',
     tagline: 'Kesegaran Asam Alami Bunga Rosella Berpadu Daun Mint Dingin',
     description: 'Kuntum bunga rosella merah kaya vitamin C berpadu dengan daun mint pegunungan. Menghasilkan seduhan berwarna merah delima berkilau dengan rasa asam segar yang membangkitkan fokus seketika.',
-    category_id: 'c0000000-0000-0000-0000-000000000002',
+    category_id: 'c0000000-0000-4000-8000-000000000002',
     category: SEED_CATEGORIES[1],
     ingredients: [
       'Kelopak Rosella Merah Utuh (Hibiscus sabdariffa)',
@@ -248,12 +248,12 @@ export const SEED_PRODUCTS: Product[] = [
     updated_at: new Date().toISOString(),
   },
   {
-    id: 'p0000000-0000-0000-0000-000000000003',
+    id: 'b0000000-0000-4000-8000-000000000006',
     name: 'CHANGKEER Chamomile Lavender Serenity',
     slug: 'chamomile-lavender-serenity',
     tagline: 'Relaksasi Alami Tanpa Kafein Menjelang Istirahat Malam',
     description: 'Perpaduan lembut bunga chamomile utuh Jerman dan kuntum lavender liar. Menghadirkan aroma manis menenangkan yang dirancang untuk menemani ritual malam Anda, meredakan ketegangan, dan menyambut tidur yang berkualitas.',
-    category_id: 'c0000000-0000-0000-0000-000000000003',
+    category_id: 'c0000000-0000-4000-8000-000000000003',
     category: SEED_CATEGORIES[2],
     ingredients: [
       'Bunga Chamomile Utuh (Matricaria chamomilla)',
@@ -285,12 +285,12 @@ export const SEED_PRODUCTS: Product[] = [
     updated_at: new Date().toISOString(),
   },
   {
-    id: 'p0000000-0000-0000-0000-000000000004',
+    id: 'b0000000-0000-4000-8000-000000000007',
     name: 'CHANGKEER Moringa Green Harmony',
     slug: 'moringa-green-harmony',
     tagline: 'Daun Kelor Superfood & Teh Hijau Jawa Berkualitas Tinggi',
     description: 'Kombinasi daun kelor muda yang dikeringkan pada suhu rendah untuk mempertahankan nutrisi alami, dipadukan dengan daun teh hijau pegunungan Jawa. Menghadirkan rasa earthy yang bersih dan menyegarkan.',
-    category_id: 'c0000000-0000-0000-0000-000000000003',
+    category_id: 'c0000000-0000-4000-8000-000000000003',
     category: SEED_CATEGORIES[2],
     ingredients: [
       'Daun Kelor Kering Rendah Suhu (Moringa oleifera)',
@@ -325,7 +325,7 @@ export const SEED_PRODUCTS: Product[] = [
 
 export const SEED_ARTICLES: Article[] = [
   {
-    id: 'a0000000-0000-0000-0000-000000000001',
+    id: 'a0000000-0000-4000-8000-000000000001',
     title: 'Seni Menyeduh Teh Herbal: Panduan Suhu dan Waktu untuk Ekstraksi Rasa Maksimal',
     slug: 'seni-menyeduh-teh-herbal-panduan-suhu-dan-waktu',
     excerpt: 'Setiap tanaman herbal memiliki sensitivitas berbeda terhadap temperatur air. Simak panduan lengkap agar aroma dan kebaikan alaminya tetap terjaga seutuhnya.',
@@ -340,7 +340,7 @@ Secara umum, bagian tanaman yang digunakan dapat dibagi menjadi dua kelompok:
 Berbeda dari daun Camellia sinensis (teh hitam/hijau) yang bisa menjadi sangat pahit bila diseduh terlalu lama karena tanin tinggi, sebagian besar herbal tisane bebas tanin pahit. Rata-rata waktu seduh optimal adalah 4 hingga 6 menit dengan wadah tertutup.
 
 Menutup cangkir saat proses penyeduhan sangat penting agar minyak esensial yang mudah menguap tidak hilang bersama uap air.`,
-    category_id: 'c0000000-0000-0000-0000-000000000010',
+    category_id: 'c0000000-0000-4000-8000-000000000010',
     category: SEED_CATEGORIES[3],
     featured_image: '/images/articles/brewing-guide.jpg',
     author_name: 'Master Blender CHANGKEER',
@@ -354,7 +354,7 @@ Menutup cangkir saat proses penyeduhan sangat penting agar minyak esensial yang 
     updated_at: '2026-10-08T10:00:00Z',
   },
   {
-    id: 'a0000000-0000-0000-0000-000000000002',
+    id: 'a0000000-0000-4000-8000-000000000002',
     title: 'Eksplorasi Rempah Nusantara: Mengapa Jahe Merah dan Serai Menjadi Pasangan Abadi',
     slug: 'eksplorasi-rempah-nusantara-jahe-merah-dan-serai',
     excerpt: 'Kombinasi klasik jahe merah dan serai telah menemani masyarakat kepulauan nusantara selama berabad-abad. Berikut alasan gastronominya.',
@@ -363,7 +363,7 @@ Menutup cangkir saat proses penyeduhan sangat penting agar minyak esensial yang 
 Jahe merah memiliki karakter rasa yang tajam, pekat, dan hangat berkat kandungan alami gingerol dan shogaol. Di sisi lain, serai wangi menyumbangkan senyawa citral aromatik yang memberikan wangi segar sitrus tanpa keasaman buah.
 
 Ketika disatukan dalam proporsi yang terukur, serai memotong ketajaman jahe sehingga rasa yang tertinggal di lidah terasa bersih, hangat, dan menenangkan.`,
-    category_id: 'c0000000-0000-0000-0000-000000000010',
+    category_id: 'c0000000-0000-4000-8000-000000000010',
     category: SEED_CATEGORIES[3],
     featured_image: '/images/articles/herbs-exploration.jpg',
     author_name: 'Tim Riset Botani CHANGKEER',
