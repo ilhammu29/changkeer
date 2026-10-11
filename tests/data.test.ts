@@ -13,9 +13,9 @@ describe('Data Access & Security Guard Tests', () => {
   });
 
   it('getProductBySlug retrieves valid published product', async () => {
-    const product = await getProductBySlug('lemongrass-ginger-vitality');
+    const product = await getProductBySlug('solar-term-jasmine-herbal-tea');
     expect(product).not.toBeNull();
-    expect(product?.name).toContain('Lemongrass Ginger');
+    expect(product?.name).toContain('Jasmine');
   });
 
   it('public articles query only returns published articles', async () => {

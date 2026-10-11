@@ -82,7 +82,9 @@ export function CatalogView({ products, categories }: CatalogViewProps) {
           SEMUA VARIAN ({products.length})
         </button>
 
-        {categories.map((cat) => {
+        {categories
+          .filter((cat) => products.some((p) => p.category_id === cat.id || p.category?.slug === cat.slug))
+          .map((cat) => {
           const count = products.filter(
             (p) => p.category_id === cat.id || p.category?.slug === cat.slug
           ).length;
