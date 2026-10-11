@@ -4,30 +4,32 @@
   :root {
     /* ==========================================================================
        CHANGKEER CENTRALIZED SEMANTIC DESIGN TOKENS
-       All visual elements, colors, borders, and accents are mapped to these tokens.
-       When final color palette is provided, changes only need to occur here.
+       Official Brand Identity:
+       - Background terang: #F0F3F3
+       - Primary purple: #544D79
+       - Secondary muted purple: #8C849A
        ========================================================================== */
-    --background: #fcfcfb;
-    --foreground: #111211;
-    --surface: #ffffff;
-    --surface-hover: #f5f6f4;
-    --surface-elevated: #ffffff;
+    --background: #F0F3F3;
+    --foreground: #1D192B;
+    --surface: #FFFFFF;
+    --surface-hover: #E7ECEC;
+    --surface-elevated: #FFFFFF;
 
-    --primary: #151a16;
-    --primary-foreground: #f8faf8;
-    --primary-hover: #262e27;
+    --primary: #544D79;
+    --primary-foreground: #FFFFFF;
+    --primary-hover: #413B60;
 
-    --accent: #2e3a2f;
-    --accent-foreground: #ffffff;
-    --accent-subtle: #edf1ed;
+    --accent: #8C849A;
+    --accent-foreground: #FFFFFF;
+    --accent-subtle: #E2DFE8;
 
-    --muted: #f2f3f1;
-    --muted-foreground: #676e67;
+    --muted: #E2E8E8;
+    --muted-foreground: #5B566B;
 
-    --border: #e3e6e2;
-    --border-strong: #c2c7c1;
+    --border: #D5DCDC;
+    --border-strong: #8C849A;
 
-    --ring: #2e3a2f;
+    --ring: #544D79;
 
     /* Radius & Spacing Scales */
     --radius-sm: 4px;
@@ -42,27 +44,27 @@
   }
 
   .dark {
-    --background: #0c0e0c;
-    --foreground: #f4f6f4;
-    --surface: #141714;
-    --surface-hover: #1c211c;
-    --surface-elevated: #1a1f1a;
+    --background: #110F18;
+    --foreground: #F2EFF7;
+    --surface: #181522;
+    --surface-hover: #211E2E;
+    --surface-elevated: #1F1B2B;
 
-    --primary: #e6ebe6;
-    --primary-foreground: #0c0e0c;
-    --primary-hover: #f3f7f3;
+    --primary: #A29BB7;
+    --primary-foreground: #110F18;
+    --primary-hover: #BFB8D4;
 
-    --accent: #a3b5a4;
-    --accent-foreground: #0c0e0c;
-    --accent-subtle: #19201a;
+    --accent: #8C849A;
+    --accent-foreground: #FFFFFF;
+    --accent-subtle: #2A2438;
 
-    --muted: #191d19;
-    --muted-foreground: #8a928a;
+    --muted: #1F1C2B;
+    --muted-foreground: #9C96AB;
 
-    --border: #252b25;
-    --border-strong: #394239;
+    --border: #2A263B;
+    --border-strong: #8C849A;
 
-    --ring: #a3b5a4;
+    --ring: #A29BB7;
   }
 }
 

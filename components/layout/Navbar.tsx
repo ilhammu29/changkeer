@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu, X, ArrowUpRight } from 'lucide-react';
@@ -18,6 +18,25 @@ const NAV_LINKS = [
 export function Navbar() {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const scrolled = window.scrollY > 20;
+          setIsScrolled((prev) => (prev !== scrolled ? scrolled : prev));
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Check if current route is active
   const isActive = (href: string) => {
@@ -31,7 +50,13 @@ export function Navbar() {
   }
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-background/90 backdrop-blur-md border-b border-border/60 transition-colors">
+    <header
+      className={`sticky top-0 z-50 w-full transition-all duration-300 ease-out ${
+        isScrolled
+          ? 'bg-background/95 backdrop-blur-md border-b border-border shadow-xs'
+          : 'bg-background/80 backdrop-blur-xs border-b border-transparent'
+      }`}
+    >
       <Container size="wide">
         <div className="flex items-center justify-between h-20">
           {/* Logo on the left */}

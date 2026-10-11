@@ -2,136 +2,206 @@ import React from 'react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Container } from '@/components/ui/Container';
+import { ProductShowcase } from '@/components/products/ProductShowcase';
 import { ProductCard } from '@/components/products/ProductCard';
 import { getPublishedProducts } from '@/lib/data/products';
-import { getPageContent } from '@/lib/data/pages';
-import { Leaf, Thermometer, Package, ArrowUpRight } from 'lucide-react';
+import { Leaf, ShieldCheck, Clock, Recycle, ArrowUpRight, Sparkles } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Tentang Produk',
   description:
-    'Standar racikan teh herbal alami CHANGKEER. Pelajari kemurnian bahan baku, teknik pengeringan higienis, dan panduan penyajian tanpa klaim berlebih.',
+    'Standar racikan teh herbal fungsional CHANGKEER. Pelajari 3 varian utama, kemurnian bahan baku tanpa daun senna, kemasan bebas mikroplastik, dan ritual seduh kurang dari 3 menit.',
 };
 
 export default async function TentangProdukPage() {
-  const [products, pageData] = await Promise.all([
-    getPublishedProducts(),
-    getPageContent('tentang-produk'),
-  ]);
-
-  const intro = pageData?.sections?.intro || {
-    title: 'Kemurnian Botani di Setiap Seduhan',
-    description:
-      'Setiap varian CHANGKEER dirancang dengan menghormati karakteristik alami tanaman herbal, menghasilkan profil rasa yang seimbang tanpa pemanis sintetis.',
-  };
+  const products = await getPublishedProducts();
 
   const ingredientsShowcase = [
     {
-      name: 'Jahe Merah (Zingiber officinale var. rubrum)',
-      origin: 'Lereng Pegunungan Jawa Barat',
-      notes: 'Dipanen pada usia optimal untuk mendapatkan aroma rempah hangat dan sensasi nyaman di tenggorokan.',
+      name: 'Daun Teh Hijau & Hitam Utuh (Camellia sinensis)',
+      origin: 'Kebun Teh Pegunungan Nusantara',
+      notes: 'Dipetik pada pucuk optimal untuk mempertahankan antioksidan polifenol alami tanpa sensasi rasa pahit pekat.',
     },
     {
-      name: 'Serai Wangi (Cymbopogon citratus)',
-      origin: 'Perbukitan Alami Priangan',
-      notes: 'Mengandung minyak sitral murni yang memberikan aroma sitrus segar alami tanpa rasa asam buah.',
+      name: 'Kuntum Bunga Melati Utuh (Jasminum sambac)',
+      origin: 'Sentra Melati Tradisional Jawa',
+      notes: 'Kelopak melati segar utuh yang melepaskan aroma wangi menenangkan alami tanpa perisa esens sintetis.',
     },
     {
-      name: 'Bunga Rosella (Hibiscus sabdariffa)',
-      origin: 'Dataran Tropis Nusantara',
-      notes: 'Kelopak bunga utuh yang menghasilkan seduhan merah delima berkilau dengan rasa asam menyegarkan.',
-    },
-    {
-      name: 'Bunga Chamomile Utuh (Matricaria chamomilla)',
-      origin: 'Petani Mitra Terverifikasi',
-      notes: 'Kuntum bunga utuh bebas tangkai berlebih untuk aroma manis apel yang menenangkan pikiran.',
-    },
-    {
-      name: 'Daun Spearmint Kering (Mentha spicata)',
+      name: 'Daun Spearmint & Peppermint (Mentha)',
       origin: 'Dataran Tinggi Sejuk',
-      notes: 'Dipetik saat embun pagi untuk mempertahankan sensasi dingin bersih pada setiap tegukan.',
+      notes: 'Memberikan hembusan sensasi dingin bersih alami yang melegakan pernapasan dan menyegarkan fokus.',
     },
     {
-      name: 'Daun Kelor Muda (Moringa oleifera)',
-      origin: 'Kebun Organik Berkelanjutan',
-      notes: 'Dikeringkan pada suhu rendah untuk menjaga warna hijau alami dan rasa umami nabati yang lembut.',
+      name: 'Gula Sorgum Organik Rendah Glikemik',
+      origin: 'Petani Sorgum Lestari',
+      notes: 'Pemanis alami bernutrisi alternatif pengganti gula tebu rafinasi, ramah bagi metabolisme tubuh.',
+    },
+    {
+      name: 'Madu Hutan Murni Nusantara',
+      origin: 'Hutan Tropis Alami',
+      notes: 'Madu mentah tanpa pasteurisasi berlebih untuk melengkapi kelembutan rasa dan daya tahan tubuh.',
+    },
+    {
+      name: 'Polong Vanilla Alami (Vanilla planifolia)',
+      origin: 'Perkebunan Vanilla Nusantara',
+      notes: 'Menyumbangkan aroma manis lembut yang menenangkan pikiran dan meredakan kepenatan harian.',
     },
   ];
 
   return (
-    <div className="py-12 md:py-20">
-      {/* Editorial Header */}
-      <section className="pb-16 border-b border-border">
+    <div className="py-8 md:py-16">
+      {/* Editorial Title Banner */}
+      <section className="pb-8 border-b border-border">
         <Container size="wide">
           <div className="max-w-4xl space-y-4">
-            <span className="text-[11px] font-bold tracking-[0.25em] uppercase text-accent block">
-              01 // STANDAR KUALITAS &amp; BAHAN
-            </span>
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-surface border border-border rounded-sm text-[11px] font-bold tracking-[0.25em] uppercase text-accent">
+              <Sparkles className="w-3.5 h-3.5 text-accent" />
+              <span>BOTANICAL PURITY ARCHIVE</span>
+            </div>
             <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black uppercase tracking-tight text-foreground leading-[0.95]">
-              {intro.title}
+              KEMURNIAN HERBAL DI SETIAP SEDUHAN
             </h1>
-            <p className="text-base sm:text-xl text-muted-foreground leading-relaxed pt-2">
-              {intro.description}
+            <p className="text-base sm:text-lg text-muted-foreground leading-relaxed pt-2">
+              Koleksi racikan teh fungsional CHANGKEER yang lahir dari filosofi Tutup Cangkir. 
+              Mengutamakan daun dan bunga asli, 100% bebas mikroplastik, tanpa daun senna keras, 
+              dan siap saji dalam waktu kurang dari 3 menit.
             </p>
           </div>
         </Container>
       </section>
 
-      {/* Philosophy & Craftsmanship Section */}
-      <section className="py-20 border-b border-border bg-surface">
+      {/* Full-Screen Interactive Product Showcase */}
+      <ProductShowcase />
+
+      {/* 4 Core Pillars of Brand Integrity from PDF */}
+      <section className="py-20 border-y border-border bg-surface">
         <Container size="wide">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-            <div className="space-y-4">
-              <div className="w-10 h-10 rounded-sm bg-accent text-accent-foreground flex items-center justify-center">
+          <div className="max-w-3xl mb-12">
+            <span className="text-[11px] font-mono font-bold tracking-[0.25em] uppercase text-accent block mb-2">
+              02 // KOMITMEN INTEGRITAS KAMI
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-foreground">
+              STANDAR KUALITAS TANPA KOMPROMI
+            </h2>
+            <p className="text-sm text-muted-foreground mt-2">
+              Lahir dari evaluasi kritis terhadap industri teh konvensional yang kerap mengabaikan kesehatan jangka panjang konsumen.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="space-y-4 p-6 rounded-xl bg-background border border-border">
+              <div className="w-10 h-10 rounded-sm bg-primary text-primary-foreground flex items-center justify-center">
+                <Recycle className="w-5 h-5" />
+              </div>
+              <h3 className="text-lg font-bold uppercase tracking-tight text-foreground">
+                100% Bebas Mikroplastik
+              </h3>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Kantong teh konvensional melepaskan miliaran partikel mikroplastik berbahaya ke air panas. CHANGKEER menggunakan kemasan bebas mikroplastik dan ramah lingkungan.
+              </p>
+            </div>
+
+            <div className="space-y-4 p-6 rounded-xl bg-background border border-border">
+              <div className="w-10 h-10 rounded-sm bg-primary text-primary-foreground flex items-center justify-center">
+                <ShieldCheck className="w-5 h-5" />
+              </div>
+              <h3 className="text-lg font-bold uppercase tracking-tight text-foreground">
+                Bebas Daun Senna (Aman Harian)
+              </h3>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Banyak merek teh &quot;detox&quot; mengandalkan daun senna (daun jati cina) yang bersifat laksatif keras. Kami menolak bahan tersebut agar aman dikonsumsi harian tanpa merusak usus.
+              </p>
+            </div>
+
+            <div className="space-y-4 p-6 rounded-xl bg-background border border-border">
+              <div className="w-10 h-10 rounded-sm bg-primary text-primary-foreground flex items-center justify-center">
                 <Leaf className="w-5 h-5" />
               </div>
-              <h3 className="text-xl font-bold uppercase tracking-tight text-foreground">
-                Bahan Baku Nabati Utuh
+              <h3 className="text-lg font-bold uppercase tracking-tight text-foreground">
+                Gula Sorgum &amp; Madu Murni
               </h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                Kami menghindari serbuk limbah industri atau perisa esens sintetis. CHANGKEER hanya menggunakan potongan daun, kelopak bunga, dan irisan rimpang utuh agar minyak esensial alami tetap terkunci hingga waktu penyeduhan.
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Mengganti gula tebu rafinasi berlebih dengan alternatif alami bernutrisi: gula sorgum rendah glikemik dan madu hutan murni nusantara.
               </p>
             </div>
 
-            <div className="space-y-4">
-              <div className="w-10 h-10 rounded-sm bg-accent text-accent-foreground flex items-center justify-center">
-                <Thermometer className="w-5 h-5" />
+            <div className="space-y-4 p-6 rounded-xl bg-background border border-border">
+              <div className="w-10 h-10 rounded-sm bg-primary text-primary-foreground flex items-center justify-center">
+                <Clock className="w-5 h-5" />
               </div>
-              <h3 className="text-xl font-bold uppercase tracking-tight text-foreground">
-                Pengeringan Higienis Terkontrol
+              <h3 className="text-lg font-bold uppercase tracking-tight text-foreground">
+                Penyajian Cepat &lt; 3 Menit
               </h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                Setiap panenan dikeringkan dalam ruangan tertutup dengan kontrol suhu dan sirkulasi udara stabil, mencegah kontaminasi debu lingkungan serta menjaga profil rasa alami dari pemanasan berlebih.
-              </p>
-            </div>
-
-            <div className="space-y-4">
-              <div className="w-10 h-10 rounded-sm bg-accent text-accent-foreground flex items-center justify-center">
-                <Package className="w-5 h-5" />
-              </div>
-              <h3 className="text-xl font-bold uppercase tracking-tight text-foreground">
-                Kemasan Bertanggung Jawab
-              </h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                Kantung piramida kami menggunakan serat pati nabati yang dapat terurai secara alami (biodegradable). Bebas lem beracun dan bebas pelepasan mikroplastik ke dalam air seduhan panas Anda.
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Dirancang untuk gaya hidup aktif modern grab-and-go. Ekstraksi optimal daun teh dan kelopak bunga dicapai hanya dalam hitungan kurang dari 3 menit.
               </p>
             </div>
           </div>
         </Container>
       </section>
 
-      {/* Ingredients Showcase */}
+      {/* Universal Brewing Ritual */}
       <section className="py-20 border-b border-border bg-background">
         <Container size="wide">
-          <div className="mb-12">
-            <span className="text-[11px] font-bold tracking-[0.25em] uppercase text-muted-foreground block mb-2">
-              02 // EKSPLORASI BOTANI
+          <div className="max-w-3xl mx-auto text-center space-y-4 mb-16">
+            <span className="text-[11px] font-mono font-bold tracking-[0.25em] uppercase text-accent block">
+              03 // RITUAL PENYAJIAN CEPAT
             </span>
             <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tight text-foreground">
-              BAHAN BAKU PILIHAN
+              3 LANGKAH NIKMAT &lt; 3 MENIT
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              Ekstraksi rasa dan aroma botani maksimal tanpa ribet, menemani kesibukan Anda.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="p-8 rounded-2xl bg-surface border border-border text-center space-y-3 shadow-xs">
+              <span className="font-mono text-3xl font-black text-primary">01</span>
+              <h4 className="font-bold text-base uppercase tracking-tight text-foreground">
+                Siapkan Air Panas 85-95°C
+              </h4>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Tuangkan 250ml - 300ml air panas berkualitas ke dalam cangkir favorit Anda untuk mengaktifkan aroma minyak atsiri alami.
+              </p>
+            </div>
+
+            <div className="p-8 rounded-2xl bg-surface border border-border text-center space-y-3 shadow-xs">
+              <span className="font-mono text-3xl font-black text-primary">02</span>
+              <h4 className="font-bold text-base uppercase tracking-tight text-foreground">
+                Tutup Cangkir &amp; Seduh &lt; 3 Menit
+              </h4>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Masukkan kantung teh CHANGKEER. Tutup cangkir selama 2 hingga 3 menit agar aroma harum botani terkonsentrasi sempurna.
+              </p>
+            </div>
+
+            <div className="p-8 rounded-2xl bg-surface border border-border text-center space-y-3 shadow-xs">
+              <span className="font-mono text-3xl font-black text-primary">03</span>
+              <h4 className="font-bold text-base uppercase tracking-tight text-foreground">
+                Nikmati Hangat atau Dingin
+              </h4>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Nikmati selagi hangat untuk ketenangan batin, atau tambahkan es batu untuk kesegaran ganda di siang hari yang terik.
+              </p>
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      {/* Raw Ingredients Explorer */}
+      <section className="py-20 border-b border-border bg-surface">
+        <Container size="wide">
+          <div className="mb-12">
+            <span className="text-[11px] font-mono font-bold tracking-[0.25em] uppercase text-accent block mb-2">
+              04 // EKSPLORASI BOTANI ALAMI
+            </span>
+            <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tight text-foreground">
+              BAHAN BAKU PILIHAN NUSANTARA
             </h2>
             <p className="text-sm text-muted-foreground mt-2 max-w-2xl">
-              Kami bekerja sama dengan kelompok tani lokal yang mempraktikkan budidaya ramah lingkungan untuk memastikan integritas setiap helai tanaman.
+              Kami menggunakan tanaman herbal murni, kelopak bunga asli, dan rempah bermutu tinggi untuk menjamin khasiat organ dan kesegaran rasa.
             </p>
           </div>
 
@@ -139,7 +209,7 @@ export default async function TentangProdukPage() {
             {ingredientsShowcase.map((item) => (
               <div
                 key={item.name}
-                className="p-6 rounded-md bg-surface border border-border flex flex-col justify-between space-y-4 hover:border-border-strong transition-colors"
+                className="p-6 rounded-xl bg-background border border-border flex flex-col justify-between space-y-4 hover:border-border-strong transition-colors"
               >
                 <div>
                   <span className="text-[10px] font-mono uppercase tracking-widest text-accent block mb-1">
@@ -158,65 +228,16 @@ export default async function TentangProdukPage() {
         </Container>
       </section>
 
-      {/* Universal Brewing Ritual */}
-      <section className="py-20 border-b border-border bg-surface">
-        <Container size="wide">
-          <div className="max-w-3xl mx-auto text-center space-y-4 mb-16">
-            <span className="text-[11px] font-bold tracking-[0.25em] uppercase text-accent block">
-              03 // RITUAL PENYAJIAN
-            </span>
-            <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tight text-foreground">
-              3 LANGKAH MENIKMATI KEMURNIAN
-            </h2>
-            <p className="text-sm text-muted-foreground">
-              Dapatkan ekstraksi minyak aromatik terbaik dengan langkah sederhana ini.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="p-8 rounded-lg bg-background border border-border text-center space-y-3">
-              <span className="font-mono text-2xl font-black text-accent">01</span>
-              <h4 className="font-bold text-base uppercase tracking-tight text-foreground">
-                Air Bersih 90-95°C
-              </h4>
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                Gunakan air mineral berkualitas. Setelah mendidih, diamkan sekitar 1 menit agar suhu mencapai titik ideal tanpa merusak aroma herbal.
-              </p>
-            </div>
-
-            <div className="p-8 rounded-lg bg-background border border-border text-center space-y-3">
-              <span className="font-mono text-2xl font-black text-accent">02</span>
-              <h4 className="font-bold text-base uppercase tracking-tight text-foreground">
-                Seduh Dalam Wadah Tertutup
-              </h4>
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                Masukkan 1 kantung piramida ke dalam 250ml air. Tutup cangkir selama 4-5 menit agar minyak atsiri aromatik tidak menguap ke udara.
-              </p>
-            </div>
-
-            <div className="p-8 rounded-lg bg-background border border-border text-center space-y-3">
-              <span className="font-mono text-2xl font-black text-accent">03</span>
-              <h4 className="font-bold text-base uppercase tracking-tight text-foreground">
-                Nikmati Selagi Hangat
-              </h4>
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                Hirup aromanya perlahan sebelum tegukan pertama. Anda dapat menyeduh ulang kantung teh hingga 2 kali dengan waktu ekstraksi lebih lama.
-              </p>
-            </div>
-          </div>
-        </Container>
-      </section>
-
-      {/* Featured Products Showcase */}
+      {/* Catalog Link */}
       <section className="py-20 bg-background">
         <Container size="wide">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4">
             <div>
-              <span className="text-[11px] font-bold tracking-[0.25em] uppercase text-muted-foreground block mb-2">
-                04 // PRODUK KAMI
+              <span className="text-[11px] font-mono font-bold tracking-[0.25em] uppercase text-accent block mb-2">
+                05 // SELURUH KOLEKSI
               </span>
               <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-foreground">
-                VARIAN TEH HERBAL CHANGKEER
+                KATALOG TEH HERBAL CHANGKEER
               </h2>
             </div>
             <Link
@@ -228,8 +249,8 @@ export default async function TentangProdukPage() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {products.slice(0, 4).map((product) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {products.slice(0, 3).map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>

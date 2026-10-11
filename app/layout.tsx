@@ -33,6 +33,7 @@ export const metadata: Metadata = {
 };
 
 import React, { Suspense } from 'react';
+import { LoadingScreen } from '@/components/ui/LoadingScreen';
 
 export default function RootLayout({
   children,
@@ -42,6 +43,7 @@ export default function RootLayout({
   return (
     <html lang="id" className="h-full antialiased">
       <body className="min-h-full flex flex-col bg-background text-foreground">
+        <LoadingScreen />
         <Suspense fallback={null}>
           <Navbar />
         </Suspense>
