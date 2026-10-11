@@ -48,7 +48,7 @@ export function BrandPillarsEditorial() {
             <Reveal>
               <div className="space-y-4">
                 <span className="text-[11px] font-mono font-bold tracking-[0.25em] uppercase text-accent block">
-                  02 // KOMITMEN INTEGRITAS KAMI
+                  KOMITMEN INTEGRITAS KAMI
                 </span>
                 <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black uppercase tracking-tight text-foreground leading-tight">
                   Standar Kualitas Tanpa Kompromi

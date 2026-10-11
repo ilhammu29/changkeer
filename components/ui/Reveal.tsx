@@ -30,13 +30,22 @@ export function Reveal({ children, className = '', delayMs = 0 }: RevealProps) {
         }
       },
       {
-        threshold: 0.1,
-        rootMargin: '0px 0px -40px 0px',
+        threshold: 0.05,
+        rootMargin: '120px 0px 120px 0px',
       }
     );
 
     observer.observe(element);
-    return () => observer.disconnect();
+
+    // Fallback timer ensures content never remains invisible in headless/unscrolled environments
+    const fallbackTimer = setTimeout(() => {
+      setIsVisible(true);
+    }, 1200);
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(fallbackTimer);
+    };
   }, []);
 
   return (

@@ -16,139 +16,80 @@ export function Footer() {
   }
 
   return (
-    <footer className="w-full bg-primary text-primary-foreground border-t border-border/20 pt-20 pb-12 mt-auto">
+    <footer className="w-full bg-primary text-primary-foreground border-t border-primary-foreground/10 py-10 sm:py-12 mt-auto">
       <Container size="wide">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 pb-16 border-b border-primary-foreground/10">
-          {/* Brand Manifesto & Info */}
-          <div className="lg:col-span-5 flex flex-col justify-between pr-0 lg:pr-8">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 pb-8 border-b border-primary-foreground/10">
+          {/* Brand Info */}
+          <div className="flex items-center gap-3">
+            <div className="relative w-8 h-8 rounded-full overflow-hidden border border-white/20 shrink-0">
+              <Image
+                src="/images/logo_changkeer.jpg"
+                alt="CHANGKEER"
+                fill
+                className="rounded-full object-cover"
+              />
+            </div>
             <div>
-              <div className="flex items-center gap-3 mb-6">
-                <div className="relative w-9 h-9 rounded-full overflow-hidden border border-white/20 shadow-xs shrink-0">
-                  <Image
-                    src="/images/logo_changkeer.jpg"
-                    alt="CHANGKEER"
-                    fill
-                    className="rounded-full object-cover"
-                  />
-                </div>
-                <span className="font-extrabold text-xl tracking-[0.2em] uppercase text-primary-foreground">
-                  CHANGKEER
-                </span>
-              </div>
-              <p className="text-sm text-primary-foreground/80 leading-relaxed max-w-md font-normal mb-8">
-                More Than Tea. A Better You. Dedikasi kami dalam menghadirkan racikan herbal murni dari daun, bunga, dan rempah nusantara untuk menemani kejernihan hidup Anda.
-              </p>
-            </div>
-
-            <div className="space-y-2 text-xs text-primary-foreground/60">
-              <p>Jl. Harmoni Alam No. 8, Bandung, Jawa Barat</p>
-              <p>Email: halo@changkeer.com | WhatsApp: +62 812-3456-7890</p>
+              <span className="font-extrabold text-base tracking-[0.2em] uppercase text-primary-foreground block">
+                CHANGKEER
+              </span>
+              <span className="text-[11px] text-primary-foreground/70 tracking-wide font-normal">
+                More Than Tea. A Better You.
+              </span>
             </div>
           </div>
 
-          {/* Quick Links */}
-          <div className="lg:col-span-3">
-            <h4 className="text-xs font-bold tracking-[0.2em] uppercase text-primary-foreground/40 mb-6">
-              NAVIGASI
-            </h4>
-            <ul className="space-y-3.5 text-xs font-semibold tracking-wider uppercase">
-              <li>
-                <Link href="/" className="hover:text-primary-foreground/70 transition-colors">
-                  Beranda
-                </Link>
-              </li>
-              <li>
-                <Link href="/tentang-produk" className="hover:text-primary-foreground/70 transition-colors">
-                  Tentang Produk
-                </Link>
-              </li>
-              <li>
-                <Link href="/katalog" className="hover:text-primary-foreground/70 transition-colors">
-                  Katalog Teh
-                </Link>
-              </li>
-              <li>
-                <Link href="/tentang-kami" className="hover:text-primary-foreground/70 transition-colors">
-                  Tentang Kami
-                </Link>
-              </li>
-              <li>
-                <Link href="/media-berita" className="hover:text-primary-foreground/70 transition-colors">
-                  Media &amp; Berita
-                </Link>
-              </li>
-              <li>
-                <Link href="/hubungi-kami" className="hover:text-primary-foreground/70 transition-colors">
-                  Hubungi Kami
-                </Link>
-              </li>
-            </ul>
-          </div>
+          {/* Clean Navigation Links */}
+          <nav className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs font-semibold tracking-wider uppercase">
+            <Link href="/" className="hover:text-primary-foreground/70 transition-colors">
+              Beranda
+            </Link>
+            <Link href="/tentang-produk" className="hover:text-primary-foreground/70 transition-colors">
+              Tentang Produk
+            </Link>
+            <Link href="/katalog" className="hover:text-primary-foreground/70 transition-colors">
+              Katalog
+            </Link>
+            <Link href="/tentang-kami" className="hover:text-primary-foreground/70 transition-colors">
+              Tentang Kami
+            </Link>
+            <Link href="/media-berita" className="hover:text-primary-foreground/70 transition-colors">
+              Media &amp; Berita
+            </Link>
+            <Link href="/hubungi-kami" className="hover:text-primary-foreground/70 transition-colors">
+              Hubungi Kami
+            </Link>
+          </nav>
 
-          {/* Socials & Legal */}
-          <div className="lg:col-span-4">
-            <h4 className="text-xs font-bold tracking-[0.2em] uppercase text-primary-foreground/40 mb-6">
-              KOMUNITAS &amp; JEJARING
-            </h4>
-            <ul className="space-y-3.5 text-xs font-semibold tracking-wider uppercase mb-8">
-              <li>
-                <a
-                  href="https://instagram.com/changkeer.tea"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex items-center gap-1 hover:text-primary-foreground/70 transition-colors"
-                >
-                  <span>Instagram @changkeer.tea</span>
-                  <ArrowUpRight className="w-3.5 h-3.5" />
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://youtube.com/@changkeer"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex items-center gap-1 hover:text-primary-foreground/70 transition-colors"
-                >
-                  <span>YouTube Channel</span>
-                  <ArrowUpRight className="w-3.5 h-3.5" />
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://tiktok.com/@changkeer"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex items-center gap-1 hover:text-primary-foreground/70 transition-colors"
-                >
-                  <span>TikTok Official</span>
-                  <ArrowUpRight className="w-3.5 h-3.5" />
-                </a>
-              </li>
-            </ul>
-
-            <div className="p-4 rounded-sm bg-surface/5 border border-primary-foreground/10 text-xs">
-              <span className="font-bold block mb-1 text-primary-foreground/90">PORTAL PENGELOLA</span>
-              <p className="text-[11px] text-primary-foreground/60 mb-2">
-                Akses CMS pengelolaan konten dan produk CHANGKEER.
-              </p>
-              <Link
-                href="/admin"
-                className="inline-flex items-center gap-1 text-[11px] font-bold tracking-wider uppercase text-primary-foreground underline hover:opacity-80"
-              >
-                <span>Masuk ke CMS Admin</span>
-                <ArrowUpRight className="w-3 h-3" />
-              </Link>
-            </div>
+          {/* Social & Admin Portal Minimal Link */}
+          <div className="flex items-center gap-5 text-xs text-primary-foreground/80 font-medium">
+            <a
+              href="https://instagram.com/changkeer.tea"
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-1 hover:text-white transition-colors"
+            >
+              <span>Instagram</span>
+              <ArrowUpRight className="w-3 h-3 opacity-70" />
+            </a>
+            <span>•</span>
+            <Link
+              href="/admin"
+              className="flex items-center gap-1 hover:text-white transition-colors"
+            >
+              <span>CMS Admin</span>
+              <ArrowUpRight className="w-3 h-3 opacity-70" />
+            </Link>
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-primary-foreground/50 gap-4">
-          <p>© 2026 CHANGKEER Botanical. Hak Cipta Dilindungi.</p>
-          <div className="flex items-center space-x-6 text-[11px]">
+        {/* Minimal Bottom Bar */}
+        <div className="pt-6 flex flex-col sm:flex-row items-center justify-between text-[11px] text-primary-foreground/50 gap-3">
+          <p>© {new Date().getFullYear()} CHANGKEER Botanical Craft. Hak Cipta Dilindungi.</p>
+          <div className="flex items-center gap-4">
             <span>100% Herbal Asli</span>
             <span>•</span>
-            <span>Bebas Perisa Buatan</span>
+            <span>Bebas Mikroplastik</span>
             <span>•</span>
             <span>Bandung, Indonesia</span>
           </div>

@@ -25,54 +25,52 @@ export function BrandStoryTeaser({ story }: BrandStoryTeaserProps) {
   const linkUrl = story?.link_url || '/tentang-kami';
 
   return (
-    <section className="py-24 sm:py-32 lg:py-36 bg-surface border-b border-border overflow-hidden">
+    <section id="filosofi" className="py-20 sm:py-24 lg:py-28 bg-surface border-b border-border overflow-hidden">
       <Container size="wide">
         <Reveal>
-          {/* New Editorial Card Layout with Authentic Trio Banner */}
-          <div className="rounded-3xl bg-background border border-border/80 shadow-sm overflow-hidden grid grid-cols-1 lg:grid-cols-12 items-stretch">
-            {/* Visual Frame with Trio Product Photo */}
-            <div className="lg:col-span-6 relative aspect-[16/10] sm:aspect-[16/9] lg:aspect-auto lg:min-h-[440px] w-full overflow-hidden bg-muted group">
-              <Image
-                src="/images/assets/banner2.jpg"
-                alt="CHANGKEER Signature Trio Infusions"
-                fill
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-104"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent lg:hidden" />
-            </div>
+          {/* Full Image Banner with Overlay Content */}
+          <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden min-h-[480px] sm:min-h-[520px] lg:min-h-[560px] flex items-center justify-center p-8 sm:p-14 lg:p-16 border border-border/80 shadow-md">
+            {/* Full Background Image */}
+            <Image
+              src="/images/assets/banner2.jpg"
+              alt="CHANGKEER Signature Botanical Craft"
+              fill
+              sizes="100vw"
+              className="object-cover object-center"
+              priority
+            />
 
-            {/* Editorial Content with Tasteful Medium Headline */}
-            <div className="lg:col-span-6 p-7 sm:p-10 lg:p-12 xl:p-14 flex flex-col justify-center space-y-5">
-              <div className="space-y-2">
-                <span className="text-[10px] sm:text-[11px] font-mono tracking-[0.25em] uppercase text-accent font-semibold block">
-                  03 // {tag}
-                </span>
+            {/* Dark Cinematic Gradient Overlay for Maximum Legibility */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/75 to-black/60 pointer-events-none" />
+            <div className="absolute inset-0 bg-radial from-transparent via-black/20 to-black/60 pointer-events-none" />
 
-                {/* Medium-Sized Headline (Not Too Huge) */}
-                <h2 className="text-xl sm:text-2xl lg:text-3xl font-extrabold uppercase tracking-tight text-foreground leading-[1.2]">
-                  {title}
-                </h2>
-              </div>
+            {/* Content Overlaid on Image */}
+            <div className="relative z-10 max-w-2xl mx-auto text-center flex flex-col items-center space-y-6">
+              <span className="text-[10px] sm:text-[11px] font-mono tracking-[0.25em] uppercase text-purple-300 font-semibold block">
+                {tag}
+              </span>
 
-              {/* Concise Narrative with Small & Refined Font */}
-              <div className="space-y-3 text-xs sm:text-[13px] text-muted-foreground leading-relaxed font-normal">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold uppercase tracking-tight text-white leading-tight">
+                {title}
+              </h2>
+
+              <div className="space-y-3 text-xs sm:text-sm text-white/85 leading-relaxed font-normal max-w-xl">
                 <p>{content}</p>
-                <p>
+                <p className="text-white/75">
                   Racikan kami dirancang tanpa jalan pintas kimiawi. Setiap kuntum bunga dan helai daun mempertahankan esensi fungsional aslinya, menemani ritual sehari-hari Anda dengan kehangatan rasa yang jujur dan menyegarkan.
                 </p>
               </div>
 
               {/* Brand Philosophy Accent Quote */}
-              <blockquote className="border-l-2 border-primary/60 pl-3.5 py-1 text-xs font-serif italic text-foreground/80">
+              <blockquote className="text-xs sm:text-sm font-serif italic text-white/90 tracking-wide border-y border-white/20 py-2 px-6">
                 &ldquo;More Than Tea. A Better You.&rdquo;
               </blockquote>
 
-              {/* Action Button */}
+              {/* Action Button: Reduced Roundedness (rounded-lg instead of rounded-full) */}
               <div className="pt-2">
                 <Link
                   href={linkUrl}
-                  className="inline-flex items-center gap-2 text-xs font-bold tracking-widest uppercase bg-primary text-primary-foreground px-6 py-3 rounded-full hover:bg-primary-hover transition-all shadow-xs active:scale-95"
+                  className="inline-flex items-center gap-2 text-xs font-bold tracking-widest uppercase bg-white text-neutral-900 px-6 py-3 rounded-lg hover:bg-white/90 transition-all shadow-md active:scale-95"
                 >
                   <span>{linkText}</span>
                   <ArrowUpRight className="w-3.5 h-3.5" />

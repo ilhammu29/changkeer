@@ -102,7 +102,7 @@ export default async function ProductDetailPage({
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 sm:mb-10">
               <div className="space-y-1">
                 <span className="text-[11px] font-mono font-bold tracking-[0.25em] uppercase text-accent block">
-                  02 // EKSPLORASI BOTANI LAINNYA
+                  EKSPLORASI BOTANI LAINNYA
                 </span>
                 <h2 className="text-2xl sm:text-3xl font-extrabold uppercase tracking-tight text-foreground">
                   Racikan Sejenis

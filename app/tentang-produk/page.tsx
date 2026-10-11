@@ -37,7 +37,7 @@ export default async function TentangProdukPage() {
             <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 sm:mb-16 gap-6">
               <div className="space-y-2">
                 <span className="text-[11px] font-mono font-bold tracking-[0.25em] uppercase text-accent block">
-                  04 // SELURUH KOLEKSI
+                  SELURUH KOLEKSI
                 </span>
                 <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-foreground">
                   Katalog Teh Herbal CHANGKEER

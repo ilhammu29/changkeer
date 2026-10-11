@@ -39,6 +39,14 @@ export default async function TentangKamiPage() {
     },
   ];
 
+  const founders = [
+    'Almaidah Chaerudin Putri',
+    'Annisha Humaira',
+    'Jogi Manaon Hutabarat',
+    'Johana Abigael Rumbiak',
+    'Keyla Putri Adisty',
+  ];
+
   return (
     <div className="pb-16 sm:pb-24">
       {/* Editorial Intro with Background Image */}
@@ -56,7 +64,7 @@ export default async function TentangKamiPage() {
         <Container size="wide" className="relative z-10">
           <div className="max-w-3xl space-y-3.5">
             <span className="text-[11px] font-mono font-bold tracking-[0.25em] uppercase text-purple-300 block">
-              01 // IDENTITAS &amp; FILOSOFI
+              IDENTITAS &amp; FILOSOFI
             </span>
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black uppercase tracking-tight text-white leading-tight">
               {manifesto.title}
@@ -90,30 +98,33 @@ export default async function TentangKamiPage() {
         </Container>
       </section>
 
-      {/* Brand Values */}
+      {/* Brand Values - Architectural Editorial Layout (No Cardboxes) */}
       <section className="py-20 border-b border-border bg-background">
         <Container size="wide">
           <div className="mb-14">
-            <span className="text-[11px] font-bold tracking-[0.25em] uppercase text-muted-foreground block mb-2">
-              02 // PRINSIP UTAMA
+            <span className="text-[11px] font-mono font-bold tracking-[0.25em] uppercase text-muted-foreground block mb-2">
+              PRINSIP UTAMA
             </span>
-            <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tight text-foreground">
+            <h2 className="text-2xl sm:text-4xl font-black uppercase tracking-tight text-foreground">
               NILAI YANG KAMI PEGANG
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Architectural 3-Column Hairline Partition */}
+          <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-border border-y border-border">
             {values.map((v: any, idx: number) => (
               <div
                 key={v.name}
-                className="p-8 rounded-lg bg-surface border border-border space-y-4 hover:border-border-strong transition-colors"
+                className="py-8 md:py-10 px-0 md:px-8 first:pl-0 last:pr-0 flex flex-col justify-between space-y-6"
               >
-                <div className="w-10 h-10 rounded-sm bg-accent text-accent-foreground flex items-center justify-center font-bold text-xs">
-                  0{idx + 1}
+                <div className="space-y-3">
+                  <span className="font-mono text-3xl sm:text-4xl font-light text-primary/40 block">
+                    0{idx + 1}
+                  </span>
+                  <h3 className="text-lg sm:text-xl font-bold uppercase tracking-tight text-foreground">
+                    {v.name}
+                  </h3>
                 </div>
-                <h3 className="text-xl font-bold uppercase tracking-tight text-foreground">
-                  {v.name}
-                </h3>
                 <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                   {v.desc}
                 </p>
@@ -123,43 +134,41 @@ export default async function TentangKamiPage() {
         </Container>
       </section>
 
-      {/* Authentic Founders & Initiators */}
+      {/* Authentic Founders & Initiators - Typographic Roster (No Cardboxes) */}
       <section className="py-20 border-b border-border bg-surface">
         <Container size="wide">
-          <div className="mb-14">
-            <span className="text-[11px] font-bold tracking-[0.25em] uppercase text-accent block mb-2">
-              03 // INISIATOR &amp; TIM
+          <div className="mb-12">
+            <span className="text-[11px] font-mono font-bold tracking-[0.25em] uppercase text-accent block mb-2">
+              INISIATOR &amp; TIM
             </span>
-            <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tight text-foreground">
+            <h2 className="text-2xl sm:text-4xl font-black uppercase tracking-tight text-foreground">
               DI BALIK CHANGKEER
             </h2>
-            <p className="text-sm sm:text-base text-muted-foreground mt-2 max-w-2xl">
+            <p className="text-xs sm:text-sm text-muted-foreground mt-2 max-w-2xl leading-relaxed">
               Berawal dari inisiatif &ldquo;Tutup Cangkir&rdquo; untuk menghadirkan teh herbal berkelas yang sehat, bebas mikroplastik, tanpa zat pemutih, dan ramah gaya hidup aktif.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
-            {[
-              'Almaidah Chaerudin Putri',
-              'Annisha Humaira',
-              'Jogi Manaon Hutabarat',
-              'Johana Abigael Rumbiak',
-              'Keyla Putri Adisty',
-            ].map((name, idx) => (
+          {/* Clean Typographic Registry */}
+          <div className="border-t border-border divide-y divide-border/70">
+            {founders.map((name, idx) => (
               <div
                 key={name}
-                className="p-6 rounded-lg bg-background border border-border flex flex-col justify-between hover:border-border-strong transition-all"
+                className="py-4 sm:py-5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 group hover:bg-background/60 transition-colors px-2 sm:px-3 rounded-sm"
               >
-                <div>
-                  <span className="text-[10px] font-mono text-muted-foreground block mb-3">
-                    {`0${idx + 1} // CO-FOUNDER`}
+                <div className="flex items-center gap-4 sm:gap-6">
+                  <span className="font-mono text-xs font-semibold text-accent/70 w-6">
+                    0{idx + 1}
                   </span>
-                  <h3 className="text-sm font-bold tracking-tight text-foreground uppercase">
+                  <h3 className="text-sm sm:text-base font-bold tracking-tight text-foreground uppercase group-hover:text-primary transition-colors">
                     {name}
                   </h3>
                 </div>
-                <div className="pt-6 border-t border-border/60 mt-6">
-                  <span className="text-[10px] uppercase tracking-wider text-accent font-semibold">
+                <div className="flex items-center gap-3 self-start sm:self-auto pl-10 sm:pl-0">
+                  <span className="text-[10px] uppercase font-mono tracking-[0.2em] px-2.5 py-0.5 rounded-sm bg-background border border-border text-muted-foreground font-semibold">
+                    CO-FOUNDER
+                  </span>
+                  <span className="text-[10px] uppercase font-mono tracking-wider text-muted-foreground hidden md:inline">
                     CHANGKEER INITIATIVE
                   </span>
                 </div>
@@ -169,29 +178,41 @@ export default async function TentangKamiPage() {
         </Container>
       </section>
 
-      {/* Final Editorial Call to Action */}
-      <section className="py-20 bg-surface">
+      {/* Final Editorial Call to Action with Image Background */}
+      <section className="py-20 bg-background">
         <Container size="wide">
-          <div className="p-10 sm:p-16 rounded-xl bg-primary text-primary-foreground flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
-            <div className="space-y-3 max-w-xl">
-              <span className="text-xs font-bold uppercase tracking-[0.25em] text-primary-foreground/60">
+          <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden min-h-[360px] sm:min-h-[400px] flex items-center p-8 sm:p-14 lg:p-16 border border-border/80 shadow-md">
+            {/* Background Image */}
+            <Image
+              src="/images/assets/banner2.jpg"
+              alt="Koleksi Teh Herbal CHANGKEER"
+              fill
+              sizes="100vw"
+              className="object-cover object-center"
+            />
+            {/* Dark Scrim */}
+            <div className="absolute inset-0 bg-gradient-to-r from-black/92 via-black/80 to-black/55 pointer-events-none" />
+
+            <div className="relative z-10 max-w-xl space-y-4 text-white">
+              <span className="text-xs font-mono font-bold uppercase tracking-[0.25em] text-purple-300 block">
                 MEMULAI RITUAL ANDA
               </span>
-              <h3 className="text-2xl sm:text-4xl font-black uppercase tracking-tight">
+              <h3 className="text-2xl sm:text-3xl lg:text-4xl font-black uppercase tracking-tight text-white leading-tight">
                 RASAKAN KESEIMBANGAN HARI INI
               </h3>
-              <p className="text-sm text-primary-foreground/80 leading-relaxed">
+              <p className="text-xs sm:text-sm text-white/85 leading-relaxed">
                 Jelajahi varian racikan teh herbal CHANGKEER dan temukan rasa yang melengkapi keseharian Anda.
               </p>
+              <div className="pt-2">
+                <Link
+                  href="/katalog"
+                  className="inline-flex items-center gap-2 text-xs font-bold tracking-widest uppercase bg-white text-neutral-900 px-6 py-3 rounded-lg hover:bg-white/90 transition-all shadow-md active:scale-95"
+                >
+                  <span>TEMUKAN RACIKAN</span>
+                  <ArrowUpRight className="w-4 h-4" />
+                </Link>
+              </div>
             </div>
-
-            <Link
-              href="/katalog"
-              className="inline-flex items-center gap-2 text-xs font-bold tracking-widest uppercase bg-primary-foreground text-primary px-8 py-4 rounded-sm hover:opacity-95 transition-opacity flex-shrink-0"
-            >
-              <span>TEMUKAN RACIKAN</span>
-              <ArrowUpRight className="w-4 h-4" />
-            </Link>
           </div>
         </Container>
       </section>

@@ -20,7 +20,7 @@ export function FeaturedArticles({ articles }: FeaturedArticlesProps) {
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
             <div className="space-y-2">
               <span className="text-[11px] font-bold tracking-[0.25em] uppercase text-accent block">
-                04 // MEDIA &amp; EDUKASI
+                MEDIA &amp; EDUKASI
               </span>
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold uppercase tracking-tight text-foreground">
                 Catatan Teh &amp; Tradisi

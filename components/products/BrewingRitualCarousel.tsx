@@ -73,7 +73,7 @@ export function BrewingRitualCarousel() {
         <Reveal>
           <div className="max-w-2xl mx-auto text-center space-y-3 mb-16 sm:mb-20">
             <span className="text-[11px] font-mono font-bold tracking-[0.25em] uppercase text-accent block">
-              03 // RITUAL PENYAJIAN CEPAT
+              RITUAL PENYAJIAN CEPAT
             </span>
             <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-foreground">
               3 Langkah Nikmat &lt; 3 Menit
