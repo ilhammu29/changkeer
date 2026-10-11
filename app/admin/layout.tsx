@@ -106,17 +106,17 @@ export default function AdminLayout({
   return (
     <div className="min-h-screen bg-neutral-50 flex flex-col md:flex-row font-sans text-foreground">
       {/* ========================================================================= */}
-      {/* DESKTOP SIDEBAR (EXPANDABLE & COLLAPSIBLE TO ICON MODE) */}
+      {/* DESKTOP SIDEBAR (EXPANDABLE & COLLAPSIBLE TO ICON MODE, FIXED VIEWPORT HEIGHT) */}
       {/* ========================================================================= */}
       <aside
-        className={`hidden md:flex flex-col justify-between shrink-0 bg-white border-r border-border/80 transition-all duration-300 ease-in-out z-30 ${
+        className={`hidden md:flex flex-col justify-between shrink-0 bg-white border-r border-border/80 transition-all duration-300 ease-in-out z-30 sticky top-0 h-screen max-h-screen overflow-hidden ${
           collapsed ? 'w-20' : 'w-64'
         }`}
       >
-        <div>
+        <div className="flex flex-col flex-1 min-h-0">
           {/* Header */}
           <div
-            className={`h-16 border-b border-border/70 flex items-center transition-all ${
+            className={`h-16 shrink-0 border-b border-border/70 flex items-center transition-all ${
               collapsed ? 'justify-center px-2' : 'justify-between px-5'
             }`}
           >
@@ -161,7 +161,7 @@ export default function AdminLayout({
 
           {/* Quick Expand Button when collapsed */}
           {collapsed && (
-            <div className="p-2 border-b border-border/40 flex justify-center">
+            <div className="p-2 shrink-0 border-b border-border/40 flex justify-center">
               <button
                 type="button"
                 onClick={() => setCollapsed(false)}
@@ -174,8 +174,8 @@ export default function AdminLayout({
             </div>
           )}
 
-          {/* Navigation Items */}
-          <nav className="p-3 space-y-1.5">
+          {/* Navigation Items (Scrolls independently within viewport height) */}
+          <nav className="p-3 space-y-1.5 flex-1 min-h-0 overflow-y-auto">
             {ADMIN_NAV.map((item) => {
               const active = isActive(item.href);
               const Icon = item.icon;
@@ -206,8 +206,8 @@ export default function AdminLayout({
           </nav>
         </div>
 
-        {/* Footer Sidebar Actions */}
-        <div className="p-3 border-t border-border/70 space-y-1.5">
+        {/* Footer Sidebar Actions (Docked at bottom) */}
+        <div className="p-3 shrink-0 border-t border-border/70 space-y-1.5 bg-white">
           <Link
             href="/"
             target="_blank"
@@ -249,7 +249,7 @@ export default function AdminLayout({
       {/* MAIN CONTENT AREA & RESPONSIVE HEADER */}
       {/* ========================================================================= */}
       <div className="flex-1 flex flex-col min-w-0">
-        <header className="h-16 bg-white border-b border-border/80 flex items-center justify-between px-4 sm:px-8 shrink-0 z-20">
+        <header className="h-16 bg-white border-b border-border/80 flex items-center justify-between px-4 sm:px-8 shrink-0 sticky top-0 z-20">
           <div className="flex items-center gap-3">
             {/* Mobile Hamburger Drawer Toggle */}
             <button
@@ -296,9 +296,9 @@ export default function AdminLayout({
               className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity"
               onClick={() => setMobileMenuOpen(false)}
             />
-            <aside className="fixed top-0 bottom-0 left-0 w-72 bg-white p-6 shadow-2xl flex flex-col justify-between border-r border-border animate-in slide-in-from-left duration-200">
-              <div className="space-y-6">
-                <div className="flex items-center justify-between border-b border-border/70 pb-4">
+            <aside className="fixed top-0 bottom-0 left-0 w-72 bg-white p-6 shadow-2xl flex flex-col justify-between border-r border-border animate-in slide-in-from-left duration-200 h-screen max-h-screen overflow-hidden">
+              <div className="space-y-6 flex flex-col flex-1 min-h-0">
+                <div className="flex items-center justify-between border-b border-border/70 pb-4 shrink-0">
                   <div className="flex items-center gap-2.5">
                     <div className="relative w-8 h-8 rounded-full overflow-hidden border border-border shrink-0 bg-white">
                       <Image
@@ -326,7 +326,7 @@ export default function AdminLayout({
                   </button>
                 </div>
 
-                <nav className="space-y-1">
+                <nav className="space-y-1 flex-1 min-h-0 overflow-y-auto pr-1">
                   {ADMIN_NAV.map((item) => {
                     const active = isActive(item.href);
                     const Icon = item.icon;
