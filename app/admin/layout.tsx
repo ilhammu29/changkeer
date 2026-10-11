@@ -120,62 +120,72 @@ export default function AdminLayout({
               collapsed ? 'justify-center px-2' : 'justify-between px-5'
             }`}
           >
-            <Link
-              href="/admin"
-              className="flex items-center gap-2.5 overflow-hidden group"
-              title="CHANGKEER CMS"
-            >
-              <div className="relative w-8 h-8 rounded-full overflow-hidden border border-border shadow-xs shrink-0 bg-white group-hover:scale-105 transition-transform">
-                <Image
-                  src="/images/logo_new.png"
-                  alt="CHANGKEER"
-                  fill
-                  className="object-contain p-0.5"
-                />
-              </div>
-              {!collapsed && (
-                <div className="flex flex-col">
-                  <span className="font-extrabold text-xs tracking-widest uppercase text-foreground leading-none">
-                    CHANGKEER
-                  </span>
-                  <span className="text-[9px] font-mono font-bold tracking-widest text-primary uppercase mt-0.5">
-                    CMS PORTAL
-                  </span>
-                </div>
-              )}
-            </Link>
-
-            {/* Sidebar Collapse Toggle Button */}
-            {!collapsed && (
-              <button
-                type="button"
-                onClick={() => setCollapsed(true)}
-                className="w-7 h-7 rounded-lg text-muted-foreground hover:text-foreground hover:bg-neutral-100 flex items-center justify-center transition-colors cursor-pointer"
-                title="Perkecil Sidebar"
-                aria-label="Collapse sidebar"
-              >
-                <PanelLeftClose className="w-4 h-4" />
-              </button>
-            )}
-          </div>
-
-          {/* Quick Expand Button when collapsed */}
-          {collapsed && (
-            <div className="p-2 shrink-0 border-b border-border/40 flex justify-center">
+            {collapsed ? (
               <button
                 type="button"
                 onClick={() => setCollapsed(false)}
-                className="w-8 h-8 rounded-lg text-muted-foreground hover:text-foreground hover:bg-neutral-100 flex items-center justify-center transition-colors cursor-pointer"
-                title="Perlebar Sidebar"
+                className="relative w-10 h-10 rounded-xl hover:bg-neutral-100 flex items-center justify-center transition-all group cursor-pointer"
+                title="Perlebar Sidebar (Klik untuk membuka)"
                 aria-label="Expand sidebar"
               >
-                <PanelLeftOpen className="w-4 h-4" />
+                <div className="relative w-7 h-7 rounded-full overflow-hidden border border-border shadow-xs group-hover:scale-105 transition-transform bg-white">
+                  <Image
+                    src="/images/logo_new.png"
+                    alt="CHANGKEER"
+                    fill
+                    className="object-contain p-0.5"
+                  />
+                </div>
+                <div className="absolute inset-0 bg-neutral-900/80 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white">
+                  <PanelLeftOpen className="w-4 h-4" />
+                </div>
               </button>
-            </div>
-          )}
+            ) : (
+              <>
+                <Link
+                  href="/admin"
+                  className="flex items-center gap-2.5 overflow-hidden group"
+                  title="CHANGKEER CMS"
+                >
+                  <div className="relative w-8 h-8 rounded-full overflow-hidden border border-border shadow-xs shrink-0 bg-white group-hover:scale-105 transition-transform">
+                    <Image
+                      src="/images/logo_new.png"
+                      alt="CHANGKEER"
+                      fill
+                      className="object-contain p-0.5"
+                    />
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="font-extrabold text-xs tracking-widest uppercase text-foreground leading-none">
+                      CHANGKEER
+                    </span>
+                    <span className="text-[9px] font-mono font-bold tracking-widest text-primary uppercase mt-0.5">
+                      CMS PORTAL
+                    </span>
+                  </div>
+                </Link>
 
-          {/* Navigation Items (Scrolls independently within viewport height) */}
-          <nav className="p-3 space-y-1.5 flex-1 min-h-0 overflow-y-auto">
+                <button
+                  type="button"
+                  onClick={() => setCollapsed(true)}
+                  className="w-7 h-7 rounded-lg text-muted-foreground hover:text-foreground hover:bg-neutral-100 flex items-center justify-center transition-colors cursor-pointer"
+                  title="Perkecil Sidebar"
+                  aria-label="Collapse sidebar"
+                >
+                  <PanelLeftClose className="w-4 h-4" />
+                </button>
+              </>
+            )}
+          </div>
+
+          {/* Navigation Items (Compact & No scrollbar in icon mode) */}
+          <nav
+            className={`p-2 flex-1 min-h-0 ${
+              collapsed
+                ? 'overflow-hidden flex flex-col items-center justify-start space-y-1 pt-3'
+                : 'overflow-y-auto space-y-1.5 p-3'
+            }`}
+          >
             {ADMIN_NAV.map((item) => {
               const active = isActive(item.href);
               const Icon = item.icon;
@@ -186,8 +196,8 @@ export default function AdminLayout({
                   title={collapsed ? item.name : undefined}
                   className={`flex items-center rounded-xl text-xs font-semibold tracking-wide transition-all group ${
                     collapsed
-                      ? 'justify-center w-12 h-12 mx-auto'
-                      : 'gap-3 px-3.5 py-2.5'
+                      ? 'justify-center w-10 h-10 shrink-0'
+                      : 'gap-3 px-3.5 py-2.5 w-full'
                   } ${
                     active
                       ? 'bg-neutral-900 text-white font-bold shadow-xs'
@@ -196,7 +206,7 @@ export default function AdminLayout({
                 >
                   <Icon
                     className={`shrink-0 transition-transform ${
-                      collapsed ? 'w-5 h-5 group-hover:scale-110' : 'w-4 h-4'
+                      collapsed ? 'w-4 h-4 group-hover:scale-110' : 'w-4 h-4'
                     }`}
                   />
                   {!collapsed && <span className="truncate">{item.name}</span>}
@@ -206,15 +216,21 @@ export default function AdminLayout({
           </nav>
         </div>
 
-        {/* Footer Sidebar Actions (Docked at bottom) */}
-        <div className="p-3 shrink-0 border-t border-border/70 space-y-1.5 bg-white">
+        {/* Footer Sidebar Actions (Docked at bottom, compact in icon mode) */}
+        <div
+          className={`shrink-0 border-t border-border/70 bg-white ${
+            collapsed
+              ? 'p-2 flex flex-col items-center space-y-1'
+              : 'p-3 space-y-1.5'
+          }`}
+        >
           <Link
             href="/"
             target="_blank"
             title={collapsed ? 'Lihat Website Publik' : undefined}
             className={`flex items-center rounded-xl text-xs font-semibold text-muted-foreground hover:bg-neutral-100 hover:text-foreground transition-colors ${
               collapsed
-                ? 'justify-center w-12 h-12 mx-auto'
+                ? 'justify-center w-10 h-10 shrink-0'
                 : 'justify-between px-3.5 py-2.5'
             }`}
           >
@@ -235,7 +251,7 @@ export default function AdminLayout({
             title={collapsed ? 'Keluar (Logout)' : undefined}
             className={`flex items-center rounded-xl text-xs font-semibold text-red-600 hover:bg-red-50 transition-colors cursor-pointer ${
               collapsed
-                ? 'justify-center w-12 h-12 mx-auto'
+                ? 'justify-center w-10 h-10 shrink-0'
                 : 'w-full gap-2 px-3.5 py-2.5'
             }`}
           >
