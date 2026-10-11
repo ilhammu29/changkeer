@@ -10,6 +10,8 @@ interface BrandStoryTeaserProps {
     tag?: string;
     title?: string;
     content?: string;
+    content_secondary?: string;
+    quote?: string;
     link_text?: string;
     link_url?: string;
   };
@@ -17,10 +19,14 @@ interface BrandStoryTeaserProps {
 
 export function BrandStoryTeaser({ story }: BrandStoryTeaserProps) {
   const tag = story?.tag || 'OUR PHILOSOPHY';
-  const title = story?.title || "Taste First · Say What's Inside · Local Where We Can";
-  const content =
+  const title = story?.title || 'A PAUSE IN EVERY CHANGKEER';
+  const paragraph1 =
     story?.content ||
-    'The name comes from cangkir, Indonesian for cup, with a nod to the Chinese tea traditions behind our calendar. Every ingredient is listed, with cautions where they apply, and zero senna or artificial shortcuts.';
+    'Busy days run on caffeine and sugar. Changkeer is meant to be a pause between them: a warm or iced cup that tastes good and lets you slow down for a moment.';
+  const paragraph2 =
+    story?.content_secondary ||
+    'Our blends take no shortcuts. We use real flowers, fruit and spices, with no artificial flavours, no senna, and no white sugar by default. Just an honest cup that fits into your everyday routine.';
+  const quote = story?.quote || '“Tea-rrific Every Season”';
   const linkText = story?.link_text || 'ABOUT CHANGKEER';
   const linkUrl = story?.link_url || '/tentang-kami';
 
@@ -54,19 +60,17 @@ export function BrandStoryTeaser({ story }: BrandStoryTeaserProps) {
                 {title}
               </h2>
 
-              <div className="space-y-3 text-xs sm:text-sm text-white/85 leading-relaxed font-normal max-w-xl">
-                <p>{content}</p>
-                <p className="text-white/75">
-                  Flowers, ginger and honey come from growers in Puncak, Garut and Wonosobo. Crafted with integrity and brewed in plastic-free paper or muslin sachets.
-                </p>
+              <div className="space-y-3.5 text-xs sm:text-sm text-white/90 leading-relaxed font-normal max-w-xl">
+                <p>{paragraph1}</p>
+                <p className="text-white/80">{paragraph2}</p>
               </div>
 
               {/* Brand Philosophy Accent Quote */}
-              <blockquote className="text-xs sm:text-sm font-serif italic text-white/90 tracking-wide border-y border-white/20 py-2 px-6">
-                &ldquo;Taste first. If it isn&apos;t nice to drink, it won&apos;t become a habit.&rdquo;
+              <blockquote className="text-xs sm:text-sm font-serif italic text-white/95 tracking-wide border-y border-white/20 py-2.5 px-6">
+                &ldquo;{quote.replace(/^["“]|["”]$/g, '')}&rdquo;
               </blockquote>
 
-              {/* Action Button: Reduced Roundedness (rounded-lg instead of rounded-full) */}
+              {/* Action Button: Reduced Roundedness */}
               <div className="pt-2">
                 <Link
                   href={linkUrl}

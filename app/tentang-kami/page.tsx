@@ -3,39 +3,51 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Container } from '@/components/ui/Container';
-import { ArrowUpRight, Sparkles } from 'lucide-react';
+import { ArrowUpRight, Sparkles, MapPin, ShieldCheck } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'About Changkeer',
   description:
-    'Grab-and-go herbal tea brand from Jakarta. Real loose-leaf blends of flowers, fruit and roots following the 24 solar terms.',
+    'An honest grab-and-go herbal tea from Jakarta. Sourced from Puncak, Garut, and Wonosobo, brewed plastic-free in under 3 minutes.',
 };
 
 export default function AboutChangkeerPage() {
-  const beliefs = [
+  const teamMembers = [
     {
-      title: 'Taste First',
-      desc: "If it isn't nice to drink, it won't become a habit.",
-      badge: 'FLAVOR & HABIT',
+      num: '01',
+      initials: 'AC',
+      name: 'ALMAIDAH CHAERUDIN PUTRI',
+      role: 'Co-founder',
+      note: 'Championing honest daily hydration without synthetic shortcuts.',
     },
     {
-      title: "Say What's Inside",
-      desc: 'Every ingredient is listed, with cautions where they apply.',
-      badge: 'RADICAL HONESTY',
+      num: '02',
+      initials: 'AH',
+      name: 'ANNISHA HUMAIRA',
+      role: 'Co-founder',
+      note: 'Formulating whole-flower blends aligned with seasonal body rhythms.',
     },
     {
-      title: 'Local Where We Can',
-      desc: 'Flowers, ginger and honey come from growers in Puncak, Garut and Wonosobo.',
-      badge: 'INDONESIAN TERROIR',
+      num: '03',
+      initials: 'JR',
+      name: 'JOHANA ABIGAEL RUMBIAK',
+      role: 'Co-founder',
+      note: 'Shaping mindful, plastic-free rituals that fit active lifestyles.',
     },
-  ];
-
-  const founders = [
-    { name: 'Almaidah Chaerudin Putri', role: 'Co-Founder', focus: 'Brand & Operational Direction' },
-    { name: 'Annisha Humaira', role: 'Co-Founder', focus: 'Botanical Formulation & Research' },
-    { name: 'Johana Abigael Rumbiak', role: 'Co-Founder', focus: 'Creative Design & Visual Identity' },
-    { name: 'Keyla Putri Adisty', role: 'Co-Founder', focus: 'Community & Customer Experience' },
-    { name: 'Nursoleha Romadhoni', role: 'Co-Founder', focus: 'Supply Chain & Sourcing Stewardship' },
+    {
+      num: '04',
+      initials: 'KA',
+      name: 'KEYLA PUTRI ADISTY',
+      role: 'Co-founder',
+      note: 'Fostering radical transparency and honest ingredient education.',
+    },
+    {
+      num: '05',
+      initials: 'NR',
+      name: 'NURSOLEHA ROMADHONI',
+      role: 'Co-founder',
+      note: 'Partnering directly with local growers across Puncak, Garut & Wonosobo.',
+    },
   ];
 
   return (
@@ -67,147 +79,109 @@ export default function AboutChangkeerPage() {
         </Container>
       </section>
 
-      {/* 2. Narrative: Brand Origin & The 24 Solar Terms */}
+      {/* 2. Our Story: AN HONEST CHANGKEER, FROM INDONESIAN SOIL */}
       <section className="py-16 sm:py-20 border-b border-border/80 bg-white">
         <Container size="wide">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
             <div className="lg:col-span-5 space-y-4">
               <span className="text-[10px] font-mono font-bold tracking-[0.25em] uppercase text-primary block">
-                OUR STORY &amp; ORIGIN
+                OUR STORY
               </span>
               <h2 className="text-2xl sm:text-4xl font-black uppercase tracking-tight text-foreground leading-snug">
-                FROM CANGKIR TO THE 24 SOLAR TERMS
+                AN HONEST CHANGKEER, FROM INDONESIAN SOIL
               </h2>
-              <div className="pt-2">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary font-mono text-[11px] font-bold uppercase tracking-wider">
-                  <Sparkles className="w-3.5 h-3.5" />
-                  <span>Plastic-Free Paper &amp; Muslin Sachets</span>
+
+              <div className="pt-2 flex flex-col gap-2.5">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary font-mono text-[11px] font-bold uppercase tracking-wider self-start">
+                  <MapPin className="w-3.5 h-3.5" />
+                  <span>Puncak · Garut · Wonosobo</span>
+                </div>
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-neutral-100 text-muted-foreground font-mono text-[11px] font-semibold uppercase tracking-wider self-start border border-border/60">
+                  <ShieldCheck className="w-3.5 h-3.5 text-primary" />
+                  <span>Plastic-Free · Zero Senna · Unsweetened Default</span>
                 </div>
               </div>
             </div>
 
-            <div className="lg:col-span-7 space-y-6 text-base sm:text-lg text-foreground/80 leading-relaxed font-normal">
+            <div className="lg:col-span-7 space-y-5 text-base sm:text-[17px] text-foreground/85 leading-relaxed font-normal">
               <p>
-                <strong className="text-foreground font-bold">Changkeer</strong> is a grab-and-go herbal tea brand from Jakarta. We serve real loose-leaf blends of flowers, fruit and roots, freshly brewed and ready in under three minutes.
+                <strong className="text-foreground font-bold">CHANGKEER</strong> is a grab-and-go herbal tea brand from Jakarta. We brew blends of whole flowers, dried fruit and spices sourced from growers in Puncak, Garut and Wonosobo, ready to enjoy in under 3 minutes.
               </p>
               <p>
-                Our menu follows the 24 solar terms of the traditional Chinese calendar, so a new seasonal blend arrives about every two weeks: warming ginger and dates in the rainy months, cooling chrysanthemum and citrus in the dry heat.
+                We started because most daily drinks are too sweet. Many &quot;detox&quot; teas on the market also contain senna, a laxative that isn&apos;t meant for daily use, and they come with exaggerated claims. On top of that, plenty of teabags are still made from nylon or plastic.
               </p>
               <p>
-                Every cup is unsweetened by default, brewed from plastic-free paper or muslin sachets, and made without senna or &quot;detox&quot; claims. We list every ingredient, because a healthier daily drink should also be an honest one.
+                That&apos;s why every Changkeer cup is unsweetened by default, with sorghum sugar or raw honey if you&apos;d like it sweeter. Our blends are brewed in unbleached paper or cotton muslin sachets, contain no senna, and every ingredient is clearly listed.
               </p>
-              <p className="text-sm sm:text-base text-muted-foreground border-l-2 border-primary/40 pl-4 italic">
-                The name comes from <span className="font-semibold text-foreground">cangkir</span>, Indonesian for cup, with a nod to the Chinese tea traditions behind our calendar.
+              <p className="text-sm sm:text-base text-muted-foreground border-l-2 border-primary/50 pl-4 py-1 italic bg-neutral-50/70 rounded-r-lg">
+                Our menu changes with the 24 solar terms of the traditional Chinese calendar, adapted to Jakarta&apos;s weather: warming blends in the rainy season, refreshing ones in the dry heat. The name Changkeer comes from <span className="font-semibold text-foreground not-italic">cangkir</span>, the Indonesian word for cup.
               </p>
             </div>
           </div>
         </Container>
       </section>
 
-      {/* 3. Brand Pillars: What We Believe (Hairline Partition Layout) */}
-      <section className="py-20 border-b border-border/80 bg-white">
+      {/* 3. The Team: Redesigned Architectural Showcase */}
+      <section className="py-20 sm:py-24 border-b border-border/80 bg-white">
         <Container size="wide">
-          <div className="max-w-2xl mb-14 space-y-2">
-            <span className="text-[11px] font-mono font-bold tracking-[0.25em] uppercase text-primary block">
-              CORE PRINCIPLES
-            </span>
-            <h2 className="text-2xl sm:text-4xl font-black uppercase tracking-tight text-foreground">
-              What We Believe
+          {/* Section Header */}
+          <div className="max-w-3xl mb-14 space-y-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-[10px] font-mono font-bold uppercase tracking-wider">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>THE TEAM</span>
+            </div>
+            <h2 className="text-2xl sm:text-4xl font-black uppercase tracking-tight text-foreground leading-tight">
+              BEHIND EVERY CHANGKEER
             </h2>
+            <p className="text-sm sm:text-base text-muted-foreground leading-relaxed pt-1 max-w-2xl">
+              Five people who wanted a daily drink that&apos;s healthy, honest and easy to grab on a busy day, so we made one.
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-border/80 border-y border-border/80">
-            {beliefs.map((b, idx) => (
+          {/* Redesigned 5-Member Architectural Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7">
+            {teamMembers.map((member) => (
               <div
-                key={b.title}
-                className="py-8 md:py-10 px-0 md:px-8 first:pl-0 last:pr-0 flex flex-col justify-between space-y-6"
+                key={member.num}
+                className="group relative bg-white border border-border/80 rounded-2xl p-7 shadow-md hover:shadow-2xl transition-all duration-300 card-boundary flex flex-col justify-between space-y-6 hover:-translate-y-1"
               >
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="font-mono text-3xl sm:text-4xl font-light text-primary/40 block">
-                      0{idx + 1}
-                    </span>
-                    <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full bg-neutral-100 text-muted-foreground font-semibold">
-                      {b.badge}
+                {/* Top Row: Numeral & Circular Monogram Badge */}
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-2xl sm:text-3xl font-light text-primary/40 block group-hover:text-primary transition-colors">
+                    {member.num}
+                  </span>
+                  <div className="w-11 h-11 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center font-mono font-bold text-xs text-primary shadow-2xs group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300">
+                    {member.initials}
+                  </div>
+                </div>
+
+                {/* Center Content: Full Name & Co-founder Pill */}
+                <div className="space-y-2">
+                  <h3 className="font-sans font-black text-base sm:text-lg uppercase tracking-tight text-foreground leading-snug group-hover:text-primary transition-colors">
+                    {member.name}
+                  </h3>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-mono font-bold tracking-widest uppercase px-3 py-0.5 rounded-full bg-neutral-100 text-foreground border border-border/60">
+                      {member.role}
                     </span>
                   </div>
-                  <h3 className="text-lg sm:text-xl font-bold uppercase tracking-tight text-foreground">
-                    {b.title}
-                  </h3>
+                  <p className="text-xs text-muted-foreground leading-relaxed pt-1">
+                    {member.note}
+                  </p>
                 </div>
-                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-                  {b.desc}
-                </p>
+
+                {/* Bottom Border Accent */}
+                <div className="pt-2 border-t border-border/60 flex items-center justify-between text-[10px] font-mono text-muted-foreground uppercase tracking-wider">
+                  <span>CHANGKEER FOUNDING TEAM</span>
+                  <span className="text-primary font-bold">JAKARTA</span>
+                </div>
               </div>
             ))}
           </div>
         </Container>
       </section>
 
-      {/* 4. The Founders: Bespoke Luxury Roster */}
-      <section className="py-20 sm:py-24 border-b border-border/80 bg-white">
-        <Container size="wide">
-          <div className="max-w-3xl mb-12 space-y-2">
-            <span className="text-[11px] font-mono font-bold tracking-[0.25em] uppercase text-primary block">
-              FOUNDING STEWARDS
-            </span>
-            <h2 className="text-2xl sm:text-4xl font-black uppercase tracking-tight text-foreground">
-              The Founders
-            </h2>
-            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed pt-1">
-              United by the vision to replace microplastics and harsh laxatives with honest, fast-brewed loose-leaf botanicals.
-            </p>
-          </div>
-
-          {/* Luxury Registry Rows */}
-          <div className="border-t border-border/80 divide-y divide-border/60">
-            {founders.map((f, idx) => {
-              const initials = f.name
-                .split(' ')
-                .slice(0, 2)
-                .map((w) => w[0])
-                .join('');
-
-              return (
-                <div
-                  key={f.name}
-                  className="py-5 sm:py-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 group hover:bg-neutral-50/70 transition-colors px-3 sm:px-4 rounded-xl"
-                >
-                  <div className="flex items-center gap-4 sm:gap-6">
-                    <div className="w-10 h-10 rounded-full border border-primary/20 bg-primary/5 text-primary font-mono text-xs font-bold flex items-center justify-center shrink-0">
-                      {initials}
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-3">
-                        <span className="font-mono text-xs font-bold text-muted-foreground/60">
-                          0{idx + 1}
-                        </span>
-                        <h3 className="text-base sm:text-lg font-bold tracking-tight text-foreground uppercase group-hover:text-primary transition-colors">
-                          {f.name}
-                        </h3>
-                      </div>
-                      <span className="text-xs text-muted-foreground block pt-0.5 sm:pl-7">
-                        {f.focus}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-3 self-start sm:self-auto pl-14 sm:pl-0">
-                    <span className="text-[10px] uppercase font-mono tracking-[0.2em] px-3 py-1 rounded-full bg-white border border-border/80 text-foreground font-bold shadow-2xs">
-                      {f.role}
-                    </span>
-                    <span className="text-[10px] uppercase font-mono tracking-wider text-muted-foreground hidden lg:inline">
-                      CHANGKEER ATELIER
-                    </span>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </Container>
-      </section>
-
-      {/* 5. Editorial Call To Action Banner */}
+      {/* 4. Editorial Call To Action Banner */}
       <section className="py-20 bg-white">
         <Container size="wide">
           <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden min-h-[360px] sm:min-h-[400px] flex items-center p-8 sm:p-14 lg:p-16 border border-border/80 shadow-md">

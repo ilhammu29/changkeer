@@ -243,10 +243,14 @@ export const SEED_PAGES: Record<string, PageContent> = {
         { title: 'Seduh Cepat < 3 Menit', desc: 'Kepraktisan grab-and-go modern dengan kenikmatan daun & kelopak bunga utuh bernutrisi.' },
       ],
       story_teaser: {
-        tag: 'FILOSOFI KAMI',
-        title: 'Kembali ke Ritme Alami Tubuh',
-        content: 'Di era serba cepat di mana tubuh dipaksa terus berpacu dengan stimulan sintetis, CHANGKEER hadir sebagai jeda yang bermakna. Kami percaya kekuatan sejati lahir dari keseimbangan dan kejernihan.',
-        link_text: 'Baca Kisah Selengkapnya',
+        tag: 'OUR PHILOSOPHY',
+        title: 'A PAUSE IN EVERY CHANGKEER',
+        content:
+          'Busy days run on caffeine and sugar. Changkeer is meant to be a pause between them: a warm or iced cup that tastes good and lets you slow down for a moment.',
+        content_secondary:
+          'Our blends take no shortcuts. We use real flowers, fruit and spices, with no artificial flavours, no senna, and no white sugar by default. Just an honest cup that fits into your everyday routine.',
+        quote: '“Tea-rrific Every Season”',
+        link_text: 'ABOUT CHANGKEER',
         link_url: '/tentang-kami',
       },
     },
@@ -276,33 +280,33 @@ export const SEED_PAGES: Record<string, PageContent> = {
   'tentang-kami': {
     id: 'page-tentang-kami',
     slug: 'tentang-kami',
-    title: 'Tentang Kami',
+    title: 'About Changkeer',
     sections: {
-      manifesto: {
-        title: 'Lahir Dari Kejujuran: Warisan Tutup Cangkir Menuju CHANGKEER',
-        subtitle: 'Kearifan tradisi teh herbal fungsional untuk gaya hidup sehat modern.',
+      story: {
+        title: 'AN HONEST CHANGKEER, FROM INDONESIAN SOIL',
         paragraphs: [
-          'CHANGKEER berakar dari inisiatif "Tutup Cangkir", sebuah pergerakan yang diprakarsai oleh Almaidah Chaerudin Putri, Annisha Humaira, Jogi Manaon Hutabarat, Johana Abigael Rumbiak, dan Keyla Putri Adisty.',
-          'Kelahiran kami dilandasi oleh keprihatinan nyata terhadap industri teh: maraknya klaim detox berlebihan, kantong teh konvensional yang melepaskan miliaran partikel mikroplastik, penggunaan zat kimia pemutih (bleach), kadar gula sintetis berlebih, serta penyalahgunaan daun senna (daun jati cina) pencahar keras yang membahayakan tubuh.',
-          'Kami menghadirkan standar baru yang berani: menyeduh daun teh utuh, kelopak bunga, dan rempah alami nusantara dengan formulasi solar-term herbal untuk organ tubuh, dipadukan pemanis ramah indeks glikemik seperti gula sorgum dan madu murni. Bebas mikroplastik, tanpa daun senna, dan siap dinikmati dalam waktu kurang dari 3 menit untuk ritme hidup aktif Anda.',
+          'CHANGKEER is a grab-and-go herbal tea brand from Jakarta. We brew blends of whole flowers, dried fruit and spices sourced from growers in Puncak, Garut and Wonosobo, ready to enjoy in under 3 minutes.',
+          'We started because most daily drinks are too sweet. Many "detox" teas on the market also contain senna, a laxative that isn\'t meant for daily use, and they come with exaggerated claims. On top of that, plenty of teabags are still made from nylon or plastic.',
+          'That\'s why every Changkeer cup is unsweetened by default, with sorghum sugar or raw honey if you\'d like it sweeter. Our blends are brewed in unbleached paper or cotton muslin sachets, contain no senna, and every ingredient is clearly listed.',
+          'Our menu changes with the 24 solar terms of the traditional Chinese calendar, adapted to Jakarta\'s weather: warming blends in the rainy season, refreshing ones in the dry heat. The name Changkeer comes from cangkir, the Indonesian word for cup.',
         ],
       },
-      founders: [
-        { name: 'Almaidah Chaerudin Putri', role: 'Co-Founder' },
-        { name: 'Annisha Humaira', role: 'Co-Founder' },
-        { name: 'Jogi Manaon Hutabarat', role: 'Co-Founder' },
-        { name: 'Johana Abigael Rumbiak', role: 'Co-Founder' },
-        { name: 'Keyla Putri Adisty', role: 'Co-Founder' },
-      ],
-      values: [
-        { name: 'Bebas Mikroplastik & Bleach', desc: 'Kemasan bebas plastik sintetis dan bebas pemutih kimiawi klorin demi keamanan kesehatan jangka panjang.' },
-        { name: '100% Bebas Daun Senna', desc: 'Menolak keras penggunaan laksatif buatan agar teh aman dikonsumsi harian tanpa efek samping pencernaan.' },
-        { name: 'Pemanis Alami Rendah Glikemik', desc: 'Mengganti gula tebu rafinasi dengan kebaikan gula sorgum organik dan madu hutan murni nusantara.' },
-        { name: 'Penyajian Cepat < 3 Menit', desc: 'Kemudahan grab-and-go modern dengan ekstraksi rasa dan aroma botani maksimal secara instan.' },
-      ],
+      team: {
+        tag: 'THE TEAM',
+        title: 'BEHIND EVERY CHANGKEER',
+        subtitle:
+          'Five people who wanted a daily drink that\'s healthy, honest and easy to grab on a busy day, so we made one.',
+        members: [
+          { number: '01', name: 'ALMAIDAH CHAERUDIN PUTRI', role: 'Co-founder' },
+          { number: '02', name: 'ANNISHA HUMAIRA', role: 'Co-founder' },
+          { number: '03', name: 'JOHANA ABIGAEL RUMBIAK', role: 'Co-founder' },
+          { number: '04', name: 'KEYLA PUTRI ADISTY', role: 'Co-founder' },
+          { number: '05', name: 'NURSOLEHA ROMADHONI', role: 'Co-founder' },
+        ],
+      },
     },
-    seo_title: 'Tentang Kami - Filosofi, Pendiri & Integritas CHANGKEER',
-    seo_description: 'Pelajari kisah pendiri CHANGKEER (Tutup Cangkir), komitmen bebas mikroplastik & daun senna, serta filosofi teh herbal fungsional.',
+    seo_title: 'About Changkeer - Our Story & The Team',
+    seo_description: 'An honest grab-and-go herbal tea from Jakarta. Sourced from Puncak, Garut, and Wonosobo, brewed plastic-free in under 3 minutes.',
     updated_at: new Date().toISOString(),
   },
   'hubungi-kami': {
