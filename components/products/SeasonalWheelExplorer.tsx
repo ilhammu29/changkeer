@@ -167,10 +167,41 @@ export function SeasonalWheelExplorer() {
   )}`;
 
   return (
-    <section className="relative w-full py-14 sm:py-18 md:py-24 bg-white border-b border-border/80 overflow-hidden select-none">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header: Centered & Badge Removed */}
-        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14 space-y-3">
+    <section className="relative w-full py-16 sm:py-20 md:py-28 border-b border-border/80 overflow-hidden select-none bg-white">
+      {/* ========================================================
+          FULL SECTION DYNAMIC 4-SEASON BACKGROUND LAYER (Smooth 1200ms Crossfade)
+          ======================================================== */}
+      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+        {SEASON_BACKGROUNDS.map((bg) => {
+          const isActive = activeSeason === bg.id;
+          return (
+            <div
+              key={bg.id}
+              className={`absolute inset-0 transition-all duration-1200 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                isActive
+                  ? 'opacity-100 scale-100'
+                  : 'opacity-0 scale-105 pointer-events-none'
+              }`}
+            >
+              <Image
+                src={bg.image}
+                alt={`${bg.name} season background atmosphere`}
+                fill
+                sizes="100vw"
+                className="object-cover object-center filter brightness-[0.92] contrast-[1.08]"
+                priority
+              />
+              {/* Ethereal luxury veil: white translucent wash with gradient fade */}
+              <div className="absolute inset-0 bg-white/75 backdrop-blur-[1.5px]" />
+              <div className="absolute inset-0 bg-gradient-to-b from-white via-white/40 to-white" />
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Section Header: Centered & Clean (No Badge) */}
+        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16 space-y-3">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-sans font-black uppercase tracking-tight text-foreground">
             Taste The 24 Solar Terms
           </h2>
@@ -198,7 +229,7 @@ export function SeasonalWheelExplorer() {
                   className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold tracking-wide transition-all duration-500 shadow-xs cursor-pointer ${
                     isSeasonActive
                       ? 'bg-neutral-900 text-white ring-2 ring-neutral-900/30 font-bold scale-105'
-                      : 'bg-neutral-100 hover:bg-neutral-200 text-neutral-700'
+                      : 'bg-white/80 hover:bg-white text-neutral-800 border border-neutral-200/80'
                   }`}
                 >
                   <span
@@ -214,7 +245,7 @@ export function SeasonalWheelExplorer() {
             {isExpanded && (
               <button
                 onClick={() => setIsExpanded(false)}
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-neutral-100 hover:bg-neutral-200 text-neutral-600 text-xs font-medium transition-all duration-300 ml-1 cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white/80 hover:bg-white text-neutral-700 border border-neutral-200/80 text-xs font-medium transition-all duration-300 ml-1 cursor-pointer shadow-xs"
                 title="Collapse view and re-center the wheel"
               >
                 <Minimize2 className="w-3.5 h-3.5" />
@@ -224,41 +255,37 @@ export function SeasonalWheelExplorer() {
           </div>
         </div>
 
-        {/* Dynamic Interactive Stage: Smooth 1000ms Transition between Center & Left Split */}
-        <div
-          className={`transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-            isExpanded
-              ? 'grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center'
-              : 'flex flex-col items-center justify-center max-w-xl mx-auto'
-          }`}
-        >
+        {/* Dynamic Interactive Stage: Smooth Interpolated Layout Movement */}
+        <div className="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-14 transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)]">
           {/* ========================================================
-              LEFT COLUMN (or CENTER): THE 24 SOLAR TERMS WHEEL WITH 3D CANVAS
+              WHEEL CONTAINER: Centered Initially, Transitions to Left Smoothly
               ======================================================== */}
           <div
-            className={`w-full flex flex-col items-center justify-center relative transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-              isExpanded ? 'lg:col-span-5' : 'max-w-md'
+            className={`flex flex-col items-center justify-center relative transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+              isExpanded
+                ? 'w-full lg:w-[420px] shrink-0'
+                : 'w-full max-w-md mx-auto'
             }`}
           >
-            {/* Seasonal Wheel Wrapper with Dynamic 4-Season Background Layer */}
+            {/* Seasonal Wheel with Dynamic 4-Season Background Layer */}
             <div className="relative w-full flex items-center justify-center">
               <div className="relative w-full max-w-[340px] sm:max-w-[400px] aspect-square flex items-center justify-center drop-shadow-md">
                 {/* Glowing Season Aura Halo framing the circle */}
                 <div
-                  className="absolute -inset-3 sm:-inset-5 rounded-full blur-[24px] pointer-events-none -z-1 transition-all duration-1000 ease-in-out opacity-50"
+                  className="absolute -inset-3 sm:-inset-5 rounded-full blur-[26px] pointer-events-none -z-10 transition-all duration-1200 ease-in-out opacity-55"
                   style={{
                     background: currentTerm.glowColor.replace('0.25', '0.65').replace('0.35', '0.75'),
                   }}
                 />
 
-                {/* 4-Season Photographic Background on the Circle (Smooth 1000ms Crossfade) */}
+                {/* 4-Season Photographic Background on the Circle (Smooth 1200ms Crossfade) */}
                 <div className="absolute inset-0 rounded-full overflow-hidden pointer-events-none z-0 shadow-inner">
                   {SEASON_BACKGROUNDS.map((bg) => {
                     const isActive = activeSeason === bg.id;
                     return (
                       <div
                         key={bg.id}
-                        className={`absolute inset-0 transition-all duration-1000 ease-in-out ${
+                        className={`absolute inset-0 transition-all duration-1200 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                           isActive
                             ? 'opacity-100 scale-100'
                             : 'opacity-0 scale-105 pointer-events-none'
@@ -357,6 +384,7 @@ export function SeasonalWheelExplorer() {
                     cy={C}
                     r={RI - 8}
                     fill="#FFFFFF"
+                    fillOpacity="0.88"
                     stroke="#E5E7EB"
                     strokeWidth="1.5"
                     className="drop-shadow-xs cursor-pointer"
@@ -498,13 +526,19 @@ export function SeasonalWheelExplorer() {
 
           {/* ========================================================
               RIGHT COLUMN: PURE TRANSPARENT PRODUCT DISPLAY (NO CARDBOX)
-              Smooth 1000ms Entrance with Season Aura, Symbol, Title, & Price
+              Smooth 1000ms Continuous Slide-In with Season Aura
               ======================================================== */}
-          {isExpanded && (
-            <div className="lg:col-span-7 w-full flex flex-col items-center justify-center text-center py-6 lg:py-2 transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] animate-in fade-in slide-in-from-right-10">
+          <div
+            className={`transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+              isExpanded
+                ? 'w-full lg:flex-1 opacity-100 translate-x-0 scale-100 max-h-[900px] visible pointer-events-auto'
+                : 'w-0 lg:w-0 opacity-0 translate-x-12 scale-95 max-h-0 invisible pointer-events-none overflow-hidden'
+            }`}
+          >
+            <div className="w-full flex flex-col items-center justify-center text-center py-6 lg:py-2">
               <div
                 key={currentTerm.term}
-                className="relative flex flex-col items-center justify-center w-full max-w-md transition-all duration-700 ease-out"
+                className="relative flex flex-col items-center justify-center w-full max-w-md transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] animate-fade-in-scale"
                 onTouchStart={(e) => onDragStart(e.touches[0].clientX)}
                 onTouchMove={(e) => onDragMove(e.touches[0].clientX)}
                 onTouchEnd={onDragEnd}
@@ -516,8 +550,8 @@ export function SeasonalWheelExplorer() {
                 }}
               >
                 {/* 1. SIMBOL (Season Badge + Solar Term Chinese Glyph Symbol) */}
-                <div className="flex flex-col items-center gap-1.5 mb-2 sm:mb-3 transition-all duration-700 ease-out animate-in fade-in slide-in-from-top-4">
-                  <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-neutral-100 border border-neutral-200/80 text-foreground text-xs font-mono font-bold tracking-wider uppercase shadow-2xs">
+                <div className="flex flex-col items-center gap-1.5 mb-2 sm:mb-3 transition-all duration-700 ease-out animate-fade-in-scale">
+                  <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/90 border border-neutral-200/80 text-foreground text-xs font-mono font-bold tracking-wider uppercase shadow-2xs">
                     <span
                       className="w-2.5 h-2.5 rounded-full inline-block"
                       style={{ backgroundColor: currentTerm.ringColor }}
@@ -543,7 +577,7 @@ export function SeasonalWheelExplorer() {
                 <div className="relative w-full flex items-center justify-center my-3 sm:my-4 min-h-[260px] sm:min-h-[300px]">
                   {/* Dynamic Glowing Season Aura behind cutout image */}
                   <div
-                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[260px] sm:w-[320px] md:w-[360px] h-[260px] sm:h-[320px] md:h-[360px] rounded-full blur-[70px] sm:blur-[90px] pointer-events-none -z-1 transition-all duration-1000 ease-out opacity-85"
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[260px] sm:w-[320px] md:w-[360px] h-[260px] sm:h-[320px] md:h-[360px] rounded-full blur-[70px] sm:blur-[90px] pointer-events-none -z-10 transition-all duration-1200 ease-out opacity-85"
                     style={{
                       background: currentTerm.glowColor
                         .replace('0.25', '0.55')
@@ -553,18 +587,18 @@ export function SeasonalWheelExplorer() {
 
                   {/* Concentric Subtle Halo Rings matching season */}
                   <div
-                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[220px] sm:w-[270px] md:w-[310px] h-[220px] sm:h-[270px] md:h-[310px] rounded-full border border-neutral-200/80 pointer-events-none -z-1 transition-all duration-1000"
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[220px] sm:w-[270px] md:w-[310px] h-[220px] sm:h-[270px] md:h-[310px] rounded-full border border-neutral-200/80 pointer-events-none -z-10 transition-all duration-1000"
                     style={{
                       boxShadow: `0 0 55px -10px ${currentTerm.glowColor}`,
                     }}
                   />
                   <div
-                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140px] sm:w-[170px] md:w-[190px] h-[140px] sm:h-[170px] md:h-[190px] rounded-full border-2 pointer-events-none -z-1 opacity-50 transition-colors duration-1000"
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140px] sm:w-[170px] md:w-[190px] h-[140px] sm:h-[170px] md:h-[190px] rounded-full border-2 pointer-events-none -z-10 opacity-50 transition-colors duration-1000"
                     style={{ borderColor: currentTerm.ringColor }}
                   />
 
-                  {/* Cutout Product Image (No Background) with Smooth Scale and Float */}
-                  <div className="relative w-[210px] sm:w-[260px] md:w-[290px] h-[250px] sm:h-[300px] md:h-[330px] flex items-center justify-center transition-all duration-700 animate-in zoom-in-95">
+                  {/* Cutout Product Image (No Background) with Smooth Float */}
+                  <div className="relative w-[210px] sm:w-[260px] md:w-[290px] h-[250px] sm:h-[300px] md:h-[330px] flex items-center justify-center transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]">
                     <Image
                       src={currentTerm.image}
                       alt={currentTerm.blend}
@@ -591,14 +625,14 @@ export function SeasonalWheelExplorer() {
 
                 {/* 4. HARGA PRODUK */}
                 <div className="mt-3 flex items-center justify-center gap-2.5 font-mono text-sm sm:text-base font-bold text-foreground transition-all duration-700 animate-in fade-in slide-in-from-bottom-4">
-                  <span className="px-3.5 py-1.5 rounded-full bg-neutral-100 border border-neutral-200/80 text-neutral-900 shadow-2xs">
+                  <span className="px-3.5 py-1.5 rounded-full bg-white/90 border border-neutral-200/80 text-neutral-900 shadow-2xs">
                     Hot: {currentTerm.hotPrice}{' '}
                     <span className="text-[11px] font-normal text-muted-foreground">
                       (350ml)
                     </span>
                   </span>
                   <span className="text-muted-foreground/60">·</span>
-                  <span className="px-3.5 py-1.5 rounded-full bg-neutral-100 border border-neutral-200/80 text-neutral-900 shadow-2xs">
+                  <span className="px-3.5 py-1.5 rounded-full bg-white/90 border border-neutral-200/80 text-neutral-900 shadow-2xs">
                     Iced: {currentTerm.icedPrice}{' '}
                     <span className="text-[11px] font-normal text-muted-foreground">
                       (450ml)
@@ -610,7 +644,7 @@ export function SeasonalWheelExplorer() {
                 <div className="flex items-center justify-center gap-4 mt-6">
                   <button
                     onClick={handlePrevBlend}
-                    className="w-10 h-10 rounded-full bg-neutral-100 hover:bg-neutral-200 active:scale-95 text-neutral-800 flex items-center justify-center transition-all cursor-pointer border border-neutral-200/80 shadow-2xs"
+                    className="w-10 h-10 rounded-full bg-white/90 hover:bg-white active:scale-95 text-neutral-800 flex items-center justify-center transition-all cursor-pointer border border-neutral-200/80 shadow-2xs"
                     aria-label="Previous Blend"
                   >
                     <ChevronLeft className="w-5 h-5" />
@@ -642,7 +676,7 @@ export function SeasonalWheelExplorer() {
 
                   <button
                     onClick={handleNextBlend}
-                    className="w-10 h-10 rounded-full bg-neutral-100 hover:bg-neutral-200 active:scale-95 text-neutral-800 flex items-center justify-center transition-all cursor-pointer border border-neutral-200/80 shadow-2xs"
+                    className="w-10 h-10 rounded-full bg-white/90 hover:bg-white active:scale-95 text-neutral-800 flex items-center justify-center transition-all cursor-pointer border border-neutral-200/80 shadow-2xs"
                     aria-label="Next Blend"
                   >
                     <ChevronRight className="w-5 h-5" />
@@ -663,7 +697,7 @@ export function SeasonalWheelExplorer() {
                 </div>
               </div>
             </div>
-          )}
+          </div>
         </div>
       </div>
     </section>
