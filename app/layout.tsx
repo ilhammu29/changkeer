@@ -4,6 +4,8 @@ import { Plus_Jakarta_Sans, Cormorant_Garamond } from 'next/font/google';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { ScrollRevealProvider } from '@/components/ui/ScrollRevealProvider';
+import { CartProvider } from '@/lib/context/CartContext';
+import { CartDrawer } from '@/components/order/CartDrawer';
 import './globals.css';
 
 const sans = Plus_Jakarta_Sans({
@@ -68,15 +70,18 @@ export default function RootLayout({
   return (
     <html lang="id" className={`h-full antialiased ${sans.variable} ${serif.variable}`}>
       <body className="min-h-full flex flex-col bg-background text-foreground font-sans">
-        <ScrollRevealProvider>
-          <Suspense fallback={null}>
-            <Navbar />
-          </Suspense>
-          <main className="flex-1">{children}</main>
-          <Suspense fallback={null}>
-            <Footer />
-          </Suspense>
-        </ScrollRevealProvider>
+        <CartProvider>
+          <ScrollRevealProvider>
+            <Suspense fallback={null}>
+              <Navbar />
+            </Suspense>
+            <main className="flex-1">{children}</main>
+            <Suspense fallback={null}>
+              <Footer />
+            </Suspense>
+            <CartDrawer />
+          </ScrollRevealProvider>
+        </CartProvider>
       </body>
     </html>
   );

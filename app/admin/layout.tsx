@@ -6,6 +6,10 @@ import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import {
   LayoutDashboard,
+  ShoppingBag,
+  Flame,
+  Ticket,
+  UtensilsCrossed,
   Package,
   Layers,
   FileText,
@@ -21,15 +25,45 @@ import {
   X,
 } from 'lucide-react';
 
-const ADMIN_NAV = [
-  { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
-  { name: 'Produk', href: '/admin/products', icon: Package },
-  { name: 'Kategori', href: '/admin/categories', icon: Layers },
-  { name: 'Artikel & Berita', href: '/admin/articles', icon: FileText },
-  { name: 'Konten Halaman', href: '/admin/pages', icon: FileEdit },
-  { name: 'Media Library', href: '/admin/media', icon: ImageIcon },
-  { name: 'Pesan Masuk', href: '/admin/messages', icon: MessageSquare },
-  { name: 'Pengaturan', href: '/admin/settings', icon: Settings },
+interface NavItem {
+  name: string;
+  href: string;
+  icon: any;
+}
+
+interface NavSection {
+  title: string;
+  items: NavItem[];
+}
+
+const ADMIN_NAV_SECTIONS: NavSection[] = [
+  {
+    title: 'OPERASIONAL',
+    items: [
+      { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
+      { name: 'Pesanan Cafe', href: '/admin/orders', icon: ShoppingBag },
+      { name: 'KDS Barista', href: '/admin/kds', icon: Flame },
+    ],
+  },
+  {
+    title: 'KATALOG & CAFE',
+    items: [
+      { name: 'Produk Herbal', href: '/admin/products', icon: Package },
+      { name: 'Kategori', href: '/admin/categories', icon: Layers },
+      { name: 'Meja Cafe & QR', href: '/admin/tables', icon: UtensilsCrossed },
+      { name: 'Voucher Promo', href: '/admin/vouchers', icon: Ticket },
+    ],
+  },
+  {
+    title: 'KONTEN & SISTEM',
+    items: [
+      { name: 'Artikel & Berita', href: '/admin/articles', icon: FileText },
+      { name: 'Konten Halaman', href: '/admin/pages', icon: FileEdit },
+      { name: 'Media Library', href: '/admin/media', icon: ImageIcon },
+      { name: 'Pesan Masuk', href: '/admin/messages', icon: MessageSquare },
+      { name: 'Pengaturan', href: '/admin/settings', icon: Settings },
+    ],
+  },
 ];
 
 export default function AdminLayout({
@@ -178,41 +212,50 @@ export default function AdminLayout({
             )}
           </div>
 
-          {/* Navigation Items (Compact & No scrollbar in icon mode) */}
+          {/* Navigation Items (Organized by Section, Compact & No scrollbar in icon mode) */}
           <nav
-            className={`p-2 flex-1 min-h-0 ${
+            className={`flex-1 min-h-0 ${
               collapsed
-                ? 'overflow-hidden flex flex-col items-center justify-start space-y-1 pt-3'
-                : 'overflow-y-auto space-y-1.5 p-3'
+                ? 'overflow-hidden flex flex-col items-center justify-start space-y-0.5 p-2 pt-2'
+                : 'overflow-y-auto space-y-3 p-3 scrollbar-none'
             }`}
           >
-            {ADMIN_NAV.map((item) => {
-              const active = isActive(item.href);
-              const Icon = item.icon;
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  title={collapsed ? item.name : undefined}
-                  className={`flex items-center rounded-xl text-xs font-semibold tracking-wide transition-all group ${
-                    collapsed
-                      ? 'justify-center w-10 h-10 shrink-0'
-                      : 'gap-3 px-3.5 py-2.5 w-full'
-                  } ${
-                    active
-                      ? 'bg-neutral-900 text-white font-bold shadow-xs'
-                      : 'text-muted-foreground hover:bg-neutral-100 hover:text-foreground'
-                  }`}
-                >
-                  <Icon
-                    className={`shrink-0 transition-transform ${
-                      collapsed ? 'w-4 h-4 group-hover:scale-110' : 'w-4 h-4'
-                    }`}
-                  />
-                  {!collapsed && <span className="truncate">{item.name}</span>}
-                </Link>
-              );
-            })}
+            {ADMIN_NAV_SECTIONS.map((section, sIdx) => (
+              <div key={section.title || sIdx} className="space-y-0.5">
+                {!collapsed && (
+                  <div className="text-[9px] font-mono font-bold uppercase tracking-wider text-muted-foreground/60 px-3 pt-1 pb-0.5">
+                    {section.title}
+                  </div>
+                )}
+                {section.items.map((item) => {
+                  const active = isActive(item.href);
+                  const Icon = item.icon;
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      title={collapsed ? item.name : undefined}
+                      className={`flex items-center rounded-xl text-xs font-semibold tracking-wide transition-all group ${
+                        collapsed
+                          ? 'justify-center w-9 h-9 shrink-0'
+                          : 'gap-2.5 px-3 py-1.5 w-full'
+                      } ${
+                        active
+                          ? 'bg-neutral-900 text-white font-bold shadow-xs'
+                          : 'text-muted-foreground hover:bg-neutral-100 hover:text-foreground'
+                      }`}
+                    >
+                      <Icon
+                        className={`shrink-0 transition-transform ${
+                          collapsed ? 'w-4 h-4 group-hover:scale-110' : 'w-4 h-4'
+                        }`}
+                      />
+                      {!collapsed && <span className="truncate text-xs">{item.name}</span>}
+                    </Link>
+                  );
+                })}
+              </div>
+            ))}
           </nav>
         </div>
 
@@ -342,26 +385,33 @@ export default function AdminLayout({
                   </button>
                 </div>
 
-                <nav className="space-y-1 flex-1 min-h-0 overflow-y-auto pr-1">
-                  {ADMIN_NAV.map((item) => {
-                    const active = isActive(item.href);
-                    const Icon = item.icon;
-                    return (
-                      <Link
-                        key={item.href}
-                        href={item.href}
-                        onClick={() => setMobileMenuOpen(false)}
-                        className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold tracking-wide transition-colors ${
-                          active
-                            ? 'bg-neutral-900 text-white font-bold'
-                            : 'text-muted-foreground hover:bg-neutral-100 hover:text-foreground'
-                        }`}
-                      >
-                        <Icon className="w-4 h-4 shrink-0" />
-                        <span>{item.name}</span>
-                      </Link>
-                    );
-                  })}
+                <nav className="space-y-3 flex-1 min-h-0 overflow-y-auto pr-1">
+                  {ADMIN_NAV_SECTIONS.map((section, sIdx) => (
+                    <div key={section.title || sIdx} className="space-y-1">
+                      <div className="text-[9px] font-mono font-bold uppercase tracking-wider text-muted-foreground/60 px-3 pt-1 pb-0.5">
+                        {section.title}
+                      </div>
+                      {section.items.map((item) => {
+                        const active = isActive(item.href);
+                        const Icon = item.icon;
+                        return (
+                          <Link
+                            key={item.href}
+                            href={item.href}
+                            onClick={() => setMobileMenuOpen(false)}
+                            className={`flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold tracking-wide transition-colors ${
+                              active
+                                ? 'bg-neutral-900 text-white font-bold'
+                                : 'text-muted-foreground hover:bg-neutral-100 hover:text-foreground'
+                            }`}
+                          >
+                            <Icon className="w-4 h-4 shrink-0" />
+                            <span>{item.name}</span>
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  ))}
                 </nav>
               </div>
 

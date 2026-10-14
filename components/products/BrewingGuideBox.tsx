@@ -10,7 +10,7 @@ export function BrewingGuideBox({ guide }: BrewingGuideBoxProps) {
   return (
     <div className="space-y-8 font-sans">
       <div className="border-b border-border/80 pb-4">
-        <span className="text-[11px] font-mono font-bold tracking-[0.25em] uppercase text-primary block">
+        <span className="text-[11px] font-sans font-bold tracking-[0.2em] uppercase text-primary block">
           EXTRACTION &amp; BREW RITUAL
         </span>
         <h3 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-foreground mt-1">
@@ -24,7 +24,7 @@ export function BrewingGuideBox({ guide }: BrewingGuideBoxProps) {
             <Thermometer className="w-5 h-5" />
           </div>
           <div className="space-y-0.5">
-            <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-muted-foreground block">
+            <span className="text-[10px] font-sans font-bold uppercase tracking-wider text-muted-foreground block">
               WATER TEMPERATURE
             </span>
             <span className="text-lg font-black text-foreground block">
@@ -41,7 +41,7 @@ export function BrewingGuideBox({ guide }: BrewingGuideBoxProps) {
             <Timer className="w-5 h-5" />
           </div>
           <div className="space-y-0.5">
-            <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-muted-foreground block">
+            <span className="text-[10px] font-sans font-bold uppercase tracking-wider text-muted-foreground block">
               STEEP TIME
             </span>
             <span className="text-lg font-black text-foreground block">
@@ -58,7 +58,7 @@ export function BrewingGuideBox({ guide }: BrewingGuideBoxProps) {
             <Coffee className="w-5 h-5" />
           </div>
           <div className="space-y-0.5">
-            <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-muted-foreground block">
+            <span className="text-[10px] font-sans font-bold uppercase tracking-wider text-muted-foreground block">
               WATER VOLUME
             </span>
             <span className="text-lg font-black text-foreground block">

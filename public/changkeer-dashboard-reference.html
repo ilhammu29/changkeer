@@ -1,0 +1,1757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fettle, daily activity overview</title>
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ==========================================================================
+       0 & 1 · ART DIRECTION & VARIABLES
+       ========================================================================== */
+    :root {
+      --wash: #EDF5F4;
+      --surface: #FFFFFF;
+      --ink: #0F1A19;
+      --ink-2: #33403E;
+      --muted: #4A5754;
+      --icon: #5F6D6A;
+      --hair: #DCE8E5;
+      --chip: #E6F1EE;
+      --chip-dark: #D8EAE5;
+      --teal: #016668;
+      --water-grad: linear-gradient(145deg, #015A5C 0%, #02666A 46%, #047173 100%);
+      --cup: #013A3C;
+      --cup-empty: rgba(255, 255, 255, 0.94);
+      --tangerine: #FF8A3D;
+      --tangerine-ink: #2A1405;
+      --tangerine-light: #FFB27A;
+      --track: #EDF2F1;
+      --wave: #1C9C8F;
+      --wave-soft: #CFE7E2;
+      --frame: #C8D6D2;
+
+      /* Type Floors */
+      --t14: max(11px, .875rem);
+      --t15: max(11.5px, .9375rem);
+      --t16: max(12px, 1rem);
+
+      /* Proportional Unit for Desktop Artboard 1448x1086 (90.5rem x 67.875rem) */
+      font-size: clamp(8px, min(100vw / 90.5, 100svh / 67.875), 23px);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: var(--wash);
+      color: var(--ink);
+      font-family: "Manrope", "Segoe UI", system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Desktop is single screen without scrolling */
+    body {
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    img, svg {
+      display: block;
+    }
+
+    button, input, a {
+      font-family: inherit;
+      color: inherit;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    button {
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    .num {
+      font-family: "Outfit", "Manrope", sans-serif;
+      font-variant-numeric: tabular-nums;
+    }
+
+    :focus-visible {
+      outline: 2px solid #0B7F74;
+      outline-offset: 3px;
+    }
+
+    /* ==========================================================================
+       3.1 - 3.5 · APP FRAME, RAIL & LAYOUT
+       ========================================================================== */
+    .app {
+      width: 90.5rem;
+      height: 67.875rem;
+      background: var(--wash);
+      border: 1px solid var(--frame);
+      border-radius: 2rem;
+      display: grid;
+      grid-template-columns: 6.75rem 1fr;
+      overflow: hidden;
+      box-shadow: 0 1.5rem 3rem rgba(15, 26, 25, 0.08);
+      position: relative;
+    }
+
+    /* Navigation Rail */
+    nav.rail {
+      background: var(--surface);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2.25rem 0 2rem 0;
+      border-right: 1px solid var(--hair);
+      z-index: 20;
+    }
+
+    a.logo {
+      width: 3rem;
+      height: 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 2.5rem;
+      color: var(--tangerine);
+      border-radius: 50%;
+      transition: transform 200ms cubic-bezier(.2,.8,.2,1);
+    }
+    a.logo:hover {
+      transform: scale(1.05);
+    }
+
+    ul.nav {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.125rem;
+      width: 100%;
+    }
+
+    ul.nav li {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+    }
+
+    ul.nav li.rule {
+      width: 2.5rem;
+      height: 1px;
+      background: var(--hair);
+      margin: 0.5rem 0;
+    }
+
+    .rail-btn {
+      width: 3.375rem;
+      height: 3.375rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--icon);
+      transition: background-color 200ms cubic-bezier(.2,.8,.2,1), color 200ms cubic-bezier(.2,.8,.2,1);
+    }
+    .rail-btn svg {
+      width: 1.5rem;
+      height: 1.5rem;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+    }
+    .rail-btn:hover {
+      background: var(--chip);
+      color: var(--ink);
+    }
+    .rail-btn.active {
+      background: var(--tangerine);
+      color: var(--surface);
+    }
+
+    .rail-btn.menu-key {
+      display: none;
+    }
+
+    .rail-foot {
+      margin-top: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.125rem;
+      width: 100%;
+    }
+
+    a.me {
+      width: 3.375rem;
+      height: 3.375rem;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid var(--tangerine);
+      display: block;
+      margin-top: 0.25rem;
+    }
+    a.me img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Main Area */
+    main.main {
+      padding: 2.25rem 2.625rem 2.25rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.75rem;
+      overflow: hidden;
+    }
+
+    /* Header Top */
+    header.top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    a.me-top {
+      display: none;
+    }
+
+    .greet h1 {
+      font-size: 2.25rem;
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.021em;
+      color: var(--ink);
+    }
+    .greet p {
+      font-size: var(--t15);
+      color: var(--muted);
+      margin-top: 0.25rem;
+    }
+
+    .top-right {
+      display: flex;
+      align-items: center;
+      gap: 1.125rem;
+    }
+
+    label.search {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: var(--surface);
+      border: 1px solid var(--hair);
+      border-radius: 2rem;
+      padding: 0 1.25rem;
+      height: 3.375rem;
+      width: 22.5rem;
+      box-shadow: 0 2px 8px rgba(15, 26, 25, 0.03);
+    }
+    label.search svg {
+      width: 1.25rem;
+      height: 1.25rem;
+      stroke: var(--icon);
+      stroke-width: 1.8;
+      fill: none;
+    }
+    label.search input {
+      border: none;
+      outline: none;
+      background: transparent;
+      width: 100%;
+      font-size: max(12px, 1.125rem);
+      color: var(--ink);
+    }
+    label.search input::placeholder {
+      color: var(--muted);
+    }
+
+    a.upgrade {
+      display: flex;
+      align-items: center;
+      gap: 0.625rem;
+      background: var(--ink);
+      color: var(--tangerine-light);
+      height: 3.375rem;
+      padding: 0 1.375rem;
+      border-radius: 2rem;
+      font-size: max(12px, 1.1875rem);
+      font-weight: 600;
+      transition: background-color 200ms cubic-bezier(.2,.8,.2,1);
+    }
+    a.upgrade svg {
+      width: 1.125rem;
+      height: 1.125rem;
+      fill: var(--tangerine);
+      stroke: none;
+    }
+    a.upgrade:hover {
+      background: #202F2D;
+    }
+
+    /* Bento Rows */
+    section.row-a {
+      display: grid;
+      grid-template-columns: minmax(0, 1.62fr) minmax(0, 1fr);
+      gap: 1.75rem;
+      height: 27rem;
+    }
+
+    section.row-b {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.15fr) minmax(0, 1.05fr);
+      gap: 1.75rem;
+      flex: 1;
+      min-height: 0;
+    }
+
+    /* ==========================================================================
+       3.6 · HERO CARD
+       ========================================================================== */
+    article.hero {
+      background-color: var(--teal);
+      border-radius: 2rem;
+      position: relative;
+      overflow: hidden;
+      color: #FFFFFF;
+      box-shadow: 0 0.5rem 1.5rem rgba(1, 102, 104, 0.18);
+    }
+
+    .hero-photo {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 62%;
+      background-image: url('https://wjwoitlioftohvwfymeq.supabase.co/storage/v1/object/public/designs/fettle/hero-step.webp');
+      background-position: right center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 4.5rem);
+      mask-image: linear-gradient(90deg, transparent 0, #000 4.5rem);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .hero-headline {
+      position: absolute;
+      left: 2.5625rem;
+      top: 2.0625rem;
+      font-family: "Outfit", sans-serif;
+      font-size: 3.25rem;
+      font-weight: 600;
+      line-height: 3.875rem;
+      letter-spacing: -0.032em;
+      max-width: 8.6em;
+      text-wrap: balance;
+      text-shadow: 0 .125rem 1.5rem rgba(0,40,40,.28);
+      z-index: 2;
+    }
+
+    .hero-play-wrap {
+      position: absolute;
+      left: 51.4%;
+      top: 48.1%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.625rem;
+      z-index: 3;
+    }
+
+    button.hero-play {
+      width: 3.75rem;
+      height: 3.75rem;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.85);
+      background: rgba(255, 255, 255, 0.16);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #FFFFFF;
+      transition: background-color 200ms cubic-bezier(.2,.8,.2,1);
+    }
+    button.hero-play:hover {
+      background: rgba(255, 255, 255, 0.28);
+    }
+    button.hero-play svg {
+      width: 1.25rem;
+      height: 1.25rem;
+      margin-left: 0.1875rem;
+      fill: #FFFFFF;
+    }
+
+    .hero-play-label {
+      font-size: max(13px, 1.4375rem);
+      font-weight: 500;
+      white-space: nowrap;
+      text-shadow: 0 .0625rem .75rem rgba(0,40,40,.35);
+    }
+
+    .hero-members {
+      position: absolute;
+      left: 2.5625rem;
+      bottom: 2.25rem;
+      z-index: 2;
+    }
+    .hero-members .members-line {
+      font-size: var(--t16);
+      font-weight: 400;
+      margin-bottom: 0.625rem;
+      text-shadow: 0 1px 6px rgba(0,40,40,.2);
+    }
+    .hero-members-row {
+      display: flex;
+      align-items: center;
+      gap: 0.875rem;
+    }
+    .hero-faces {
+      display: flex;
+    }
+    .hero-faces img {
+      width: 3.375rem;
+      height: 3.375rem;
+      border-radius: 50%;
+      border: 3px solid #FFFFFF;
+      object-fit: cover;
+      margin-left: -0.875rem;
+    }
+    .hero-faces img:first-child {
+      margin-left: 0;
+    }
+    .hero-members-count {
+      display: flex;
+      flex-direction: column;
+    }
+    .hero-members-count strong {
+      font-family: "Outfit", sans-serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      line-height: 1.1;
+    }
+    .hero-members-count span {
+      font-size: var(--t16);
+      font-weight: 400;
+      opacity: 0.9;
+    }
+
+    a.hero-trial {
+      position: absolute;
+      right: 1.375rem;
+      bottom: 1.375rem;
+      width: max(18.5rem, 210px);
+      height: 4.375rem;
+      padding: 0 0.75rem 0 2.25rem;
+      border-radius: 2.1875rem;
+      background: var(--ink);
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: max(13px, 1.25rem);
+      font-weight: 500;
+      white-space: nowrap;
+      z-index: 3;
+      transition: background-color 200ms cubic-bezier(.2,.8,.2,1);
+    }
+    a.hero-trial:hover {
+      background: #202F2D;
+    }
+    .hero-trial-disc {
+      width: 2.875rem;
+      height: 2.875rem;
+      border-radius: 50%;
+      background: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink);
+    }
+    .hero-trial-disc svg {
+      width: 1.25rem;
+      height: 1.25rem;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+    }
+
+    /* ==========================================================================
+       3.7 · WATER CARD
+       ========================================================================== */
+    article.water {
+      background: var(--water-grad);
+      border-radius: 2rem;
+      padding: 2.25rem 2.25rem 2rem 2.25rem;
+      color: #FFFFFF;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-rows: auto 1fr auto;
+      column-gap: 1rem;
+      row-gap: 0.5rem;
+      box-shadow: 0 0.5rem 1.5rem rgba(1, 90, 92, 0.16);
+    }
+
+    .water-head {
+      grid-column: 1;
+      grid-row: 1;
+    }
+    .water-title {
+      font-size: max(13px, 1.25rem);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    .water-body {
+      font-size: var(--t15);
+      line-height: 1.5;
+      color: rgba(255, 255, 255, 0.92);
+    }
+
+    .water-chip-box {
+      grid-column: 1;
+      grid-row: 2;
+      display: flex;
+      align-items: flex-end;
+      padding-bottom: 1rem;
+    }
+    .water-goal-chip {
+      height: 2.75rem;
+      padding: 0 1.125rem;
+      gap: 0.5rem;
+      border-radius: 2rem;
+      background: var(--tangerine);
+      color: var(--tangerine-ink);
+      font-size: max(12px, 1.0625rem);
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+    }
+    .water-goal-chip svg {
+      width: 1.125rem;
+      height: 1.125rem;
+      stroke: currentColor;
+      stroke-width: 2.4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+    }
+
+    /* Grid of 24 glasses */
+    .water-glasses-grid {
+      grid-column: 2;
+      grid-row: 1 / span 2;
+      display: grid;
+      grid-template-columns: repeat(6, 2.1875rem);
+      gap: 0.75rem 0.6875rem;
+      align-content: start;
+    }
+    .glass-svg {
+      width: 100%;
+      height: auto;
+      cursor: pointer;
+      transition: transform 150ms ease;
+    }
+    .glass-svg:hover {
+      transform: scale(1.08);
+    }
+    .glass-poly {
+      transition: fill 200ms cubic-bezier(.2,.8,.2,1);
+    }
+
+    /* Water foot row */
+    .water-foot {
+      grid-column: 1 / span 2;
+      grid-row: 3;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-top: auto;
+    }
+
+    .period-group {
+      display: flex;
+      gap: 0.625rem;
+    }
+    .toggle-btn {
+      width: 3.875rem;
+      height: 3.875rem;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.12);
+      color: #FFFFFF;
+      font-size: max(12px, 1.25rem);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 200ms cubic-bezier(.2,.8,.2,1), color 200ms cubic-bezier(.2,.8,.2,1);
+    }
+    .toggle-btn:hover {
+      background: rgba(255, 255, 255, 0.22);
+    }
+    .toggle-btn[aria-pressed="true"] {
+      background: #FFFFFF;
+      color: var(--ink);
+    }
+
+    .litres-block {
+      text-align: right;
+      line-height: 1;
+    }
+    .litres-value {
+      font-family: "Outfit", sans-serif;
+      font-size: 5.625rem;
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+    .litres-unit {
+      font-family: "Outfit", sans-serif;
+      font-size: 2.125rem;
+      font-weight: 400;
+      margin-top: 0.375rem;
+      line-height: 1;
+    }
+
+    /* ==========================================================================
+       ROW-B CARDS: SLEEP, ENERGY, WEIGHT
+       ========================================================================== */
+    .card-white {
+      background: var(--surface);
+      border-radius: 2rem;
+      padding: 1.875rem 2rem;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 4px 20px rgba(15, 26, 25, 0.04);
+      border: 1px solid rgba(220, 232, 229, 0.6);
+    }
+
+    /* 3.8 · SLEEP CARD */
+    article.sleep .sleep-faces {
+      display: flex;
+    }
+    article.sleep .sleep-faces img {
+      width: 2.4375rem;
+      height: 2.4375rem;
+      border-radius: 50%;
+      border: 2px solid #FFFFFF;
+      object-fit: cover;
+      margin-left: -0.625rem;
+    }
+    article.sleep .sleep-faces img:first-child {
+      margin-left: 0;
+    }
+
+    .sleep-title {
+      font-size: 1.6875rem;
+      font-weight: 500;
+      line-height: 2.1875rem;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+      margin-top: 1.25rem;
+    }
+
+    .tip-box {
+      margin-top: auto;
+      padding: 1.125rem 1.25rem;
+      border: 1px solid var(--hair);
+      border-radius: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .tip-tag {
+      height: 2rem;
+      padding: 0 0.875rem;
+      border-radius: 2rem;
+      background: var(--chip);
+      color: var(--ink);
+      font-size: var(--t14);
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      align-self: flex-start;
+    }
+    .tip-tag svg {
+      width: 1.125rem;
+      height: 1.125rem;
+    }
+    .tip-text {
+      font-size: var(--t14);
+      line-height: 1.5;
+      color: var(--ink-2);
+    }
+
+    .tip-pager {
+      margin-top: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .tip-counter {
+      font-family: "Outfit", sans-serif;
+      font-size: 2.125rem;
+      font-weight: 500;
+      color: var(--ink);
+    }
+    .tip-counter-total {
+      font-size: var(--t16);
+      color: var(--muted);
+      font-family: "Manrope", sans-serif;
+    }
+    .tip-pager-nav {
+      display: flex;
+      gap: 0.625rem;
+    }
+    .pager-btn {
+      width: 2.75rem;
+      height: 2.75rem;
+      border-radius: 50%;
+      background: var(--chip);
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 200ms cubic-bezier(.2,.8,.2,1);
+    }
+    .pager-btn:hover {
+      background: var(--chip-dark);
+    }
+    .pager-btn svg {
+      width: 1.25rem;
+      height: 1.25rem;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+    }
+
+    /* 3.9 · ENERGY & WEIGHT CARDS SHARED HEAD */
+    .card-head {
+      display: flex;
+      align-items: center;
+      gap: 0.875rem;
+    }
+    .head-icon-chip {
+      width: 3rem;
+      height: 3rem;
+      border-radius: 0.875rem;
+      background: var(--chip);
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .head-icon-chip svg {
+      width: 1.5rem;
+      height: 1.5rem;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+    }
+    .card-head-title {
+      font-size: 1.625rem;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+      flex: 1;
+    }
+    .card-head-val {
+      font-family: "Outfit", sans-serif;
+      font-size: 1.625rem;
+      font-weight: 500;
+      color: var(--ink);
+      display: flex;
+      align-items: baseline;
+      gap: 0.125rem;
+    }
+    .card-head-val .val-unit {
+      font-family: "Manrope", sans-serif;
+      font-size: var(--t14);
+      font-weight: 500;
+      color: var(--muted);
+    }
+
+    .card-subrow {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 0.75rem;
+      font-size: var(--t14);
+      color: var(--ink-2);
+    }
+
+    /* ENERGY CARD DETAILS */
+    .energy-calories {
+      margin-top: 1.625rem;
+      font-family: "Outfit", sans-serif;
+      font-size: 3.75rem;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      color: var(--ink);
+      display: flex;
+      align-items: baseline;
+    }
+    .energy-calories .cal-unit {
+      font-size: max(12px, 1.5rem);
+      color: var(--muted);
+      font-family: "Manrope", sans-serif;
+      margin-left: 0.25rem;
+    }
+
+    .energy-scale {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 1.25rem;
+      font-size: var(--t14);
+      color: var(--ink-2);
+    }
+
+    .energy-bars-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 0.5rem;
+      height: 3.875rem;
+    }
+    .energy-bar {
+      width: 0.46875rem;
+      height: 3.875rem;
+      border-radius: 999px;
+      background: var(--track);
+    }
+
+    .energy-macros {
+      margin-top: auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+      padding-top: 1rem;
+    }
+    .macro-col {
+      display: flex;
+      flex-direction: column;
+    }
+    .macro-val {
+      font-family: "Outfit", sans-serif;
+      font-size: 1.625rem;
+      font-weight: 500;
+      color: var(--ink);
+      display: flex;
+      align-items: baseline;
+      gap: 0.125rem;
+    }
+    .macro-val span {
+      font-family: "Manrope", sans-serif;
+      font-size: var(--t14);
+      font-weight: 500;
+      color: var(--muted);
+    }
+    .macro-lbl {
+      margin-top: 0.25rem;
+      font-size: var(--t14);
+      color: var(--ink-2);
+    }
+
+    /* WEIGHT CARD DETAILS */
+    .weight-waves-box {
+      margin-top: 1.25rem;
+      width: 100%;
+      max-height: 7.25rem;
+      overflow: hidden;
+    }
+    .weight-waves-svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .weight-foot {
+      margin-top: auto;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      padding-top: 0.75rem;
+    }
+    .weight-big {
+      font-family: "Outfit", sans-serif;
+      font-size: 7.4375rem;
+      font-weight: 400;
+      line-height: 0.82;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+      display: flex;
+      align-items: baseline;
+    }
+    .weight-big .weight-unit {
+      font-size: 2.125rem;
+      color: var(--ink);
+      font-family: "Outfit", sans-serif;
+      margin-left: 0.25rem;
+    }
+
+    .weight-trend {
+      text-align: right;
+      font-size: var(--t14);
+      line-height: 1.5;
+      color: var(--ink-2);
+    }
+    .weight-trend strong {
+      display: block;
+      margin-top: 0.375rem;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    /* ==========================================================================
+       3.11 · PORTRAIT TABLETS & SHORT WINDOWS FLOW
+       ========================================================================== */
+    @media (min-width: 621px) and (max-width: 1180px) and (max-aspect-ratio: 1/1),
+           (min-width: 621px) and (max-width: 739px),
+           (min-width: 621px) and (max-height: 539px) {
+      :root {
+        font-size: min(16px, calc(100vw / 52.125));
+      }
+      html, body {
+        overflow: auto;
+        height: auto;
+        align-items: stretch;
+      }
+      .app {
+        width: 100%;
+        height: auto;
+        min-height: 100svh;
+        border-radius: 0;
+        border: none;
+        box-shadow: none;
+        overflow: visible;
+        grid-template-columns: 5.5rem 1fr;
+      }
+      nav.rail {
+        position: sticky;
+        top: 0;
+        height: 100svh;
+        overflow-y: auto;
+        scrollbar-width: none;
+      }
+      nav.rail::-webkit-scrollbar {
+        display: none;
+      }
+      main.main {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        padding: 1.5rem 1.0625rem 1.5rem 1.5rem;
+        gap: 1.5rem;
+      }
+      header.top {
+        grid-column: 1 / span 2;
+        flex-wrap: wrap;
+      }
+      header.top .greet {
+        width: 100%;
+      }
+      header.top .top-right {
+        width: 100%;
+        justify-content: space-between;
+      }
+      header.top label.search {
+        flex: 1;
+      }
+      section.row-a, section.row-b {
+        display: contents;
+      }
+      article.hero {
+        grid-column: 1 / span 2;
+        height: auto;
+        aspect-ratio: 735 / 469;
+      }
+      article.water {
+        grid-column: 1;
+        height: auto;
+      }
+      article.sleep {
+        grid-column: 2;
+        height: auto;
+      }
+      article.energy {
+        grid-column: 1;
+        height: auto;
+      }
+      article.weight {
+        grid-column: 2;
+        height: auto;
+      }
+      .weight-big {
+        font-size: 5.5rem;
+      }
+      .sleep-title {
+        margin-bottom: 1.5rem;
+      }
+    }
+
+    /* ==========================================================================
+       3.12 · PHONES (UP TO 620PX WIDE)
+       ========================================================================== */
+    @media (max-width: 620px) {
+      :root {
+        font-size: 16px;
+      }
+      html, body {
+        overflow: auto;
+        height: auto;
+        align-items: stretch;
+      }
+      .app {
+        width: 100%;
+        height: auto;
+        min-height: 100svh;
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+        display: block;
+        padding-bottom: 6.5rem;
+        overflow: visible;
+      }
+
+      /* Mobile Sticky Frosted Header */
+      header.top {
+        position: sticky;
+        top: 0;
+        background: rgba(237, 245, 244, 0.85);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        padding: 1rem 1.25rem;
+        z-index: 50;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.875rem;
+        margin: 0 -1.25rem;
+        border-bottom: 1px solid var(--hair);
+      }
+      a.me-top {
+        display: block;
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 2px solid var(--tangerine);
+      }
+      a.me-top img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .mobile-header-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      header.top .top-right {
+        display: flex;
+        gap: 0.75rem;
+        width: 100%;
+      }
+      header.top label.search {
+        flex: 1;
+        width: auto;
+        height: 3rem;
+      }
+
+      main.main {
+        padding: 1rem 1.25rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        overflow: visible;
+      }
+
+      section.row-a, section.row-b {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        height: auto;
+      }
+
+      /* Hero Phone Adjustments */
+      article.hero {
+        height: 34rem;
+      }
+      .hero-photo {
+        width: 100%;
+        background-position: center bottom;
+        background-size: contain;
+        mask-image: none;
+        -webkit-mask-image: none;
+      }
+      .hero-headline {
+        font-size: 2.25rem;
+        line-height: 2.625rem;
+        left: 1.5rem;
+        top: 1.5rem;
+      }
+      .hero-play-wrap {
+        left: 50%;
+        top: auto;
+        bottom: 13rem;
+        transform: translateX(-50%);
+      }
+      .hero-play-label {
+        font-size: max(12px, 1rem);
+        background: rgba(1, 58, 60, 0.62);
+        padding: 0.25rem 0.875rem;
+        border-radius: 1rem;
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        text-shadow: none;
+      }
+      .hero-members {
+        left: 1.5rem;
+        bottom: 5.5rem;
+      }
+      a.hero-trial {
+        left: 1.25rem;
+        right: 1.25rem;
+        bottom: 1.25rem;
+        width: auto;
+      }
+
+      /* Water Phone Adjustments */
+      article.water {
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+        padding: 1.75rem 1.5rem;
+      }
+      .water-glasses-grid {
+        grid-template-columns: repeat(6, 1fr);
+        gap: 0.5rem;
+        margin: 0.5rem 0;
+      }
+      .water-foot {
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+      .toggle-btn {
+        width: 3.25rem;
+        height: 3.25rem;
+      }
+      .litres-value {
+        font-size: 4.5rem;
+      }
+      .litres-unit {
+        font-size: 1.625rem;
+      }
+
+      /* Card Scale Floors on Mobile */
+      .sleep-title {
+        font-size: 1.5rem;
+        line-height: 2rem;
+      }
+      .energy-calories {
+        font-size: 3.25rem;
+      }
+      .weight-big {
+        font-size: 5.5rem;
+      }
+
+      /* Tab Bar on Phone */
+      nav.rail {
+        position: fixed;
+        left: 1rem;
+        right: 1rem;
+        bottom: 1rem;
+        height: 4.25rem;
+        border-radius: 2.125rem;
+        background: rgba(255, 255, 255, 0.72);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        box-shadow: 0 0.5rem 2rem rgba(15, 26, 25, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        padding: 0 0.5rem;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        z-index: 100;
+      }
+      nav.rail a.logo,
+      nav.rail li.rule,
+      nav.rail [data-more] {
+        display: none !important;
+      }
+      ul.nav {
+        flex-direction: row;
+        justify-content: space-around;
+        width: 100%;
+        gap: 0;
+      }
+      ul.nav li {
+        width: auto;
+      }
+      .rail-btn.menu-key {
+        display: flex;
+      }
+
+      /* Opened Tab Bar Menu */
+      nav.rail.menu-open {
+        height: auto;
+        padding: 0.75rem;
+        border-radius: 1.75rem;
+        display: grid;
+        grid-template-columns: repeat(20, 1fr);
+        gap: 0.5rem;
+      }
+      nav.rail.menu-open ul.nav {
+        display: contents;
+      }
+      nav.rail.menu-open ul.nav li:nth-child(1),
+      nav.rail.menu-open ul.nav li:nth-child(2),
+      nav.rail.menu-open ul.nav li:nth-child(4),
+      nav.rail.menu-open ul.nav li.menu-item-key {
+        grid-column: span 5;
+        display: flex;
+        justify-content: center;
+      }
+      nav.rail.menu-open .rail-foot {
+        display: contents;
+      }
+      nav.rail.menu-open .rail-foot [data-more] {
+        display: flex !important;
+        grid-column: span 4;
+        justify-content: center;
+      }
+      nav.rail.menu-open ul.nav [data-more] {
+        display: flex !important;
+        grid-column: span 4;
+        justify-content: center;
+      }
+      nav.rail.menu-open a.me {
+        display: none !important;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .greet h1 {
+        font-size: 1.375rem;
+      }
+      .greet p {
+        font-size: 0.8125rem;
+      }
+      a.upgrade {
+        padding: 0 0.875rem;
+        gap: 0.5rem;
+        font-size: 0.875rem;
+      }
+      .hero-headline {
+        font-size: 2rem;
+        line-height: 2.375rem;
+      }
+      .card-head-title, .card-head-val {
+        font-size: 1.375rem;
+      }
+      .macro-val {
+        font-size: 1.375rem;
+      }
+    }
+
+    /* 4 · MOTION REDUCTION */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        transition: none !important;
+        animation: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app">
+    <!-- Navigation Rail -->
+    <nav class="rail" id="mainRail" aria-label="Main">
+      <a class="logo" href="#" aria-label="Fettle">
+        <!-- Dot heart logo -->
+        <svg viewBox="0 0 24 24" width="28" height="28" fill="none">
+          <circle cx="7" cy="8" r="3.2" fill="currentColor"/>
+          <circle cx="17" cy="8" r="3.2" fill="currentColor"/>
+          <circle cx="12" cy="13" r="3.2" fill="currentColor"/>
+          <circle cx="12" cy="19" r="2.2" fill="currentColor"/>
+        </svg>
+      </a>
+
+      <ul class="nav">
+        <li>
+          <button class="rail-btn active" aria-label="Home">
+            <svg viewBox="0 0 24 24"><polyline points="3.5,11 12,4 20.5,11"/><rect x="6" y="10" width="12" height="10" rx="2"/><circle cx="12" cy="15" r="1.6" fill="currentColor" stroke="none"/></svg>
+          </button>
+        </li>
+        <li>
+          <button class="rail-btn" aria-label="Activity">
+            <svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><polyline points="7,13 10,10 13,14 17,9"/></svg>
+          </button>
+        </li>
+        <li data-more>
+          <button class="rail-btn" aria-label="Messages">
+            <svg viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="17" height="12.5" rx="3.5"/><polyline points="9,17 9,20.5 13,17"/><line x1="8" y1="10.75" x2="16" y2="10.75"/></svg>
+          </button>
+        </li>
+        <li>
+          <button class="rail-btn" aria-label="Plan">
+            <svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="3.5"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="16" y1="3" x2="16" y2="7"/><line x1="3.5" y1="10" x2="20.5" y2="10"/><circle cx="9" cy="14.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="15" cy="14.5" r="1.2" fill="currentColor" stroke="none"/></svg>
+          </button>
+        </li>
+        <li class="rule"></li>
+        <li data-more>
+          <button class="rail-btn" aria-label="Notifications">
+            <svg viewBox="0 0 24 24"><rect x="6.5" y="4" width="11" height="13" rx="5.5"/><line x1="4.5" y1="17" x2="19.5" y2="17"/><circle cx="12" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>
+          </button>
+        </li>
+        <li data-more>
+          <button class="rail-btn" aria-label="Settings">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="7.5" stroke-dasharray="3.2 2.7"/></svg>
+          </button>
+        </li>
+        <li class="menu-item-key">
+          <button class="rail-btn menu-key" id="menuToggleBtn" aria-label="Menu Toggle">
+            <svg viewBox="0 0 24 24"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+          </button>
+        </li>
+      </ul>
+
+      <div class="rail-foot">
+        <button class="rail-btn" data-more aria-label="Sign out">
+          <svg viewBox="0 0 24 24"><polyline points="13,4 5,4 5,20 13,20"/><line x1="10" y1="12" x2="20" y2="12"/><polyline points="16.5,8.5 20,12 16.5,15.5"/></svg>
+        </button>
+        <button class="rail-btn" data-more aria-label="Help">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="17" r="1.2" fill="currentColor" stroke="none"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.5-2.5 2-2.5 3.5"/></svg>
+        </button>
+        <a class="me" href="/profile" aria-label="Marisol Ortega, profile">
+          <img src="https://wjwoitlioftohvwfymeq.supabase.co/storage/v1/object/public/designs/fettle/face-marisol.webp" alt="Marisol Ortega" width="160" height="160">
+        </a>
+      </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="main">
+      <header class="top">
+        <div class="mobile-header-row">
+          <a class="me-top" href="/profile" aria-label="Marisol Ortega, profile">
+            <img src="https://wjwoitlioftohvwfymeq.supabase.co/storage/v1/object/public/designs/fettle/face-marisol.webp" alt="Marisol Ortega" width="160" height="160">
+          </a>
+          <div class="greet">
+            <h1>Hi, Marisol!</h1>
+            <p>Here's how your day is shaping up.</p>
+          </div>
+        </div>
+
+        <div class="top-right">
+          <label class="search">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+            <input type="search" placeholder="Search your health data" aria-label="Search your health data">
+          </label>
+          <a class="upgrade" href="/premium">
+            <svg viewBox="0 0 24 24"><polygon points="13,2 4,14 11,14 9,22 20,10 13,10"/></svg>
+            <span>Go Premium</span>
+          </a>
+        </div>
+      </header>
+
+      <!-- Row A: Hero Card & Water Card -->
+      <section class="row-a">
+        <!-- Hero Card -->
+        <article class="hero">
+          <div class="hero-photo" aria-hidden="true"></div>
+          <h2 class="hero-headline">Strong Mornings Start at Home</h2>
+
+          <div class="hero-play-wrap">
+            <button class="hero-play" aria-label="Play the session preview">
+              <svg viewBox="0 0 24 24"><polygon points="7,4.5 19.5,12 7,19.5"/></svg>
+            </button>
+            <span class="hero-play-label">Watch Session</span>
+          </div>
+
+          <div class="hero-members">
+            <div class="members-line">Training with you:</div>
+            <div class="hero-members-row">
+              <div class="hero-faces">
+                <img src="https://wjwoitlioftohvwfymeq.supabase.co/storage/v1/object/public/designs/fettle/face-zuri.webp" alt="Zuri" width="160" height="160">
+                <img src="https://wjwoitlioftohvwfymeq.supabase.co/storage/v1/object/public/designs/fettle/face-kenta.webp" alt="Kenta" width="160" height="160">
+                <img src="https://wjwoitlioftohvwfymeq.supabase.co/storage/v1/object/public/designs/fettle/face-helen.webp" alt="Helen" width="160" height="160">
+              </div>
+              <div class="hero-members-count">
+                <strong>12.4K+</strong>
+                <span>Members</span>
+              </div>
+            </div>
+          </div>
+
+          <a class="hero-trial" href="/trial">
+            <span>Begin 7-Day Trial</span>
+            <div class="hero-trial-disc">
+              <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13,6 19,12 13,18"/></svg>
+            </div>
+          </a>
+        </article>
+
+        <!-- Water Card -->
+        <article class="water">
+          <div class="water-head">
+            <h3 class="water-title">Water Intake</h3>
+            <p class="water-body">Sip steadily through the day.<br>Small refills keep your energy even.</p>
+          </div>
+
+          <div class="water-chip-box">
+            <span class="water-goal-chip">
+              <svg viewBox="0 0 24 24"><polyline points="5,12.5 10,17 19,7.5"/></svg>
+              <span>On Track</span>
+            </span>
+          </div>
+
+          <!-- 24 SVG Glasses -->
+          <div class="water-glasses-grid" id="glassesGrid" role="img" aria-label="18 of 24 glasses, 2.25 litres">
+            <!-- Rendered by inline script -->
+          </div>
+
+          <!-- Foot: Toggles and Litres -->
+          <div class="water-foot">
+            <div class="period-group" role="group" aria-label="Period">
+              <button class="toggle-btn" id="btnToggleD" aria-pressed="true">D</button>
+              <button class="toggle-btn" id="btnToggleW" aria-pressed="false">W</button>
+              <button class="toggle-btn" id="btnToggleM" aria-pressed="false">M</button>
+            </div>
+
+            <div class="litres-block">
+              <div class="litres-value num" id="litresVal">2.25L</div>
+              <div class="litres-unit" id="litresUnit">/Day</div>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <!-- Row B: Sleep, Energy, Weight -->
+      <section class="row-b">
+        <!-- Sleep Card -->
+        <article class="card-white sleep">
+          <div class="sleep-faces" aria-hidden="true">
+            <img src="https://wjwoitlioftohvwfymeq.supabase.co/storage/v1/object/public/designs/fettle/face-arjun.webp" alt="Arjun" width="160" height="160">
+            <img src="https://wjwoitlioftohvwfymeq.supabase.co/storage/v1/object/public/designs/fettle/face-walter.webp" alt="Walter" width="160" height="160">
+            <img src="https://wjwoitlioftohvwfymeq.supabase.co/storage/v1/object/public/designs/fettle/face-leila.webp" alt="Leila" width="160" height="160">
+          </div>
+
+          <h3 class="sleep-title">Wind Down for a Deeper Night's Rest</h3>
+
+          <div class="tip-box">
+            <div class="tip-tag">
+              <!-- Moon biting icon -->
+              <svg viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="9" fill="#0F1A19"/>
+                <circle cx="17" cy="8" r="8" fill="#E6F1EE"/>
+              </svg>
+              <span id="tipTag">Evening routine</span>
+            </div>
+            <p class="tip-text" id="tipText" aria-live="polite">Dim the lights an hour before bed and leave your phone in another room. Your body reads darkness as the cue to rest.</p>
+          </div>
+
+          <div class="tip-pager">
+            <div class="tip-counter num">
+              <span id="tipCur">2</span><span class="tip-counter-total">/5</span>
+            </div>
+            <div class="tip-pager-nav">
+              <button class="pager-btn" id="prevTipBtn" aria-label="Previous tip">
+                <svg viewBox="0 0 24 24"><polyline points="15,6 9,12 15,18"/></svg>
+              </button>
+              <button class="pager-btn" id="nextTipBtn" aria-label="Next tip">
+                <svg viewBox="0 0 24 24"><polyline points="9,6 15,12 9,18"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Energy Card -->
+        <article class="card-white energy">
+          <div class="card-head">
+            <div class="head-icon-chip">
+              <!-- Bowl icon -->
+              <svg viewBox="0 0 24 24">
+                <line x1="3.5" y1="11" x2="20.5" y2="11"/>
+                <path d="M5 11a7 7 0 0 0 14 0"/>
+                <line x1="9" y1="21" x2="15" y2="21"/>
+                <line x1="12" y1="18" x2="12" y2="21"/>
+              </svg>
+            </div>
+            <h3 class="card-head-title">Energy</h3>
+            <div class="card-head-val num">2,400 <span class="val-unit">kcal</span></div>
+          </div>
+
+          <div class="card-subrow">
+            <span>Eaten so far</span>
+            <span>Daily target</span>
+          </div>
+
+          <div class="energy-calories num">
+            1,952 <span class="cal-unit">/kcal</span>
+          </div>
+
+          <div class="energy-scale">
+            <span>0</span>
+            <span>2,400</span>
+          </div>
+
+          <!-- 30 Pill Bars -->
+          <div class="energy-bars-row" id="energyBarsRow" role="img" aria-label="1,952 of 2,400 kcal, 81 percent">
+            <!-- 30 bars generated by script -->
+          </div>
+
+          <div class="energy-macros">
+            <div class="macro-col">
+              <div class="macro-val num">222 <span>g</span></div>
+              <div class="macro-lbl">Carbs</div>
+            </div>
+            <div class="macro-col">
+              <div class="macro-val num">122 <span>g</span></div>
+              <div class="macro-lbl">Protein</div>
+            </div>
+            <div class="macro-col">
+              <div class="macro-val num">64 <span>g</span></div>
+              <div class="macro-lbl">Fat</div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Weight Card -->
+        <article class="card-white weight">
+          <div class="card-head">
+            <div class="head-icon-chip">
+              <!-- Double arrow icon -->
+              <svg viewBox="0 0 24 24">
+                <line x1="4" y1="12" x2="20" y2="12"/>
+                <polyline points="8,8 4,12 8,16"/>
+                <polyline points="16,8 20,12 16,16"/>
+              </svg>
+            </div>
+            <h3 class="card-head-title">Weight</h3>
+            <div class="card-head-val num">171 <span class="val-unit">cm</span></div>
+          </div>
+
+          <div class="card-subrow">
+            <span>Healthy range 54 to 73 kg</span>
+            <span>Your height</span>
+          </div>
+
+          <!-- SVG Waves -->
+          <div class="weight-waves-box">
+            <svg class="weight-waves-svg" viewBox="0 0 351 116" id="wavesSvg">
+              <defs>
+                <linearGradient id="waveMaskGrad" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#000" stop-opacity="0" />
+                  <stop offset="18%" stop-color="#fff" stop-opacity="1" />
+                  <stop offset="82%" stop-color="#fff" stop-opacity="1" />
+                  <stop offset="100%" stop-color="#000" stop-opacity="0" />
+                </linearGradient>
+                <mask id="waveMask">
+                  <rect x="0" y="0" width="351" height="116" fill="url(#waveMaskGrad)" />
+                </mask>
+              </defs>
+              <g mask="url(#waveMask)">
+                <polyline id="waveLastMonth" fill="none" stroke="#CFE7E2" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+                <polyline id="waveThisMonth" fill="none" stroke="#1C9C8F" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+              </g>
+              <!-- Crest marker on this month at x=81, y=16 -->
+              <circle cx="81" cy="16" r="9" fill="#FFFFFF" stroke="#1C9C8F" stroke-width="5" />
+            </svg>
+          </div>
+
+          <div class="weight-foot">
+            <div class="weight-big num">
+              63 <span class="weight-unit">kg</span>
+            </div>
+            <div class="weight-trend">
+              Down 1.2 kg<br>
+              since last month
+              <strong>Nicely done!</strong>
+            </div>
+          </div>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    /* ==========================================================================
+       INLINE SCRIPT: INTERACTIVE CONTROLS
+       ========================================================================== */
+
+    // 1. Water Glasses Generation & Toggles
+    const waterConfig = {
+      D: { drunk: 18, total: 24, text: '2.25L', unit: '/Day', label: '18 of 24 glasses, 2.25 litres' },
+      W: { drunk: 16, total: 24, text: '2.00L', unit: '/Day, week avg', label: '16 of 24 glasses, 2.00 litres' },
+      M: { drunk: 15, total: 24, text: '1.88L', unit: '/Day, month avg', label: '15 of 24 glasses, 1.88 litres' }
+    };
+    let currentWaterToggle = 'D';
+
+    function renderGlasses(drunkCount) {
+      const grid = document.getElementById('glassesGrid');
+      grid.innerHTML = '';
+      for (let i = 0; i < 24; i++) {
+        const isDrunk = i < drunkCount;
+        const color = isDrunk ? '#013A3C' : 'rgba(255,255,255,0.94)';
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('viewBox', '0 0 35 43');
+        svg.setAttribute('class', 'glass-svg');
+        svg.setAttribute('data-idx', i);
+        svg.innerHTML = `<polygon class="glass-poly" points="2,3 33,3 29,40 6,40" fill="${color}" />`;
+        
+        // Interactive click to toggle drink count
+        svg.addEventListener('click', () => {
+          const targetDrunk = i + 1 === drunkCount ? i : i + 1;
+          waterConfig[currentWaterToggle].drunk = targetDrunk;
+          const litres = (targetDrunk * 0.125).toFixed(2);
+          document.getElementById('litresVal').textContent = litres + 'L';
+          grid.setAttribute('aria-label', `${targetDrunk} of 24 glasses, ${litres} litres`);
+          renderGlasses(targetDrunk);
+        });
+
+        grid.appendChild(svg);
+      }
+    }
+
+    function setWaterPeriod(periodKey) {
+      currentWaterToggle = periodKey;
+      ['D', 'W', 'M'].forEach(k => {
+        const btn = document.getElementById('btnToggle' + k);
+        btn.setAttribute('aria-pressed', k === periodKey ? 'true' : 'false');
+      });
+      const cfg = waterConfig[periodKey];
+      document.getElementById('litresVal').textContent = cfg.text;
+      document.getElementById('litresUnit').textContent = cfg.unit;
+      const grid = document.getElementById('glassesGrid');
+      grid.setAttribute('aria-label', cfg.label);
+      renderGlasses(cfg.drunk);
+    }
+
+    document.getElementById('btnToggleD').addEventListener('click', () => setWaterPeriod('D'));
+    document.getElementById('btnToggleW').addEventListener('click', () => setWaterPeriod('W'));
+    document.getElementById('btnToggleM').addEventListener('click', () => setWaterPeriod('M'));
+
+    // Initial render
+    setWaterPeriod('D');
+
+    // 2. Sleep Tips Pager
+    const sleepTips = [
+      {
+        tag: 'Wind down',
+        text: 'Set an alarm for bedtime, not only for mornings. A fixed hour teaches your body when to slow down.'
+      },
+      {
+        tag: 'Evening routine',
+        text: 'Dim the lights an hour before bed and leave your phone in another room. Your body reads darkness as the cue to rest.'
+      },
+      {
+        tag: 'Cool room',
+        text: 'Keep the bedroom a little cool, around 18 degrees. A falling temperature helps you drop into deep sleep.'
+      },
+      {
+        tag: 'Late caffeine',
+        text: 'Stop coffee by early afternoon. Caffeine lingers for hours after the last cup and shortens deep sleep.'
+      },
+      {
+        tag: 'Morning light',
+        text: 'Step outside within an hour of waking. Daylight in the morning sets the clock that makes you sleepy at night.'
+      }
+    ];
+
+    let currentTipIndex = 1; // 0-indexed: index 1 is tip 2 (2/5)
+
+    function updateTipView() {
+      const tip = sleepTips[currentTipIndex];
+      document.getElementById('tipTag').textContent = tip.tag;
+      document.getElementById('tipText').textContent = tip.text;
+      document.getElementById('tipCur').textContent = currentTipIndex + 1;
+    }
+
+    document.getElementById('prevTipBtn').addEventListener('click', () => {
+      currentTipIndex = (currentTipIndex - 1 + sleepTips.length) % sleepTips.length;
+      updateTipView();
+    });
+
+    document.getElementById('nextTipBtn').addEventListener('click', () => {
+      currentTipIndex = (currentTipIndex + 1) % sleepTips.length;
+      updateTipView();
+    });
+
+    // 3. Energy Bars Generation
+    function renderEnergyBars() {
+      const totalBars = 30;
+      const eaten = 1952;
+      const target = 2400;
+      const filledBars = Math.round(totalBars * (eaten / target)); // 24
+      const container = document.getElementById('energyBarsRow');
+      container.innerHTML = '';
+
+      for (let i = 0; i < totalBars; i++) {
+        const bar = document.createElement('div');
+        bar.className = 'energy-bar';
+        if (i < filledBars) {
+          const t = i / (filledBars - 1);
+          bar.style.backgroundColor = `color-mix(in oklab, #FFD2AE, #F26A16 ${Math.round(t * 100)}%)`;
+        } else {
+          bar.style.backgroundColor = 'var(--track)';
+        }
+        container.appendChild(bar);
+      }
+    }
+    renderEnergyBars();
+
+    // 4. Weight Sine Waves Generation
+    function generateSineWave(amplitude, period, phase, mid) {
+      const pts = [];
+      for (let x = 6; x <= 345; x += 3) {
+        const y = mid - amplitude * Math.sin((2 * Math.PI * x) / period + phase);
+        pts.push(`${x},${y.toFixed(2)}`);
+      }
+      return pts.join(' ');
+    }
+
+    document.getElementById('waveLastMonth').setAttribute('points', generateSineWave(34, 250, 0.35, 60));
+    document.getElementById('waveThisMonth').setAttribute('points', generateSineWave(40, 230, -0.642, 56));
+
+    // 5. Mobile Tab Bar Menu Toggle
+    const menuBtn = document.getElementById('menuToggleBtn');
+    const rail = document.getElementById('mainRail');
+    if (menuBtn && rail) {
+      menuBtn.addEventListener('click', () => {
+        rail.classList.toggle('menu-open');
+      });
+    }
+  </script>
+</body>
+</html>

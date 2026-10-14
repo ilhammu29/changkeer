@@ -104,3 +104,69 @@ export const siteSettingsSchema = z.object({
 });
 
 export type SiteSettingsFormData = z.infer<typeof siteSettingsSchema>;
+
+// ============================================================================
+// E-COMMERCE & CAFE BREW BAR ORDERING SCHEMAS
+// ============================================================================
+
+export const orderItemInputSchema = z.object({
+  product_id: z.string().optional().nullable(),
+  product_name: z.string().min(1, { message: 'Nama produk harus ada' }),
+  product_slug: z.string().min(1),
+  product_image: z.string().optional().nullable(),
+  serving_size: z.enum(['regular', 'pot']).default('regular'),
+  temperature: z.enum(['hot', 'iced']),
+  sweetness_level: z.enum(['0%', '25%', '50%', '100%']).default('0%'),
+  ice_level: z.enum(['normal', 'less', 'none']).optional().default('normal'),
+  selected_addons: z.array(z.object({
+    id: z.string(),
+    name: z.string(),
+    price: z.number().min(0),
+  })).default([]),
+  unit_price: z.number().min(0),
+  quantity: z.number().int().min(1, { message: 'Kuantitas minimal 1' }),
+  item_notes: z.string().max(200).optional().default(''),
+});
+
+export const checkoutSchema = z.object({
+  customer_name: z.string().trim().min(2, { message: 'Nama pemesan minimal 2 karakter' }).max(100),
+  customer_email: z.string().trim().email({ message: 'Alamat email tidak valid' }),
+  customer_phone: z.string().trim().min(8, { message: 'Nomor WhatsApp / telepon minimal 8 digit' }).max(20),
+  order_type: z.enum(['dine_in', 'takeaway', 'delivery']),
+  table_number: z.string().optional().nullable(),
+  pickup_time: z.string().optional().nullable(),
+  delivery_address: z.string().optional().nullable(),
+  delivery_notes: z.string().optional().nullable(),
+  payment_method: z.enum(['qris', 'cashier', 'bank_transfer']),
+  voucher_code: z.string().optional().nullable(),
+  notes: z.string().max(500).optional().nullable(),
+  items: z.array(orderItemInputSchema).min(1, { message: 'Keranjang belanja tidak boleh kosong' }),
+});
+
+export type CheckoutFormData = z.infer<typeof checkoutSchema>;
+
+export const voucherSchema = z.object({
+  code: z.string().trim().min(3, { message: 'Kode voucher minimal 3 karakter' }).toUpperCase(),
+  title: z.string().trim().min(3, { message: 'Judul promo minimal 3 karakter' }),
+  description: z.string().optional().nullable(),
+  discount_type: z.enum(['percentage', 'fixed']),
+  discount_value: z.number().min(1, { message: 'Nilai diskon harus lebih dari 0' }),
+  min_spend: z.number().min(0).default(0),
+  max_discount: z.number().min(0).optional().nullable(),
+  quota: z.number().int().min(1).default(100),
+  valid_from: z.string().default(() => new Date().toISOString()),
+  valid_until: z.string().default(() => new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()),
+  is_active: z.boolean().default(true),
+});
+
+export type VoucherFormData = z.infer<typeof voucherSchema>;
+
+export const customerAuthSchema = z.object({
+  email: z.string().trim().email({ message: 'Email tidak valid' }),
+  password: z.string().min(6, { message: 'Kata sandi minimal 6 karakter' }),
+  full_name: z.string().trim().min(2, { message: 'Nama minimal 2 karakter' }).optional(),
+  phone_number: z.string().trim().min(8).optional().nullable(),
+});
+
+export type CustomerAuthData = z.infer<typeof customerAuthSchema>;
+

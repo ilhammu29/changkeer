@@ -4,29 +4,29 @@
   :root {
     /* ==========================================================================
        CHANGKEER CENTRALIZED SEMANTIC DESIGN TOKENS
-       Universal Pure White Background & Luxury Editorial Palette
+       Universal Milk White Background & Luxury Neutral Editorial Palette
        ========================================================================== */
     --background: #FFFFFF;
-    --foreground: #14121A;
+    --foreground: #121214;
     --surface: #FFFFFF;
-    --surface-hover: #F8F9FA;
+    --surface-hover: #F8F8FA;
     --surface-elevated: #FFFFFF;
 
-    --primary: #544D79;
+    --primary: #18181B;
     --primary-foreground: #FFFFFF;
-    --primary-hover: #413B60;
+    --primary-hover: #27272A;
 
-    --accent: #8C849A;
+    --accent: #52525B;
     --accent-foreground: #FFFFFF;
-    --accent-subtle: #E2DFE8;
+    --accent-subtle: #E4E4E7;
 
-    --muted: #F4F6F7;
-    --muted-foreground: #5C586B;
+    --muted: #F4F4F5;
+    --muted-foreground: #71717A;
 
-    --border: #E5E8EB;
-    --border-strong: #8C849A;
+    --border: #E4E4E7;
+    --border-strong: #71717A;
 
-    --ring: #544D79;
+    --ring: #18181B;
 
     /* Radius & Spacing Scales */
     --radius-sm: 4px;
@@ -41,27 +41,27 @@
   }
 
   .dark {
-    --background: #110F18;
-    --foreground: #F2EFF7;
-    --surface: #181522;
-    --surface-hover: #211E2E;
-    --surface-elevated: #1F1B2B;
+    --background: #0E0E10;
+    --foreground: #F4F4F6;
+    --surface: #161618;
+    --surface-hover: #1F1F23;
+    --surface-elevated: #26262B;
 
-    --primary: #A29BB7;
-    --primary-foreground: #110F18;
-    --primary-hover: #BFB8D4;
+    --primary: #F4F4F6;
+    --primary-foreground: #0E0E10;
+    --primary-hover: #FFFFFF;
 
-    --accent: #8C849A;
-    --accent-foreground: #FFFFFF;
-    --accent-subtle: #2A2438;
+    --accent: #A1A1AA;
+    --accent-foreground: #0E0E10;
+    --accent-subtle: #27272A;
 
-    --muted: #1F1C2B;
-    --muted-foreground: #9C96AB;
+    --muted: #1F1F23;
+    --muted-foreground: #A1A1AA;
 
-    --border: #2A263B;
-    --border-strong: #8C849A;
+    --border: #27272A;
+    --border-strong: #52525B;
 
-    --ring: #A29BB7;
+    --ring: #F4F4F6;
   }
 }
 

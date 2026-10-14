@@ -122,3 +122,124 @@ export interface AdminProfile {
   created_at: string;
   updated_at: string;
 }
+
+// ============================================================================
+// E-COMMERCE & CAFE BREW BAR ORDERING TYPES
+// ============================================================================
+
+export type OrderType = 'dine_in' | 'takeaway' | 'delivery';
+export type OrderStatus = 'received' | 'brewing' | 'ready' | 'completed' | 'cancelled';
+export type PaymentMethod = 'qris' | 'cashier' | 'bank_transfer';
+export type PaymentStatus = 'unpaid' | 'paid' | 'refunded';
+export type DiscountType = 'percentage' | 'fixed';
+
+export interface BotanicalAddon {
+  id: string;
+  name: string;
+  price: number;
+}
+
+export interface CartItem {
+  cart_item_id: string; // unique key in cart
+  product_id: string;
+  product_name: string;
+  product_slug: string;
+  product_image?: string | null;
+  serving_size: 'regular' | 'pot';
+  temperature: 'hot' | 'iced';
+  sweetness_level: '0%' | '25%' | '50%' | '100%';
+  ice_level?: 'normal' | 'less' | 'none';
+  selected_addons: BotanicalAddon[];
+  unit_price: number;
+  quantity: number;
+  subtotal: number;
+  item_notes?: string;
+}
+
+export interface Voucher {
+  id: string;
+  code: string;
+  title: string;
+  description?: string | null;
+  discount_type: DiscountType;
+  discount_value: number;
+  min_spend: number;
+  max_discount?: number | null;
+  quota: number;
+  used_count: number;
+  valid_from: string;
+  valid_until: string;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CafeTable {
+  id: string;
+  table_number: string;
+  capacity: number;
+  description?: string | null;
+  is_active: boolean;
+  created_at: string;
+}
+
+export interface OrderItem {
+  id: string;
+  order_id: string;
+  product_id?: string | null;
+  product_name: string;
+  product_slug: string;
+  product_image?: string | null;
+  serving_size: string;
+  temperature: 'hot' | 'iced';
+  sweetness_level: string;
+  ice_level?: string | null;
+  selected_addons: BotanicalAddon[];
+  unit_price: number;
+  quantity: number;
+  subtotal: number;
+  item_notes?: string | null;
+  created_at: string;
+}
+
+export interface Order {
+  id: string;
+  order_number: string;
+  customer_id?: string | null;
+  customer_name: string;
+  customer_email: string;
+  customer_phone: string;
+  order_type: OrderType;
+  table_number?: string | null;
+  pickup_time?: string | null;
+  delivery_address?: string | null;
+  delivery_notes?: string | null;
+  subtotal: number;
+  discount_amount: number;
+  delivery_fee: number;
+  tax_amount: number;
+  total_amount: number;
+  voucher_id?: string | null;
+  voucher_code?: string | null;
+  payment_method: PaymentMethod;
+  payment_status: PaymentStatus;
+  order_status: OrderStatus;
+  notes?: string | null;
+  paid_at?: string | null;
+  completed_at?: string | null;
+  created_at: string;
+  updated_at: string;
+  items?: OrderItem[];
+}
+
+export interface CustomerProfile {
+  id: string;
+  email: string;
+  full_name: string;
+  phone_number?: string | null;
+  default_address?: string | null;
+  avatar_url?: string | null;
+  created_at: string;
+  updated_at: string;
+}
+

@@ -10,8 +10,15 @@ import { ArrowUpRight } from 'lucide-react';
 export function Footer() {
   const pathname = usePathname();
 
-  // Hide public footer on /admin routes
-  if (pathname.startsWith('/admin')) {
+  // Hide public footer on /admin, /account, /order, /checkout, /login, and /register routes
+  if (
+    pathname.startsWith('/admin') ||
+    pathname.startsWith('/account') ||
+    pathname.startsWith('/order') ||
+    pathname.startsWith('/checkout') ||
+    pathname === '/login' ||
+    pathname === '/register'
+  ) {
     return null;
   }
 

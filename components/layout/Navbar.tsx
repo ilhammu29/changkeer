@@ -14,6 +14,7 @@ const NAV_LINKS = [
   { name: 'ABOUT CHANGKEER', href: '/tentang-kami' },
   { name: 'NEWS', href: '/media-berita' },
   { name: 'CONTACT US', href: '/hubungi-kami' },
+  { name: 'LOGIN', href: '/login' },
 ];
 
 export function Navbar() {
@@ -76,8 +77,15 @@ export function Navbar() {
     return pathname.startsWith(href);
   };
 
-  // Hide public navbar on /admin routes
-  if (pathname.startsWith('/admin')) {
+  // Hide public navbar on /admin, /account, /order, /checkout, /login, and /register routes
+  if (
+    pathname.startsWith('/admin') ||
+    pathname.startsWith('/account') ||
+    pathname.startsWith('/order') ||
+    pathname.startsWith('/checkout') ||
+    pathname === '/login' ||
+    pathname === '/register'
+  ) {
     return null;
   }
 
@@ -146,16 +154,12 @@ export function Navbar() {
 
           {/* Right Action: CTA & Mobile Sidebar Toggle */}
           <div className="flex items-center gap-3">
+            {/* Desktop Login Button */}
             <Link
-              href="/katalog"
-              className={`hidden sm:inline-flex text-[11px] font-bold tracking-[0.16em] uppercase px-4 py-2 rounded-full transition-all items-center gap-1.5 shadow-xs active:scale-95 ${
-                isDarkTheme
-                  ? 'bg-white text-black hover:bg-neutral-200'
-                  : 'bg-primary text-primary-foreground hover:bg-primary-hover'
-              }`}
+              href="/login"
+              className="hidden sm:inline-flex text-[11px] font-bold tracking-[0.16em] uppercase px-5 py-2 rounded-full bg-white text-black hover:bg-neutral-200 transition-all items-center gap-1.5 shadow-xs active:scale-95 cursor-pointer"
             >
-              <span>EXPLORE BLENDS</span>
-              <ArrowUpRight className="w-3 h-3" />
+              <span>LOGIN</span>
             </Link>
 
             {/* Mobile / Tablet Hamburger Menu Toggle (Hidden on Desktop) */}
@@ -266,11 +270,11 @@ export function Navbar() {
             {/* Sidebar Bottom Action & Info */}
             <div className="pt-4 border-t border-white/10 space-y-2.5 shrink-0">
               <Link
-                href="/katalog"
+                href="/login"
                 onClick={() => setSidebarOpen(false)}
                 className="w-full text-center block text-[11px] font-bold tracking-[0.18em] uppercase py-3 rounded-xl bg-white text-black hover:bg-neutral-200 transition-colors shadow-sm"
               >
-                EXPLORE BLENDS &amp; PRICES
+                LOGIN
               </Link>
               <div className="text-[10px] font-mono text-white/50 text-center uppercase tracking-wider">
                 Unsweetened by default &bull; Plastic-free
