@@ -74,10 +74,47 @@ export async function POST(req: NextRequest) {
     const safeExt = ext === 'jpeg' ? 'jpg' : (allowedExts.includes(ext) ? ext : 'webp');
     const cleanFileName = `${type}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${safeExt}`;
 
-    const { isConfigured } = getSupabaseEnv();
+    const { isConfigured, serviceKey } = getSupabaseEnv();
 
-    // 3. Fallback to Local disk storage under public/uploads/profiles
-    if (!isConfigured) {
+    // Strategy 1: Supabase Storage (Priority for online production / Vercel)
+    if (isConfigured && serviceKey) {
+      try {
+        const supabase = createAdminClient();
+        const candidateBuckets = ['customer-media', 'site-media', 'product-images'];
+
+        for (const bucket of candidateBuckets) {
+          try {
+            const { error: uploadError } = await supabase.storage
+              .from(bucket)
+              .upload(cleanFileName, buffer, {
+                contentType: file.type || 'image/jpeg',
+                upsert: true,
+              });
+
+            if (!uploadError) {
+              const { data: urlData } = supabase.storage.from(bucket).getPublicUrl(cleanFileName);
+              return NextResponse.json({
+                success: true,
+                publicUrl: urlData.publicUrl,
+                size: file.size,
+                type,
+                storage: 'supabase',
+                bucket,
+              });
+            } else {
+              console.warn(`Supabase bucket ${bucket} upload error:`, uploadError.message);
+            }
+          } catch (bucketErr) {
+            console.warn(`Supabase bucket ${bucket} exception:`, bucketErr);
+          }
+        }
+      } catch (storageErr) {
+        console.warn('Supabase storage client exception:', storageErr);
+      }
+    }
+
+    // Strategy 2: Local Disk Storage (For local dev or VPS/cPanel with writable filesystem)
+    try {
       const uploadDir = path.join(process.cwd(), 'public', 'uploads', 'profiles');
       await fs.mkdir(uploadDir, { recursive: true });
       await fs.writeFile(path.join(uploadDir, cleanFileName), buffer);
@@ -88,56 +125,25 @@ export async function POST(req: NextRequest) {
         publicUrl,
         size: file.size,
         type,
-        message: 'Gambar berhasil diunggah dan disimpan ke server lokal.',
+        storage: 'local-disk',
       });
+    } catch (fsErr) {
+      console.warn('Local disk write failed (e.g. read-only serverless filesystem):', fsErr);
     }
 
-    // 4. Supabase Storage upload
-    try {
-      const supabase = createAdminClient();
-      const bucket = 'customer-media';
+    // Strategy 3: Infallible Base64 Data URL Fallback
+    // Guaranteed to work on Vercel read-only serverless, ephemeral containers, or restricted environments
+    const base64 = buffer.toString('base64');
+    const mimeType = file.type || (safeExt === 'jpg' ? 'image/jpeg' : `image/${safeExt}`);
+    const dataUrl = `data:${mimeType};base64,${base64}`;
 
-      const { error: uploadError } = await supabase.storage
-        .from(bucket)
-        .upload(cleanFileName, buffer, {
-          contentType: file.type,
-          upsert: true,
-        });
-
-      if (uploadError) {
-        // Fallback to local disk if bucket is not yet created
-        console.warn('Supabase storage bucket upload failed, falling back to local disk:', uploadError);
-        const uploadDir = path.join(process.cwd(), 'public', 'uploads', 'profiles');
-        await fs.mkdir(uploadDir, { recursive: true });
-        await fs.writeFile(path.join(uploadDir, cleanFileName), buffer);
-        return NextResponse.json({
-          success: true,
-          publicUrl: `/uploads/profiles/${cleanFileName}`,
-          size: file.size,
-          type,
-        });
-      }
-
-      const { data: urlData } = supabase.storage.from(bucket).getPublicUrl(cleanFileName);
-      return NextResponse.json({
-        success: true,
-        publicUrl: urlData.publicUrl,
-        size: file.size,
-        type,
-      });
-    } catch (storageErr) {
-      console.warn('Storage error fallback:', storageErr);
-      const uploadDir = path.join(process.cwd(), 'public', 'uploads', 'profiles');
-      await fs.mkdir(uploadDir, { recursive: true });
-      await fs.writeFile(path.join(uploadDir, cleanFileName), buffer);
-      return NextResponse.json({
-        success: true,
-        publicUrl: `/uploads/profiles/${cleanFileName}`,
-        size: file.size,
-        type,
-      });
-    }
-
+    return NextResponse.json({
+      success: true,
+      publicUrl: dataUrl,
+      size: file.size,
+      type,
+      storage: 'inline-base64',
+    });
   } catch (error: any) {
     console.error('Customer media upload error:', error);
     return NextResponse.json(

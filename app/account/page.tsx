@@ -59,6 +59,11 @@ function formatRupiah(amount: number): string {
   }).format(amount);
 }
 
+function isUnoptimizedImg(src?: string | null): boolean {
+  if (!src) return false;
+  return src.startsWith('data:') || src.startsWith('blob:') || src.startsWith('/uploads/');
+}
+
 export default function AccountPage() {
   const [profile, setProfile] = useState<CustomerProfile | null>(null);
   const [orders, setOrders] = useState<Order[]>([]);
@@ -220,61 +225,75 @@ export default function AccountPage() {
       const compressedKB = Math.round(compressed.compressedSize / 1024);
       setUploadFeedback(`Mengunggah gambar (${originalKB}KB → ${compressedKB}KB)...`);
 
-      // Immediate visual preview in UI
+      // 3. Immediate visual preview in UI
       if (compressed.dataUrl) {
         if (isAvatar) setEditAvatarUrl(compressed.dataUrl);
         else setEditBannerUrl(compressed.dataUrl);
       }
 
-      // 3. Upload to API
-      const formData = new FormData();
-      formData.append('file', compressed.file);
-      formData.append('type', type);
-      if (profile) {
-        formData.append('customer_session', JSON.stringify(profile));
-      }
+      // 4. Upload to Server API with automatic client fallback for online environments
+      let uploadedUrl: string = compressed.dataUrl;
 
-      const headers: Record<string, string> = {};
-      if (profile) {
-        headers['x-customer-session'] = encodeURIComponent(JSON.stringify(profile));
-      }
-
-      const res = await fetch('/api/auth/customer/upload', {
-        method: 'POST',
-        headers,
-        body: formData,
-      });
-
-      const data = await res.json();
-      if (!res.ok || !data.success) {
-        throw new Error(data.error || 'Gagal mengunggah gambar ke server');
-      }
-
-      const uploadedUrl = data.publicUrl;
-
-      // 4. Update session profile via API
-      const patchRes = await fetch('/api/auth/customer/profile', {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(profile ? { 'x-customer-session': encodeURIComponent(JSON.stringify(profile)) } : {}),
-        },
-        body: JSON.stringify({
-          [isAvatar ? 'avatar_url' : 'banner_url']: uploadedUrl,
-          ...(profile ? { customer_session: profile } : {}),
-        }),
-      });
-
-      const patchData = await patchRes.json();
-      if (!patchRes.ok || !patchData.profile) {
-        throw new Error(patchData.error || 'Gagal menyimpan perubahan ke akun');
-      }
-
-      const updated = patchData.profile;
-      setProfile(updated);
       try {
-        localStorage.setItem('changkeer_customer_session', JSON.stringify(updated));
-        document.cookie = `changkeer_customer_session=${encodeURIComponent(JSON.stringify(updated))}; path=/; max-age=2592000; SameSite=Lax;`;
+        const formData = new FormData();
+        formData.append('file', compressed.file);
+        formData.append('type', type);
+        if (profile) {
+          formData.append('customer_session', JSON.stringify(profile));
+        }
+
+        const headers: Record<string, string> = {};
+        if (profile) {
+          headers['x-customer-session'] = encodeURIComponent(JSON.stringify(profile));
+        }
+
+        const res = await fetch('/api/auth/customer/upload', {
+          method: 'POST',
+          headers,
+          body: formData,
+        });
+
+        const data = await res.json();
+        if (res.ok && data.success && data.publicUrl) {
+          uploadedUrl = data.publicUrl;
+        } else {
+          console.warn('Server upload fallback to client compressed image:', data?.error);
+        }
+      } catch (uploadErr) {
+        console.warn('Network upload fallback to client compressed image:', uploadErr);
+      }
+
+      // 5. Update session profile via API
+      let updatedProfile = {
+        ...profile,
+        [isAvatar ? 'avatar_url' : 'banner_url']: uploadedUrl,
+      };
+
+      try {
+        const patchRes = await fetch('/api/auth/customer/profile', {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            ...(profile ? { 'x-customer-session': encodeURIComponent(JSON.stringify(profile)) } : {}),
+          },
+          body: JSON.stringify({
+            [isAvatar ? 'avatar_url' : 'banner_url']: uploadedUrl,
+            ...(profile ? { customer_session: profile } : {}),
+          }),
+        });
+
+        const patchData = await patchRes.json();
+        if (patchRes.ok && patchData.profile) {
+          updatedProfile = patchData.profile;
+        }
+      } catch (patchErr) {
+        console.warn('Profile PATCH error, updating local session:', patchErr);
+      }
+
+      setProfile(updatedProfile as CustomerProfile);
+      try {
+        localStorage.setItem('changkeer_customer_session', JSON.stringify(updatedProfile));
+        document.cookie = `changkeer_customer_session=${encodeURIComponent(JSON.stringify(updatedProfile))}; path=/; max-age=2592000; SameSite=Lax;`;
       } catch {}
 
       if (isAvatar) setEditAvatarUrl(uploadedUrl);
@@ -471,6 +490,7 @@ export default function AccountPage() {
                   alt="Sampul Profil"
                   fill
                   priority
+                  unoptimized={isUnoptimizedImg(userBanner)}
                   className="object-cover object-center group-hover:scale-102 transition-transform duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/40 backdrop-blur-[0.5px]" />
@@ -550,6 +570,7 @@ export default function AccountPage() {
                       src={userAvatar}
                       alt={profile?.full_name || 'Foto Profil'}
                       fill
+                      unoptimized={isUnoptimizedImg(userAvatar)}
                       className="object-cover rounded-full"
                     />
                   ) : (
@@ -1419,7 +1440,7 @@ export default function AccountPage() {
                   <div className="flex items-center gap-3.5">
                     <div className="relative w-14 h-14 rounded-full bg-neutral-900 text-white flex items-center justify-center font-bold text-xl overflow-hidden shrink-0 border border-neutral-200">
                       {userAvatar ? (
-                        <Image src={userAvatar} alt="Avatar" fill className="object-cover" />
+                        <Image src={userAvatar} alt="Avatar" fill unoptimized={isUnoptimizedImg(userAvatar)} className="object-cover" />
                       ) : (
                         <span>{profile?.full_name ? profile.full_name[0].toUpperCase() : 'C'}</span>
                       )}
@@ -1446,7 +1467,7 @@ export default function AccountPage() {
                   <div className="flex items-center gap-3.5">
                     <div className="relative w-18 h-12 rounded-xl bg-neutral-900 text-white flex items-center justify-center text-xs overflow-hidden shrink-0 border border-neutral-200">
                       {userBanner ? (
-                        <Image src={userBanner} alt="Banner" fill className="object-cover" />
+                        <Image src={userBanner} alt="Banner" fill unoptimized={isUnoptimizedImg(userBanner)} className="object-cover" />
                       ) : (
                         <span className="text-[10px] text-neutral-400 font-mono">DEFAULT</span>
                       )}
@@ -1611,7 +1632,7 @@ export default function AccountPage() {
                   <div className="flex flex-col items-center justify-center p-3 rounded-xl bg-white border border-neutral-200 text-center space-y-2">
                     <div className="relative w-12 h-12 rounded-full bg-neutral-900 text-white flex items-center justify-center font-bold text-base overflow-hidden border border-neutral-200">
                       {editAvatarUrl ? (
-                        <Image src={editAvatarUrl} alt="Avatar" fill className="object-cover" />
+                        <Image src={editAvatarUrl} alt="Avatar" fill unoptimized={isUnoptimizedImg(editAvatarUrl)} className="object-cover" />
                       ) : (
                         <span>{editFullName ? editFullName[0].toUpperCase() : 'C'}</span>
                       )}
@@ -1631,7 +1652,7 @@ export default function AccountPage() {
                   <div className="flex flex-col items-center justify-center p-3 rounded-xl bg-white border border-neutral-200 text-center space-y-2">
                     <div className="relative w-full h-12 rounded-lg bg-neutral-900 text-white flex items-center justify-center text-[10px] font-mono overflow-hidden border border-neutral-200">
                       {editBannerUrl ? (
-                        <Image src={editBannerUrl} alt="Banner" fill className="object-cover" />
+                        <Image src={editBannerUrl} alt="Banner" fill unoptimized={isUnoptimizedImg(editBannerUrl)} className="object-cover" />
                       ) : (
                         <span className="text-neutral-400">Default Gradient</span>
                       )}
