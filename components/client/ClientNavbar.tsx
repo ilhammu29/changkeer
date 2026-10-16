@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { useCart } from '@/lib/context/CartContext';
 import { CustomerProfile, OrderType } from '@/types';
+import { safeParseCustomerSession } from '@/lib/auth/session-helpers';
 
 interface ClientNavbarProps {
   pageTitle?: string;
@@ -46,7 +47,7 @@ export function ClientNavbar({ pageTitle, subtitle }: ClientNavbarProps) {
     try {
       const match = document.cookie.match(/changkeer_customer_session=([^;]+)/);
       if (match) {
-        const parsed = JSON.parse(decodeURIComponent(match[1]));
+        const parsed = safeParseCustomerSession(match[1]);
         if (parsed?.email) {
           setCustomer(parsed);
           return;

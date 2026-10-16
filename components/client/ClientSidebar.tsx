@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { useCart } from '@/lib/context/CartContext';
 import { CustomerProfile, OrderType } from '@/types';
+import { safeParseCustomerSession } from '@/lib/auth/session-helpers';
 
 export function ClientSidebar() {
   const pathname = usePathname();
@@ -26,7 +27,7 @@ export function ClientSidebar() {
     try {
       const match = document.cookie.match(/changkeer_customer_session=([^;]+)/);
       if (match) {
-        const parsed = JSON.parse(decodeURIComponent(match[1]));
+        const parsed = safeParseCustomerSession(match[1]);
         if (parsed?.email) {
           setCustomer(parsed);
           return;

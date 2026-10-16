@@ -239,7 +239,12 @@ export interface CustomerProfile {
   phone_number?: string | null;
   default_address?: string | null;
   avatar_url?: string | null;
+  banner_url?: string | null;
+  bio?: string | null;
+  preferred_temperature?: 'hot' | 'iced' | null;
+  preferred_sweetness?: string | null;
   created_at: string;
   updated_at: string;
 }
+
 

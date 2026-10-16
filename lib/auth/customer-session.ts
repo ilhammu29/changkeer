@@ -3,6 +3,8 @@ import { CustomerProfile } from '@/types';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { getSupabaseEnv } from '@/lib/supabase/env';
 
+import { safeParseCustomerSession } from './session-helpers';
+
 export async function getCurrentCustomer(): Promise<CustomerProfile | null> {
   const { isConfigured } = getSupabaseEnv();
 
@@ -10,15 +12,9 @@ export async function getCurrentCustomer(): Promise<CustomerProfile | null> {
   try {
     const cookieStore = await cookies();
     const sessionCookie = cookieStore.get('changkeer_customer_session')?.value;
-    if (sessionCookie) {
-      try {
-        const parsed = JSON.parse(decodeURIComponent(sessionCookie));
-        if (parsed && parsed.email) {
-          return parsed as CustomerProfile;
-        }
-      } catch {
-        // Fallback
-      }
+    const parsed = safeParseCustomerSession(sessionCookie);
+    if (parsed && parsed.email) {
+      return parsed;
     }
   } catch {
     // Cookie store unavailable
