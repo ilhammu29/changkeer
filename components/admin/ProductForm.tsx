@@ -39,7 +39,7 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
     packaging_info: initialData?.packaging_info || '',
     price: initialData?.price || 0,
     weight_grams: initialData?.weight_grams || 50,
-    featured_image: initialData?.featured_image || '/images/products/changkeer-lemongrass-ginger.jpg',
+    featured_image: initialData?.featured_image || '/images/products/start-of-spring.jpg',
     gallery: initialData?.gallery || [],
     is_featured: initialData?.is_featured || false,
     status: initialData?.status || 'draft',
@@ -213,7 +213,7 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
                 type="text"
                 value={formData.name}
                 onChange={handleNameChange}
-                placeholder="CHANGKEER Lemongrass Ginger Vitality"
+                placeholder="CHANGKEER First Bloom"
                 required
                 className="w-full px-3.5 py-2.5 text-xs bg-background border border-border rounded-sm text-foreground focus:outline-none focus:ring-1 focus:ring-ring"
               />
@@ -228,7 +228,7 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
                 type="text"
                 value={formData.slug}
                 onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
-                placeholder="lemongrass-ginger-vitality"
+                placeholder="start-of-spring"
                 required
                 className="w-full px-3.5 py-2.5 text-xs bg-background border border-border rounded-sm font-mono text-foreground focus:outline-none focus:ring-1 focus:ring-ring"
               />
@@ -511,7 +511,7 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
                 type="text"
                 value={formData.seo_title || ''}
                 onChange={(e) => setFormData({ ...formData, seo_title: e.target.value })}
-                placeholder="CHANGKEER Lemongrass Ginger - Teh Herbal Hangat"
+                placeholder="CHANGKEER First Bloom - Teh Herbal Segar"
                 className="w-full px-3.5 py-2.5 text-xs bg-background border border-border rounded-sm text-foreground focus:outline-none focus:ring-1 focus:ring-ring"
               />
             </div>

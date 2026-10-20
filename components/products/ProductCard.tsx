@@ -18,7 +18,7 @@ export function ProductCard({ product }: ProductCardProps) {
   const imageSrc =
     product.featured_image ||
     (product.gallery && product.gallery[0]) ||
-    '/images/assets/jasmine_tea_produk.jpg';
+    '/images/products/start-of-spring.jpg';
 
   return (
     <article className="h-full">

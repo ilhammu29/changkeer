@@ -66,7 +66,7 @@ export default async function TentangProdukPage() {
                 const imageSrc =
                   product.featured_image ||
                   (product.gallery && product.gallery[0]) ||
-                  '/images/assets/jasmine_tea_produk.jpg';
+                  '/images/products/start-of-spring.jpg';
 
                 return (
                   <div key={product.id} className="w-full">

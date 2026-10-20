@@ -47,9 +47,9 @@ describe('Validation Schemas Unit Tests', () => {
 
   it('validates product schema and defaults', () => {
     const validProduct = {
-      name: 'CHANGKEER Lemongrass Ginger',
-      slug: 'changkeer-lemongrass-ginger',
-      price: 85000,
+      name: 'CHANGKEER First Bloom',
+      slug: 'start-of-spring',
+      price: 24000,
       status: 'published',
       brewing_guide: {
         water_temp: '95°C',

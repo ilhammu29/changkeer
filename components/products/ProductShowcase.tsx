@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Image from 'next/image';
 import { Container } from '@/components/ui/Container';
+import { SOLAR_TERM_BLENDS } from '@/lib/data/solarTerms';
 
 interface ProductShowcaseItem {
   id: string;
@@ -15,38 +16,20 @@ interface ProductShowcaseItem {
   glowColor: string;
 }
 
-const FEATURED_PRODUCTS: ProductShowcaseItem[] = [
-  {
-    id: 'jasmine-tea',
-    name: 'JASMINE TEA',
-    shortName: 'Jasmine Tea',
-    watermark: 'JASMINE',
-    price: 'Rp 45.000',
-    image: '/images/products-nobg/jasmine-tea.png',
-    ringColor: '#c49a45',
-    glowColor: 'rgba(196, 154, 69, 0.22)',
-  },
-  {
-    id: 'english-breakfast-tea',
-    name: 'ENGLISH BREAKFAST',
-    shortName: 'English Breakfast',
-    watermark: 'BREAKFAST',
-    price: 'Rp 48.000',
-    image: '/images/products-nobg/english-breakfast-tea.png',
-    ringColor: '#a85b3b',
-    glowColor: 'rgba(168, 91, 59, 0.22)',
-  },
-  {
-    id: 'vanilla-mint-tea',
-    name: 'VANILLA MINT TEA',
-    shortName: 'Vanilla Mint',
-    watermark: 'VANILLA',
-    price: 'Rp 48.000',
-    image: '/images/products-nobg/vanilla-mint-tea.png',
-    ringColor: '#4d8f78',
-    glowColor: 'rgba(77, 143, 120, 0.22)',
-  },
-];
+function toKebab(s: string) {
+  return s.replace(/'s/g, 's').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+}
+
+const FEATURED_PRODUCTS: ProductShowcaseItem[] = SOLAR_TERM_BLENDS.map((b) => ({
+  id: toKebab(b.term),
+  name: b.blend.toUpperCase(),
+  shortName: b.blend,
+  watermark: b.watermark,
+  price: `Rp ${b.hotPrice.replace('K', '.000')}`,
+  image: b.image,
+  ringColor: b.ringColor,
+  glowColor: b.glowColor,
+}));
 
 export function ProductShowcase() {
   const [currentIndex, setCurrentIndex] = useState(0);

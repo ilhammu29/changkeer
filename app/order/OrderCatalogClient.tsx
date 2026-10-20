@@ -24,9 +24,14 @@ import { useCart } from '@/lib/context/CartContext';
 import { ClientLayout } from '@/components/client/ClientLayout';
 import { CustomizationModal } from '@/components/order/CustomizationModal';
 import { safeParseCustomerSession } from '@/lib/auth/session-helpers';
+import { SOLAR_TERM_BLENDS } from '@/lib/data/solarTerms';
 
 interface OrderCatalogClientProps {
   initialProducts: Product[];
+}
+
+function toKebab(s: string) {
+  return s.replace(/'s/g, 's').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 }
 
 function formatRupiah(amount: number): string {
@@ -37,48 +42,24 @@ function formatRupiah(amount: number): string {
   }).format(amount);
 }
 
-// Mini / Lite Carousel Signature Products
-const MINI_SHOWCASE_ITEMS = [
-  {
-    id: 'jasmine-tea',
-    name: 'JASMINE TEA',
-    watermark: 'JASMINE',
-    price: 28000,
-    formattedPrice: 'Rp 28.000',
-    image: '/images/products-nobg/jasmine-tea.png',
-    ringColor: '#c49a45',
-    glowColor: 'rgba(196, 154, 69, 0.35)',
-    tagline: 'Daun Teh Utuh & Bunga Melati Asli Lawu',
-    desc: 'Seduhan segar menenangkan dengan aroma melati alami tanpa pemanis buatan.',
-    slug: 'solar-term-jasmine-herbal-tea',
-  },
-  {
-    id: 'english-breakfast-tea',
-    name: 'ENGLISH BREAKFAST',
-    watermark: 'BREAKFAST',
-    price: 28000,
-    formattedPrice: 'Rp 28.000',
-    image: '/images/products-nobg/english-breakfast-tea.png',
-    ringColor: '#a85b3b',
-    glowColor: 'rgba(168, 91, 59, 0.35)',
-    tagline: 'Black Tea Pekat Berkarakter Kuat & Wangi Hangat',
-    desc: 'Kaya theaflavin dan energi murni untuk mengawali ritme hari Anda.',
-    slug: 'english-breakfast-tea',
-  },
-  {
-    id: 'vanilla-mint-tea',
-    name: 'VANILLA MINT TEA',
-    watermark: 'VANILLA',
-    price: 30000,
-    formattedPrice: 'Rp 30.000',
-    image: '/images/products-nobg/vanilla-mint-tea.png',
-    ringColor: '#4d8f78',
-    glowColor: 'rgba(77, 143, 120, 0.35)',
-    tagline: 'Sensasi Sejuk Herba Mint & Polong Vanila Alami',
-    desc: 'Kesegaran herba mint nusantara berpadu kelembutan polong vanila murni.',
-    slug: 'vanilla-mint-tea',
-  },
-];
+// Mini / Lite Carousel Signature Seasonal Products (All 24 Solar Terms with Transparent BG)
+const MINI_SHOWCASE_ITEMS = SOLAR_TERM_BLENDS.map((blend) => {
+  const slug = toKebab(blend.term);
+  const priceNum = parseInt(blend.hotPrice.replace(/\D/g, '')) * 1000;
+  return {
+    id: slug,
+    name: blend.blend.toUpperCase(),
+    watermark: blend.watermark,
+    price: priceNum,
+    formattedPrice: `Rp ${blend.hotPrice.replace('K', '.000')}`,
+    image: blend.image,
+    ringColor: blend.ringColor,
+    glowColor: blend.glowColor,
+    tagline: `${blend.term} (${blend.termChinese}) • ${blend.ingredients.slice(0, 3).join(', ')}`,
+    desc: blend.note,
+    slug: slug,
+  };
+});
 
 export function OrderCatalogClient({ initialProducts }: OrderCatalogClientProps) {
   const searchParams = useSearchParams();
@@ -373,14 +354,14 @@ export function OrderCatalogClient({ initialProducts }: OrderCatalogClientProps)
           {/* Bottom Navigation: Dots & Arrow Controls */}
           <div className="relative z-10 flex items-center justify-between pt-4 mt-3 border-t border-white/10 text-xs">
             {/* Dots */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 max-w-[150px] sm:max-w-xs md:max-w-md overflow-x-auto scrollbar-none py-1">
               {MINI_SHOWCASE_ITEMS.map((_, idx) => (
                 <button
                   key={idx}
                   type="button"
                   onClick={() => setCarouselIndex(idx)}
-                  className={`h-1.5 rounded-full transition-all cursor-pointer ${
-                    carouselIndex === idx ? 'w-8 bg-white' : 'w-2.5 bg-white/30 hover:bg-white/50'
+                  className={`h-1.5 rounded-full transition-all cursor-pointer shrink-0 ${
+                    carouselIndex === idx ? 'w-5 sm:w-6 bg-white' : 'w-1.5 bg-white/30 hover:bg-white/50'
                   }`}
                   aria-label={`Pindah ke slide ${idx + 1}`}
                 />
@@ -434,7 +415,7 @@ export function OrderCatalogClient({ initialProducts }: OrderCatalogClientProps)
             {bestSellerProducts.map((product) => {
               const isAdded = addedProductId === product.id;
               const formattedPrice = formatRupiah(product.price || 28000);
-              const imageSrc = product.featured_image || (product.gallery && product.gallery[0]) || '/images/assets/jasmine_tea_produk.jpg';
+              const imageSrc = product.featured_image || (product.gallery && product.gallery[0]) || '/images/products/start-of-spring.jpg';
 
               return (
                 <div
@@ -610,7 +591,7 @@ export function OrderCatalogClient({ initialProducts }: OrderCatalogClientProps)
               {filteredProducts.map((product) => {
                 const isAdded = addedProductId === product.id;
                 const formattedPrice = formatRupiah(product.price || 28000);
-                const imageSrc = product.featured_image || (product.gallery && product.gallery[0]) || '/images/assets/jasmine_tea_produk.jpg';
+                const imageSrc = product.featured_image || (product.gallery && product.gallery[0]) || '/images/products/start-of-spring.jpg';
 
                 return (
                   <div

@@ -13,9 +13,9 @@ describe('Data Access & Security Guard Tests', () => {
   });
 
   it('getProductBySlug retrieves valid published product', async () => {
-    const product = await getProductBySlug('solar-term-jasmine-herbal-tea');
+    const product = await getProductBySlug('start-of-spring');
     expect(product).not.toBeNull();
-    expect(product?.name).toContain('Jasmine');
+    expect(product?.name).toContain('Bloom');
   });
 
   it('public articles query only returns published articles', async () => {

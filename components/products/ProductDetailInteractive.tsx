@@ -23,13 +23,6 @@ interface ProductDetailInteractiveProps {
   contactPhone: string;
 }
 
-const NOBG_MAP: Record<string, string> = {
-  'solar-term-jasmine-herbal-tea': '/images/products-nobg/jasmine-tea.png',
-  'jasmine-tea': '/images/products-nobg/jasmine-tea.png',
-  'english-breakfast-tea': '/images/products-nobg/english-breakfast-tea.png',
-  'vanilla-mint-tea': '/images/products-nobg/vanilla-mint-tea.png',
-};
-
 export function ProductDetailInteractive({
   product,
   contactPhone,
@@ -42,7 +35,7 @@ export function ProductDetailInteractive({
 
   const images = rawImages.length > 0
     ? Array.from(new Set(rawImages))
-    : ['/images/assets/jasmine_tea_produk.jpg'];
+    : ['/images/products/start-of-spring.jpg'];
 
   const [quantity, setQuantity] = useState(1);
   const [copied, setCopied] = useState(false);
@@ -78,8 +71,7 @@ export function ProductDetailInteractive({
   };
 
   // No-background transparent center image
-  const transparentImage =
-    NOBG_MAP[product.slug] || '/images/products-nobg/jasmine-tea.png';
+  const transparentImage = `/images/products-nobg/${product.slug}.png`;
 
   // Formatted Unit & Total Prices
   const formattedUnitPrice = new Intl.NumberFormat('id-ID', {
@@ -645,6 +637,7 @@ export function ProductDetailInteractive({
                       src={img}
                       alt={`Thumbnail ${idx + 1}`}
                       fill
+                      sizes="64px"
                       className="object-cover"
                     />
                   </button>

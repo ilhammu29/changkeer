@@ -109,7 +109,7 @@ export default async function ClientProductDetailPage({
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {relatedProducts.map((rel) => {
-                  const relImage = rel.featured_image || (rel.gallery && rel.gallery[0]) || '/images/assets/jasmine_tea_produk.jpg';
+                  const relImage = rel.featured_image || (rel.gallery && rel.gallery[0]) || '/images/products/start-of-spring.jpg';
                   return (
                     <Link
                       key={rel.id}

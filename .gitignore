@@ -45,3 +45,6 @@ next-env.d.ts
 /public/uploads/*
 !/public/uploads/profiles/
 !/public/uploads/profiles/.gitkeep
+
+# raw asset sources
+assets-changker/

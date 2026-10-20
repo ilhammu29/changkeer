@@ -59,8 +59,8 @@ describe('Orders and Checkout Flow', () => {
         {
           cart_item_id: 'cart-1',
           product_id: 'prod-1',
-          product_name: 'CHANGKEER Jasmine Tea',
-          product_slug: 'jasmine-tea',
+          product_name: 'CHANGKEER First Bloom',
+          product_slug: 'start-of-spring',
           serving_size: 'regular',
           temperature: 'hot',
           sweetness_level: '0%',

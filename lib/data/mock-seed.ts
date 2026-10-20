@@ -2,166 +2,1181 @@ import { Category, Product, Article, PageContent, SiteSettings } from '@/types';
 
 export const SEED_CATEGORIES: Category[] = [
   {
-    id: 'c0000000-0000-4000-8000-000000000001',
-    name: 'Signature Herbal Infusion',
-    slug: 'signature-herbal',
-    description: 'Racikan daun herbal murni pilihan dengan cita rasa seimbang dan kaya antioksidan.',
-    type: 'product',
+    id: "c0000000-0000-4000-8000-000000000001",
+    name: "Spring Blends (Musim Semi)",
+    slug: "spring-season",
+    description: "Racikan herbal aromatik & floral menyambut kebangkitan alam di musim semi.",
+    type: "product",
     created_at: new Date().toISOString(),
   },
   {
-    id: 'c0000000-0000-4000-8000-000000000002',
-    name: 'Artisan Tisane & Flora',
-    slug: 'artisan-tisane',
-    description: 'Perpaduan kelopak bunga kering organik dan rempah tropis aromatik.',
-    type: 'product',
-    created_at: new Date().toISOString(),
-  },
-
-  {
-    id: 'c0000000-0000-4000-8000-000000000010',
-    name: 'Edukasi & Tradisi Teh',
-    slug: 'edukasi-tradisi',
-    description: 'Wawasan seputar tanaman herbal nusantara, teknik seduh, dan filosofi hidup selaras alam.',
-    type: 'article',
+    id: "c0000000-0000-4000-8000-000000000002",
+    name: "Summer Blends (Musim Panas)",
+    slug: "summer-season",
+    description: "Seduhan herba citrus dingin & menyegarkan penawar terik cuaca tropis.",
+    type: "product",
     created_at: new Date().toISOString(),
   },
   {
-    id: 'c0000000-0000-4000-8000-000000000011',
-    name: 'Gaya Hidup Sehat',
-    slug: 'gaya-hidup-sehat',
-    description: 'Inspirasi rutinitas harian bernutrisi dan kesadaran mind-body.',
-    type: 'article',
+    id: "c0000000-0000-4000-8000-000000000003",
+    name: "Autumn Blends (Musim Gugur)",
+    slug: "autumn-season",
+    description: "Sentuhan osmanthus, barley panggang & rempah hangat di musim hujan.",
+    type: "product",
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "c0000000-0000-4000-8000-000000000004",
+    name: "Winter Blends (Musim Dingin)",
+    slug: "winter-season",
+    description: "Kedalaman kayu manis, jahe & buah longan menentramkan tubuh di hawa dingin.",
+    type: "product",
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "c0000000-0000-4000-8000-000000000010",
+    name: "Edukasi & Tradisi Teh",
+    slug: "edukasi-tradisi",
+    description: "Wawasan seputar tanaman herbal nusantara, teknik seduh, dan filosofi hidup selaras alam.",
+    type: "article",
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "c0000000-0000-4000-8000-000000000011",
+    name: "Gaya Hidup Sehat",
+    slug: "gaya-hidup-sehat",
+    description: "Inspirasi rutinitas harian bernutrisi dan kesadaran mind-body.",
+    type: "article",
     created_at: new Date().toISOString(),
   },
 ];
 
 export const SEED_PRODUCTS: Product[] = [
   {
-    id: 'b0000000-0000-4000-8000-000000000001',
-    name: 'CHANGKEER Jasmine Tea',
-    slug: 'solar-term-jasmine-herbal-tea',
-    tagline: 'Daun Teh Utuh & Bunga Melati Asli dengan Gula Sorgum & Madu',
-    description: 'Racikan teh herbal fungsional terinspirasi tradisi teh Tiongkok yang disederhanakan untuk gaya hidup modern grab-and-go. Menggunakan daun teh pilihan dan kuntum melati utuh dengan pemanis alami gula sorgum serta madu murni. Bebas kantong teh pemutih dan 100% bebas mikroplastik. Tidak mengandung daun senna keras sehingga sangat aman untuk dikonsumsi harian.',
-    category_id: 'c0000000-0000-4000-8000-000000000001',
-    category: SEED_CATEGORIES[0],
-    ingredients: [
-      'Daun Teh Hijau Pilihan (Camellia sinensis)',
-      'Kuntum Bunga Melati Utuh (Jasminum sambac)',
-      'Pemanis Alami Gula Sorgum Organik',
-      'Madu Hutan Murni Nusantara',
-    ],
-    brewing_guide: {
-      water_temp: '85°C - 90°C',
-      steep_time: '2-3 Menit',
-      serving_size: '250ml - 300ml air panas',
-      notes: 'Dirancang praktis untuk penyajian cepat di bawah 3 menit tanpa ampas mengganggu.',
+    "id": "b0000000-0000-4000-8000-000000000001",
+    "name": "CHANGKEER First Bloom",
+    "slug": "start-of-spring",
+    "tagline": "Start of Spring (立春) • Light, floral and a little fruity.",
+    "description": "Racikan teh herbal fungsional First Bloom terinspirasi kearifan 24 Solar Terms (Start of Spring - 立春). Memadukan racikan jasmine flowers, dried pear, goji dengan rasa seimbang alami. 100% bebas kantong pemutih dan bebas mikroplastik serta tanpa daun senna keras, sangat aman dan nyaman dinikmati setiap hari.",
+    "category_id": "c0000000-0000-4000-8000-000000000001",
+    "category": {
+      "id": "c0000000-0000-4000-8000-000000000001",
+      "name": "Spring Blends (Musim Semi)",
+      "slug": "spring-season",
+      "description": "Racikan herbal selaras musim Spring.",
+      "type": "product",
+      "created_at": "2026-10-20T07:40:53.919Z"
     },
-    characteristics: {
-      aroma: 'Bunga melati segar semerbak alami',
-      taste: 'Manis lembut seimbang tanpa rasa pahit berlebih',
-      body: 'Silky smooth',
-      caffeine: 'Sangat Rendah (< 10mg)',
-    },
-    packaging_info: 'Kemasan botol & sachet eksklusif bebas mikroplastik (microplastic-free & toxic-free packaging).',
-    price: 49000,
-    weight_grams: 50,
-    featured_image: '/images/assets/jasmine_tea_produk.jpg',
-    gallery: [
-      '/images/assets/jasmine_tea_produk.jpg',
-      '/images/assets/jasmine_tea_produk.png',
-      '/images/assets/biji_teh_jasmine_tea.png',
-      '/images/assets/bungkus_teh.png',
+    "ingredients": [
+      "Jasmine flowers",
+      "Dried pear",
+      "Goji"
     ],
-    is_featured: true,
-    status: 'published',
-    seo_title: 'CHANGKEER Jasmine Tea - Teh Herbal Melati Alami',
-    seo_description: 'Nikmati teh herbal melati CHANGKEER dengan daun teh utuh, gula sorgum, dan madu murni. Bebas kantong teh pemutih dan bebas mikroplastik.',
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
+    "brewing_guide": {
+      "water_temp": "80°C - 85°C (Cocok Dingin/Es)",
+      "steep_time": "2-3 Menit",
+      "serving_size": "250ml - 300ml air murni",
+      "notes": "Light, floral and a little fruity. Dirancang praktis untuk penyajian cepat di bawah 3 menit tanpa ampas mengganggu."
+    },
+    "characteristics": {
+      "aroma": "Light, floral and a little fruity.",
+      "taste": "Alami & Segar (Hot or iced)",
+      "body": "Silky smooth",
+      "caffeine": "Bebas Senna & Rendah Kafein"
+    },
+    "packaging_info": "Kemasan botol & pouch eksklusif bebas mikroplastik (microplastic-free & bleach-free).",
+    "price": 24000,
+    "weight_grams": 50,
+    "featured_image": "/images/products/start-of-spring.jpg",
+    "gallery": [
+      "/images/products/start-of-spring.jpg",
+      "/images/products-nobg/start-of-spring.png"
+    ],
+    "is_featured": true,
+    "status": "published",
+    "seo_title": "CHANGKEER First Bloom - Start of Spring Herbal Tea",
+    "seo_description": "Teh herbal fungsional CHANGKEER First Bloom (Start of Spring). 100% alami tanpa daun senna & bebas mikroplastik.",
+    "created_at": "2026-10-20T07:40:53.920Z",
+    "updated_at": "2026-10-20T07:40:53.920Z"
   },
   {
-    id: 'b0000000-0000-4000-8000-000000000002',
-    name: 'CHANGKEER English Breakfast Tea',
-    slug: 'english-breakfast-tea',
-    tagline: 'Racikan Teh Hitam Kuat & Berkarakter dengan Pemanis Alami Rendah Glikemik',
-    description: 'Seduhan teh hitam berkarakter bold dan kaya rasa yang terinspirasi tradisi sarapan klasik, diracik dengan dedikasi kearifan nusantara. Menghadirkan dorongan energi alami yang bersih tanpa menyebabkan lonjakan asam lambung. Menggunakan kantong teh bebas mikroplastik dan bebas pemutih kimiawi (bleach-free), dipermanis secara seimbang dengan gula sorgum dan madu hutan murni. 100% bebas daun senna, aman dikonsumsi harian untuk mengawali hari aktif Anda.',
-    category_id: 'c0000000-0000-4000-8000-000000000001',
-    category: SEED_CATEGORIES[0],
-    ingredients: [
-      'Daun Teh Hitam Pilihan Nusantara (Camellia sinensis var. assamica)',
-      'Pemanis Alami Gula Sorgum Organik',
-      'Madu Hutan Murni Nusantara',
-    ],
-    brewing_guide: {
-      water_temp: '95°C',
-      steep_time: '2-3 Menit',
-      serving_size: '250ml - 300ml air panas',
-      notes: 'Penyajian instan praktis kurang dari 3 menit untuk gaya hidup modern yang serba cepat.',
+    "id": "b0000000-0000-4000-8000-000000000002",
+    "name": "CHANGKEER Rain Garden",
+    "slug": "rain-water",
+    "tagline": "Rain Water (雨水) • Rose up front, soft ginger warmth.",
+    "description": "Racikan teh herbal fungsional Rain Garden terinspirasi kearifan 24 Solar Terms (Rain Water - 雨水). Memadukan racikan rose buds, ginger, red dates dengan rasa seimbang alami. 100% bebas kantong pemutih dan bebas mikroplastik serta tanpa daun senna keras, sangat aman dan nyaman dinikmati setiap hari.",
+    "category_id": "c0000000-0000-4000-8000-000000000001",
+    "category": {
+      "id": "c0000000-0000-4000-8000-000000000001",
+      "name": "Spring Blends (Musim Semi)",
+      "slug": "spring-season",
+      "description": "Racikan herbal selaras musim Spring.",
+      "type": "product",
+      "created_at": "2026-10-20T07:40:53.920Z"
     },
-    characteristics: {
-      aroma: 'Aroma malted tea hangat dan mendalam',
-      taste: 'Kuat, gurih, dengan rasa manis karamel sorgum lembut',
-      body: 'Full-bodied & rich',
-      caffeine: 'Sedang (~25mg, energi stabil tanpa crash)',
-    },
-    packaging_info: 'Kemasan ramah lingkungan bebas mikroplastik dan bebas zat kimia pemutih (microplastic-free & bleach-free).',
-    price: 49000,
-    weight_grams: 50,
-    featured_image: '/images/assets/english_breakfast_tea_produk.jpg',
-    gallery: [
-      '/images/assets/english_breakfast_tea_produk.jpg',
-      '/images/assets/banner.jpg',
+    "ingredients": [
+      "Rose buds",
+      "Ginger",
+      "Red dates"
     ],
-    is_featured: true,
-    status: 'published',
-    seo_title: 'CHANGKEER English Breakfast Tea - Teh Hitam Herbal Nusantara',
-    seo_description: 'Teh hitam klasik berenergi bersih CHANGKEER dengan daun teh utuh, gula sorgum dan madu murni. Bebas mikroplastik dan tanpa daun senna.',
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
+    "brewing_guide": {
+      "water_temp": "90°C - 95°C (Seduh Panas)",
+      "steep_time": "2-3 Menit",
+      "serving_size": "250ml - 300ml air murni",
+      "notes": "Rose up front, soft ginger warmth. Dirancang praktis untuk penyajian cepat di bawah 3 menit tanpa ampas mengganggu."
+    },
+    "characteristics": {
+      "aroma": "Rose up front, soft ginger warmth.",
+      "taste": "Alami & Segar (Best hot)",
+      "body": "Silky smooth",
+      "caffeine": "Bebas Senna & Rendah Kafein"
+    },
+    "packaging_info": "Kemasan botol & pouch eksklusif bebas mikroplastik (microplastic-free & bleach-free).",
+    "price": 20000,
+    "weight_grams": 50,
+    "featured_image": "/images/products/rain-water.jpg",
+    "gallery": [
+      "/images/products/rain-water.jpg",
+      "/images/products-nobg/rain-water.png"
+    ],
+    "is_featured": false,
+    "status": "published",
+    "seo_title": "CHANGKEER Rain Garden - Rain Water Herbal Tea",
+    "seo_description": "Teh herbal fungsional CHANGKEER Rain Garden (Rain Water). 100% alami tanpa daun senna & bebas mikroplastik.",
+    "created_at": "2026-10-20T07:40:53.920Z",
+    "updated_at": "2026-10-20T07:40:53.920Z"
   },
   {
-    id: 'b0000000-0000-4000-8000-000000000003',
-    name: 'CHANGKEER Vanilla Mint Tea',
-    slug: 'vanilla-mint-tea',
-    tagline: 'Kesegaran Dingin Daun Mint Alami Berpadu Aroma Vanilla Lembut Menenangkan',
-    description: 'Kombinasi harmonis antara semilir dingin daun mint pegunungan dan kelembutan aroma vanilla alami. Dirancang untuk meredakan ketegangan pikiran dan menyegarkan sistem pernapasan setelah aktivitas padat. Tanpa kandungan daun senna yang keras, aman untuk lambung dan pencernaan. Dikemas dalam kantung bebas mikroplastik dengan alternatif pemanis sehat gula sorgum dan madu.',
-    category_id: 'c0000000-0000-4000-8000-000000000002',
-    category: SEED_CATEGORIES[1],
-    ingredients: [
-      'Daun Teh Pilihan (Camellia sinensis)',
-      'Daun Mint Kering Alami (Mentha piperita)',
-      'Ekstrak Polong Vanilla Organik',
-      'Gula Sorgum Rendah Kalori',
-      'Madu Murni Alami',
-    ],
-    brewing_guide: {
-      water_temp: '90°C',
-      steep_time: '2-3 Menit',
-      serving_size: '250ml - 300ml air panas atau dingin',
-      notes: 'Dapat dinikmati hangat atau ditambahkan es batu untuk kesegaran ganda kurang dari 3 menit.',
+    "id": "b0000000-0000-4000-8000-000000000003",
+    "name": "CHANGKEER Green Wake",
+    "slug": "awakening-of-insects",
+    "tagline": "Awakening of Insects (惊蛰) • Fresh and grassy, with a pandan finish.",
+    "description": "Racikan teh herbal fungsional Green Wake terinspirasi kearifan 24 Solar Terms (Awakening of Insects - 惊蛰). Memadukan racikan mint, lemongrass, pandan dengan rasa seimbang alami. 100% bebas kantong pemutih dan bebas mikroplastik serta tanpa daun senna keras, sangat aman dan nyaman dinikmati setiap hari.",
+    "category_id": "c0000000-0000-4000-8000-000000000001",
+    "category": {
+      "id": "c0000000-0000-4000-8000-000000000001",
+      "name": "Spring Blends (Musim Semi)",
+      "slug": "spring-season",
+      "description": "Racikan herbal selaras musim Spring.",
+      "type": "product",
+      "created_at": "2026-10-20T07:40:53.920Z"
     },
-    characteristics: {
-      aroma: 'Mint segar semilir berpadu vanilla manis lembut',
-      taste: 'Dingin menyegarkan di tenggorokan dengan sentuhan manis vanilla creamy',
-      body: 'Medium-crisp',
-      caffeine: 'Rendah (< 10mg)',
-    },
-    packaging_info: 'Kemasan eksklusif bebas racun & mikroplastik (non-toxic teabag).',
-    price: 49000,
-    weight_grams: 50,
-    featured_image: '/images/assets/vanilla_mint_tea_produk.jpg',
-    gallery: [
-      '/images/assets/vanilla_mint_tea_produk.jpg',
-      '/images/assets/banner2.jpg',
+    "ingredients": [
+      "Mint",
+      "Lemongrass",
+      "Pandan"
     ],
-    is_featured: true,
-    status: 'published',
-    seo_title: 'CHANGKEER Vanilla Mint Tea - Teh Herbal Dingin Segar & Lembut',
-    seo_description: 'Segarkan hari Anda dengan perpaduan daun mint alami dan aroma manis vanilla dari CHANGKEER. Bebas mikroplastik dan aman tanpa daun senna.',
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
+    "brewing_guide": {
+      "water_temp": "80°C - 85°C (Cocok Dingin/Es)",
+      "steep_time": "2-3 Menit",
+      "serving_size": "250ml - 300ml air murni",
+      "notes": "Fresh and grassy, with a pandan finish. Dirancang praktis untuk penyajian cepat di bawah 3 menit tanpa ampas mengganggu."
+    },
+    "characteristics": {
+      "aroma": "Fresh and grassy, with a pandan finish.",
+      "taste": "Alami & Segar (Best iced)",
+      "body": "Silky smooth",
+      "caffeine": "Bebas Senna & Rendah Kafein"
+    },
+    "packaging_info": "Kemasan botol & pouch eksklusif bebas mikroplastik (microplastic-free & bleach-free).",
+    "price": 15000,
+    "weight_grams": 50,
+    "featured_image": "/images/products/awakening-of-insects.jpg",
+    "gallery": [
+      "/images/products/awakening-of-insects.jpg",
+      "/images/products-nobg/awakening-of-insects.png"
+    ],
+    "is_featured": false,
+    "status": "published",
+    "seo_title": "CHANGKEER Green Wake - Awakening of Insects Herbal Tea",
+    "seo_description": "Teh herbal fungsional CHANGKEER Green Wake (Awakening of Insects). 100% alami tanpa daun senna & bebas mikroplastik.",
+    "created_at": "2026-10-20T07:40:53.920Z",
+    "updated_at": "2026-10-20T07:40:53.920Z"
   },
+  {
+    "id": "b0000000-0000-4000-8000-000000000004",
+    "name": "CHANGKEER Even Day",
+    "slug": "spring-equinox",
+    "tagline": "Spring Equinox (春分) • Half floral, half fruity.",
+    "description": "Racikan teh herbal fungsional Even Day terinspirasi kearifan 24 Solar Terms (Spring Equinox - 春分). Memadukan racikan chrysanthemum, rose buds, goji dengan rasa seimbang alami. 100% bebas kantong pemutih dan bebas mikroplastik serta tanpa daun senna keras, sangat aman dan nyaman dinikmati setiap hari.",
+    "category_id": "c0000000-0000-4000-8000-000000000001",
+    "category": {
+      "id": "c0000000-0000-4000-8000-000000000001",
+      "name": "Spring Blends (Musim Semi)",
+      "slug": "spring-season",
+      "description": "Racikan herbal selaras musim Spring.",
+      "type": "product",
+      "created_at": "2026-10-20T07:40:53.920Z"
+    },
+    "ingredients": [
+      "Chrysanthemum",
+      "Rose buds",
+      "Goji"
+    ],
+    "brewing_guide": {
+      "water_temp": "80°C - 85°C (Cocok Dingin/Es)",
+      "steep_time": "2-3 Menit",
+      "serving_size": "250ml - 300ml air murni",
+      "notes": "Half floral, half fruity. Dirancang praktis untuk penyajian cepat di bawah 3 menit tanpa ampas mengganggu."
+    },
+    "characteristics": {
+      "aroma": "Half floral, half fruity.",
+      "taste": "Alami & Segar (Hot or iced)",
+      "body": "Silky smooth",
+      "caffeine": "Bebas Senna & Rendah Kafein"
+    },
+    "packaging_info": "Kemasan botol & pouch eksklusif bebas mikroplastik (microplastic-free & bleach-free).",
+    "price": 22000,
+    "weight_grams": 50,
+    "featured_image": "/images/products/spring-equinox.jpg",
+    "gallery": [
+      "/images/products/spring-equinox.jpg",
+      "/images/products-nobg/spring-equinox.png"
+    ],
+    "is_featured": false,
+    "status": "published",
+    "seo_title": "CHANGKEER Even Day - Spring Equinox Herbal Tea",
+    "seo_description": "Teh herbal fungsional CHANGKEER Even Day (Spring Equinox). 100% alami tanpa daun senna & bebas mikroplastik.",
+    "created_at": "2026-10-20T07:40:53.920Z",
+    "updated_at": "2026-10-20T07:40:53.920Z"
+  },
+  {
+    "id": "b0000000-0000-4000-8000-000000000005",
+    "name": "CHANGKEER Clear Sky",
+    "slug": "clear-and-bright",
+    "tagline": "Clear and Bright (清明) • Blue in the cup, purple once the lemon goes in.",
+    "description": "Racikan teh herbal fungsional Clear Sky terinspirasi kearifan 24 Solar Terms (Clear and Bright - 清明). Memadukan racikan butterfly pea, lemongrass, lemon dengan rasa seimbang alami. 100% bebas kantong pemutih dan bebas mikroplastik serta tanpa daun senna keras, sangat aman dan nyaman dinikmati setiap hari.",
+    "category_id": "c0000000-0000-4000-8000-000000000001",
+    "category": {
+      "id": "c0000000-0000-4000-8000-000000000001",
+      "name": "Spring Blends (Musim Semi)",
+      "slug": "spring-season",
+      "description": "Racikan herbal selaras musim Spring.",
+      "type": "product",
+      "created_at": "2026-10-20T07:40:53.920Z"
+    },
+    "ingredients": [
+      "Butterfly pea",
+      "Lemongrass",
+      "Lemon"
+    ],
+    "brewing_guide": {
+      "water_temp": "80°C - 85°C (Cocok Dingin/Es)",
+      "steep_time": "2-3 Menit",
+      "serving_size": "250ml - 300ml air murni",
+      "notes": "Blue in the cup, purple once the lemon goes in. Dirancang praktis untuk penyajian cepat di bawah 3 menit tanpa ampas mengganggu."
+    },
+    "characteristics": {
+      "aroma": "Blue in the cup, purple once the lemon goes in.",
+      "taste": "Alami & Segar (Best iced)",
+      "body": "Silky smooth",
+      "caffeine": "Bebas Senna & Rendah Kafein"
+    },
+    "packaging_info": "Kemasan botol & pouch eksklusif bebas mikroplastik (microplastic-free & bleach-free).",
+    "price": 18000,
+    "weight_grams": 50,
+    "featured_image": "/images/products/clear-and-bright.jpg",
+    "gallery": [
+      "/images/products/clear-and-bright.jpg",
+      "/images/products-nobg/clear-and-bright.png"
+    ],
+    "is_featured": false,
+    "status": "published",
+    "seo_title": "CHANGKEER Clear Sky - Clear and Bright Herbal Tea",
+    "seo_description": "Teh herbal fungsional CHANGKEER Clear Sky (Clear and Bright). 100% alami tanpa daun senna & bebas mikroplastik.",
+    "created_at": "2026-10-20T07:40:53.920Z",
+    "updated_at": "2026-10-20T07:40:53.920Z"
+  },
+  {
+    "id": "b0000000-0000-4000-8000-000000000006",
+    "name": "CHANGKEER Barley Field",
+    "slug": "grain-rain",
+    "tagline": "Grain Rain (谷雨) • Toasty and nutty, with a honeyed flower note.",
+    "description": "Racikan teh herbal fungsional Barley Field terinspirasi kearifan 24 Solar Terms (Grain Rain - 谷雨). Memadukan racikan roasted barley, osmanthus dengan rasa seimbang alami. 100% bebas kantong pemutih dan bebas mikroplastik serta tanpa daun senna keras, sangat aman dan nyaman dinikmati setiap hari.",
+    "category_id": "c0000000-0000-4000-8000-000000000001",
+    "category": {
+      "id": "c0000000-0000-4000-8000-000000000001",
+      "name": "Spring Blends (Musim Semi)",
+      "slug": "spring-season",
+      "description": "Racikan herbal selaras musim Spring.",
+      "type": "product",
+      "created_at": "2026-10-20T07:40:53.920Z"
+    },
+    "ingredients": [
+      "Roasted barley",
+      "Osmanthus"
+    ],
+    "brewing_guide": {
+      "water_temp": "80°C - 85°C (Cocok Dingin/Es)",
+      "steep_time": "2-3 Menit",
+      "serving_size": "250ml - 300ml air murni",
+      "notes": "Toasty and nutty, with a honeyed flower note. Dirancang praktis untuk penyajian cepat di bawah 3 menit tanpa ampas mengganggu."
+    },
+    "characteristics": {
+      "aroma": "Toasty and nutty, with a honeyed flower note.",
+      "taste": "Alami & Segar (Hot or iced)",
+      "body": "Silky smooth",
+      "caffeine": "Bebas Senna & Rendah Kafein"
+    },
+    "packaging_info": "Kemasan botol & pouch eksklusif bebas mikroplastik (microplastic-free & bleach-free).",
+    "price": 20000,
+    "weight_grams": 50,
+    "featured_image": "/images/products/grain-rain.jpg",
+    "gallery": [
+      "/images/products/grain-rain.jpg",
+      "/images/products-nobg/grain-rain.png"
+    ],
+    "is_featured": false,
+    "status": "published",
+    "seo_title": "CHANGKEER Barley Field - Grain Rain Herbal Tea",
+    "seo_description": "Teh herbal fungsional CHANGKEER Barley Field (Grain Rain). 100% alami tanpa daun senna & bebas mikroplastik.",
+    "created_at": "2026-10-20T07:40:53.920Z",
+    "updated_at": "2026-10-20T07:40:53.920Z"
+  },
+  {
+    "id": "b0000000-0000-4000-8000-000000000007",
+    "name": "CHANGKEER Hibiscus Sun",
+    "slug": "start-of-summer",
+    "tagline": "Start of Summer (立夏) • Tart, ruby-red and very refreshing.",
+    "description": "Racikan teh herbal fungsional Hibiscus Sun terinspirasi kearifan 24 Solar Terms (Start of Summer - 立夏). Memadukan racikan hibiscus, orange peel, mint dengan rasa seimbang alami. 100% bebas kantong pemutih dan bebas mikroplastik serta tanpa daun senna keras, sangat aman dan nyaman dinikmati setiap hari.",
+    "category_id": "c0000000-0000-4000-8000-000000000002",
+    "category": {
+      "id": "c0000000-0000-4000-8000-000000000002",
+      "name": "Summer Blends (Musim Panas)",
+      "slug": "summer-season",
+      "description": "Racikan herbal selaras musim Summer.",
+      "type": "product",
+      "created_at": "2026-10-20T07:40:53.920Z"
+    },
+    "ingredients": [
+      "Hibiscus",
+      "Orange peel",
+      "Mint"
+    ],
+    "brewing_guide": {
+      "water_temp": "80°C - 85°C (Cocok Dingin/Es)",
+      "steep_time": "2-3 Menit",
+      "serving_size": "250ml - 300ml air murni",
+      "notes": "Tart, ruby-red and very refreshing. Dirancang praktis untuk penyajian cepat di bawah 3 menit tanpa ampas mengganggu."
+    },
+    "characteristics": {
+      "aroma": "Tart, ruby-red and very refreshing.",
+      "taste": "Alami & Segar (Best iced)",
+      "body": "Silky smooth",
+      "caffeine": "Bebas Senna & Rendah Kafein"
+    },
+    "packaging_info": "Kemasan botol & pouch eksklusif bebas mikroplastik (microplastic-free & bleach-free).",
+    "price": 18000,
+    "weight_grams": 50,
+    "featured_image": "/images/products/start-of-summer.jpg",
+    "gallery": [
+      "/images/products/start-of-summer.jpg",
+      "/images/products-nobg/start-of-summer.png"
+    ],
+    "is_featured": true,
+    "status": "published",
+    "seo_title": "CHANGKEER Hibiscus Sun - Start of Summer Herbal Tea",
+    "seo_description": "Teh herbal fungsional CHANGKEER Hibiscus Sun (Start of Summer). 100% alami tanpa daun senna & bebas mikroplastik.",
+    "created_at": "2026-10-20T07:40:53.920Z",
+    "updated_at": "2026-10-20T07:40:53.920Z"
+  },
+  {
+    "id": "b0000000-0000-4000-8000-000000000008",
+    "name": "CHANGKEER Pandan Lime",
+    "slug": "grain-buds",
+    "tagline": "Grain Buds (小满) • Green and citrusy.",
+    "description": "Racikan teh herbal fungsional Pandan Lime terinspirasi kearifan 24 Solar Terms (Grain Buds - 小满). Memadukan racikan pandan, lemongrass, lime leaf dengan rasa seimbang alami. 100% bebas kantong pemutih dan bebas mikroplastik serta tanpa daun senna keras, sangat aman dan nyaman dinikmati setiap hari.",
+    "category_id": "c0000000-0000-4000-8000-000000000002",
+    "category": {
+      "id": "c0000000-0000-4000-8000-000000000002",
+      "name": "Summer Blends (Musim Panas)",
+      "slug": "summer-season",
+      "description": "Racikan herbal selaras musim Summer.",
+      "type": "product",
+      "created_at": "2026-10-20T07:40:53.920Z"
+    },
+    "ingredients": [
+      "Pandan",
+      "Lemongrass",
+      "Lime leaf"
+    ],
+    "brewing_guide": {
+      "water_temp": "80°C - 85°C (Cocok Dingin/Es)",
+      "steep_time": "2-3 Menit",
+      "serving_size": "250ml - 300ml air murni",
+      "notes": "Green and citrusy. Dirancang praktis untuk penyajian cepat di bawah 3 menit tanpa ampas mengganggu."
+    },
+    "characteristics": {
+      "aroma": "Green and citrusy.",
+      "taste": "Alami & Segar (Best iced)",
+      "body": "Silky smooth",
+      "caffeine": "Bebas Senna & Rendah Kafein"
+    },
+    "packaging_info": "Kemasan botol & pouch eksklusif bebas mikroplastik (microplastic-free & bleach-free).",
+    "price": 15000,
+    "weight_grams": 50,
+    "featured_image": "/images/products/grain-buds.jpg",
+    "gallery": [
+      "/images/products/grain-buds.jpg",
+      "/images/products-nobg/grain-buds.png"
+    ],
+    "is_featured": false,
+    "status": "published",
+    "seo_title": "CHANGKEER Pandan Lime - Grain Buds Herbal Tea",
+    "seo_description": "Teh herbal fungsional CHANGKEER Pandan Lime (Grain Buds). 100% alami tanpa daun senna & bebas mikroplastik.",
+    "created_at": "2026-10-20T07:40:53.920Z",
+    "updated_at": "2026-10-20T07:40:53.920Z"
+  },
+  {
+    "id": "b0000000-0000-4000-8000-000000000009",
+    "name": "CHANGKEER Mango Jasmine",
+    "slug": "grain-in-ear",
+    "tagline": "Grain in Ear (芒种) • Ripe fruit with a jasmine lift.",
+    "description": "Racikan teh herbal fungsional Mango Jasmine terinspirasi kearifan 24 Solar Terms (Grain in Ear - 芒种). Memadukan racikan dried mango, jasmine flowers dengan rasa seimbang alami. 100% bebas kantong pemutih dan bebas mikroplastik serta tanpa daun senna keras, sangat aman dan nyaman dinikmati setiap hari.",
+    "category_id": "c0000000-0000-4000-8000-000000000002",
+    "category": {
+      "id": "c0000000-0000-4000-8000-000000000002",
+      "name": "Summer Blends (Musim Panas)",
+      "slug": "summer-season",
+      "description": "Racikan herbal selaras musim Summer.",
+      "type": "product",
+      "created_at": "2026-10-20T07:40:53.920Z"
+    },
+    "ingredients": [
+      "Dried mango",
+      "Jasmine flowers"
+    ],
+    "brewing_guide": {
+      "water_temp": "80°C - 85°C (Cocok Dingin/Es)",
+      "steep_time": "2-3 Menit",
+      "serving_size": "250ml - 300ml air murni",
+      "notes": "Ripe fruit with a jasmine lift. Dirancang praktis untuk penyajian cepat di bawah 3 menit tanpa ampas mengganggu."
+    },
+    "characteristics": {
+      "aroma": "Ripe fruit with a jasmine lift.",
+      "taste": "Alami & Segar (Best iced)",
+      "body": "Silky smooth",
+      "caffeine": "Bebas Senna & Rendah Kafein"
+    },
+    "packaging_info": "Kemasan botol & pouch eksklusif bebas mikroplastik (microplastic-free & bleach-free).",
+    "price": 26000,
+    "weight_grams": 50,
+    "featured_image": "/images/products/grain-in-ear.jpg",
+    "gallery": [
+      "/images/products/grain-in-ear.jpg",
+      "/images/products-nobg/grain-in-ear.png"
+    ],
+    "is_featured": false,
+    "status": "published",
+    "seo_title": "CHANGKEER Mango Jasmine - Grain in Ear Herbal Tea",
+    "seo_description": "Teh herbal fungsional CHANGKEER Mango Jasmine (Grain in Ear). 100% alami tanpa daun senna & bebas mikroplastik.",
+    "created_at": "2026-10-20T07:40:53.920Z",
+    "updated_at": "2026-10-20T07:40:53.920Z"
+  },
+  {
+    "id": "b0000000-0000-4000-8000-000000000010",
+    "name": "CHANGKEER Longest Day",
+    "slug": "summer-solstice",
+    "tagline": "Summer Solstice (夏至) • Bright, clean and cooling.",
+    "description": "Racikan teh herbal fungsional Longest Day terinspirasi kearifan 24 Solar Terms (Summer Solstice - 夏至). Memadukan racikan chrysanthemum, lemon, mint dengan rasa seimbang alami. 100% bebas kantong pemutih dan bebas mikroplastik serta tanpa daun senna keras, sangat aman dan nyaman dinikmati setiap hari.",
+    "category_id": "c0000000-0000-4000-8000-000000000002",
+    "category": {
+      "id": "c0000000-0000-4000-8000-000000000002",
+      "name": "Summer Blends (Musim Panas)",
+      "slug": "summer-season",
+      "description": "Racikan herbal selaras musim Summer.",
+      "type": "product",
+      "created_at": "2026-10-20T07:40:53.920Z"
+    },
+    "ingredients": [
+      "Chrysanthemum",
+      "Lemon",
+      "Mint"
+    ],
+    "brewing_guide": {
+      "water_temp": "80°C - 85°C (Cocok Dingin/Es)",
+      "steep_time": "2-3 Menit",
+      "serving_size": "250ml - 300ml air murni",
+      "notes": "Bright, clean and cooling. Dirancang praktis untuk penyajian cepat di bawah 3 menit tanpa ampas mengganggu."
+    },
+    "characteristics": {
+      "aroma": "Bright, clean and cooling.",
+      "taste": "Alami & Segar (Best iced)",
+      "body": "Silky smooth",
+      "caffeine": "Bebas Senna & Rendah Kafein"
+    },
+    "packaging_info": "Kemasan botol & pouch eksklusif bebas mikroplastik (microplastic-free & bleach-free).",
+    "price": 18000,
+    "weight_grams": 50,
+    "featured_image": "/images/products/summer-solstice.jpg",
+    "gallery": [
+      "/images/products/summer-solstice.jpg",
+      "/images/products-nobg/summer-solstice.png"
+    ],
+    "is_featured": false,
+    "status": "published",
+    "seo_title": "CHANGKEER Longest Day - Summer Solstice Herbal Tea",
+    "seo_description": "Teh herbal fungsional CHANGKEER Longest Day (Summer Solstice). 100% alami tanpa daun senna & bebas mikroplastik.",
+    "created_at": "2026-10-20T07:40:53.920Z",
+    "updated_at": "2026-10-20T07:40:53.920Z"
+  },
+  {
+    "id": "b0000000-0000-4000-8000-000000000011",
+    "name": "CHANGKEER Cool Leaf",
+    "slug": "minor-heat",
+    "tagline": "Minor Heat (小暑) • Minty and sharp.",
+    "description": "Racikan teh herbal fungsional Cool Leaf terinspirasi kearifan 24 Solar Terms (Minor Heat - 小暑). Memadukan racikan mint, lime leaf, lemongrass dengan rasa seimbang alami. 100% bebas kantong pemutih dan bebas mikroplastik serta tanpa daun senna keras, sangat aman dan nyaman dinikmati setiap hari.",
+    "category_id": "c0000000-0000-4000-8000-000000000002",
+    "category": {
+      "id": "c0000000-0000-4000-8000-000000000002",
+      "name": "Summer Blends (Musim Panas)",
+      "slug": "summer-season",
+      "description": "Racikan herbal selaras musim Summer.",
+      "type": "product",
+      "created_at": "2026-10-20T07:40:53.920Z"
+    },
+    "ingredients": [
+      "Mint",
+      "Lime leaf",
+      "Lemongrass"
+    ],
+    "brewing_guide": {
+      "water_temp": "80°C - 85°C (Cocok Dingin/Es)",
+      "steep_time": "2-3 Menit",
+      "serving_size": "250ml - 300ml air murni",
+      "notes": "Minty and sharp. Dirancang praktis untuk penyajian cepat di bawah 3 menit tanpa ampas mengganggu."
+    },
+    "characteristics": {
+      "aroma": "Minty and sharp.",
+      "taste": "Alami & Segar (Best iced)",
+      "body": "Silky smooth",
+      "caffeine": "Bebas Senna & Rendah Kafein"
+    },
+    "packaging_info": "Kemasan botol & pouch eksklusif bebas mikroplastik (microplastic-free & bleach-free).",
+    "price": 15000,
+    "weight_grams": 50,
+    "featured_image": "/images/products/minor-heat.jpg",
+    "gallery": [
+      "/images/products/minor-heat.jpg",
+      "/images/products-nobg/minor-heat.png"
+    ],
+    "is_featured": false,
+    "status": "published",
+    "seo_title": "CHANGKEER Cool Leaf - Minor Heat Herbal Tea",
+    "seo_description": "Teh herbal fungsional CHANGKEER Cool Leaf (Minor Heat). 100% alami tanpa daun senna & bebas mikroplastik.",
+    "created_at": "2026-10-20T07:40:53.920Z",
+    "updated_at": "2026-10-20T07:40:53.920Z"
+  },
+  {
+    "id": "b0000000-0000-4000-8000-000000000012",
+    "name": "CHANGKEER Chrysanthemum Lemon",
+    "slug": "major-heat",
+    "tagline": "Major Heat (大暑) • Our hot-season classic: mellow flowers, fresh citrus.",
+    "description": "Racikan teh herbal fungsional Chrysanthemum Lemon terinspirasi kearifan 24 Solar Terms (Major Heat - 大暑). Memadukan racikan chrysanthemum, lemon, goji dengan rasa seimbang alami. 100% bebas kantong pemutih dan bebas mikroplastik serta tanpa daun senna keras, sangat aman dan nyaman dinikmati setiap hari.",
+    "category_id": "c0000000-0000-4000-8000-000000000002",
+    "category": {
+      "id": "c0000000-0000-4000-8000-000000000002",
+      "name": "Summer Blends (Musim Panas)",
+      "slug": "summer-season",
+      "description": "Racikan herbal selaras musim Summer.",
+      "type": "product",
+      "created_at": "2026-10-20T07:40:53.920Z"
+    },
+    "ingredients": [
+      "Chrysanthemum",
+      "Lemon",
+      "Goji"
+    ],
+    "brewing_guide": {
+      "water_temp": "80°C - 85°C (Cocok Dingin/Es)",
+      "steep_time": "2-3 Menit",
+      "serving_size": "250ml - 300ml air murni",
+      "notes": "Our hot-season classic: mellow flowers, fresh citrus. Dirancang praktis untuk penyajian cepat di bawah 3 menit tanpa ampas mengganggu."
+    },
+    "characteristics": {
+      "aroma": "Our hot-season classic: mellow flowers, fresh citrus.",
+      "taste": "Alami & Segar (Best iced)",
+      "body": "Silky smooth",
+      "caffeine": "Bebas Senna & Rendah Kafein"
+    },
+    "packaging_info": "Kemasan botol & pouch eksklusif bebas mikroplastik (microplastic-free & bleach-free).",
+    "price": 20000,
+    "weight_grams": 50,
+    "featured_image": "/images/products/major-heat.jpg",
+    "gallery": [
+      "/images/products/major-heat.jpg",
+      "/images/products-nobg/major-heat.png"
+    ],
+    "is_featured": false,
+    "status": "published",
+    "seo_title": "CHANGKEER Chrysanthemum Lemon - Major Heat Herbal Tea",
+    "seo_description": "Teh herbal fungsional CHANGKEER Chrysanthemum Lemon (Major Heat). 100% alami tanpa daun senna & bebas mikroplastik.",
+    "created_at": "2026-10-20T07:40:53.920Z",
+    "updated_at": "2026-10-20T07:40:53.920Z"
+  },
+  {
+    "id": "b0000000-0000-4000-8000-000000000013",
+    "name": "CHANGKEER Osmanthus Pear",
+    "slug": "start-of-autumn",
+    "tagline": "Start of Autumn (立秋) • Apricot-scented flowers with soft pear.",
+    "description": "Racikan teh herbal fungsional Osmanthus Pear terinspirasi kearifan 24 Solar Terms (Start of Autumn - 立秋). Memadukan racikan osmanthus, dried pear, goji dengan rasa seimbang alami. 100% bebas kantong pemutih dan bebas mikroplastik serta tanpa daun senna keras, sangat aman dan nyaman dinikmati setiap hari.",
+    "category_id": "c0000000-0000-4000-8000-000000000003",
+    "category": {
+      "id": "c0000000-0000-4000-8000-000000000003",
+      "name": "Autumn Blends (Musim Gugur)",
+      "slug": "autumn-season",
+      "description": "Racikan herbal selaras musim Autumn.",
+      "type": "product",
+      "created_at": "2026-10-20T07:40:53.920Z"
+    },
+    "ingredients": [
+      "Osmanthus",
+      "Dried pear",
+      "Goji"
+    ],
+    "brewing_guide": {
+      "water_temp": "80°C - 85°C (Cocok Dingin/Es)",
+      "steep_time": "2-3 Menit",
+      "serving_size": "250ml - 300ml air murni",
+      "notes": "Apricot-scented flowers with soft pear. Dirancang praktis untuk penyajian cepat di bawah 3 menit tanpa ampas mengganggu."
+    },
+    "characteristics": {
+      "aroma": "Apricot-scented flowers with soft pear.",
+      "taste": "Alami & Segar (Hot or iced)",
+      "body": "Silky smooth",
+      "caffeine": "Bebas Senna & Rendah Kafein"
+    },
+    "packaging_info": "Kemasan botol & pouch eksklusif bebas mikroplastik (microplastic-free & bleach-free).",
+    "price": 26000,
+    "weight_grams": 50,
+    "featured_image": "/images/products/start-of-autumn.jpg",
+    "gallery": [
+      "/images/products/start-of-autumn.jpg",
+      "/images/products-nobg/start-of-autumn.png"
+    ],
+    "is_featured": true,
+    "status": "published",
+    "seo_title": "CHANGKEER Osmanthus Pear - Start of Autumn Herbal Tea",
+    "seo_description": "Teh herbal fungsional CHANGKEER Osmanthus Pear (Start of Autumn). 100% alami tanpa daun senna & bebas mikroplastik.",
+    "created_at": "2026-10-20T07:40:53.920Z",
+    "updated_at": "2026-10-20T07:40:53.920Z"
+  },
+  {
+    "id": "b0000000-0000-4000-8000-000000000014",
+    "name": "CHANGKEER Late Rose",
+    "slug": "end-of-heat",
+    "tagline": "End of Heat (处暑) • Rosy and tart, like fruit jam.",
+    "description": "Racikan teh herbal fungsional Late Rose terinspirasi kearifan 24 Solar Terms (End of Heat - 处暑). Memadukan racikan rose buds, hibiscus, dried apple dengan rasa seimbang alami. 100% bebas kantong pemutih dan bebas mikroplastik serta tanpa daun senna keras, sangat aman dan nyaman dinikmati setiap hari.",
+    "category_id": "c0000000-0000-4000-8000-000000000003",
+    "category": {
+      "id": "c0000000-0000-4000-8000-000000000003",
+      "name": "Autumn Blends (Musim Gugur)",
+      "slug": "autumn-season",
+      "description": "Racikan herbal selaras musim Autumn.",
+      "type": "product",
+      "created_at": "2026-10-20T07:40:53.920Z"
+    },
+    "ingredients": [
+      "Rose buds",
+      "Hibiscus",
+      "Dried apple"
+    ],
+    "brewing_guide": {
+      "water_temp": "80°C - 85°C (Cocok Dingin/Es)",
+      "steep_time": "2-3 Menit",
+      "serving_size": "250ml - 300ml air murni",
+      "notes": "Rosy and tart, like fruit jam. Dirancang praktis untuk penyajian cepat di bawah 3 menit tanpa ampas mengganggu."
+    },
+    "characteristics": {
+      "aroma": "Rosy and tart, like fruit jam.",
+      "taste": "Alami & Segar (Hot or iced)",
+      "body": "Silky smooth",
+      "caffeine": "Bebas Senna & Rendah Kafein"
+    },
+    "packaging_info": "Kemasan botol & pouch eksklusif bebas mikroplastik (microplastic-free & bleach-free).",
+    "price": 22000,
+    "weight_grams": 50,
+    "featured_image": "/images/products/end-of-heat.jpg",
+    "gallery": [
+      "/images/products/end-of-heat.jpg",
+      "/images/products-nobg/end-of-heat.png"
+    ],
+    "is_featured": false,
+    "status": "published",
+    "seo_title": "CHANGKEER Late Rose - End of Heat Herbal Tea",
+    "seo_description": "Teh herbal fungsional CHANGKEER Late Rose (End of Heat). 100% alami tanpa daun senna & bebas mikroplastik.",
+    "created_at": "2026-10-20T07:40:53.920Z",
+    "updated_at": "2026-10-20T07:40:53.920Z"
+  },
+  {
+    "id": "b0000000-0000-4000-8000-000000000015",
+    "name": "CHANGKEER White Dew",
+    "slug": "white-dew",
+    "tagline": "White Dew (白露) • Delicate and smooth. Try it with honey.",
+    "description": "Racikan teh herbal fungsional White Dew terinspirasi kearifan 24 Solar Terms (White Dew - 白露). Memadukan racikan white chrysanthemum, dried pear dengan rasa seimbang alami. 100% bebas kantong pemutih dan bebas mikroplastik serta tanpa daun senna keras, sangat aman dan nyaman dinikmati setiap hari.",
+    "category_id": "c0000000-0000-4000-8000-000000000003",
+    "category": {
+      "id": "c0000000-0000-4000-8000-000000000003",
+      "name": "Autumn Blends (Musim Gugur)",
+      "slug": "autumn-season",
+      "description": "Racikan herbal selaras musim Autumn.",
+      "type": "product",
+      "created_at": "2026-10-20T07:40:53.920Z"
+    },
+    "ingredients": [
+      "White chrysanthemum",
+      "Dried pear"
+    ],
+    "brewing_guide": {
+      "water_temp": "90°C - 95°C (Seduh Panas)",
+      "steep_time": "2-3 Menit",
+      "serving_size": "250ml - 300ml air murni",
+      "notes": "Delicate and smooth. Try it with honey. Dirancang praktis untuk penyajian cepat di bawah 3 menit tanpa ampas mengganggu."
+    },
+    "characteristics": {
+      "aroma": "Delicate and smooth. Try it with honey.",
+      "taste": "Alami & Segar (Best hot)",
+      "body": "Silky smooth",
+      "caffeine": "Bebas Senna & Rendah Kafein"
+    },
+    "packaging_info": "Kemasan botol & pouch eksklusif bebas mikroplastik (microplastic-free & bleach-free).",
+    "price": 22000,
+    "weight_grams": 50,
+    "featured_image": "/images/products/white-dew.jpg",
+    "gallery": [
+      "/images/products/white-dew.jpg",
+      "/images/products-nobg/white-dew.png"
+    ],
+    "is_featured": false,
+    "status": "published",
+    "seo_title": "CHANGKEER White Dew - White Dew Herbal Tea",
+    "seo_description": "Teh herbal fungsional CHANGKEER White Dew (White Dew). 100% alami tanpa daun senna & bebas mikroplastik.",
+    "created_at": "2026-10-20T07:40:53.920Z",
+    "updated_at": "2026-10-20T07:40:53.920Z"
+  },
+  {
+    "id": "b0000000-0000-4000-8000-000000000016",
+    "name": "CHANGKEER Golden Hour",
+    "slug": "autumn-equinox",
+    "tagline": "Autumn Equinox (秋分) • Toasty and golden.",
+    "description": "Racikan teh herbal fungsional Golden Hour terinspirasi kearifan 24 Solar Terms (Autumn Equinox - 秋分). Memadukan racikan osmanthus, roasted barley, orange peel dengan rasa seimbang alami. 100% bebas kantong pemutih dan bebas mikroplastik serta tanpa daun senna keras, sangat aman dan nyaman dinikmati setiap hari.",
+    "category_id": "c0000000-0000-4000-8000-000000000003",
+    "category": {
+      "id": "c0000000-0000-4000-8000-000000000003",
+      "name": "Autumn Blends (Musim Gugur)",
+      "slug": "autumn-season",
+      "description": "Racikan herbal selaras musim Autumn.",
+      "type": "product",
+      "created_at": "2026-10-20T07:40:53.920Z"
+    },
+    "ingredients": [
+      "Osmanthus",
+      "Roasted barley",
+      "Orange peel"
+    ],
+    "brewing_guide": {
+      "water_temp": "80°C - 85°C (Cocok Dingin/Es)",
+      "steep_time": "2-3 Menit",
+      "serving_size": "250ml - 300ml air murni",
+      "notes": "Toasty and golden. Dirancang praktis untuk penyajian cepat di bawah 3 menit tanpa ampas mengganggu."
+    },
+    "characteristics": {
+      "aroma": "Toasty and golden.",
+      "taste": "Alami & Segar (Hot or iced)",
+      "body": "Silky smooth",
+      "caffeine": "Bebas Senna & Rendah Kafein"
+    },
+    "packaging_info": "Kemasan botol & pouch eksklusif bebas mikroplastik (microplastic-free & bleach-free).",
+    "price": 24000,
+    "weight_grams": 50,
+    "featured_image": "/images/products/autumn-equinox.jpg",
+    "gallery": [
+      "/images/products/autumn-equinox.jpg",
+      "/images/products-nobg/autumn-equinox.png"
+    ],
+    "is_featured": false,
+    "status": "published",
+    "seo_title": "CHANGKEER Golden Hour - Autumn Equinox Herbal Tea",
+    "seo_description": "Teh herbal fungsional CHANGKEER Golden Hour (Autumn Equinox). 100% alami tanpa daun senna & bebas mikroplastik.",
+    "created_at": "2026-10-20T07:40:53.920Z",
+    "updated_at": "2026-10-20T07:40:53.920Z"
+  },
+  {
+    "id": "b0000000-0000-4000-8000-000000000017",
+    "name": "CHANGKEER First Rain",
+    "slug": "cold-dew",
+    "tagline": "Cold Dew (寒露) • Warming ginger and naturally sweet dates, for the first wet evenings.",
+    "description": "Racikan teh herbal fungsional First Rain terinspirasi kearifan 24 Solar Terms (Cold Dew - 寒露). Memadukan racikan ginger, goji, red dates dengan rasa seimbang alami. 100% bebas kantong pemutih dan bebas mikroplastik serta tanpa daun senna keras, sangat aman dan nyaman dinikmati setiap hari.",
+    "category_id": "c0000000-0000-4000-8000-000000000003",
+    "category": {
+      "id": "c0000000-0000-4000-8000-000000000003",
+      "name": "Autumn Blends (Musim Gugur)",
+      "slug": "autumn-season",
+      "description": "Racikan herbal selaras musim Autumn.",
+      "type": "product",
+      "created_at": "2026-10-20T07:40:53.921Z"
+    },
+    "ingredients": [
+      "Ginger",
+      "Goji",
+      "Red dates"
+    ],
+    "brewing_guide": {
+      "water_temp": "90°C - 95°C (Seduh Panas)",
+      "steep_time": "2-3 Menit",
+      "serving_size": "250ml - 300ml air murni",
+      "notes": "Warming ginger and naturally sweet dates, for the first wet evenings. Dirancang praktis untuk penyajian cepat di bawah 3 menit tanpa ampas mengganggu."
+    },
+    "characteristics": {
+      "aroma": "Warming ginger and naturally sweet dates, for the first wet evenings.",
+      "taste": "Alami & Segar (Best hot)",
+      "body": "Silky smooth",
+      "caffeine": "Bebas Senna & Rendah Kafein"
+    },
+    "packaging_info": "Kemasan botol & pouch eksklusif bebas mikroplastik (microplastic-free & bleach-free).",
+    "price": 20000,
+    "weight_grams": 50,
+    "featured_image": "/images/products/cold-dew.jpg",
+    "gallery": [
+      "/images/products/cold-dew.jpg",
+      "/images/products-nobg/cold-dew.png"
+    ],
+    "is_featured": true,
+    "status": "published",
+    "seo_title": "CHANGKEER First Rain - Cold Dew Herbal Tea",
+    "seo_description": "Teh herbal fungsional CHANGKEER First Rain (Cold Dew). 100% alami tanpa daun senna & bebas mikroplastik.",
+    "created_at": "2026-10-20T07:40:53.921Z",
+    "updated_at": "2026-10-20T07:40:53.921Z"
+  },
+  {
+    "id": "b0000000-0000-4000-8000-000000000018",
+    "name": "CHANGKEER Ginger Rose",
+    "slug": "frosts-descent",
+    "tagline": "Frost's Descent (霜降) • Spiced and floral.",
+    "description": "Racikan teh herbal fungsional Ginger Rose terinspirasi kearifan 24 Solar Terms (Frost's Descent - 霜降). Memadukan racikan ginger, rose buds, cinnamon dengan rasa seimbang alami. 100% bebas kantong pemutih dan bebas mikroplastik serta tanpa daun senna keras, sangat aman dan nyaman dinikmati setiap hari.",
+    "category_id": "c0000000-0000-4000-8000-000000000003",
+    "category": {
+      "id": "c0000000-0000-4000-8000-000000000003",
+      "name": "Autumn Blends (Musim Gugur)",
+      "slug": "autumn-season",
+      "description": "Racikan herbal selaras musim Autumn.",
+      "type": "product",
+      "created_at": "2026-10-20T07:40:53.921Z"
+    },
+    "ingredients": [
+      "Ginger",
+      "Rose buds",
+      "Cinnamon"
+    ],
+    "brewing_guide": {
+      "water_temp": "90°C - 95°C (Seduh Panas)",
+      "steep_time": "2-3 Menit",
+      "serving_size": "250ml - 300ml air murni",
+      "notes": "Spiced and floral. Dirancang praktis untuk penyajian cepat di bawah 3 menit tanpa ampas mengganggu."
+    },
+    "characteristics": {
+      "aroma": "Spiced and floral.",
+      "taste": "Alami & Segar (Best hot)",
+      "body": "Silky smooth",
+      "caffeine": "Bebas Senna & Rendah Kafein"
+    },
+    "packaging_info": "Kemasan botol & pouch eksklusif bebas mikroplastik (microplastic-free & bleach-free).",
+    "price": 20000,
+    "weight_grams": 50,
+    "featured_image": "/images/products/frosts-descent.jpg",
+    "gallery": [
+      "/images/products/frosts-descent.jpg",
+      "/images/products-nobg/frosts-descent.png"
+    ],
+    "is_featured": false,
+    "status": "published",
+    "seo_title": "CHANGKEER Ginger Rose - Frost's Descent Herbal Tea",
+    "seo_description": "Teh herbal fungsional CHANGKEER Ginger Rose (Frost's Descent). 100% alami tanpa daun senna & bebas mikroplastik.",
+    "created_at": "2026-10-20T07:40:53.921Z",
+    "updated_at": "2026-10-20T07:40:53.921Z"
+  },
+  {
+    "id": "b0000000-0000-4000-8000-000000000019",
+    "name": "CHANGKEER Spice Lantern",
+    "slug": "start-of-winter",
+    "tagline": "Start of Winter (立冬) • Baked-apple warmth with a little clove.",
+    "description": "Racikan teh herbal fungsional Spice Lantern terinspirasi kearifan 24 Solar Terms (Start of Winter - 立冬). Memadukan racikan cinnamon, clove, dried apple dengan rasa seimbang alami. 100% bebas kantong pemutih dan bebas mikroplastik serta tanpa daun senna keras, sangat aman dan nyaman dinikmati setiap hari.",
+    "category_id": "c0000000-0000-4000-8000-000000000004",
+    "category": {
+      "id": "c0000000-0000-4000-8000-000000000004",
+      "name": "Winter Blends (Musim Dingin)",
+      "slug": "winter-season",
+      "description": "Racikan herbal selaras musim Winter.",
+      "type": "product",
+      "created_at": "2026-10-20T07:40:53.921Z"
+    },
+    "ingredients": [
+      "Cinnamon",
+      "Clove",
+      "Dried apple"
+    ],
+    "brewing_guide": {
+      "water_temp": "90°C - 95°C (Seduh Panas)",
+      "steep_time": "2-3 Menit",
+      "serving_size": "250ml - 300ml air murni",
+      "notes": "Baked-apple warmth with a little clove. Dirancang praktis untuk penyajian cepat di bawah 3 menit tanpa ampas mengganggu."
+    },
+    "characteristics": {
+      "aroma": "Baked-apple warmth with a little clove.",
+      "taste": "Alami & Segar (Best hot)",
+      "body": "Silky smooth",
+      "caffeine": "Bebas Senna & Rendah Kafein"
+    },
+    "packaging_info": "Kemasan botol & pouch eksklusif bebas mikroplastik (microplastic-free & bleach-free).",
+    "price": 22000,
+    "weight_grams": 50,
+    "featured_image": "/images/products/start-of-winter.jpg",
+    "gallery": [
+      "/images/products/start-of-winter.jpg",
+      "/images/products-nobg/start-of-winter.png"
+    ],
+    "is_featured": true,
+    "status": "published",
+    "seo_title": "CHANGKEER Spice Lantern - Start of Winter Herbal Tea",
+    "seo_description": "Teh herbal fungsional CHANGKEER Spice Lantern (Start of Winter). 100% alami tanpa daun senna & bebas mikroplastik.",
+    "created_at": "2026-10-20T07:40:53.921Z",
+    "updated_at": "2026-10-20T07:40:53.921Z"
+  },
+  {
+    "id": "b0000000-0000-4000-8000-000000000020",
+    "name": "CHANGKEER Longan Nest",
+    "slug": "minor-snow",
+    "tagline": "Minor Snow (小雪) • Caramel-sweet fruit, no sugar added.",
+    "description": "Racikan teh herbal fungsional Longan Nest terinspirasi kearifan 24 Solar Terms (Minor Snow - 小雪). Memadukan racikan longan, red dates, goji dengan rasa seimbang alami. 100% bebas kantong pemutih dan bebas mikroplastik serta tanpa daun senna keras, sangat aman dan nyaman dinikmati setiap hari.",
+    "category_id": "c0000000-0000-4000-8000-000000000004",
+    "category": {
+      "id": "c0000000-0000-4000-8000-000000000004",
+      "name": "Winter Blends (Musim Dingin)",
+      "slug": "winter-season",
+      "description": "Racikan herbal selaras musim Winter.",
+      "type": "product",
+      "created_at": "2026-10-20T07:40:53.921Z"
+    },
+    "ingredients": [
+      "Longan",
+      "Red dates",
+      "Goji"
+    ],
+    "brewing_guide": {
+      "water_temp": "90°C - 95°C (Seduh Panas)",
+      "steep_time": "2-3 Menit",
+      "serving_size": "250ml - 300ml air murni",
+      "notes": "Caramel-sweet fruit, no sugar added. Dirancang praktis untuk penyajian cepat di bawah 3 menit tanpa ampas mengganggu."
+    },
+    "characteristics": {
+      "aroma": "Caramel-sweet fruit, no sugar added.",
+      "taste": "Alami & Segar (Best hot)",
+      "body": "Silky smooth",
+      "caffeine": "Bebas Senna & Rendah Kafein"
+    },
+    "packaging_info": "Kemasan botol & pouch eksklusif bebas mikroplastik (microplastic-free & bleach-free).",
+    "price": 28000,
+    "weight_grams": 50,
+    "featured_image": "/images/products/minor-snow.jpg",
+    "gallery": [
+      "/images/products/minor-snow.jpg",
+      "/images/products-nobg/minor-snow.png"
+    ],
+    "is_featured": false,
+    "status": "published",
+    "seo_title": "CHANGKEER Longan Nest - Minor Snow Herbal Tea",
+    "seo_description": "Teh herbal fungsional CHANGKEER Longan Nest (Minor Snow). 100% alami tanpa daun senna & bebas mikroplastik.",
+    "created_at": "2026-10-20T07:40:53.921Z",
+    "updated_at": "2026-10-20T07:40:53.921Z"
+  },
+  {
+    "id": "b0000000-0000-4000-8000-000000000021",
+    "name": "CHANGKEER Ginger Goji",
+    "slug": "major-snow",
+    "tagline": "Major Snow (大雪) • The rainy-season favourite.",
+    "description": "Racikan teh herbal fungsional Ginger Goji terinspirasi kearifan 24 Solar Terms (Major Snow - 大雪). Memadukan racikan ginger, goji, lemon dengan rasa seimbang alami. 100% bebas kantong pemutih dan bebas mikroplastik serta tanpa daun senna keras, sangat aman dan nyaman dinikmati setiap hari.",
+    "category_id": "c0000000-0000-4000-8000-000000000004",
+    "category": {
+      "id": "c0000000-0000-4000-8000-000000000004",
+      "name": "Winter Blends (Musim Dingin)",
+      "slug": "winter-season",
+      "description": "Racikan herbal selaras musim Winter.",
+      "type": "product",
+      "created_at": "2026-10-20T07:40:53.921Z"
+    },
+    "ingredients": [
+      "Ginger",
+      "Goji",
+      "Lemon"
+    ],
+    "brewing_guide": {
+      "water_temp": "90°C - 95°C (Seduh Panas)",
+      "steep_time": "2-3 Menit",
+      "serving_size": "250ml - 300ml air murni",
+      "notes": "The rainy-season favourite. Dirancang praktis untuk penyajian cepat di bawah 3 menit tanpa ampas mengganggu."
+    },
+    "characteristics": {
+      "aroma": "The rainy-season favourite.",
+      "taste": "Alami & Segar (Best hot)",
+      "body": "Silky smooth",
+      "caffeine": "Bebas Senna & Rendah Kafein"
+    },
+    "packaging_info": "Kemasan botol & pouch eksklusif bebas mikroplastik (microplastic-free & bleach-free).",
+    "price": 18000,
+    "weight_grams": 50,
+    "featured_image": "/images/products/major-snow.jpg",
+    "gallery": [
+      "/images/products/major-snow.jpg",
+      "/images/products-nobg/major-snow.png"
+    ],
+    "is_featured": false,
+    "status": "published",
+    "seo_title": "CHANGKEER Ginger Goji - Major Snow Herbal Tea",
+    "seo_description": "Teh herbal fungsional CHANGKEER Ginger Goji (Major Snow). 100% alami tanpa daun senna & bebas mikroplastik.",
+    "created_at": "2026-10-20T07:40:53.921Z",
+    "updated_at": "2026-10-20T07:40:53.921Z"
+  },
+  {
+    "id": "b0000000-0000-4000-8000-000000000022",
+    "name": "CHANGKEER Solstice Cup",
+    "slug": "winter-solstice",
+    "tagline": "Winter Solstice (冬至) • Deep, warm and gently floral.",
+    "description": "Racikan teh herbal fungsional Solstice Cup terinspirasi kearifan 24 Solar Terms (Winter Solstice - 冬至). Memadukan racikan red dates, ginger, osmanthus dengan rasa seimbang alami. 100% bebas kantong pemutih dan bebas mikroplastik serta tanpa daun senna keras, sangat aman dan nyaman dinikmati setiap hari.",
+    "category_id": "c0000000-0000-4000-8000-000000000004",
+    "category": {
+      "id": "c0000000-0000-4000-8000-000000000004",
+      "name": "Winter Blends (Musim Dingin)",
+      "slug": "winter-season",
+      "description": "Racikan herbal selaras musim Winter.",
+      "type": "product",
+      "created_at": "2026-10-20T07:40:53.921Z"
+    },
+    "ingredients": [
+      "Red dates",
+      "Ginger",
+      "Osmanthus"
+    ],
+    "brewing_guide": {
+      "water_temp": "90°C - 95°C (Seduh Panas)",
+      "steep_time": "2-3 Menit",
+      "serving_size": "250ml - 300ml air murni",
+      "notes": "Deep, warm and gently floral. Dirancang praktis untuk penyajian cepat di bawah 3 menit tanpa ampas mengganggu."
+    },
+    "characteristics": {
+      "aroma": "Deep, warm and gently floral.",
+      "taste": "Alami & Segar (Best hot)",
+      "body": "Silky smooth",
+      "caffeine": "Bebas Senna & Rendah Kafein"
+    },
+    "packaging_info": "Kemasan botol & pouch eksklusif bebas mikroplastik (microplastic-free & bleach-free).",
+    "price": 24000,
+    "weight_grams": 50,
+    "featured_image": "/images/products/winter-solstice.jpg",
+    "gallery": [
+      "/images/products/winter-solstice.jpg",
+      "/images/products-nobg/winter-solstice.png"
+    ],
+    "is_featured": false,
+    "status": "published",
+    "seo_title": "CHANGKEER Solstice Cup - Winter Solstice Herbal Tea",
+    "seo_description": "Teh herbal fungsional CHANGKEER Solstice Cup (Winter Solstice). 100% alami tanpa daun senna & bebas mikroplastik.",
+    "created_at": "2026-10-20T07:40:53.921Z",
+    "updated_at": "2026-10-20T07:40:53.921Z"
+  },
+  {
+    "id": "b0000000-0000-4000-8000-000000000023",
+    "name": "CHANGKEER Red Date Warmth",
+    "slug": "minor-cold",
+    "tagline": "Minor Cold (小寒) • Rich and mellow.",
+    "description": "Racikan teh herbal fungsional Red Date Warmth terinspirasi kearifan 24 Solar Terms (Minor Cold - 小寒). Memadukan racikan red dates, longan, ginger dengan rasa seimbang alami. 100% bebas kantong pemutih dan bebas mikroplastik serta tanpa daun senna keras, sangat aman dan nyaman dinikmati setiap hari.",
+    "category_id": "c0000000-0000-4000-8000-000000000004",
+    "category": {
+      "id": "c0000000-0000-4000-8000-000000000004",
+      "name": "Winter Blends (Musim Dingin)",
+      "slug": "winter-season",
+      "description": "Racikan herbal selaras musim Winter.",
+      "type": "product",
+      "created_at": "2026-10-20T07:40:53.921Z"
+    },
+    "ingredients": [
+      "Red dates",
+      "Longan",
+      "Ginger"
+    ],
+    "brewing_guide": {
+      "water_temp": "90°C - 95°C (Seduh Panas)",
+      "steep_time": "2-3 Menit",
+      "serving_size": "250ml - 300ml air murni",
+      "notes": "Rich and mellow. Dirancang praktis untuk penyajian cepat di bawah 3 menit tanpa ampas mengganggu."
+    },
+    "characteristics": {
+      "aroma": "Rich and mellow.",
+      "taste": "Alami & Segar (Best hot)",
+      "body": "Silky smooth",
+      "caffeine": "Bebas Senna & Rendah Kafein"
+    },
+    "packaging_info": "Kemasan botol & pouch eksklusif bebas mikroplastik (microplastic-free & bleach-free).",
+    "price": 26000,
+    "weight_grams": 50,
+    "featured_image": "/images/products/minor-cold.jpg",
+    "gallery": [
+      "/images/products/minor-cold.jpg",
+      "/images/products-nobg/minor-cold.png"
+    ],
+    "is_featured": false,
+    "status": "published",
+    "seo_title": "CHANGKEER Red Date Warmth - Minor Cold Herbal Tea",
+    "seo_description": "Teh herbal fungsional CHANGKEER Red Date Warmth (Minor Cold). 100% alami tanpa daun senna & bebas mikroplastik.",
+    "created_at": "2026-10-20T07:40:53.921Z",
+    "updated_at": "2026-10-20T07:40:53.921Z"
+  },
+  {
+    "id": "b0000000-0000-4000-8000-000000000024",
+    "name": "CHANGKEER Cinnamon Ember",
+    "slug": "major-cold",
+    "tagline": "Major Cold (大寒) • Spicy-sweet, the last blend before spring.",
+    "description": "Racikan teh herbal fungsional Cinnamon Ember terinspirasi kearifan 24 Solar Terms (Major Cold - 大寒). Memadukan racikan cinnamon, ginger, orange peel dengan rasa seimbang alami. 100% bebas kantong pemutih dan bebas mikroplastik serta tanpa daun senna keras, sangat aman dan nyaman dinikmati setiap hari.",
+    "category_id": "c0000000-0000-4000-8000-000000000004",
+    "category": {
+      "id": "c0000000-0000-4000-8000-000000000004",
+      "name": "Winter Blends (Musim Dingin)",
+      "slug": "winter-season",
+      "description": "Racikan herbal selaras musim Winter.",
+      "type": "product",
+      "created_at": "2026-10-20T07:40:53.921Z"
+    },
+    "ingredients": [
+      "Cinnamon",
+      "Ginger",
+      "Orange peel"
+    ],
+    "brewing_guide": {
+      "water_temp": "90°C - 95°C (Seduh Panas)",
+      "steep_time": "2-3 Menit",
+      "serving_size": "250ml - 300ml air murni",
+      "notes": "Spicy-sweet, the last blend before spring. Dirancang praktis untuk penyajian cepat di bawah 3 menit tanpa ampas mengganggu."
+    },
+    "characteristics": {
+      "aroma": "Spicy-sweet, the last blend before spring.",
+      "taste": "Alami & Segar (Best hot)",
+      "body": "Silky smooth",
+      "caffeine": "Bebas Senna & Rendah Kafein"
+    },
+    "packaging_info": "Kemasan botol & pouch eksklusif bebas mikroplastik (microplastic-free & bleach-free).",
+    "price": 18000,
+    "weight_grams": 50,
+    "featured_image": "/images/products/major-cold.jpg",
+    "gallery": [
+      "/images/products/major-cold.jpg",
+      "/images/products-nobg/major-cold.png"
+    ],
+    "is_featured": false,
+    "status": "published",
+    "seo_title": "CHANGKEER Cinnamon Ember - Major Cold Herbal Tea",
+    "seo_description": "Teh herbal fungsional CHANGKEER Cinnamon Ember (Major Cold). 100% alami tanpa daun senna & bebas mikroplastik.",
+    "created_at": "2026-10-20T07:40:53.921Z",
+    "updated_at": "2026-10-20T07:40:53.921Z"
+  }
 ];
 
 export const SEED_ARTICLES: Article[] = [
@@ -461,8 +1476,8 @@ export const SEED_ORDERS: Order[] = [
         id: 'item-101',
         order_id: 'ord-101',
         product_id: SEED_PRODUCTS[0]?.id || 'b0000000-0000-4000-8000-000000000001',
-        product_name: 'CHANGKEER Jasmine Tea',
-        product_slug: 'solar-term-jasmine-herbal-tea',
+        product_name: 'CHANGKEER First Bloom',
+        product_slug: 'start-of-spring',
         product_image: SEED_PRODUCTS[0]?.featured_image,
         serving_size: 'regular',
         temperature: 'hot',
@@ -477,8 +1492,8 @@ export const SEED_ORDERS: Order[] = [
         id: 'item-102',
         order_id: 'ord-101',
         product_id: SEED_PRODUCTS[1]?.id || 'b0000000-0000-4000-8000-000000000002',
-        product_name: 'CHANGKEER English Breakfast',
-        product_slug: 'english-breakfast-tea',
+        product_name: 'CHANGKEER Rain Garden',
+        product_slug: 'rain-water',
         product_image: SEED_PRODUCTS[1]?.featured_image,
         serving_size: 'regular',
         temperature: 'hot',
@@ -516,8 +1531,8 @@ export const SEED_ORDERS: Order[] = [
         id: 'item-103',
         order_id: 'ord-102',
         product_id: SEED_PRODUCTS[2]?.id || 'b0000000-0000-4000-8000-000000000003',
-        product_name: 'CHANGKEER Vanilla Mint Tea',
-        product_slug: 'vanilla-mint-tea',
+        product_name: 'CHANGKEER Green Wake',
+        product_slug: 'awakening-of-insects',
         product_image: SEED_PRODUCTS[2]?.featured_image,
         serving_size: 'regular',
         temperature: 'iced',

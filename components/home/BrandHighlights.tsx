@@ -22,8 +22,8 @@ export function BrandHighlights({ highlights: _highlights }: BrandHighlightsProp
             <div className="lg:col-span-5 relative">
               <div className="relative aspect-[4/5] sm:aspect-square lg:aspect-[4/5] w-full max-w-md mx-auto rounded-2xl overflow-hidden bg-background border border-border/80 shadow-md group">
                 <Image
-                  src="/images/assets/jasmine_tea_produk.jpg"
-                  alt="CHANGKEER Jasmine Tea Authentic Brew"
+                  src="/images/products/start-of-spring.jpg"
+                  alt="CHANGKEER First Bloom - Authentic Seasonal Herbal Tea"
                   fill
                   sizes="(max-width: 768px) 100vw, 40vw"
                   className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"

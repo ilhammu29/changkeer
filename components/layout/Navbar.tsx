@@ -14,7 +14,6 @@ const NAV_LINKS = [
   { name: 'ABOUT CHANGKEER', href: '/tentang-kami' },
   { name: 'NEWS', href: '/media-berita' },
   { name: 'CONTACT US', href: '/hubungi-kami' },
-  { name: 'LOGIN', href: '/login' },
 ];
 
 export function Navbar() {
@@ -68,6 +67,19 @@ export function Navbar() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // Close sidebar on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setSidebarOpen(false);
+      }
+    };
+    if (sidebarOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [sidebarOpen]);
+
   // Uniform dark luxury aesthetic for public navigation across all pages
   const isDarkTheme = true;
 
@@ -106,6 +118,7 @@ export function Navbar() {
                 src="/images/logo_new.png"
                 alt="CHANGKEER Logo"
                 fill
+                sizes="40px"
                 priority
                 className="object-contain p-0.5"
               />
@@ -152,26 +165,27 @@ export function Navbar() {
             })}
           </nav>
 
-          {/* Right Action: CTA & Mobile Sidebar Toggle */}
-          <div className="flex items-center gap-3">
-            {/* Desktop Login Button */}
+          {/* Right Action: CTA & Mobile/Tablet Sidebar Toggle */}
+          <div className="flex items-center gap-2 sm:gap-3">
+            {/* Prominent Top-Right Order Now Button (Responsive sizing) */}
             <Link
-              href="/login"
-              className="hidden sm:inline-flex text-[11px] font-bold tracking-[0.16em] uppercase px-5 py-2 rounded-full bg-white text-black hover:bg-neutral-200 transition-all items-center gap-1.5 shadow-xs active:scale-95 cursor-pointer"
+              href="/order"
+              className="inline-flex text-[11px] sm:text-xs font-bold tracking-[0.14em] uppercase px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full bg-white text-black hover:bg-neutral-200 transition-all items-center gap-1.5 shadow-sm active:scale-95 cursor-pointer whitespace-nowrap"
             >
-              <span>LOGIN</span>
+              <span>ORDER NOW</span>
+              <ArrowUpRight className="w-3.5 h-3.5 opacity-80" />
             </Link>
 
-            {/* Mobile / Tablet Hamburger Menu Toggle (Hidden on Desktop) */}
+            {/* Mobile / Tablet Hamburger Menu Toggle (Visible on Mobile & Tablet, Hidden on Desktop) */}
             <button
               type="button"
-              className={`lg:hidden inline-flex items-center gap-2 px-3.5 py-2 rounded-full border transition-all cursor-pointer ${
+              className={`lg:hidden inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-3.5 py-2 sm:py-2.5 rounded-full border transition-all cursor-pointer ${
                 isDarkTheme
                   ? 'border-white/20 text-white hover:bg-white/10 active:scale-95'
                   : 'border-border/80 text-foreground hover:bg-neutral-100 active:scale-95'
               }`}
               onClick={() => setSidebarOpen(true)}
-              aria-label="Open Mobile Menu"
+              aria-label="Open Navigation Menu"
             >
               <Menu className="w-4 h-4" />
               <span className="text-[10px] font-mono font-bold tracking-widest uppercase">
@@ -187,14 +201,14 @@ export function Navbar() {
         <div className="lg:hidden fixed inset-0 z-50">
           {/* Backdrop */}
           <div
-            className="fixed inset-0 bg-black/75 backdrop-blur-sm transition-opacity duration-300 animate-in fade-in"
+            className="fixed inset-0 bg-black/80 backdrop-blur-md transition-opacity duration-300 animate-in fade-in"
             onClick={() => setSidebarOpen(false)}
             aria-hidden="true"
           />
 
           {/* Offcanvas Sidebar Drawer */}
           <aside
-            className="fixed top-0 right-0 bottom-0 w-80 sm:w-96 max-w-[88vw] h-full max-h-screen bg-[#111019] text-white p-6 sm:p-8 shadow-2xl flex flex-col justify-between border-l border-white/10 animate-in slide-in-from-right duration-300 z-50 font-sans overflow-hidden"
+            className="fixed top-0 right-0 bottom-0 w-80 sm:w-96 max-w-[86vw] h-full max-h-[100dvh] bg-[#111216] text-white p-6 sm:p-8 shadow-2xl flex flex-col justify-between border-l border-white/10 animate-in slide-in-from-right duration-300 z-50 font-sans overflow-hidden"
             aria-label="Sidebar Navigation Menu"
           >
             <div className="flex flex-col flex-1 min-h-0">
@@ -210,6 +224,7 @@ export function Navbar() {
                       src="/images/logo_new.png"
                       alt="CHANGKEER"
                       fill
+                      sizes="32px"
                       className="object-contain p-0.5"
                     />
                   </div>
@@ -236,7 +251,7 @@ export function Navbar() {
               </div>
 
               {/* Sidebar Navigation Links (Scrollable independently) */}
-              <nav className="mt-3 flex flex-col space-y-1.5 flex-1 min-h-0 overflow-y-auto pr-1">
+              <nav className="mt-3 flex flex-col space-y-1.5 flex-1 min-h-0 overflow-y-auto overscroll-contain pr-1">
                 {NAV_LINKS.map((link, idx) => {
                   const active = isActive(link.href);
                   return (
@@ -268,15 +283,26 @@ export function Navbar() {
             </div>
 
             {/* Sidebar Bottom Action & Info */}
-            <div className="pt-4 border-t border-white/10 space-y-2.5 shrink-0">
+            <div className="pt-4 border-t border-white/10 space-y-3 shrink-0">
               <Link
-                href="/login"
+                href="/order"
                 onClick={() => setSidebarOpen(false)}
-                className="w-full text-center block text-[11px] font-bold tracking-[0.18em] uppercase py-3 rounded-xl bg-white text-black hover:bg-neutral-200 transition-colors shadow-sm"
+                className="w-full text-center flex items-center justify-center gap-2 text-xs font-bold tracking-[0.16em] uppercase py-3.5 rounded-xl bg-white text-black hover:bg-neutral-200 transition-colors shadow-sm"
               >
-                LOGIN
+                <span>ORDER NOW</span>
+                <ArrowUpRight className="w-3.5 h-3.5" />
               </Link>
-              <div className="text-[10px] font-mono text-white/50 text-center uppercase tracking-wider">
+              <div className="flex items-center justify-between text-[11px] text-white/60 px-1">
+                <span>Customer Account?</span>
+                <Link
+                  href="/login"
+                  onClick={() => setSidebarOpen(false)}
+                  className="text-white hover:underline font-semibold tracking-wider uppercase text-[10px]"
+                >
+                  Sign In &rarr;
+                </Link>
+              </div>
+              <div className="text-[10px] font-mono text-white/40 text-center uppercase tracking-wider pt-1">
                 Unsweetened by default &bull; Plastic-free
               </div>
             </div>

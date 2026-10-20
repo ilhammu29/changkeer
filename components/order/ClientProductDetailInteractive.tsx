@@ -28,13 +28,6 @@ interface ClientProductDetailInteractiveProps {
   contactPhone: string;
 }
 
-const NOBG_MAP: Record<string, string> = {
-  'solar-term-jasmine-herbal-tea': '/images/products-nobg/jasmine-tea.png',
-  'jasmine-tea': '/images/products-nobg/jasmine-tea.png',
-  'english-breakfast-tea': '/images/products-nobg/english-breakfast-tea.png',
-  'vanilla-mint-tea': '/images/products-nobg/vanilla-mint-tea.png',
-};
-
 function formatRupiah(amount: number): string {
   return new Intl.NumberFormat('id-ID', {
     style: 'currency',
@@ -56,7 +49,7 @@ export function ClientProductDetailInteractive({
 
   const images = rawImages.length > 0
     ? Array.from(new Set(rawImages))
-    : ['/images/assets/jasmine_tea_produk.jpg'];
+    : ['/images/products/start-of-spring.jpg'];
 
   const [quantity, setQuantity] = useState(1);
   const [temperature, setTemperature] = useState<'hot' | 'iced'>('hot');
@@ -80,8 +73,7 @@ export function ClientProductDetailInteractive({
     { label: '04 SENSORY', title: 'Sensory Profile' },
   ];
 
-  const transparentImage =
-    NOBG_MAP[product.slug] || '/images/products-nobg/jasmine-tea.png';
+  const transparentImage = `/images/products-nobg/${product.slug}.png`;
 
   const basePrice = product.price || 28000;
   const addonsTotal = selectedAddons.reduce((acc, a) => acc + a.price, 0);
@@ -554,6 +546,7 @@ export function ClientProductDetailInteractive({
                 src={images[activeModalIndex]}
                 alt={`${product.name} - ${activeModalIndex + 1}`}
                 fill
+                sizes="(max-width: 768px) 100vw, 640px"
                 className="object-cover"
               />
             </div>
