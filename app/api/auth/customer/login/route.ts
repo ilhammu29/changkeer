@@ -132,6 +132,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: true, profile });
   } catch (err: any) {
     console.error('Customer login error:', err);
-    return NextResponse.json({ error: err.message || 'Gagal masuk akun' }, { status: 500 });
+    return NextResponse.json({ error: err.message || 'Failed to sign in' }, { status: 500 });
   }
 }

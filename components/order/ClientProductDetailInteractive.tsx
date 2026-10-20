@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { Product } from '@/types';
 import {
@@ -15,18 +15,13 @@ import {
   ChevronRight,
   ShieldCheck,
   MessageCircle,
-  Sparkles,
   ShoppingBag,
   Flame,
   Snowflake,
 } from 'lucide-react';
-import { useCart } from '@/lib/context/CartContext';
 import { BOTANICAL_ADDONS } from '@/lib/data/mock-seed';
-
-interface ClientProductDetailInteractiveProps {
-  product: Product;
-  contactPhone: string;
-}
+import { useCart } from '@/lib/context/CartContext';
+import { SWEETNESS_OPTIONS, SWEETENER_TYPES } from './CustomizationModal';
 
 function formatRupiah(amount: number): string {
   return new Intl.NumberFormat('id-ID', {
@@ -34,6 +29,11 @@ function formatRupiah(amount: number): string {
     currency: 'IDR',
     maximumFractionDigits: 0,
   }).format(amount);
+}
+
+interface ClientProductDetailInteractiveProps {
+  product: Product;
+  contactPhone: string;
 }
 
 export function ClientProductDetailInteractive({
@@ -53,8 +53,9 @@ export function ClientProductDetailInteractive({
 
   const [quantity, setQuantity] = useState(1);
   const [temperature, setTemperature] = useState<'hot' | 'iced'>('hot');
-  const [sweetness, setSweetness] = useState<'0%' | '25%' | '50%' | '100%'>('0%');
-  const [iceLevel, setIceLevel] = useState<'none' | 'less' | 'normal'>('normal');
+  const [sweetness, setSweetness] = useState<'0%' | '30%' | '50%' | '75%' | '100%'>('0%');
+  const [sweetenerType, setSweetenerType] = useState<'sorghum' | 'honey' | 'stevia'>('sorghum');
+  const [iceLevel, setIceLevel] = useState<'less' | 'normal'>('normal');
   const [selectedAddons, setSelectedAddons] = useState<typeof BOTANICAL_ADDONS>([]);
   const [copied, setCopied] = useState(false);
   const [addedAnimation, setAddedAnimation] = useState(false);
@@ -76,8 +77,11 @@ export function ClientProductDetailInteractive({
   const transparentImage = `/images/products-nobg/${product.slug}.png`;
 
   const basePrice = product.price || 28000;
+  const iceExtra = temperature === 'iced' ? 2000 : 0;
+  const sweetenerExtra = sweetness !== '0%' && sweetenerType === 'honey' ? 3000 : 0;
   const addonsTotal = selectedAddons.reduce((acc, a) => acc + a.price, 0);
-  const unitPrice = basePrice + addonsTotal;
+
+  const unitPrice = basePrice + iceExtra + sweetenerExtra + addonsTotal;
   const totalPrice = unitPrice * quantity;
 
   const formattedUnitPrice = new Intl.NumberFormat('id-ID', {
@@ -111,7 +115,8 @@ export function ClientProductDetailInteractive({
       quantity,
       temperature,
       sweetness_level: sweetness,
-      ice_level: temperature === 'iced' ? iceLevel : 'none',
+      sweetener_type: sweetness !== '0%' ? sweetenerType : undefined,
+      ice_level: temperature === 'iced' ? iceLevel : undefined,
       selected_addons: selectedAddons,
       item_notes: '',
     });
@@ -141,7 +146,7 @@ export function ClientProductDetailInteractive({
         <div className="lg:col-span-4 space-y-4 order-2 lg:order-1">
           {/* Top Category and Share */}
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-sans font-bold tracking-[0.2em] uppercase text-neutral-400">
+            <span className="text-[11px] font-mono font-bold tracking-[0.2em] uppercase text-neutral-400">
               {product.category?.name || 'SIGNATURE BLEND'}
             </span>
 
@@ -164,46 +169,68 @@ export function ClientProductDetailInteractive({
             </button>
           </div>
 
-          {/* Heading */}
-          <div className="space-y-1.5">
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-sans font-extrabold uppercase tracking-tight text-neutral-900 leading-tight">
+          {/* Heading + Tagline */}
+          <div className="space-y-1">
+            <h1 className="text-2xl sm:text-3xl font-extrabold uppercase tracking-tight text-neutral-900 leading-tight">
               {product.name}
             </h1>
             {product.tagline && (
-              <p className="text-xs sm:text-sm font-sans font-medium text-neutral-500 leading-relaxed">
+              <p className="text-xs sm:text-sm text-neutral-500 font-medium">
                 {product.tagline}
               </p>
             )}
           </div>
 
-          {/* Carousel Tabs Navigation */}
-          <div className="space-y-3 pt-1">
-            <div className="flex items-center gap-2 border-b border-neutral-200/80 pb-2 overflow-x-auto text-[11px] font-sans font-bold uppercase tracking-wider scrollbar-none">
-              {detailTabs.map((tab, idx) => (
+          {/* Interactive Information Carousel Tabs */}
+          <div className="bg-white border border-neutral-200/80 rounded-2xl p-4 sm:p-5 shadow-2xs space-y-3">
+            {/* Tabs Header */}
+            <div className="flex items-center justify-between border-b border-neutral-100 pb-2.5">
+              <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
+                {detailTabs.map((tab, idx) => (
+                  <button
+                    key={tab.label}
+                    type="button"
+                    onClick={() => setDetailSlide(idx)}
+                    className={`px-2.5 py-1 rounded-lg text-[10px] font-mono uppercase font-bold tracking-wider transition-all cursor-pointer whitespace-nowrap ${
+                      detailSlide === idx
+                        ? 'bg-neutral-900 text-white shadow-2xs'
+                        : 'text-neutral-400 hover:text-neutral-800'
+                    }`}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
+
+              <div className="flex items-center gap-1 shrink-0 ml-2">
                 <button
-                  key={tab.label}
                   type="button"
-                  onClick={() => setDetailSlide(idx)}
-                  className={`pb-1 transition-all cursor-pointer whitespace-nowrap ${
-                    detailSlide === idx
-                      ? 'border-b-2 border-neutral-900 text-neutral-900 font-extrabold'
-                      : 'border-transparent text-neutral-400 hover:text-neutral-700'
-                  }`}
+                  onClick={() => setDetailSlide((prev) => Math.max(0, prev - 1))}
+                  disabled={detailSlide === 0}
+                  className="w-6 h-6 rounded-md border border-neutral-200 flex items-center justify-center text-neutral-600 hover:bg-neutral-100 disabled:opacity-30 cursor-pointer"
                 >
-                  {tab.label}
+                  <ChevronLeft className="w-3 h-3" />
                 </button>
-              ))}
+                <button
+                  type="button"
+                  onClick={() => setDetailSlide((prev) => Math.min(detailTabs.length - 1, prev + 1))}
+                  disabled={detailSlide === detailTabs.length - 1}
+                  className="w-6 h-6 rounded-md border border-neutral-200 flex items-center justify-center text-neutral-600 hover:bg-neutral-100 disabled:opacity-30 cursor-pointer"
+                >
+                  <ChevronRight className="w-3 h-3" />
+                </button>
+              </div>
             </div>
 
-            {/* Slide Content */}
-            <div className="bg-[#FAFAF8] border border-neutral-200/80 rounded-xl p-4 min-h-[140px] text-xs font-sans leading-relaxed space-y-2.5 shadow-2xs">
+            {/* Tab Slide Content */}
+            <div className="text-xs leading-relaxed min-h-[90px]">
               {detailSlide === 0 && (
                 <div>
                   <h4 className="font-bold text-xs text-neutral-900 mb-1 uppercase font-sans tracking-wide">
                     {detailTabs[0].title}
                   </h4>
                   <p className="text-neutral-600">
-                    {product.description || 'Racikan teh herbal fungsional terinspirasi tradisi botani nusantara yang diseduh segar di bawah 3 menit.'}
+                    {product.description || 'Functional loose-leaf herbal blend inspired by Indonesian botanical heritage, brewed fresh in under 3 minutes.'}
                   </p>
                 </div>
               )}
@@ -214,7 +241,7 @@ export function ClientProductDetailInteractive({
                     {detailTabs[1].title}
                   </h4>
                   <p className="text-neutral-600">
-                    Setiap cangkir Changkeer bebas dari pemanis berlebih secara default. Kami mengutamakan cita rasa asli tanaman herbal, kelopak bunga mekar utuh, dan rempah kering pilihan.
+                    Every cup of Changkeer is unsweetened by default. We champion the authentic nuances of herbs, whole flowers, and sun-dried botanicals.
                   </p>
                 </div>
               )}
@@ -227,15 +254,15 @@ export function ClientProductDetailInteractive({
                   <ul className="space-y-1.5 text-neutral-700">
                     <li className="flex items-center gap-2">
                       <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                      <span>100% Bebas Daun Senna &amp; Pencahar Kimia</span>
+                      <span>100% Free of Senna Leaf &amp; Chemical Laxatives</span>
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                      <span>Bebas Mikroplastik &amp; Pemutih Klorin</span>
+                      <span>Microplastic-Free &amp; Chlorine-Free Sachet</span>
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                      <span>Pilihan Gula Sorgum Rendah Glikemik &amp; Madu</span>
+                      <span>Low-GI Organic Sorghum Nectar &amp; Raw Forest Honey</span>
                     </li>
                   </ul>
                 </div>
@@ -248,12 +275,12 @@ export function ClientProductDetailInteractive({
                   </h4>
                   <div className="space-y-2">
                     <div>
-                      <span className="text-[10px] uppercase font-sans text-neutral-400 block font-bold">Karakter Seduhan</span>
-                      <span className="text-neutral-800 font-medium">Aromatik segar, menenangkan, rasa seimbang di tenggorokan</span>
+                      <span className="text-[10px] uppercase font-sans text-neutral-400 block font-bold">Brewing Character</span>
+                      <span className="text-neutral-800 font-medium">Aromatic, soothing, delicately balanced on the palate</span>
                     </div>
                     <div>
-                      <span className="text-[10px] uppercase font-sans text-neutral-400 block font-bold">Saran Penyajian</span>
-                      <span className="text-neutral-800 font-medium">Nikmat hangat saat relaksasi atau dingin saat cuaca terik</span>
+                      <span className="text-[10px] uppercase font-sans text-neutral-400 block font-bold">Serving Suggestion</span>
+                      <span className="text-neutral-800 font-medium">Best enjoyed warm for relaxation or iced on sunny days</span>
                     </div>
                   </div>
                 </div>
@@ -267,10 +294,8 @@ export function ClientProductDetailInteractive({
         {/* ========================================================================= */}
         <div className="lg:col-span-4 flex flex-col items-center justify-center order-1 lg:order-2 pt-1">
           <div className="relative w-full max-w-[320px] sm:max-w-[360px] h-[280px] sm:h-[320px] lg:h-[350px] flex items-center justify-center group">
-            {/* Ambient Base Shadow under Product */}
             <div className="absolute bottom-3 w-44 sm:w-52 h-5 bg-neutral-900/10 rounded-full blur-xl pointer-events-none" />
 
-            {/* Product Cutout Image */}
             <div className="relative w-full h-full flex items-center justify-center p-2">
               <Image
                 src={transparentImage}
@@ -283,7 +308,6 @@ export function ClientProductDetailInteractive({
             </div>
           </div>
 
-          {/* View Gallery Button */}
           <button
             type="button"
             onClick={() => {
@@ -293,12 +317,12 @@ export function ClientProductDetailInteractive({
             className="inline-flex items-center gap-2 text-xs font-sans font-bold tracking-wider uppercase bg-white border border-neutral-200 text-neutral-800 px-5 py-2 rounded-full shadow-xs hover:border-neutral-900 hover:text-neutral-900 active:scale-95 transition-all mt-2 cursor-pointer"
           >
             <Eye className="w-3.5 h-3.5 text-neutral-700" />
-            <span>Lihat Galeri Foto ({images.length})</span>
+            <span>View Photo Gallery ({images.length})</span>
           </button>
         </div>
 
         {/* ========================================================================= */}
-        {/* RIGHT COLUMN: E-Commerce Order Configurator Cardbox (Plus Jakarta Sans) */}
+        {/* RIGHT COLUMN: E-Commerce Order Configurator Cardbox */}
         {/* ========================================================================= */}
         <div className="lg:col-span-4 space-y-3.5 order-3 bg-white border border-neutral-200/80 rounded-2xl p-5 sm:p-6 shadow-md font-sans">
           
@@ -306,7 +330,7 @@ export function ClientProductDetailInteractive({
           <div className="pb-3 border-b border-neutral-100 flex items-end justify-between">
             <div>
               <span className="text-[10px] font-sans font-bold tracking-wider uppercase text-neutral-400 block mb-0.5">
-                Harga Seduhan
+                Price
               </span>
               <div className="flex items-baseline gap-2">
                 <span className="text-2xl sm:text-3xl font-sans font-extrabold text-neutral-900 tracking-tight">
@@ -322,10 +346,10 @@ export function ClientProductDetailInteractive({
             </span>
           </div>
 
-          {/* Suhu Penyajian (Hot vs Iced) */}
+          {/* Serving Temperature (Hot vs Iced +2000) */}
           <div className="space-y-1.5">
             <label className="text-[11px] font-sans font-bold tracking-wider uppercase text-neutral-500 block">
-              Suhu Penyajian
+              Serving Temperature
             </label>
             <div className="grid grid-cols-2 gap-2">
               <button
@@ -338,7 +362,7 @@ export function ClientProductDetailInteractive({
                 }`}
               >
                 <Flame className="w-3.5 h-3.5 text-amber-500" />
-                <span>Hangat (Hot)</span>
+                <span>Hot (90&deg;C)</span>
               </button>
 
               <button
@@ -351,60 +375,86 @@ export function ClientProductDetailInteractive({
                 }`}
               >
                 <Snowflake className="w-3.5 h-3.5 text-sky-400" />
-                <span>Dingin (Iced)</span>
+                <span>Iced (+Rp 2K)</span>
               </button>
             </div>
           </div>
 
-          {/* Tingkat Kemanisan */}
+          {/* Sweetness Level */}
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
               <label className="text-[11px] font-sans font-bold tracking-wider uppercase text-neutral-500 block">
-                Tingkat Manis
+                Sweetness Level
               </label>
-              <span className="text-[10px] font-sans text-neutral-400 font-medium">Default: Tanpa Pemanis</span>
+              <span className="text-[10px] font-sans text-neutral-400 font-medium">Default: Unsweetened</span>
             </div>
-            <div className="grid grid-cols-4 gap-1.5 text-xs font-sans font-bold">
-              {(['0%', '25%', '50%', '100%'] as const).map((level) => (
+            <div className="grid grid-cols-5 gap-1 text-xs font-sans font-bold">
+              {SWEETNESS_OPTIONS.map((opt) => (
                 <button
-                  key={level}
+                  key={opt.level}
                   type="button"
-                  onClick={() => setSweetness(level)}
+                  onClick={() => setSweetness(opt.level as any)}
                   className={`py-1.5 rounded-lg border text-center transition-all cursor-pointer ${
-                    sweetness === level
+                    sweetness === opt.level
                       ? 'bg-neutral-900 text-white border-neutral-900 shadow-xs font-extrabold'
                       : 'bg-neutral-50/70 text-neutral-600 border-neutral-200/80 hover:bg-neutral-100 font-semibold'
                   }`}
                 >
-                  {level}
+                  {opt.level}
                 </button>
               ))}
             </div>
           </div>
 
-          {/* Es Batu (hanya jika Iced) */}
+          {/* Ice Level (only when Iced) */}
           {temperature === 'iced' && (
             <div className="space-y-1.5 animate-in fade-in duration-200">
               <label className="text-[11px] font-sans font-bold tracking-wider uppercase text-neutral-500 block">
-                Jumlah Es
+                Ice Level
               </label>
-              <div className="grid grid-cols-3 gap-1.5 text-xs font-sans font-semibold">
+              <div className="grid grid-cols-2 gap-2 text-xs font-sans font-semibold">
                 {[
-                  { id: 'none', label: 'Tanpa Es' },
-                  { id: 'less', label: 'Sedikit Es' },
-                  { id: 'normal', label: 'Normal' },
+                  { id: 'less', label: 'Less Ice', sub: 'Strong flavor' },
+                  { id: 'normal', label: 'Normal Ice', sub: 'Crisp chill' },
                 ].map((item) => (
                   <button
                     key={item.id}
                     type="button"
                     onClick={() => setIceLevel(item.id as any)}
-                    className={`py-1.5 rounded-lg border text-center transition-all cursor-pointer ${
+                    className={`py-2 px-2.5 rounded-xl border text-center transition-all cursor-pointer ${
                       iceLevel === item.id
                         ? 'bg-neutral-900 text-white border-neutral-900 shadow-xs font-bold'
                         : 'bg-neutral-50/70 text-neutral-600 border-neutral-200/80 hover:bg-neutral-100'
                     }`}
                   >
-                    {item.label}
+                    <span className="block font-bold">{item.label}</span>
+                    <span className="text-[9px] opacity-75 font-normal block">{item.sub}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Natural Sweeteners (when Sweetness > 0%) */}
+          {sweetness !== '0%' && (
+            <div className="space-y-1.5 animate-in fade-in duration-200">
+              <label className="text-[11px] font-sans font-bold tracking-wider uppercase text-neutral-500 block">
+                Natural Sweetener
+              </label>
+              <div className="grid grid-cols-3 gap-1.5 text-xs font-sans">
+                {SWEETENER_TYPES.map((sw) => (
+                  <button
+                    key={sw.id}
+                    type="button"
+                    onClick={() => setSweetenerType(sw.id as any)}
+                    className={`py-1.5 px-2 rounded-xl border text-center transition-all cursor-pointer truncate ${
+                      sweetenerType === sw.id
+                        ? 'bg-neutral-900 text-white border-neutral-900 font-bold shadow-xs'
+                        : 'bg-neutral-50/70 text-neutral-700 border-neutral-200/80 hover:bg-neutral-100'
+                    }`}
+                  >
+                    <span className="block truncate text-[11px] font-medium">{sw.name.split(' ')[1] || sw.name}</span>
+                    <span className="block text-[9px] opacity-75">{sw.price > 0 ? '+3K' : 'Free'}</span>
                   </button>
                 ))}
               </div>
@@ -415,9 +465,9 @@ export function ClientProductDetailInteractive({
           <div className="space-y-1.5 pt-0.5">
             <div className="flex items-center justify-between">
               <label className="text-[11px] font-sans font-bold tracking-wider uppercase text-neutral-500 block">
-                Tambahan Botani Alami
+                Botanical Flower Infusions
               </label>
-              <span className="text-[10px] font-sans text-neutral-400 font-medium">Opsional</span>
+              <span className="text-[10px] font-sans text-neutral-400 font-medium">Optional</span>
             </div>
             <div className="space-y-1.5 max-h-28 overflow-y-auto pr-1">
               {BOTANICAL_ADDONS.map((addon) => {
@@ -434,7 +484,7 @@ export function ClientProductDetailInteractive({
                     }`}
                   >
                     <span className="font-semibold truncate max-w-[140px] sm:max-w-[200px]">{addon.name}</span>
-                    <span className="text-[11px] font-bold shrink-0">+{formatRupiah(addon.price)}</span>
+                    <span className="text-[11px] font-mono font-bold shrink-0">+{formatRupiah(addon.price)}</span>
                   </button>
                 );
               })}
@@ -445,7 +495,7 @@ export function ClientProductDetailInteractive({
           <div className="pt-2.5 border-t border-neutral-100 flex items-center justify-between">
             <div>
               <span className="text-[10px] font-sans uppercase text-neutral-400 block font-bold mb-1">
-                Jumlah Cangkir
+                Quantity
               </span>
               <div className="inline-flex items-center bg-neutral-50 border border-neutral-200/80 rounded-xl p-0.5 shadow-2xs">
                 <button
@@ -453,18 +503,18 @@ export function ClientProductDetailInteractive({
                   onClick={() => setQuantity((q) => Math.max(1, q - 1))}
                   disabled={quantity <= 1}
                   className="w-7 h-7 rounded-lg flex items-center justify-center text-neutral-800 hover:bg-neutral-200 disabled:opacity-30 transition-colors cursor-pointer"
-                  title="Kurangi"
+                  aria-label="Decrease quantity"
                 >
                   <Minus className="w-3.5 h-3.5 stroke-[2.5]" />
                 </button>
-                <span className="w-8 text-center font-sans font-bold text-sm text-neutral-900">
+                <span className="w-8 text-center font-mono font-bold text-sm text-neutral-900">
                   {quantity}
                 </span>
                 <button
                   type="button"
                   onClick={() => setQuantity((q) => q + 1)}
                   className="w-7 h-7 rounded-lg flex items-center justify-center text-neutral-800 hover:bg-neutral-200 transition-colors cursor-pointer"
-                  title="Tambah"
+                  aria-label="Increase quantity"
                 >
                   <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
                 </button>
@@ -473,9 +523,9 @@ export function ClientProductDetailInteractive({
 
             <div className="text-right">
               <span className="text-[10px] font-sans uppercase text-neutral-400 block font-bold mb-0.5">
-                Total Pesanan
+                Total Amount
               </span>
-              <span className="text-xl sm:text-2xl font-sans font-extrabold text-neutral-900 tracking-tight">
+              <span className="text-xl sm:text-2xl font-mono font-extrabold text-neutral-900 tracking-tight">
                 {formattedTotalPrice}
               </span>
             </div>
@@ -493,29 +543,29 @@ export function ClientProductDetailInteractive({
               }`}
             >
               <ShoppingBag className="w-4 h-4 shrink-0" />
-              <span>{addedAnimation ? 'Berhasil Ditambahkan!' : 'Tambah ke Keranjang'}</span>
+              <span>{addedAnimation ? 'Added to Bag!' : 'Add to Bag'}</span>
             </button>
 
             <a
-              href={`https://wa.me/${contactPhone.replace(/[^0-9]/g, '')}?text=Halo%20Changkeer,%20saya%20tertarik%20dengan%20racikan%20${encodeURIComponent(product.name)}`}
+              href={`https://wa.me/${contactPhone.replace(/[^0-9]/g, '')}?text=Hello%20CHANGKEER,%20I%20am%20interested%20in%20${encodeURIComponent(product.name)}`}
               target="_blank"
               rel="noreferrer"
               className="w-full py-2 rounded-xl border border-neutral-200/80 bg-white hover:bg-neutral-50 text-neutral-700 text-xs font-sans font-semibold uppercase tracking-wider flex items-center justify-center gap-2 transition-colors cursor-pointer text-center"
             >
               <MessageCircle className="w-3.5 h-3.5 text-neutral-600 shrink-0" />
-              <span>Tanya Barista via WhatsApp</span>
+              <span>Ask Barista via WhatsApp</span>
             </a>
           </div>
 
-          {/* Guarantees - 1 row compact */}
+          {/* Guarantees */}
           <div className="pt-2 border-t border-neutral-100 flex flex-wrap sm:flex-nowrap items-center justify-between gap-2 text-[11px] font-sans text-neutral-500">
             <div className="flex items-center gap-1.5">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-              <span className="font-medium">100% Herbal Alami</span>
+              <span className="font-medium">100% Pure Botanicals</span>
             </div>
             <div className="flex items-center gap-1.5">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-              <span className="font-medium">Seduh &lt; 3 Menit</span>
+              <span className="font-medium">Brewed &lt; 3 Mins</span>
             </div>
           </div>
 
@@ -530,7 +580,7 @@ export function ClientProductDetailInteractive({
           <div className="relative max-w-2xl w-full bg-white rounded-2xl overflow-hidden shadow-2xl p-4 sm:p-6 space-y-3 sm:space-y-4">
             <div className="flex items-center justify-between pb-2.5 sm:pb-3 border-b border-neutral-200">
               <span className="font-bold text-xs uppercase tracking-wider text-neutral-900 truncate pr-2">
-                Galeri Foto {product.name} ({activeModalIndex + 1}/{images.length})
+                Photo Gallery &bull; {product.name} ({activeModalIndex + 1}/{images.length})
               </span>
               <button
                 type="button"
@@ -559,14 +609,14 @@ export function ClientProductDetailInteractive({
                   className="px-3 sm:px-3.5 py-1.5 rounded-xl border border-neutral-200 hover:bg-neutral-100 text-xs font-bold uppercase flex items-center gap-1 cursor-pointer"
                 >
                   <ChevronLeft className="w-4 h-4" />
-                  <span>Sebelumnya</span>
+                  <span>Previous</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => setActiveModalIndex((idx) => (idx === images.length - 1 ? 0 : idx + 1))}
                   className="px-3 sm:px-3.5 py-1.5 rounded-xl border border-neutral-200 hover:bg-neutral-100 text-xs font-bold uppercase flex items-center gap-1 cursor-pointer"
                 >
-                  <span>Selanjutnya</span>
+                  <span>Next</span>
                   <ChevronRight className="w-4 h-4" />
                 </button>
               </div>

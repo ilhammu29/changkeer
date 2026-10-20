@@ -10,11 +10,11 @@ export async function POST(req: NextRequest) {
     const { email, password, full_name, phone_number } = body;
 
     if (!email || !full_name) {
-      return NextResponse.json({ error: 'Nama lengkap dan email wajib diisi' }, { status: 400 });
+      return NextResponse.json({ error: 'Full name and email are required' }, { status: 400 });
     }
 
     if (password && password.length < 6) {
-      return NextResponse.json({ error: 'Kata sandi minimal 6 karakter' }, { status: 400 });
+      return NextResponse.json({ error: 'Password must be at least 6 characters' }, { status: 400 });
     }
 
     const cleanEmail = email.trim().toLowerCase();
@@ -79,6 +79,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: true, profile }, { status: 201 });
   } catch (err: any) {
     console.error('Customer register error:', err);
-    return NextResponse.json({ error: err.message || 'Gagal membuat akun' }, { status: 500 });
+    return NextResponse.json({ error: err.message || 'Failed to create account' }, { status: 500 });
   }
 }

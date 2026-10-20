@@ -147,7 +147,8 @@ export interface CartItem {
   product_image?: string | null;
   serving_size: 'regular' | 'pot';
   temperature: 'hot' | 'iced';
-  sweetness_level: '0%' | '25%' | '50%' | '100%';
+  sweetness_level: '0%' | '30%' | '50%' | '75%' | '100%' | '25%';
+  sweetener_type?: 'sorghum' | 'honey' | 'stevia';
   ice_level?: 'normal' | 'less' | 'none';
   selected_addons: BotanicalAddon[];
   unit_price: number;

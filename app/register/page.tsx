@@ -33,12 +33,12 @@ function CustomerRegisterForm() {
     setError(null);
 
     if (password !== confirmPassword) {
-      setError('Konfirmasi kata sandi tidak cocok.');
+      setError('Password confirmation does not match.');
       return;
     }
 
     if (password.length < 6) {
-      setError('Kata sandi minimal 6 karakter.');
+      setError('Password must be at least 6 characters.');
       return;
     }
 
@@ -58,13 +58,13 @@ function CustomerRegisterForm() {
 
       const data = await res.json();
       if (!res.ok || !data.success) {
-        setError(data.error || 'Gagal membuat akun.');
+        setError(data.error || 'Failed to create account.');
         setLoading(false);
       } else {
         completeRegister(data.profile);
       }
     } catch {
-      setError('Gagal menghubungi server pendaftaran.');
+      setError('Failed to reach registration server.');
       setLoading(false);
     }
   };
@@ -77,21 +77,21 @@ function CustomerRegisterForm() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          email: 'pengguna.baru@gmail.com',
-          full_name: 'Penikmat Teh Baru',
+          email: 'new.member@gmail.com',
+          full_name: 'New Tea Connoisseur',
           isGoogleDemo: true,
         }),
       });
 
       const data = await res.json();
       if (!res.ok || !data.success) {
-        setError(data.error || 'Gagal daftar dengan Google.');
+        setError(data.error || 'Failed to sign up with Google.');
         setLoading(false);
       } else {
         completeRegister(data.profile);
       }
     } catch {
-      setError('Terjadi kendala autentikasi Google.');
+      setError('Google authentication encountered an issue.');
       setLoading(false);
     }
   };
@@ -111,7 +111,7 @@ function CustomerRegisterForm() {
             className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-neutral-600 hover:text-neutral-900 transition-colors py-1.5 px-3 rounded-full hover:bg-black/5 w-fit"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
-            <span>Kembali ke Beranda</span>
+            <span>Back to Home</span>
           </Link>
 
           <div className="flex items-center gap-3 pt-2">
@@ -137,26 +137,26 @@ function CustomerRegisterForm() {
           </div>
 
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black uppercase tracking-tight text-neutral-900 leading-tight font-sans">
-            Mulai Perjalanan <br className="hidden sm:inline" />
-            <span className="text-neutral-500">Seduhan Anda.</span>
+            Begin Your Brewing <br className="hidden sm:inline" />
+            <span className="text-neutral-500">Journey.</span>
           </h2>
 
           <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed max-w-md font-normal font-sans">
-            Daftarkan diri Anda untuk menikmati voucher potongan harga perdana, kemudahan pesan via meja cafe, dan pengumpulan poin loyalitas di Changkeer.
+            Sign up to unlock exclusive welcome vouchers, effortless table ordering, and loyalty privileges at Changkeer.
           </p>
 
           <div className="space-y-2.5 pt-2">
             <div className="flex items-center gap-2.5 text-xs text-neutral-700 font-medium font-sans">
               <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-              <span>Voucher Diskon Perdana Khusus Member Baru</span>
+              <span>Exclusive Welcome Voucher for New Members</span>
             </div>
             <div className="flex items-center gap-2.5 text-xs text-neutral-700 font-medium font-sans">
               <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-              <span>Simpan Riwayat Racikan &amp; Customization Favorit</span>
+              <span>Save Favorite Custom Blends &amp; Recipes</span>
             </div>
             <div className="flex items-center gap-2.5 text-xs text-neutral-700 font-medium font-sans">
               <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-              <span>Pelacakan Status Pesanan Cafe Real-Time</span>
+              <span>Real-Time Atelier Order Status Tracking</span>
             </div>
           </div>
         </div>
@@ -182,7 +182,7 @@ function CustomerRegisterForm() {
               className="inline-flex items-center gap-1.5 text-xs font-semibold text-neutral-500 hover:text-neutral-900 transition-colors"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
-              <span>Kembali</span>
+              <span>Back</span>
             </Link>
             <div className="flex items-center gap-2">
               <div className="relative w-6 h-6 rounded-full overflow-hidden border border-neutral-200 bg-white">
@@ -195,13 +195,13 @@ function CustomerRegisterForm() {
           {/* Header */}
           <div>
             <span className="text-[10px] font-mono font-bold uppercase tracking-[0.22em] text-neutral-500 block mb-1">
-              REGISTRASI PELANGGAN
+              CUSTOMER REGISTRATION
             </span>
             <h1 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-neutral-900 font-sans">
-              Daftar Akun Baru
+              Create Your Account
             </h1>
             <p className="text-xs text-neutral-500 mt-1 font-normal">
-              Lengkapi data singkat berikut untuk bergabung menjadi member.
+              Fill in your details below to become a Changkeer member.
             </p>
           </div>
 
@@ -238,7 +238,7 @@ function CustomerRegisterForm() {
                 d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
               />
             </svg>
-            <span>Daftar Cepat dengan Google</span>
+            <span>Quick Sign Up with Google</span>
           </button>
 
           {/* Divider */}
@@ -247,7 +247,7 @@ function CustomerRegisterForm() {
               <div className="w-full border-t border-neutral-200" />
             </div>
             <span className="relative bg-white px-3 text-[10px] text-neutral-400 uppercase tracking-widest font-mono">
-              atau isi data diri
+              or enter your details
             </span>
           </div>
 
@@ -255,14 +255,14 @@ function CustomerRegisterForm() {
           <form onSubmit={handleSubmit} className="space-y-3 text-xs font-sans">
             <div>
               <label className="block text-neutral-700 font-semibold mb-1 uppercase tracking-wider text-[11px]">
-                Nama Lengkap *
+                Full Name *
               </label>
               <div className="relative">
                 <User className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-400" />
                 <input
                   type="text"
                   required
-                  placeholder="Contoh: Dewi Lestari"
+                  placeholder="e.g. Eleanor Vance"
                   value={fullName}
                   onChange={e => setFullName(e.target.value)}
                   className="w-full bg-[#FAFAF8] border border-neutral-200 rounded-xl pl-10 pr-3.5 py-2.5 text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:bg-white focus:border-neutral-900 focus:ring-1 focus:ring-neutral-900 font-sans transition-colors"
@@ -280,7 +280,7 @@ function CustomerRegisterForm() {
                   <input
                     type="email"
                     required
-                    placeholder="nama@email.com"
+                    placeholder="name@email.com"
                     value={email}
                     onChange={e => setEmail(e.target.value)}
                     className="w-full bg-[#FAFAF8] border border-neutral-200 rounded-xl pl-10 pr-3 py-2.5 text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:bg-white focus:border-neutral-900 focus:ring-1 focus:ring-neutral-900 font-sans transition-colors"
@@ -290,14 +290,14 @@ function CustomerRegisterForm() {
 
               <div>
                 <label className="block text-neutral-700 font-semibold mb-1 uppercase tracking-wider text-[11px]">
-                  No. Telepon / WA *
+                  Phone / WhatsApp *
                 </label>
                 <div className="relative">
                   <Phone className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-400" />
                   <input
                     type="tel"
                     required
-                    placeholder="08123456789"
+                    placeholder="+62 812 3456 7890"
                     value={phone}
                     onChange={e => setPhone(e.target.value)}
                     className="w-full bg-[#FAFAF8] border border-neutral-200 rounded-xl pl-10 pr-3 py-2.5 text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:bg-white focus:border-neutral-900 focus:ring-1 focus:ring-neutral-900 font-sans transition-colors"
@@ -309,14 +309,14 @@ function CustomerRegisterForm() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
               <div>
                 <label className="block text-neutral-700 font-semibold mb-1 uppercase tracking-wider text-[11px]">
-                  Kata Sandi *
+                  Password *
                 </label>
                 <div className="relative">
                   <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-400" />
                   <input
                     type={showPassword ? 'text' : 'password'}
                     required
-                    placeholder="Min 6 karakter"
+                    placeholder="Min 6 characters"
                     value={password}
                     onChange={e => setPassword(e.target.value)}
                     className="w-full bg-[#FAFAF8] border border-neutral-200 rounded-xl pl-10 pr-9 py-2.5 text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:bg-white focus:border-neutral-900 focus:ring-1 focus:ring-neutral-900 font-sans transition-colors"
@@ -325,7 +325,7 @@ function CustomerRegisterForm() {
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-900 transition-colors cursor-pointer"
-                    aria-label={showPassword ? 'Sembunyikan sandi' : 'Tampilkan sandi'}
+                    aria-label={showPassword ? 'Hide password' : 'Show password'}
                   >
                     {showPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
                   </button>
@@ -334,14 +334,14 @@ function CustomerRegisterForm() {
 
               <div>
                 <label className="block text-neutral-700 font-semibold mb-1 uppercase tracking-wider text-[11px]">
-                  Ulangi Sandi *
+                  Confirm Password *
                 </label>
                 <div className="relative">
                   <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-400" />
                   <input
                     type={showConfirmPassword ? 'text' : 'password'}
                     required
-                    placeholder="Konfirmasi"
+                    placeholder="Confirm password"
                     value={confirmPassword}
                     onChange={e => setConfirmPassword(e.target.value)}
                     className="w-full bg-[#FAFAF8] border border-neutral-200 rounded-xl pl-10 pr-9 py-2.5 text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:bg-white focus:border-neutral-900 focus:ring-1 focus:ring-neutral-900 font-sans transition-colors"
@@ -350,7 +350,7 @@ function CustomerRegisterForm() {
                     type="button"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-900 transition-colors cursor-pointer"
-                    aria-label={showConfirmPassword ? 'Sembunyikan sandi' : 'Tampilkan sandi'}
+                    aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
                   >
                     {showConfirmPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
                   </button>
@@ -367,7 +367,7 @@ function CustomerRegisterForm() {
                 <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
               ) : (
                 <>
-                  <span>Buat Akun Sekarang</span>
+                  <span>Create Account</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </>
               )}
@@ -376,9 +376,9 @@ function CustomerRegisterForm() {
 
           {/* Switch to Login */}
           <div className="text-center text-xs text-neutral-500 pt-1">
-            Sudah memiliki akun Changkeer?{' '}
+            Already have a Changkeer account?{' '}
             <Link href="/login" className="text-neutral-900 font-bold hover:underline">
-              Masuk di Sini
+              Sign In Here
             </Link>
           </div>
 

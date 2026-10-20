@@ -32,7 +32,7 @@ export function ThermalReceiptModal({ order, isOpen, onClose }: ThermalReceiptMo
 
   if (!isOpen || !order) return null;
 
-  const dateFormatted = new Date(order.created_at).toLocaleString('id-ID', {
+  const dateFormatted = new Date(order.created_at).toLocaleString('en-US', {
     day: '2-digit',
     month: 'short',
     year: 'numeric',
@@ -67,7 +67,7 @@ export function ThermalReceiptModal({ order, isOpen, onClose }: ThermalReceiptMo
                   : 'bg-white border border-neutral-200 text-neutral-600 hover:text-neutral-900'
               }`}
             >
-              Struk Kasir (80mm)
+              POS Receipt (80mm)
             </button>
             <button
               type="button"
@@ -78,7 +78,7 @@ export function ThermalReceiptModal({ order, isOpen, onClose }: ThermalReceiptMo
                   : 'bg-white border border-neutral-200 text-neutral-600 hover:text-neutral-900'
               }`}
             >
-              Label Cup (58mm)
+              Cup Label (58mm)
             </button>
           </div>
 
@@ -86,6 +86,7 @@ export function ThermalReceiptModal({ order, isOpen, onClose }: ThermalReceiptMo
             type="button"
             onClick={onClose}
             className="p-1.5 rounded-full hover:bg-neutral-200/80 text-neutral-400 hover:text-neutral-900 transition-colors cursor-pointer shrink-0"
+            aria-label="Close modal"
           >
             <X className="w-5 h-5" />
           </button>
@@ -104,26 +105,26 @@ export function ThermalReceiptModal({ order, isOpen, onClose }: ThermalReceiptMo
               <div className="text-center space-y-1">
                 <h3 className="font-bold text-sm tracking-widest uppercase">CHANGKEER ATELIER</h3>
                 <p className="text-[10px] text-neutral-600">Pure Botanical Herbal Tea</p>
-                <p className="text-[9px] text-neutral-500">Jl. Botanical Garden No. 24, Jakarta</p>
+                <p className="text-[9px] text-neutral-500">Jakarta, Indonesia</p>
                 <div className="border-b border-dashed border-neutral-400 pt-2" />
               </div>
 
               {/* Order Info */}
               <div className="space-y-1 text-[10px]">
                 <div className="flex justify-between">
-                  <span>No. Tiket:</span>
+                  <span>Ticket No:</span>
                   <span className="font-bold font-mono">#{order.order_number}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Waktu:</span>
+                  <span>Date/Time:</span>
                   <span>{dateFormatted}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Pemesan:</span>
+                  <span>Customer:</span>
                   <span className="font-bold truncate max-w-[150px]">{order.customer_name}</span>
                 </div>
                 <div className="flex justify-between items-center pt-1">
-                  <span>Mode Penyajian:</span>
+                  <span>Dining Mode:</span>
                   <span className="font-bold px-1.5 py-0.5 bg-neutral-100 border border-neutral-300 rounded text-[9px] uppercase">
                     {order.order_type === 'dine_in'
                       ? order.table_number || 'DINE-IN'
@@ -144,7 +145,7 @@ export function ThermalReceiptModal({ order, isOpen, onClose }: ThermalReceiptMo
                       <span>{item.quantity}x</span>
                     </div>
                     <div className="text-[9px] text-neutral-600 pl-2">
-                      - {item.temperature === 'hot' ? 'HANGAT' : 'DINGIN'} | GULA: {item.sweetness_level}
+                      - {item.temperature === 'hot' ? 'HOT' : 'ICED'} | SWEET: {item.sweetness_level}
                       {item.selected_addons?.length ? ` | +${item.selected_addons.map(a => a.name).join(', ')}` : ''}
                     </div>
                     {item.item_notes && (
@@ -168,13 +169,13 @@ export function ThermalReceiptModal({ order, isOpen, onClose }: ThermalReceiptMo
                 </div>
                 {order.discount_amount > 0 && (
                   <div className="flex justify-between">
-                    <span>Diskon Voucher ({order.voucher_code}):</span>
+                    <span>Voucher ({order.voucher_code}):</span>
                     <span>-{formatRupiah(order.discount_amount)}</span>
                   </div>
                 )}
                 {order.delivery_fee > 0 && (
                   <div className="flex justify-between">
-                    <span>Ongkir Delivery:</span>
+                    <span>Delivery Fee:</span>
                     <span>{formatRupiah(order.delivery_fee)}</span>
                   </div>
                 )}
@@ -184,15 +185,15 @@ export function ThermalReceiptModal({ order, isOpen, onClose }: ThermalReceiptMo
                   <span>{formatRupiah(order.total_amount)}</span>
                 </div>
                 <div className="flex justify-between text-[10px] pt-0.5">
-                  <span>Metode:</span>
-                  <span className="font-bold uppercase">{order.payment_method} ({order.payment_status === 'paid' ? 'LUNAS' : 'PENDING'})</span>
+                  <span>Method:</span>
+                  <span className="font-bold uppercase">{order.payment_method} ({order.payment_status === 'paid' ? 'PAID' : 'PENDING'})</span>
                 </div>
                 <div className="border-b border-dashed border-neutral-400 pt-2" />
               </div>
 
               {/* Footer */}
               <div className="text-center pt-2 space-y-1">
-                <p className="text-[10px] font-bold">TERIMA KASIH TELAH MENYEDUH</p>
+                <p className="text-[10px] font-bold">THANK YOU FOR BREWING WITH US</p>
                 <p className="text-[8px] text-neutral-500">Unsweetened By Default — Plastic-Free Packaging</p>
                 <p className="text-[8px] text-neutral-400 font-mono">changkeer.vercel.app</p>
               </div>
@@ -200,7 +201,7 @@ export function ThermalReceiptModal({ order, isOpen, onClose }: ThermalReceiptMo
             </div>
           ) : (
             /* =========================================================================
-                CUP STICKER LABEL (58mm) - STIKER DITEMPEL DI CUP TEH
+                CUP STICKER LABEL (58mm)
                 ========================================================================= */
             <div id="printable-thermal-receipt" className="w-[240px] bg-white border border-neutral-300 p-4 rounded-lg shadow-sm font-mono text-[10px] text-black leading-tight space-y-2 print:w-full print:border-none print:shadow-none print:p-0">
               
@@ -218,8 +219,8 @@ export function ThermalReceiptModal({ order, isOpen, onClose }: ThermalReceiptMo
               </div>
 
               <div className="text-[9px]">
-                <div>Nama: <strong className="text-xs">{order.customer_name}</strong></div>
-                <div>Jam: {dateFormatted.split(',')[1] || dateFormatted}</div>
+                <div>Name: <strong className="text-xs">{order.customer_name}</strong></div>
+                <div>Time: {dateFormatted.split(',')[1] || dateFormatted}</div>
               </div>
 
               <div className="border-b border-dashed border-neutral-400 pt-1" />
@@ -231,7 +232,7 @@ export function ThermalReceiptModal({ order, isOpen, onClose }: ThermalReceiptMo
                     {item.product_name}
                   </div>
                   <div className="text-[10px] font-bold">
-                    [{item.temperature === 'hot' ? 'HANGAT 🔥' : 'DINGIN ❄️'}] - GULA {item.sweetness_level}
+                    [{item.temperature === 'hot' ? 'HOT 🔥' : 'ICED ❄️'}] - SWEET {item.sweetness_level}
                   </div>
                   {item.selected_addons?.length ? (
                     <div className="text-[9px] text-neutral-700">
@@ -262,7 +263,7 @@ export function ThermalReceiptModal({ order, isOpen, onClose }: ThermalReceiptMo
             onClick={onClose}
             className="px-4 py-2.5 rounded-xl border border-neutral-200 hover:bg-neutral-50 text-neutral-600 text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer"
           >
-            Tutup
+            Close
           </button>
 
           <button
@@ -271,7 +272,7 @@ export function ThermalReceiptModal({ order, isOpen, onClose }: ThermalReceiptMo
             className="flex-1 py-2.5 px-4 rounded-xl bg-neutral-900 hover:bg-neutral-800 text-white text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-xs cursor-pointer active:scale-98"
           >
             <Printer className="w-4 h-4" />
-            <span>Cetak Struk Sekarang</span>
+            <span>Print Receipt Now</span>
           </button>
         </div>
 

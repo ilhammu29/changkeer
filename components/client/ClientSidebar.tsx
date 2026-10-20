@@ -60,15 +60,15 @@ export function ClientSidebar() {
   const navLinks = [
     {
       href: '/order',
-      label: 'Katalog Seduhan',
-      subtitle: 'Menu racikan botani',
+      label: 'Seasonal Catalog',
+      subtitle: 'Botanical tea blends',
       icon: Package,
       active: pathname.startsWith('/order'),
     },
     {
       href: '/account',
-      label: 'Pesanan & Akun',
-      subtitle: 'Riwayat, voucher & profil',
+      label: 'Orders & Profile',
+      subtitle: 'History, vouchers & profile',
       icon: User,
       active: pathname.startsWith('/account'),
     },
@@ -234,7 +234,7 @@ export function ClientSidebar() {
           <Link
             href="/"
             className="flex items-center gap-3.5 px-3 py-2.5 rounded-xl text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 transition-colors"
-            title="Kembali ke Landing Page Beranda"
+            title="Back to Landing Page"
           >
             <div className="w-6 h-6 flex items-center justify-center shrink-0">
               <ArrowLeft className="w-4 h-4 text-neutral-600" />
@@ -242,7 +242,7 @@ export function ClientSidebar() {
             <span className={`text-xs font-semibold whitespace-nowrap transition-opacity duration-200 ${
               isHovered ? 'opacity-100' : 'opacity-0 pointer-events-none'
             }`}>
-              Kembali ke Beranda
+              Back to Home
             </span>
           </Link>
 
@@ -251,7 +251,7 @@ export function ClientSidebar() {
             <Link
               href="/account"
               className="flex items-center gap-3 overflow-hidden flex-1 group"
-              title={customer?.email || 'Akun Saya'}
+              title={customer?.email || 'My Profile'}
             >
               <div className="w-9 h-9 rounded-xl bg-neutral-900 text-white flex items-center justify-center text-xs font-bold shrink-0 shadow-2xs">
                 {(customer?.full_name || customer?.email || 'U')[0].toUpperCase()}
@@ -261,10 +261,10 @@ export function ClientSidebar() {
                 isHovered ? 'opacity-100' : 'opacity-0 pointer-events-none'
               }`}>
                 <span className="text-xs font-bold text-neutral-900 truncate">
-                  {customer?.full_name || 'Pelanggan'}
+                  {customer?.full_name || 'Customer'}
                 </span>
                 <span className="text-[11px] font-medium text-neutral-500 truncate">
-                  {customer?.email || 'Akun Changkeer'}
+                  {customer?.email || 'Changkeer Account'}
                 </span>
               </div>
             </Link>
@@ -274,7 +274,7 @@ export function ClientSidebar() {
                 type="button"
                 onClick={handleLogout}
                 className="p-2 rounded-xl text-neutral-400 hover:text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
-                title="Keluar dari Akun"
+                title="Sign Out"
               >
                 <LogOut className="w-4 h-4" />
               </button>
@@ -295,7 +295,7 @@ export function ClientSidebar() {
             }`}
           >
             <Package className="w-5 h-5 shrink-0" />
-            <span className="text-[10px] sm:text-[11px] font-semibold leading-tight">Katalog</span>
+            <span className="text-[10px] sm:text-[11px] font-semibold leading-tight">Catalog</span>
           </Link>
 
           <Link
@@ -305,7 +305,7 @@ export function ClientSidebar() {
             }`}
           >
             <User className="w-5 h-5 shrink-0" />
-            <span className="text-[10px] sm:text-[11px] font-semibold leading-tight">Akun</span>
+            <span className="text-[10px] sm:text-[11px] font-semibold leading-tight">Account</span>
           </Link>
 
           <button
@@ -315,7 +315,7 @@ export function ClientSidebar() {
           >
             <ShoppingBag className="w-5 h-5 shrink-0" />
             <span className="text-[10px] sm:text-[11px] font-semibold leading-tight">
-              Pesanan {totalItemCount > 0 ? `(${totalItemCount})` : ''}
+              Bag {totalItemCount > 0 ? `(${totalItemCount})` : ''}
             </span>
           </button>
 
@@ -324,7 +324,7 @@ export function ClientSidebar() {
             className="min-h-[44px] flex flex-col items-center justify-center gap-0.5 py-1 px-1 rounded-xl text-neutral-500 hover:text-neutral-900 font-medium active:scale-95 transition-colors"
           >
             <ArrowLeft className="w-5 h-5 shrink-0" />
-            <span className="text-[10px] sm:text-[11px] font-semibold leading-tight">Beranda</span>
+            <span className="text-[10px] sm:text-[11px] font-semibold leading-tight">Home</span>
           </Link>
         </div>
       </nav>

@@ -184,7 +184,7 @@ export default function AccountPage() {
     setEditFullName(profile.full_name || '');
     setEditPhone(profile.phone_number || '');
     setEditAddress(profile.default_address || '');
-    setEditBio((profile as any).bio || 'Pencinta seduhan herbal musiman & artisan cold brew. Menikmati ritme sirkadian dengan racikan botanical tanpa gula berlebih di Changkeer Atelier.');
+    setEditBio((profile as any).bio || 'Aficionado of seasonal botanical infusions & artisan cold brews. Embracing circadian balance with low-sugar botanical creations at Changkeer Atelier.');
     setEditTemp((profile as any).preferred_temperature || 'hot');
     setEditSweetness((profile as any).preferred_sweetness || '0%');
     setEditAvatarUrl(profile.avatar_url || null);
@@ -202,7 +202,7 @@ export default function AccountPage() {
     // 1. Strict 5MB limit check
     const validation = validateImageSize(file);
     if (!validation.valid) {
-      setProfileSaveError(validation.error || 'Ukuran file melebihi batas maksimal 5MB.');
+      setProfileSaveError(validation.error || 'File size exceeds 5MB limit.');
       return;
     }
 
@@ -211,7 +211,7 @@ export default function AccountPage() {
     else setUploadingBanner(true);
 
     const originalKB = Math.round(file.size / 1024);
-    setUploadFeedback(`Mengompresi gambar (${originalKB}KB)...`);
+    setUploadFeedback(`Compressing image (${originalKB}KB)...`);
 
     try {
       // 2. Client-side Image Compression via HTML5 Canvas (with safe fallback)
@@ -223,7 +223,7 @@ export default function AccountPage() {
       });
 
       const compressedKB = Math.round(compressed.compressedSize / 1024);
-      setUploadFeedback(`Mengunggah gambar (${originalKB}KB → ${compressedKB}KB)...`);
+      setUploadFeedback(`Uploading image (${originalKB}KB → ${compressedKB}KB)...`);
 
       // 3. Immediate visual preview in UI
       if (compressed.dataUrl) {
@@ -299,13 +299,13 @@ export default function AccountPage() {
       if (isAvatar) setEditAvatarUrl(uploadedUrl);
       else setEditBannerUrl(uploadedUrl);
 
-      setUploadFeedback(`Berhasil! Gambar ${isAvatar ? 'profil' : 'sampul'} diperbarui.`);
+      setUploadFeedback(`Success! ${isAvatar ? 'Profile photo' : 'Cover banner'} updated.`);
       setTimeout(() => setUploadFeedback(null), 3000);
 
     } catch (err: any) {
       console.error('Upload error:', err);
       setUploadFeedback(null); // CRITICAL: NEVER LEAVE IT STUCK ON SCREEN!
-      setProfileSaveError(err.message || 'Gagal memproses gambar');
+      setProfileSaveError(err.message || 'Failed to process image');
     } finally {
       if (isAvatar) setUploadingAvatar(false);
       else setUploadingBanner(false);
@@ -319,7 +319,7 @@ export default function AccountPage() {
     setProfileSaveSuccess('');
 
     if (!editFullName.trim()) {
-      setProfileSaveError('Nama lengkap wajib diisi');
+      setProfileSaveError('Full name is required');
       return;
     }
 
@@ -350,7 +350,7 @@ export default function AccountPage() {
       const data = await res.json();
 
       if (!res.ok || !data.profile) {
-        throw new Error(data.error || 'Gagal menyimpan profil');
+        throw new Error(data.error || 'Failed to save profile');
       }
 
       // Update state & localStorage
@@ -362,7 +362,7 @@ export default function AccountPage() {
         document.cookie = `changkeer_customer_session=${encodeURIComponent(JSON.stringify(updatedProfile))}; path=/; max-age=2592000; SameSite=Lax;`;
       } catch {}
 
-      setProfileSaveSuccess('Profil Anda berhasil diperbarui!');
+      setProfileSaveSuccess('Your profile has been updated!');
       setTimeout(() => {
         setIsEditModalOpen(false);
         setProfileSaveSuccess('');
@@ -370,7 +370,7 @@ export default function AccountPage() {
 
     } catch (err: any) {
       console.error('Error saving profile:', err);
-      setProfileSaveError(err.message || 'Terjadi kesalahan saat menyimpan profil');
+      setProfileSaveError(err.message || 'An error occurred while saving profile');
     } finally {
       setIsSavingProfile(false);
     }
@@ -396,7 +396,7 @@ export default function AccountPage() {
     ? profile.full_name.toLowerCase().trim().replace(/[^a-z0-9]/g, '_').slice(0, 15)
     : 'tea_connoisseur';
 
-  const userBio = (profile as any)?.bio || 'Pencinta seduhan herbal musiman & artisan cold brew. Menikmati ritme sirkadian dengan racikan botanical tanpa gula berlebih di Changkeer Atelier.';
+  const userBio = (profile as any)?.bio || 'Aficionado of seasonal botanical infusions & artisan cold brews. Embracing circadian balance with low-sugar botanical creations at Changkeer Atelier.';
   const userBanner = (profile as any)?.banner_url || null;
   const userAvatar = profile?.avatar_url || null;
 
@@ -405,7 +405,7 @@ export default function AccountPage() {
       <div className="min-h-screen bg-white text-neutral-900 flex items-center justify-center font-sans">
         <div className="text-center space-y-3">
           <div className="w-8 h-8 border-2 border-neutral-900 border-t-transparent rounded-full animate-spin mx-auto" />
-          <p className="text-xs font-mono uppercase tracking-widest text-neutral-500">Memuat Akun Changkeer Atelier...</p>
+          <p className="text-xs font-mono uppercase tracking-widest text-neutral-500">Loading Changkeer Atelier Account...</p>
         </div>
       </div>
     );
@@ -415,8 +415,8 @@ export default function AccountPage() {
 
   return (
     <ClientLayout 
-      pageTitle="Profil &amp; Pengaturan Atelier" 
-      subtitle="Social Profile, Digital Tea Banking &amp; Setting"
+      pageTitle="Profile &amp; Atelier Settings" 
+      subtitle="Social Profile, Digital Tea Banking &amp; Settings"
       bgClassName="bg-white"
     >
       <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-10 sm:space-y-14 bg-white font-sans">
@@ -469,7 +469,7 @@ export default function AccountPage() {
               onClick={() => setProfileSaveError('')}
               className="text-red-600 hover:text-red-800 font-bold underline cursor-pointer text-[11px]"
             >
-              Tutup
+              Dismiss
             </button>
           </div>
         )}
@@ -487,7 +487,7 @@ export default function AccountPage() {
               <>
                 <Image
                   src={userBanner}
-                  alt="Sampul Profil"
+                  alt="Profile Cover"
                   fill
                   priority
                   unoptimized={isUnoptimizedImg(userBanner)}
@@ -506,10 +506,10 @@ export default function AccountPage() {
                 disabled={uploadingBanner}
                 onClick={() => bannerInputRef.current?.click()}
                 className="px-3.5 py-2 rounded-xl bg-black/40 hover:bg-black/70 backdrop-blur-md text-white border border-white/20 text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer shadow-xs disabled:opacity-50"
-                title="Ganti Foto Sampul Banner (Maks. 5MB, Auto-kompres)"
+                title="Change Cover Banner (Max 5MB, Auto-compress)"
               >
                 <Camera className="w-3.5 h-3.5" />
-                <span>{uploadingBanner ? 'Mengompres...' : 'Ganti Sampul'}</span>
+                <span>{uploadingBanner ? 'Compressing...' : 'Change Cover'}</span>
               </button>
             </div>
 
@@ -519,27 +519,27 @@ export default function AccountPage() {
                 type="button"
                 onClick={handleOpenEditProfile}
                 className="px-3.5 sm:px-4 py-2 rounded-xl bg-black/40 hover:bg-black/70 backdrop-blur-md text-white border border-white/20 text-xs font-semibold flex items-center gap-1.5 sm:gap-2 transition-all cursor-pointer"
-                title="Edit Profil Pelanggan"
+                title="Edit Customer Profile"
               >
                 <Edit3 className="w-3.5 h-3.5" />
-                <span>Edit Profil</span>
+                <span>Edit Profile</span>
               </button>
 
               <button
                 type="button"
                 onClick={copyProfileShare}
                 className="px-3.5 sm:px-4 py-2 rounded-xl bg-black/40 hover:bg-black/70 backdrop-blur-md text-white border border-white/20 text-xs font-semibold flex items-center gap-1.5 sm:gap-2 transition-all cursor-pointer"
-                title="Bagikan Tautan Profil"
+                title="Share Profile Link"
               >
                 {copiedProfileLink ? (
                   <>
                     <Check className="w-3.5 h-3.5 text-emerald-400" />
-                    <span>Tersalin</span>
+                    <span>Copied</span>
                   </>
                 ) : (
                   <>
                     <Share2 className="w-3.5 h-3.5" />
-                    <span className="hidden xs:inline">Bagikan</span>
+                    <span className="hidden xs:inline">Share</span>
                   </>
                 )}
               </button>
@@ -548,10 +548,10 @@ export default function AccountPage() {
                 type="button"
                 onClick={handleLogout}
                 className="px-3.5 sm:px-4 py-2 rounded-xl bg-black/40 hover:bg-red-500/30 backdrop-blur-md text-white hover:text-red-300 border border-white/20 text-xs font-semibold flex items-center gap-1.5 sm:gap-2 transition-all cursor-pointer"
-                title="Keluar dari akun"
+                title="Sign out of account"
               >
                 <LogOut className="w-3.5 h-3.5" />
-                <span className="hidden xs:inline">Keluar</span>
+                <span className="hidden xs:inline">Sign Out</span>
               </button>
             </div>
           </div>
@@ -568,7 +568,7 @@ export default function AccountPage() {
                   {userAvatar ? (
                     <Image
                       src={userAvatar}
-                      alt={profile?.full_name || 'Foto Profil'}
+                      alt={profile?.full_name || 'Profile Photo'}
                       fill
                       unoptimized={isUnoptimizedImg(userAvatar)}
                       className="object-cover rounded-full"
@@ -583,7 +583,7 @@ export default function AccountPage() {
                     disabled={uploadingAvatar}
                     onClick={() => avatarInputRef.current?.click()}
                     className="absolute bottom-0 right-0 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-neutral-900 hover:bg-neutral-800 text-white flex items-center justify-center cursor-pointer shadow-md ring-2 ring-white transition-all hover:scale-105"
-                    title="Ganti Foto Profil (Maks. 5MB, Auto-kompres)"
+                    title="Change Profile Photo (Max 5MB, Auto-compress)"
                   >
                     <Camera className="w-4 h-4" />
                   </button>
@@ -592,7 +592,7 @@ export default function AccountPage() {
                 {/* Name & Handle (Clean, No badge pill) */}
                 <div className="space-y-1.5 pt-2 sm:pt-0">
                   <h1 className="text-2xl sm:text-4xl font-extrabold uppercase tracking-tight text-neutral-900 font-sans">
-                    {profile?.full_name || 'Pelanggan Changkeer'}
+                    {profile?.full_name || 'Changkeer Patron'}
                   </h1>
 
                   <p className="text-xs sm:text-sm font-mono text-neutral-500 flex flex-wrap items-center gap-x-2">
@@ -611,7 +611,7 @@ export default function AccountPage() {
                   className="px-4 py-2.5 rounded-xl border border-neutral-300 hover:border-neutral-500 bg-white text-neutral-800 text-xs font-bold tracking-wider uppercase transition-all flex items-center gap-1.5 shadow-2xs cursor-pointer"
                 >
                   <Settings className="w-3.5 h-3.5 text-neutral-600" />
-                  <span>Pengaturan</span>
+                  <span>Settings</span>
                 </button>
 
                 <Link
@@ -619,7 +619,7 @@ export default function AccountPage() {
                   className="px-6 py-2.5 rounded-xl bg-neutral-900 hover:bg-neutral-800 text-white text-xs font-bold tracking-wider uppercase transition-all flex items-center justify-center gap-2 shadow-xs cursor-pointer active:scale-98"
                 >
                   <Plus className="w-4 h-4 stroke-[2.5]" />
-                  <span>Pesan Seduhan</span>
+                  <span>Order Now</span>
                 </Link>
               </div>
 
@@ -634,11 +634,11 @@ export default function AccountPage() {
               <div className="flex flex-wrap items-center gap-y-2 gap-x-6 text-xs text-neutral-500 font-sans">
                 <span className="flex items-center gap-1.5">
                   <MapPin className="w-4 h-4 text-neutral-400" />
-                  <span>{profile?.default_address ? profile.default_address : 'Atelier Solo • Lounge Meja 03'}</span>
+                  <span>{profile?.default_address ? profile.default_address : 'Atelier Jakarta • Table Lounge 03'}</span>
                 </span>
                 <span className="flex items-center gap-1.5">
                   <Calendar className="w-4 h-4 text-neutral-400" />
-                  <span>Member Sejak Oktober 2024</span>
+                  <span>Member Since October 2024</span>
                 </span>
                 {profile?.phone_number && (
                   <span className="flex items-center gap-1.5 font-mono">
@@ -653,44 +653,44 @@ export default function AccountPage() {
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 pt-6 mt-6 border-t border-neutral-100">
               <div className="p-4 sm:p-5 rounded-2xl bg-neutral-50/80 border border-neutral-100 space-y-1">
                 <span className="text-[10px] font-sans font-bold uppercase tracking-wider text-neutral-400 block">
-                  Total Seduhan
+                  Total Brews
                 </span>
                 <span className="text-2xl sm:text-3xl font-extrabold font-sans text-neutral-900 block">
                   {orders.length}
                 </span>
-                <span className="text-xs text-neutral-500 block">Cangkir dinikmati</span>
+                <span className="text-xs text-neutral-500 block">Cups savored</span>
               </div>
 
               <div className="p-4 sm:p-5 rounded-2xl bg-neutral-50/80 border border-neutral-100 space-y-1">
                 <span className="text-[10px] font-sans font-bold uppercase tracking-wider text-neutral-400 block">
-                  Poin Tea Reward
+                  Tea Reward Points
                 </span>
                 <span className="text-2xl sm:text-3xl font-extrabold font-sans text-emerald-800 block">
                   {teaPoints.toLocaleString('id-ID')}
                 </span>
-                <span className="text-xs text-neutral-500 block">Setara {formatRupiah(teaPoints * 10)}</span>
+                <span className="text-xs text-neutral-500 block">Equivalent to {formatRupiah(teaPoints * 10)}</span>
               </div>
 
               <div className="p-4 sm:p-5 rounded-2xl bg-neutral-50/80 border border-neutral-100 space-y-1">
                 <span className="text-[10px] font-sans font-bold uppercase tracking-wider text-neutral-400 block">
-                  Stempel Kartu
+                  Loyalty Stamps
                 </span>
                 <span className="text-2xl sm:text-3xl font-extrabold font-sans text-amber-800 block">
                   {activeStampsDisplay} <span className="text-sm text-neutral-400 font-normal">/ 5</span>
                 </span>
                 <span className="text-xs text-neutral-500 block">
-                  {isRewardReady ? 'Gratis 1 cup siap' : `${stampsRemaining} lagi gratis cup`}
+                  {isRewardReady ? '1 Free cup unlocked' : `${stampsRemaining} more for free cup`}
                 </span>
               </div>
 
               <div className="p-4 sm:p-5 rounded-2xl bg-neutral-50/80 border border-neutral-100 space-y-1">
                 <span className="text-[10px] font-sans font-bold uppercase tracking-wider text-neutral-400 block">
-                  Total Akumulasi
+                  Total Spending
                 </span>
                 <span className="text-2xl sm:text-3xl font-extrabold font-mono text-neutral-900 block">
                   {formatRupiah(totalSpend)}
                 </span>
-                <span className="text-xs text-neutral-500 block">Riwayat transaksi cafe</span>
+                <span className="text-xs text-neutral-500 block">Atelier transaction history</span>
               </div>
             </div>
 
@@ -744,7 +744,7 @@ export default function AccountPage() {
                   type="button"
                   onClick={copyCard}
                   className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-neutral-300 hover:text-white transition-colors cursor-pointer"
-                  title="Salin Nomor Kartu Virtual"
+                  title="Copy Virtual Card Number"
                 >
                   {copiedCardNumber ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
                 </button>
@@ -767,7 +767,7 @@ export default function AccountPage() {
 
               <div className="text-right">
                 <span className="text-[9px] font-mono uppercase tracking-wider text-neutral-400 block">
-                  SALDO TEAPASS
+                  TEAPASS BALANCE
                 </span>
                 <span className="font-mono font-bold text-amber-300 text-xs sm:text-sm">
                   {formatRupiah(teaPoints * 10)}
@@ -780,10 +780,10 @@ export default function AccountPage() {
           <div className="lg:col-span-5 rounded-3xl border border-neutral-200/90 bg-white p-6 sm:p-7 shadow-xs flex flex-col justify-between gap-5">
             <div>
               <span className="text-[10px] font-sans font-bold uppercase tracking-wider text-neutral-400 block mb-1">
-                Menu Cepat
+                Quick Actions
               </span>
               <h3 className="font-sans font-extrabold text-base sm:text-lg uppercase tracking-tight text-neutral-900">
-                Aksi Transaksi Digital
+                Digital Atelier Actions
               </h3>
             </div>
 
@@ -797,8 +797,8 @@ export default function AccountPage() {
                   <Plus className="w-4 h-4 stroke-[2.5]" />
                 </div>
                 <div>
-                  <span className="font-bold text-xs text-neutral-900 block font-sans">Pesan Seduhan</span>
-                  <span className="text-[11px] text-neutral-500 font-sans">Katalog Racikan</span>
+                  <span className="font-bold text-xs text-neutral-900 block font-sans">Order Tea</span>
+                  <span className="text-[11px] text-neutral-500 font-sans">Botanical Catalog</span>
                 </div>
               </Link>
 
@@ -811,8 +811,8 @@ export default function AccountPage() {
                   <Clock className="w-4 h-4" />
                 </div>
                 <div>
-                  <span className="font-bold text-xs text-neutral-900 block font-sans">Seduhan Aktif</span>
-                  <span className="text-[11px] text-neutral-500 font-sans">{activeOrders.length} antrean bar</span>
+                  <span className="font-bold text-xs text-neutral-900 block font-sans">Active Brews</span>
+                  <span className="text-[11px] text-neutral-500 font-sans">{activeOrders.length} in bar queue</span>
                 </div>
               </button>
 
@@ -825,8 +825,8 @@ export default function AccountPage() {
                   <Gift className="w-4 h-4" />
                 </div>
                 <div>
-                  <span className="font-bold text-xs text-neutral-900 block font-sans">Klaim Voucher</span>
-                  <span className="text-[11px] text-neutral-500 font-sans">{isRewardReady ? '1 Gratis Siap' : 'Kupon Belanja'}</span>
+                  <span className="font-bold text-xs text-neutral-900 block font-sans">Claim Vouchers</span>
+                  <span className="text-[11px] text-neutral-500 font-sans">{isRewardReady ? '1 Free Cup Ready' : 'Discount Coupons'}</span>
                 </div>
               </button>
 
@@ -839,8 +839,8 @@ export default function AccountPage() {
                   <Printer className="w-4 h-4" />
                 </div>
                 <div>
-                  <span className="font-bold text-xs text-neutral-900 block font-sans">Mutasi &amp; Struk</span>
-                  <span className="text-[11px] text-neutral-500 font-sans">Thermal &amp; WA</span>
+                  <span className="font-bold text-xs text-neutral-900 block font-sans">Orders &amp; Receipts</span>
+                  <span className="text-[11px] text-neutral-500 font-sans">Thermal &amp; WhatsApp</span>
                 </div>
               </button>
             </div>
@@ -848,7 +848,7 @@ export default function AccountPage() {
             <div className="p-3.5 rounded-2xl bg-[#FAFAF8] border border-neutral-200/80 text-xs text-neutral-600 flex items-center justify-between">
               <span className="flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-emerald-700 shrink-0" />
-                <span>Terhubung ke Kitchen Barista Solo</span>
+                <span>Connected to Atelier Barista Kitchen</span>
               </span>
             </div>
           </div>
@@ -863,20 +863,20 @@ export default function AccountPage() {
             <div className="space-y-1">
               <div className="flex items-center gap-2 text-xs font-bold font-sans uppercase tracking-wider text-amber-900">
                 <Coffee className="w-4 h-4 text-amber-800" />
-                <span>Kartu Stempel Loyalitas Atelier</span>
+                <span>Atelier Loyalty Stamp Card</span>
               </div>
               <h2 className="text-xl sm:text-2xl font-sans font-extrabold uppercase tracking-tight text-neutral-900">
-                Kumpulkan 5 Stempel &mdash; Dapatkan 1 Cup Gratis
+                Collect 5 Stamps &mdash; Enjoy 1 Free Cup
               </h2>
               <p className="text-xs sm:text-sm text-neutral-500 font-sans max-w-xl leading-relaxed">
-                Setiap 1 pesanan seduhan selesai dihitung sebagai 1 stempel digital. Nikmati racikan gratis saat 5 koin penuh.
+                Every completed tea order earns 1 digital stamp. Enjoy a complimentary artisanal blend when your 5-stamp card is filled.
               </p>
             </div>
 
             {isRewardReady && (
               <div className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-800 text-white font-bold text-xs uppercase tracking-wider shadow-xs font-sans shrink-0">
                 <Gift className="w-4 h-4" />
-                <span>1 Cup Gratis Siap Diklaim!</span>
+                <span>1 Free Cup Ready to Claim!</span>
               </div>
             )}
           </div>
@@ -904,7 +904,7 @@ export default function AccountPage() {
                     <div className="flex flex-col items-center">
                       <Gift className={`w-5 h-5 sm:w-6 sm:h-6 mb-1 ${isFilled ? 'text-amber-800' : 'text-amber-600'}`} />
                       <span className={`text-[9px] sm:text-[10px] font-sans font-bold uppercase ${isFilled ? 'text-amber-900' : 'text-amber-700'}`}>
-                        {isFilled ? 'Klaim' : 'Gratis'}
+                        {isFilled ? 'Claim' : 'Free'}
                       </span>
                     </div>
                   ) : (
@@ -931,13 +931,13 @@ export default function AccountPage() {
             <div>
               <span className="font-bold text-neutral-900 block text-xs sm:text-sm">
                 {isRewardReady 
-                  ? 'Selamat! Kartu Stempel Penuh (5/5).' 
-                  : `Progres Kartu: ${activeStampsDisplay} dari 5 Stempel.`}
+                  ? 'Congratulations! Stamp Card Completed (5/5).' 
+                  : `Card Progress: ${activeStampsDisplay} of 5 Stamps.`}
               </span>
               <span className="text-neutral-500 text-xs font-normal">
                 {isRewardReady 
-                  ? 'Gunakan kode promo GRATIS1CUP di kasir atau checkout belanja online.' 
-                  : `Pesan ${stampsRemaining} seduhan teh lagi untuk membuka hadiah 1 cup racikan gratis.`}
+                  ? 'Apply promo code GRATIS1CUP at checkout or show to the barista.' 
+                  : `Order ${stampsRemaining} more tea brews to unlock your complimentary cup.`}
               </span>
             </div>
 
@@ -950,12 +950,12 @@ export default function AccountPage() {
                 {copiedVoucher === 'GRATIS1CUP' ? (
                   <>
                     <Check className="w-3.5 h-3.5 text-emerald-400" />
-                    <span>Kode Tersalin!</span>
+                    <span>Code Copied!</span>
                   </>
                 ) : (
                   <>
                     <Copy className="w-3.5 h-3.5" />
-                    <span>Salin Kode: GRATIS1CUP</span>
+                    <span>Copy Code: GRATIS1CUP</span>
                   </>
                 )}
               </button>
@@ -964,7 +964,7 @@ export default function AccountPage() {
                 href="/order"
                 className="px-5 py-2.5 rounded-xl border border-neutral-200 bg-white hover:bg-neutral-50 text-neutral-900 font-bold text-xs uppercase tracking-wider transition-colors shrink-0 text-center font-sans"
               >
-                Tambah Stempel
+                Collect Stamps
               </Link>
             )}
           </div>
@@ -987,7 +987,7 @@ export default function AccountPage() {
               }`}
             >
               <Clock className="w-4 h-4" />
-              <span>Seduhan Aktif ({activeOrders.length})</span>
+              <span>Active Brews ({activeOrders.length})</span>
             </button>
 
             <button
@@ -1000,7 +1000,7 @@ export default function AccountPage() {
               }`}
             >
               <TrendingDown className="w-4 h-4" />
-              <span>Mutasi &amp; Riwayat ({pastOrders.length})</span>
+              <span>History &amp; Receipts ({pastOrders.length})</span>
             </button>
 
             <button
@@ -1013,7 +1013,7 @@ export default function AccountPage() {
               }`}
             >
               <Ticket className="w-4 h-4" />
-              <span>Voucher &amp; Poin ({isRewardReady ? '3 Kupon' : '2 Kupon'})</span>
+              <span>Vouchers &amp; Rewards ({isRewardReady ? '3 Coupons' : '2 Coupons'})</span>
             </button>
 
             <button
@@ -1026,7 +1026,7 @@ export default function AccountPage() {
               }`}
             >
               <Settings className="w-4 h-4" />
-              <span>Pengaturan &amp; Akun</span>
+              <span>Account Settings</span>
             </button>
           </div>
 
@@ -1039,9 +1039,9 @@ export default function AccountPage() {
                     <Flame className="w-8 h-8" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-base text-neutral-900 font-sans">Belum Ada Seduhan Aktif di Bar</h3>
+                    <h3 className="font-bold text-base text-neutral-900 font-sans">No Active Brews in the Bar</h3>
                     <p className="text-xs text-neutral-500 mt-1 max-w-md mx-auto font-sans leading-relaxed">
-                      Anda belum memesan racikan hari ini. Pilih seduhan herbal atau cold brew segar untuk diproses barista di meja cafe.
+                      You have no active orders today. Explore our herbal infusions or artisan cold brews for our baristas to prepare.
                     </p>
                   </div>
                   <Link
@@ -1049,7 +1049,7 @@ export default function AccountPage() {
                     className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-neutral-900 text-white text-xs font-bold uppercase tracking-wider hover:bg-neutral-800 transition-colors cursor-pointer shadow-xs font-sans"
                   >
                     <Plus className="w-4 h-4 stroke-[2.5]" />
-                    <span>Buka Katalog Menu Seduhan</span>
+                    <span>Browse Atelier Menu</span>
                   </Link>
                 </div>
               ) : (
@@ -1069,16 +1069,16 @@ export default function AccountPage() {
                               #{order.order_number}
                             </span>
                             <span className="text-xs font-bold font-sans uppercase text-emerald-800">
-                              {order.order_status === 'received' ? 'Diterima' : order.order_status === 'brewing' ? 'Sedang Diseduh' : 'Siap Disajikan'}
+                              {order.order_status === 'received' ? 'Received' : order.order_status === 'brewing' ? 'Brewing' : 'Ready to Serve'}
                             </span>
                           </div>
                           <span className="text-xs text-neutral-400 font-mono mt-1 block">
-                            Waktu Pesan: {new Date(order.created_at).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })} WIB &bull; {order.order_type === 'dine_in' ? `Meja: ${order.table_number || 'Dine-In'}` : order.order_type === 'takeaway' ? 'Takeaway' : 'Delivery'}
+                            Ordered at: {new Date(order.created_at).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })} &bull; {order.order_type === 'dine_in' ? `Table: ${order.table_number || 'Dine-In'}` : order.order_type === 'takeaway' ? 'Takeaway' : 'Delivery'}
                           </span>
                         </div>
 
                         <div className="text-right">
-                          <span className="text-xs text-neutral-400 uppercase font-mono block">Tagihan</span>
+                          <span className="text-xs text-neutral-400 uppercase font-mono block">Total</span>
                           <span className="text-lg font-bold text-neutral-900 font-mono">{formatRupiah(order.total_amount)}</span>
                         </div>
                       </div>
@@ -1088,34 +1088,34 @@ export default function AccountPage() {
                         <div className={`p-4 rounded-xl border transition-all flex sm:flex-col items-center sm:justify-center gap-2 ${
                           step >= 1 ? 'border-neutral-900 bg-neutral-900 text-white font-bold' : 'border-neutral-200 bg-neutral-50 text-neutral-400'
                         }`}>
-                          <span className="font-mono text-[10px] block opacity-80 shrink-0">TAHAP 1</span>
-                          <span>Diterima Kitchen/Bar</span>
+                          <span className="font-mono text-[10px] block opacity-80 shrink-0">STEP 1</span>
+                          <span>Received by Bar</span>
                         </div>
                         <div className={`p-4 rounded-xl border transition-all flex sm:flex-col items-center sm:justify-center gap-2 ${
                           step >= 2 ? 'border-neutral-900 bg-neutral-900 text-white font-bold' : 'border-neutral-200 bg-neutral-50 text-neutral-400'
                         }`}>
-                          <span className="font-mono text-[10px] block opacity-80 shrink-0">TAHAP 2</span>
-                          <span>Sedang Diseduh Barista</span>
+                          <span className="font-mono text-[10px] block opacity-80 shrink-0">STEP 2</span>
+                          <span>Steeping &amp; Brewing</span>
                         </div>
                         <div className={`p-4 rounded-xl border transition-all flex sm:flex-col items-center sm:justify-center gap-2 ${
                           step >= 3 ? 'border-neutral-900 bg-neutral-900 text-white font-bold' : 'border-neutral-200 bg-neutral-50 text-neutral-400'
                         }`}>
-                          <span className="font-mono text-[10px] block opacity-80 shrink-0">TAHAP 3</span>
-                          <span>Siap Disajikan di Meja</span>
+                          <span className="font-mono text-[10px] block opacity-80 shrink-0">STEP 3</span>
+                          <span>Ready to Serve</span>
                         </div>
                       </div>
 
                       {/* Items List */}
                       <div className="space-y-2.5 pt-1">
                         <span className="text-[10px] font-sans uppercase tracking-wider text-neutral-400 block font-bold">
-                          Rincian Racikan:
+                          Brew Details:
                         </span>
                         {(order.items || []).map((item, idx) => (
                           <div key={idx} className="flex items-center justify-between p-3.5 rounded-xl bg-neutral-50/80 border border-neutral-100 text-xs font-sans">
                             <div>
                               <span className="font-bold text-neutral-900 block">{item.product_name} x {item.quantity}</span>
                               <span className="text-[11px] text-neutral-500">
-                                {item.temperature === 'hot' ? 'Hangat' : 'Dingin'}, Gula: {item.sweetness_level}
+                                {item.temperature === 'hot' ? 'Hot' : 'Iced'}, Sweetness: {item.sweetness_level}
                                 {item.selected_addons?.length ? `, +${item.selected_addons.map(a => a.name).join(', ')}` : ''}
                               </span>
                             </div>
@@ -1132,20 +1132,20 @@ export default function AccountPage() {
                             target="_blank"
                             rel="noopener noreferrer"
                             className="px-4 py-2 rounded-xl bg-neutral-100 hover:bg-neutral-200 text-neutral-800 border border-neutral-200 text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-colors font-sans"
-                            title="Kirim Struk ke WA Barista"
+                            title="Send Receipt to WhatsApp Barista"
                           >
                             <MessageCircle className="w-4 h-4 text-neutral-700" />
-                            <span>Struk WA</span>
+                            <span>WhatsApp Receipt</span>
                           </a>
 
                           <button
                             type="button"
                             onClick={() => setSelectedOrderForPrint(order)}
                             className="px-4 py-2 rounded-xl bg-neutral-100 hover:bg-neutral-200 text-neutral-800 border border-neutral-200 text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-colors cursor-pointer font-sans"
-                            title="Cetak Struk Thermal Pos / Label Cup"
+                            title="Print Thermal Receipt / Cup Sticker"
                           >
                             <Printer className="w-4 h-4 text-neutral-700" />
-                            <span>Cetak Struk</span>
+                            <span>Print Receipt</span>
                           </button>
                         </div>
 
@@ -1153,7 +1153,7 @@ export default function AccountPage() {
                           href={`/order/success/${order.id}`}
                           className="text-xs font-bold text-neutral-900 hover:underline flex items-center gap-1.5 font-sans"
                         >
-                          <span>Buka QR Meja &amp; Bukti Pesanan</span>
+                          <span>View Table QR &amp; Order Slip</span>
                           <ExternalLink className="w-4 h-4" />
                         </Link>
                       </div>
@@ -1171,22 +1171,22 @@ export default function AccountPage() {
               <div className="flex items-center justify-between pb-4 border-b border-neutral-100">
                 <div>
                   <h3 className="font-bold text-base sm:text-lg text-neutral-900 font-sans uppercase">
-                    Buku Rekening Mutasi Cafe
+                    Atelier Account History
                   </h3>
                   <p className="text-xs text-neutral-500 font-sans mt-0.5">
-                    Daftar debet transaksi racikan teh dan penerbitan struk resmi.
+                    Record of tea orders, receipts, and loyalty reward points.
                   </p>
                 </div>
                 <span className="text-xs font-mono font-bold text-neutral-400">
-                  {pastOrders.length} Transaksi
+                  {pastOrders.length} Transactions
                 </span>
               </div>
 
               {pastOrders.length === 0 ? (
                 <div className="py-16 text-center space-y-3">
                   <CheckCircle2 className="w-14 h-14 text-neutral-300 mx-auto" />
-                  <h4 className="font-bold text-base text-neutral-900 font-sans">Belum Ada Mutasi Transaksi</h4>
-                  <p className="text-xs text-neutral-500 font-sans">Pesanan selesai akan tersimpan rapi seperti rekening koran di sini.</p>
+                  <h4 className="font-bold text-base text-neutral-900 font-sans">No Transaction History Yet</h4>
+                  <p className="text-xs text-neutral-500 font-sans">Completed orders and receipts will appear here.</p>
                 </div>
               ) : (
                 <div className="divide-y divide-neutral-100">
@@ -1212,7 +1212,7 @@ export default function AccountPage() {
                                 #{order.order_number}
                               </span>
                               <span className="text-xs font-semibold text-neutral-600 font-sans">
-                                {isCancelled ? 'Dibatalkan' : 'Selesai'}
+                                {isCancelled ? 'Cancelled' : 'Completed'}
                               </span>
                               <span className="text-xs font-mono text-neutral-400">
                                 {order.payment_method?.toUpperCase() || 'QRIS'}
@@ -1224,7 +1224,7 @@ export default function AccountPage() {
                             </p>
 
                             <span className="text-[11px] text-neutral-400 block font-mono">
-                              {new Date(order.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })} &bull; {new Date(order.created_at).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })} WIB
+                              {new Date(order.created_at).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })} &bull; {new Date(order.created_at).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
                             </span>
                           </div>
                         </div>
@@ -1245,7 +1245,7 @@ export default function AccountPage() {
                               target="_blank"
                               rel="noopener noreferrer"
                               className="p-2.5 rounded-xl border border-neutral-200 hover:bg-neutral-100 text-neutral-700 transition-colors"
-                              title="Kirim Struk WA"
+                              title="Send WhatsApp Receipt"
                             >
                               <MessageCircle className="w-4 h-4 text-neutral-700" />
                             </a>
@@ -1254,7 +1254,7 @@ export default function AccountPage() {
                               type="button"
                               onClick={() => setSelectedOrderForPrint(order)}
                               className="p-2.5 rounded-xl border border-neutral-200 hover:bg-neutral-100 text-neutral-700 transition-colors cursor-pointer"
-                              title="Cetak Struk Thermal"
+                              title="Print Thermal Receipt"
                             >
                               <Printer className="w-4 h-4" />
                             </button>
@@ -1263,7 +1263,7 @@ export default function AccountPage() {
                               href="/order"
                               className="px-4 py-2 rounded-xl border border-neutral-200 hover:bg-neutral-100 text-neutral-900 text-xs font-bold uppercase tracking-wider transition-colors font-sans"
                             >
-                              Pesan Lagi
+                              Order Again
                             </Link>
                           </div>
                         </div>
@@ -1286,13 +1286,13 @@ export default function AccountPage() {
                   <div className="flex items-start justify-between gap-4">
                     <div>
                       <span className="text-[10px] font-bold uppercase tracking-wider text-amber-800 font-sans block">
-                        Reward 5 Stempel &bull; Gratis 1 Cup
+                        5-Stamp Reward &bull; 1 Free Cup
                       </span>
                       <h4 className="text-base font-bold text-neutral-900 mt-1 font-sans">
-                        Gratis 1 Cup Teh Herbal Pilihan
+                        Complimentary Botanical Tea Cup
                       </h4>
                       <p className="text-xs text-neutral-500 mt-1 font-sans">
-                        Klaim reward gratis setelah mengumpulkan 5 stempel teh.
+                        Claim your free artisanal blend after completing 5 stamps.
                       </p>
                     </div>
                     <Gift className="w-8 h-8 text-amber-700 shrink-0" />
@@ -1310,12 +1310,12 @@ export default function AccountPage() {
                       {copiedVoucher === 'GRATIS1CUP' ? (
                         <>
                           <Check className="w-3.5 h-3.5 text-emerald-400" />
-                          <span>Tersalin</span>
+                          <span>Copied</span>
                         </>
                       ) : (
                         <>
                           <Copy className="w-3.5 h-3.5" />
-                          <span>Salin Kode</span>
+                          <span>Copy Code</span>
                         </>
                       )}
                     </button>
@@ -1328,13 +1328,13 @@ export default function AccountPage() {
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-800 font-sans block">
-                      Diskon 20% &bull; Pelanggan Baru
+                      20% Off &bull; Welcome Gift
                     </span>
                     <h4 className="text-base font-bold text-neutral-900 mt-1 font-sans">
-                      Diskon 20% Pembelian Pertama
+                      20% Off First Atelier Order
                     </h4>
                     <p className="text-xs text-neutral-500 mt-1 font-sans">
-                      Gunakan kode ini saat checkout belanja online atau pesanan cafe pertama Anda.
+                      Apply this code during your first online checkout or table order.
                     </p>
                   </div>
                   <Ticket className="w-8 h-8 text-neutral-400 shrink-0" />
@@ -1352,12 +1352,12 @@ export default function AccountPage() {
                     {copiedVoucher === 'CHANGKEERFIRST' ? (
                       <>
                         <Check className="w-3.5 h-3.5 text-emerald-400" />
-                        <span>Tersalin</span>
+                        <span>Copied</span>
                       </>
                     ) : (
                       <>
                         <Copy className="w-3.5 h-3.5" />
-                        <span>Salin Kode</span>
+                        <span>Copy Code</span>
                       </>
                     )}
                   </button>
@@ -1369,13 +1369,13 @@ export default function AccountPage() {
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <span className="text-[10px] font-bold uppercase tracking-wider text-amber-800 font-sans block">
-                      Diskon 15% &bull; Meja Cafe
+                      15% Off &bull; Dine-In Table
                     </span>
                     <h4 className="text-base font-bold text-neutral-900 mt-1 font-sans">
-                      Promo Santap Dine-in Meja Cafe
+                      Dine-In Table Experience
                     </h4>
                     <p className="text-xs text-neutral-500 mt-1 font-sans">
-                      Potongan 15% untuk setiap pemesanan yang dinikmati langsung di meja cafe.
+                      Enjoy 15% off on all tea brews savored directly at our atelier tables.
                     </p>
                   </div>
                   <UtensilsCrossed className="w-8 h-8 text-neutral-400 shrink-0" />
@@ -1393,12 +1393,12 @@ export default function AccountPage() {
                     {copiedVoucher === 'CAFEDINEIN' ? (
                       <>
                         <Check className="w-3.5 h-3.5 text-emerald-400" />
-                        <span>Tersalin</span>
+                        <span>Copied</span>
                       </>
                     ) : (
                       <>
                         <Copy className="w-3.5 h-3.5" />
-                        <span>Salin Kode</span>
+                        <span>Copy Code</span>
                       </>
                     )}
                   </button>
@@ -1415,10 +1415,10 @@ export default function AccountPage() {
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-neutral-100">
                 <div>
                   <h3 className="font-sans font-extrabold text-base sm:text-lg uppercase tracking-tight text-neutral-900">
-                    Pengaturan Profil &amp; Akun
+                    Profile &amp; Account Settings
                   </h3>
                   <p className="text-xs text-neutral-500 font-sans mt-0.5">
-                    Kelola foto profil, sampul banner, data identitas, preferensi seduhan, dan alamat.
+                    Manage your profile photo, cover banner, identity, brewing preferences, and address.
                   </p>
                 </div>
 
@@ -1428,7 +1428,7 @@ export default function AccountPage() {
                   className="px-4 py-2 rounded-xl bg-neutral-900 hover:bg-neutral-800 text-white text-xs font-bold uppercase tracking-wider flex items-center gap-2 cursor-pointer transition-colors shadow-2xs self-start sm:self-auto"
                 >
                   <Edit3 className="w-3.5 h-3.5" />
-                  <span>Ubah Data Profil</span>
+                  <span>Edit Profile Details</span>
                 </button>
               </div>
 
@@ -1446,8 +1446,8 @@ export default function AccountPage() {
                       )}
                     </div>
                     <div>
-                      <span className="font-bold text-neutral-900 block text-xs">Foto Profil Pelanggan</span>
-                      <span className="text-[11px] text-neutral-500 block">Maksimal 5MB (WebP/JPEG/PNG)</span>
+                      <span className="font-bold text-neutral-900 block text-xs">Customer Profile Photo</span>
+                      <span className="text-[11px] text-neutral-500 block">Maximum 5MB (WebP/JPEG/PNG)</span>
                     </div>
                   </div>
 
@@ -1458,7 +1458,7 @@ export default function AccountPage() {
                     className="px-3.5 py-2 rounded-xl border border-neutral-300 hover:bg-white text-neutral-800 text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer shrink-0"
                   >
                     <Camera className="w-3.5 h-3.5 text-neutral-600" />
-                    <span>{uploadingAvatar ? '...' : 'Ganti'}</span>
+                    <span>{uploadingAvatar ? '...' : 'Change'}</span>
                   </button>
                 </div>
 
@@ -1473,8 +1473,8 @@ export default function AccountPage() {
                       )}
                     </div>
                     <div>
-                      <span className="font-bold text-neutral-900 block text-xs">Sampul Banner Akun</span>
-                      <span className="text-[11px] text-neutral-500 block">Maksimal 5MB (Auto-kompres)</span>
+                      <span className="font-bold text-neutral-900 block text-xs">Account Cover Banner</span>
+                      <span className="text-[11px] text-neutral-500 block">Maximum 5MB (Auto-compressed)</span>
                     </div>
                   </div>
 
@@ -1485,7 +1485,7 @@ export default function AccountPage() {
                     className="px-3.5 py-2 rounded-xl border border-neutral-300 hover:bg-white text-neutral-800 text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer shrink-0"
                   >
                     <UploadCloud className="w-3.5 h-3.5 text-neutral-600" />
-                    <span>{uploadingBanner ? '...' : 'Unggah'}</span>
+                    <span>{uploadingBanner ? '...' : 'Upload'}</span>
                   </button>
                 </div>
 
@@ -1495,40 +1495,40 @@ export default function AccountPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-sans">
                 
                 <div className="p-5 rounded-2xl bg-neutral-50 border border-neutral-200/80 space-y-2">
-                  <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Identitas Akun</span>
+                  <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Account Identity</span>
                   <div className="font-bold text-neutral-900 text-sm">
                     {profile?.full_name}
                   </div>
                   <div className="text-neutral-600 space-y-1 text-xs">
                     <p>Email: {profile?.email}</p>
-                    <p>WhatsApp: {profile?.phone_number || 'Belum ditambahkan'}</p>
+                    <p>WhatsApp: {profile?.phone_number || 'Not provided yet'}</p>
                   </div>
                 </div>
 
                 <div className="p-5 rounded-2xl bg-neutral-50 border border-neutral-200/80 space-y-2">
-                  <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Alamat Default Pengiriman</span>
+                  <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Default Delivery Address</span>
                   <div className="font-bold text-neutral-900 text-sm">
-                    {profile?.default_address ? 'Alamat Tersimpan' : 'Belum Ada Alamat'}
+                    {profile?.default_address ? 'Saved Address' : 'No Address Saved'}
                   </div>
                   <p className="text-xs text-neutral-500 leading-relaxed">
-                    {profile?.default_address || 'Tambahkan alamat pengiriman agar proses checkout delivery lebih cepat.'}
+                    {profile?.default_address || 'Add your delivery address for faster checkout.'}
                   </p>
                 </div>
 
                 <div className="p-5 rounded-2xl bg-neutral-50 border border-neutral-200/80 space-y-2">
-                  <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Preferensi Seduhan Favorit</span>
+                  <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Brewing Preferences</span>
                   <div className="flex items-center gap-3 pt-1">
                     <span className="px-2.5 py-1 rounded-lg bg-white border border-neutral-200 text-xs font-semibold text-neutral-800">
-                      Suhu: {(profile as any)?.preferred_temperature === 'iced' ? 'Dingin' : 'Hangat'}
+                      Temp: {(profile as any)?.preferred_temperature === 'iced' ? 'Iced' : 'Hot'}
                     </span>
                     <span className="px-2.5 py-1 rounded-lg bg-white border border-neutral-200 text-xs font-semibold text-neutral-800">
-                      Gula: {(profile as any)?.preferred_sweetness || '0%'}
+                      Sweetness: {(profile as any)?.preferred_sweetness || '0%'}
                     </span>
                   </div>
                 </div>
 
                 <div className="p-5 rounded-2xl bg-neutral-50 border border-neutral-200/80 space-y-2">
-                  <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Bio Selera Teh</span>
+                  <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Tea Palate Bio</span>
                   <p className="text-xs text-neutral-600 italic leading-relaxed">
                     &ldquo;{userBio}&rdquo;
                   </p>
@@ -1539,7 +1539,7 @@ export default function AccountPage() {
               {/* Logout & Session */}
               <div className="pt-6 border-t border-neutral-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div className="text-xs text-neutral-500">
-                  Ingin berganti akun atau keluar dari sesi perangkat ini?
+                  Want to switch accounts or sign out from this device?
                 </div>
                 <button
                   type="button"
@@ -1547,7 +1547,7 @@ export default function AccountPage() {
                   className="px-5 py-2.5 rounded-xl bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 text-xs font-bold uppercase tracking-wider flex items-center gap-2 cursor-pointer transition-colors"
                 >
                   <LogOut className="w-4 h-4" />
-                  <span>Keluar dari Akun</span>
+                  <span>Sign Out</span>
                 </button>
               </div>
 
@@ -1573,10 +1573,10 @@ export default function AccountPage() {
                 </div>
                 <div>
                   <h3 className="font-sans font-extrabold text-base uppercase tracking-tight text-neutral-900">
-                    Edit Profil &amp; Gambar
+                    Edit Profile &amp; Photos
                   </h3>
                   <span className="text-[11px] text-neutral-500 font-sans">
-                    Pengaturan identitas, foto profil, dan sampul banner
+                    Identity details, profile photo, and cover banner
                   </span>
                 </div>
               </div>
@@ -1622,9 +1622,9 @@ export default function AccountPage() {
               <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-200/80 space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">
-                    Foto Profil &amp; Sampul Banner (Maks. 5MB)
+                    Profile Photo &amp; Cover Banner (Max 5MB)
                   </span>
-                  <span className="text-[10px] text-emerald-700 font-semibold">Auto-kompresi Aktif</span>
+                  <span className="text-[10px] text-emerald-700 font-semibold">Auto-compression Active</span>
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
@@ -1644,7 +1644,7 @@ export default function AccountPage() {
                       className="px-2.5 py-1 rounded-lg bg-neutral-900 hover:bg-neutral-800 text-white text-[11px] font-bold flex items-center gap-1 cursor-pointer transition-colors disabled:opacity-50"
                     >
                       <Camera className="w-3 h-3" />
-                      <span>{uploadingAvatar ? 'Mengunggah...' : 'Ganti Foto'}</span>
+                      <span>{uploadingAvatar ? 'Uploading...' : 'Change Photo'}</span>
                     </button>
                   </div>
 
@@ -1664,7 +1664,7 @@ export default function AccountPage() {
                       className="px-2.5 py-1 rounded-lg bg-neutral-900 hover:bg-neutral-800 text-white text-[11px] font-bold flex items-center gap-1 cursor-pointer transition-colors disabled:opacity-50"
                     >
                       <UploadCloud className="w-3 h-3" />
-                      <span>{uploadingBanner ? 'Mengunggah...' : 'Ganti Sampul'}</span>
+                      <span>{uploadingBanner ? 'Uploading...' : 'Change Cover'}</span>
                     </button>
                   </div>
                 </div>
@@ -1673,14 +1673,14 @@ export default function AccountPage() {
               {/* 1. Nama Lengkap */}
               <div>
                 <label className="block text-[10px] font-bold uppercase tracking-wider text-neutral-500 mb-1.5">
-                  Nama Lengkap *
+                  Full Name *
                 </label>
                 <input
                   type="text"
                   required
                   value={editFullName}
                   onChange={(e) => setEditFullName(e.target.value)}
-                  placeholder="Nama Anda"
+                  placeholder="Your full name"
                   className="w-full bg-[#FAFAF8] border border-neutral-200 rounded-xl px-3.5 py-2.5 text-xs text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-neutral-900 font-sans"
                 />
               </div>
@@ -1688,13 +1688,13 @@ export default function AccountPage() {
               {/* 2. Nomor WhatsApp */}
               <div>
                 <label className="block text-[10px] font-bold uppercase tracking-wider text-neutral-500 mb-1.5">
-                  Nomor WhatsApp / Telepon
+                  WhatsApp / Phone Number
                 </label>
                 <input
                   type="tel"
                   value={editPhone}
                   onChange={(e) => setEditPhone(e.target.value)}
-                  placeholder="Contoh: 081234567890"
+                  placeholder="e.g. +62 812 3456 7890"
                   className="w-full bg-[#FAFAF8] border border-neutral-200 rounded-xl px-3.5 py-2.5 text-xs text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-neutral-900 font-sans"
                 />
               </div>
@@ -1702,13 +1702,13 @@ export default function AccountPage() {
               {/* 3. Alamat Default */}
               <div>
                 <label className="block text-[10px] font-bold uppercase tracking-wider text-neutral-500 mb-1.5">
-                  Alamat Pengiriman Default
+                  Default Delivery Address
                 </label>
                 <textarea
                   rows={2}
                   value={editAddress}
                   onChange={(e) => setEditAddress(e.target.value)}
-                  placeholder="Alamat rumah / kantor untuk pengiriman delivery..."
+                  placeholder="Residential or office address for delivery..."
                   className="w-full bg-[#FAFAF8] border border-neutral-200 rounded-xl p-3 text-xs text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-neutral-900 font-sans"
                 />
               </div>
@@ -1716,13 +1716,13 @@ export default function AccountPage() {
               {/* 4. Bio / Catatan Selera */}
               <div>
                 <label className="block text-[10px] font-bold uppercase tracking-wider text-neutral-500 mb-1.5">
-                  Bio / Catatan Selera Teh
+                  Tea Palate Bio / Notes
                 </label>
                 <textarea
                   rows={2}
                   value={editBio}
                   onChange={(e) => setEditBio(e.target.value)}
-                  placeholder="Ceritakan selera teh Anda..."
+                  placeholder="Describe your favorite flavor notes or brewing rituals..."
                   className="w-full bg-[#FAFAF8] border border-neutral-200 rounded-xl p-3 text-xs text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-neutral-900 font-sans"
                 />
               </div>
@@ -1731,7 +1731,7 @@ export default function AccountPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-1">
                 <div>
                   <label className="block text-[10px] font-bold uppercase tracking-wider text-neutral-500 mb-1.5">
-                    Suhu Seduhan Favorit
+                    Preferred Brew Temperature
                   </label>
                   <div className="grid grid-cols-2 gap-2">
                     <button
@@ -1743,7 +1743,7 @@ export default function AccountPage() {
                           : 'border-neutral-200 bg-neutral-50 text-neutral-700 hover:bg-neutral-100'
                       }`}
                     >
-                      Hangat
+                      Hot
                     </button>
                     <button
                       type="button"
@@ -1754,24 +1754,24 @@ export default function AccountPage() {
                           : 'border-neutral-200 bg-neutral-50 text-neutral-700 hover:bg-neutral-100'
                       }`}
                     >
-                      Dingin
+                      Iced
                     </button>
                   </div>
                 </div>
 
                 <div>
                   <label className="block text-[10px] font-bold uppercase tracking-wider text-neutral-500 mb-1.5">
-                    Tingkat Manis Default
+                    Default Sweetness Level
                   </label>
                   <select
                     value={editSweetness}
                     onChange={(e) => setEditSweetness(e.target.value as any)}
                     className="w-full bg-[#FAFAF8] border border-neutral-200 rounded-xl px-3 py-2 text-xs font-semibold text-neutral-800 focus:outline-none focus:border-neutral-900 cursor-pointer"
                   >
-                    <option value="0%">0% (Tanpa Pemanis)</option>
-                    <option value="25%">25% (Sedikit Pemanis)</option>
-                    <option value="50%">50% (Sedang)</option>
-                    <option value="100%">100% (Normal)</option>
+                    <option value="0%">0% (Unsweetened)</option>
+                    <option value="25%">25% (Light Sweetness)</option>
+                    <option value="50%">50% (Balanced Sweetness)</option>
+                    <option value="100%">100% (Full Sweetness)</option>
                   </select>
                 </div>
               </div>
@@ -1783,7 +1783,7 @@ export default function AccountPage() {
                   onClick={() => setIsEditModalOpen(false)}
                   className="px-4 py-2.5 rounded-xl border border-neutral-200 hover:bg-neutral-50 text-neutral-700 font-bold text-xs uppercase tracking-wider transition-colors cursor-pointer"
                 >
-                  Batal
+                  Cancel
                 </button>
 
                 <button
@@ -1791,7 +1791,7 @@ export default function AccountPage() {
                   disabled={isSavingProfile || uploadingAvatar || uploadingBanner}
                   className="px-5 py-2.5 rounded-xl bg-neutral-900 hover:bg-neutral-800 active:scale-98 disabled:opacity-50 text-white font-bold text-xs uppercase tracking-wider transition-all cursor-pointer shadow-sm flex items-center gap-2"
                 >
-                  {isSavingProfile ? <span>Menyimpan...</span> : <span>Simpan Perubahan</span>}
+                  {isSavingProfile ? <span>Saving...</span> : <span>Save Changes</span>}
                 </button>
               </div>
 

@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
 
     if (!currentCustomer || !currentCustomer.email) {
       return NextResponse.json(
-        { success: false, error: 'Sesi pelanggan tidak ditemukan. Harap masuk terlebih dahulu.' },
+        { success: false, error: 'Customer session not found. Please sign in first.' },
         { status: 401 }
       );
     }
@@ -43,14 +43,14 @@ export async function POST(req: NextRequest) {
     } catch {}
 
     if (!file) {
-      return NextResponse.json({ success: false, error: 'File gambar wajib diunggah' }, { status: 400 });
+      return NextResponse.json({ success: false, error: 'Image file is required' }, { status: 400 });
     }
 
     // 1. Strict 5MB size limit check
     if (file.size > MAX_UPLOAD_BYTES) {
       const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
       return NextResponse.json(
-        { success: false, error: `Ukuran gambar terlalu besar (${sizeMB}MB). Maksimal ukuran file adalah 5MB.` },
+        { success: false, error: `Image file is too large (${sizeMB}MB). Maximum file size is 5MB.` },
         { status: 400 }
       );
     }
@@ -64,7 +64,7 @@ export async function POST(req: NextRequest) {
     const isAllowed = allowedMime.includes(mime) || allowedExts.includes(ext);
     if (!isAllowed) {
       return NextResponse.json(
-        { success: false, error: 'Format gambar tidak didukung. Harap unggah file JPEG, PNG, atau WebP.' },
+        { success: false, error: 'Image format not supported. Please upload JPEG, PNG, or WebP.' },
         { status: 400 }
       );
     }

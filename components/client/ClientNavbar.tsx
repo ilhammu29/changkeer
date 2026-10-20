@@ -69,13 +69,13 @@ export function ClientNavbar({ pageTitle, subtitle }: ClientNavbarProps) {
   const getOrderTypeLabel = () => {
     switch (orderType) {
       case 'dine_in':
-        return `Dine-in (${tableNumber || 'Meja 01'})`;
+        return `Dine-in (${tableNumber || 'Table 01'})`;
       case 'takeaway':
         return 'Takeaway';
       case 'delivery':
         return 'Delivery';
       default:
-        return 'Pilih Mode';
+        return 'Select Mode';
     }
   };
 
@@ -96,14 +96,14 @@ export function ClientNavbar({ pageTitle, subtitle }: ClientNavbarProps) {
 
   const displayTitle = pageTitle || (
     pathname.startsWith('/order/') 
-      ? 'Detail Racikan Botani' 
+      ? 'Botanical Blend Profile' 
       : pathname.startsWith('/order') 
-        ? 'Katalog Seduhan Khusus' 
+        ? 'Seasonal Tea Catalog' 
         : pathname.startsWith('/account') 
-          ? 'Dashboard & Pesanan Pelanggan' 
+          ? 'Customer Dashboard & Orders' 
           : pathname.startsWith('/checkout')
-            ? 'Checkout & Pembayaran'
-            : 'Portal Pelanggan'
+            ? 'Checkout & Payment'
+            : 'Customer Portal'
   );
 
   return (
@@ -111,7 +111,7 @@ export function ClientNavbar({ pageTitle, subtitle }: ClientNavbarProps) {
       <div className="w-full px-4 sm:px-8">
         <div className="flex items-center justify-between h-16 sm:h-18">
           
-          {/* Left: Page Title & Breadcrumb (No dots, No badge, Truncated on Mobile) */}
+          {/* Left: Page Title & Breadcrumb */}
           <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1 mr-2 sm:mr-4">
             <div className="flex flex-col min-w-0">
               <h1 className="text-sm sm:text-base md:text-lg font-bold text-neutral-900 leading-tight tracking-tight truncate">
@@ -125,7 +125,7 @@ export function ClientNavbar({ pageTitle, subtitle }: ClientNavbarProps) {
             </div>
           </div>
 
-          {/* Right: Order Mode Selector & Cart Trigger (Responsive, No overflow) */}
+          {/* Right: Order Mode Selector & Cart Trigger */}
           <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
             
             {/* Quick Order Mode Dropdown (Desktop/Tablet) */}
@@ -134,7 +134,7 @@ export function ClientNavbar({ pageTitle, subtitle }: ClientNavbarProps) {
                 type="button"
                 onClick={() => setModeDropdownOpen(!modeDropdownOpen)}
                 className="hidden sm:inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-neutral-100 hover:bg-neutral-200/80 border border-neutral-200/80 text-neutral-900 text-xs font-semibold tracking-wide transition-all cursor-pointer"
-                title="Ganti Mode Pesanan"
+                title="Change Dining Mode"
               >
                 <ModeIcon className="w-3.5 h-3.5 text-neutral-700" />
                 <span>{getOrderTypeLabel()}</span>
@@ -149,7 +149,7 @@ export function ClientNavbar({ pageTitle, subtitle }: ClientNavbarProps) {
                   />
                   <div className="absolute right-0 mt-2 w-56 bg-white border border-neutral-200 rounded-2xl shadow-xl py-2 z-30 animate-in fade-in zoom-in-95 duration-150">
                     <div className="px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-neutral-400">
-                      Mode Sajian Cafe
+                      Cafe Dining Mode
                     </div>
                     
                     <button
@@ -164,9 +164,9 @@ export function ClientNavbar({ pageTitle, subtitle }: ClientNavbarProps) {
                     >
                       <div className="flex items-center gap-2">
                         <UtensilsCrossed className="w-4 h-4 text-neutral-600" />
-                        <span>Dine-in di Cafe</span>
+                        <span>Dine-in at Cafe</span>
                       </div>
-                      {orderType === 'dine_in' && <span className="text-xs font-semibold text-neutral-900">Aktif</span>}
+                      {orderType === 'dine_in' && <span className="text-xs font-semibold text-neutral-900">Active</span>}
                     </button>
 
                     <button
@@ -181,9 +181,9 @@ export function ClientNavbar({ pageTitle, subtitle }: ClientNavbarProps) {
                     >
                       <div className="flex items-center gap-2">
                         <Package className="w-4 h-4 text-neutral-600" />
-                        <span>Takeaway (Bungkus)</span>
+                        <span>Takeaway (To-Go)</span>
                       </div>
-                      {orderType === 'takeaway' && <span className="text-xs font-semibold text-neutral-900">Aktif</span>}
+                      {orderType === 'takeaway' && <span className="text-xs font-semibold text-neutral-900">Active</span>}
                     </button>
 
                     <button
@@ -198,24 +198,24 @@ export function ClientNavbar({ pageTitle, subtitle }: ClientNavbarProps) {
                     >
                       <div className="flex items-center gap-2">
                         <Bike className="w-4 h-4 text-neutral-600" />
-                        <span>Delivery (Kirim)</span>
+                        <span>Delivery (Courier)</span>
                       </div>
-                      {orderType === 'delivery' && <span className="text-xs font-semibold text-neutral-900">Aktif</span>}
+                      {orderType === 'delivery' && <span className="text-xs font-semibold text-neutral-900">Active</span>}
                     </button>
 
                     {orderType === 'dine_in' && (
                       <div className="mt-2 pt-2 border-t border-neutral-100 px-3.5">
-                        <label className="text-[11px] font-semibold text-neutral-500 block mb-1">Pilih Nomor Meja</label>
+                        <label className="text-[11px] font-semibold text-neutral-500 block mb-1">Select Table Number</label>
                         <select
                           value={tableNumber}
                           onChange={(e) => setTableNumber(e.target.value)}
                           className="w-full text-xs bg-neutral-50 border border-neutral-200 rounded-xl p-2 font-bold text-neutral-900"
                         >
-                          <option value="Meja 01">Meja 01 (Indoor Window)</option>
-                          <option value="Meja 02">Meja 02 (Indoor Center)</option>
-                          <option value="Meja 03">Meja 03 (Botanical Lounge)</option>
-                          <option value="Meja 04">Meja 04 (Communal Table)</option>
-                          <option value="Meja 05">Meja 05 (Garden Terrace)</option>
+                          <option value="Meja 01">Table 01 (Indoor Window)</option>
+                          <option value="Meja 02">Table 02 (Indoor Center)</option>
+                          <option value="Meja 03">Table 03 (Botanical Lounge)</option>
+                          <option value="Meja 04">Table 04 (Communal Table)</option>
+                          <option value="Meja 05">Table 05 (Garden Terrace)</option>
                           <option value="Bar 06">Bar 06 (Counter Barista)</option>
                         </select>
                       </div>
@@ -225,20 +225,20 @@ export function ClientNavbar({ pageTitle, subtitle }: ClientNavbarProps) {
               )}
             </div>
 
-            {/* Shopping Cart Trigger (Responsive Label) */}
+            {/* Shopping Cart Trigger */}
             <button
               type="button"
               onClick={() => setIsCartOpen(true)}
               className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-2 rounded-xl bg-white hover:bg-neutral-50 border border-neutral-200 text-neutral-900 transition-all shadow-2xs active:scale-98 cursor-pointer shrink-0"
-              title="Buka Keranjang Pesanan"
+              title="Open Order Bag"
             >
               <ShoppingBag className="w-4 h-4 text-neutral-800 shrink-0" />
               <span className="text-xs font-semibold text-neutral-900">
-                <span className="hidden sm:inline">Pesanan </span>
+                <span className="hidden sm:inline">Bag </span>
                 {totalItemCount > 0 ? `(${totalItemCount})` : ''}
               </span>
               {subtotal > 0 && (
-                <span className="hidden md:inline text-xs font-bold text-neutral-900 pl-1 border-l border-neutral-200">
+                <span className="hidden md:inline text-xs font-mono font-bold text-neutral-900 pl-1 border-l border-neutral-200">
                   {formatRupiah(subtotal)}
                 </span>
               )}
@@ -248,7 +248,7 @@ export function ClientNavbar({ pageTitle, subtitle }: ClientNavbarProps) {
             <Link
               href="/account"
               className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-neutral-900 hover:bg-neutral-800 text-white flex items-center justify-center text-xs font-bold shadow-2xs transition-transform hover:scale-105 shrink-0"
-              title={customer?.email || 'Akun Saya'}
+              title={customer?.email || 'My Profile'}
             >
               {(customer?.full_name || customer?.email || 'U')[0].toUpperCase()}
             </Link>

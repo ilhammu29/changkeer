@@ -120,19 +120,19 @@ export default function CheckoutPage() {
   const validateDetailsStep = (): boolean => {
     setFormError('');
     if (!customerName.trim()) {
-      setFormError('Nama lengkap pemesan wajib diisi.');
+      setFormError('Customer full name is required.');
       return false;
     }
     if (!customerEmail.trim()) {
-      setFormError('Alamat email pemesan wajib diisi.');
+      setFormError('Customer email address is required.');
       return false;
     }
     if (!customerPhone.trim()) {
-      setFormError('Nomor WhatsApp / telepon wajib diisi.');
+      setFormError('Phone / WhatsApp number is required.');
       return false;
     }
     if (orderType === 'delivery' && !deliveryAddress.trim()) {
-      setFormError('Alamat pengiriman wajib diisi untuk opsi delivery.');
+      setFormError('Delivery address is required for courier delivery.');
       return false;
     }
     return true;
@@ -160,13 +160,13 @@ export default function CheckoutPage() {
       });
       const data = await res.json();
       if (!res.ok || !data.isValid) {
-        setVoucherError(data.message || 'Kode voucher tidak valid');
+        setVoucherError(data.message || 'Invalid promo code');
       } else {
         applyVoucher(data.voucher, data.discountAmount);
         setVoucherCode('');
       }
     } catch {
-      setVoucherError('Gagal memvalidasi voucher');
+      setVoucherError('Failed to validate promo code. Please try again.');
     } finally {
       setVoucherLoading(false);
     }
@@ -177,7 +177,7 @@ export default function CheckoutPage() {
     setFormError('');
 
     if (items.length === 0) {
-      setFormError('Keranjang Anda kosong');
+      setFormError('Your cart is empty');
       return;
     }
 
@@ -219,7 +219,7 @@ export default function CheckoutPage() {
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.error || 'Gagal memproses pesanan');
+        throw new Error(data.error || 'Failed to process order');
       }
 
       // Clear local cart
@@ -229,7 +229,7 @@ export default function CheckoutPage() {
       router.push(`/order/success/${data.id || data.order_number}`);
     } catch (err: any) {
       console.error('Checkout error:', err);
-      setFormError(err.message || 'Terjadi kesalahan sistem saat membuat pesanan.');
+      setFormError(err.message || 'A system error occurred while creating your order.');
       setSubmitting(false);
     }
   };
@@ -237,23 +237,23 @@ export default function CheckoutPage() {
   // If cart is empty
   if (items.length === 0) {
     return (
-      <ClientLayout pageTitle="Keranjang Kosong" subtitle="Kasir &amp; Checkout">
+      <ClientLayout pageTitle="Empty Bag" subtitle="Checkout">
         <div className="flex-1 flex items-center justify-center p-8">
           <div className="max-w-md w-full text-center bg-white border border-neutral-200/90 p-8 rounded-3xl shadow-xs">
             <div className="w-16 h-16 rounded-2xl bg-neutral-100 border border-neutral-200 text-neutral-400 flex items-center justify-center mx-auto mb-4">
               <ShoppingBag className="w-8 h-8 stroke-[1.5]" />
             </div>
             <h2 className="font-sans font-bold text-xl uppercase tracking-tight text-neutral-900 mb-2">
-              Keranjang Belum Terisi
+              Bag is Empty
             </h2>
             <p className="text-xs text-neutral-500 max-w-sm mx-auto leading-relaxed">
-              Anda belum menambahkan racikan teh ke keranjang. Silakan pilih menu di katalog untuk melanjutkan pesanan.
+              You haven&apos;t added any herbal tea blends to your bag yet. Please explore our menu to place an order.
             </p>
             <Link
               href="/order"
               className="mt-6 inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-neutral-900 text-white hover:bg-neutral-800 font-bold text-xs tracking-wider uppercase transition-all shadow-xs cursor-pointer"
             >
-              <span>Buka Menu Seduhan</span>
+              <span>Explore Tea Menu</span>
             </Link>
           </div>
         </div>
@@ -263,8 +263,8 @@ export default function CheckoutPage() {
 
   return (
     <ClientLayout 
-      pageTitle="Kasir &amp; Pembayaran" 
-      subtitle="Konfirmasi Rincian Pesanan &amp; Pembayaran Cafe"
+      pageTitle="Checkout &amp; Payment" 
+      subtitle="Review Order Details &amp; Payment Method"
     >
       <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-5 sm:py-8 font-sans">
         
@@ -272,7 +272,7 @@ export default function CheckoutPage() {
         <div className="mb-4 sm:mb-6 flex items-center gap-2 text-xs text-neutral-500 font-sans font-semibold uppercase tracking-wider">
           <Link href="/order" className="hover:text-neutral-900 flex items-center gap-1.5 transition-colors">
             <ArrowLeft className="w-3.5 h-3.5" />
-            <span>Kembali ke Katalog Seduhan</span>
+            <span>Back to Tea Catalog</span>
           </Link>
         </div>
 
@@ -287,7 +287,6 @@ export default function CheckoutPage() {
           
           {/* =========================================================================
               LEFT COLUMN: TABBED / STEPPED CHECKOUT (7 COLS)
-              Prevents excessive vertical page length
               ========================================================================= */}
           <div className="lg:col-span-7 space-y-5">
             
@@ -307,7 +306,7 @@ export default function CheckoutPage() {
                 }`}>
                   {isDetailsFilled ? <Check className="w-3 h-3 stroke-[3]" /> : '1'}
                 </span>
-                <span>1. Pemesan &amp; Saji</span>
+                <span>1. Customer &amp; Dining Mode</span>
               </button>
 
               <button
@@ -326,7 +325,7 @@ export default function CheckoutPage() {
                 <span className="w-5 h-5 rounded-full bg-neutral-900 text-white flex items-center justify-center text-[10px] font-bold">
                   2
                 </span>
-                <span>2. Pembayaran &amp; Catatan</span>
+                <span>2. Payment &amp; Notes</span>
               </button>
             </div>
 
@@ -339,22 +338,22 @@ export default function CheckoutPage() {
                   <div className="flex items-center justify-between pb-3 border-b border-neutral-100">
                     <h3 className="font-sans font-bold text-sm sm:text-base uppercase tracking-tight text-neutral-900 flex items-center gap-2">
                       <User className="w-4 h-4 text-neutral-700" />
-                      <span>Data Identitas Pemesan</span>
+                      <span>Customer Contact Details</span>
                     </h3>
-                    <span className="text-[10px] font-mono text-neutral-400 uppercase tracking-wider">Langkah 1/2</span>
+                    <span className="text-[10px] font-mono text-neutral-400 uppercase tracking-wider">Step 1/2</span>
                   </div>
 
                   <div className="space-y-3.5 text-xs font-sans">
                     <div>
                       <label className="block text-neutral-500 font-sans font-bold mb-1.5 uppercase tracking-wider text-[10px]">
-                        Nama Lengkap *
+                        Full Name *
                       </label>
                       <input
                         type="text"
                         required
                         value={customerName}
                         onChange={e => setCustomerName(e.target.value)}
-                        placeholder="Contoh: Budi Santoso"
+                        placeholder="E.g. Jane Doe"
                         className="w-full bg-[#FAFAF8] border border-neutral-200 rounded-xl px-3.5 py-2.5 text-xs text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-neutral-900 font-sans transition-colors"
                       />
                     </div>
@@ -362,21 +361,21 @@ export default function CheckoutPage() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                       <div>
                         <label className="block text-neutral-500 font-sans font-bold mb-1.5 uppercase tracking-wider text-[10px]">
-                          Email Pembeli *
+                          Email Address *
                         </label>
                         <input
                           type="email"
                           required
                           value={customerEmail}
                           onChange={e => setCustomerEmail(e.target.value)}
-                          placeholder="budi@example.com"
+                          placeholder="jane@example.com"
                           className="w-full bg-[#FAFAF8] border border-neutral-200 rounded-xl px-3.5 py-2.5 text-xs text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-neutral-900 font-sans transition-colors"
                         />
                       </div>
 
                       <div>
                         <label className="block text-neutral-500 font-sans font-bold mb-1.5 uppercase tracking-wider text-[10px]">
-                          Nomor WhatsApp *
+                          WhatsApp / Phone *
                         </label>
                         <input
                           type="tel"
@@ -396,7 +395,7 @@ export default function CheckoutPage() {
                   <div className="flex items-center justify-between pb-3 border-b border-neutral-100">
                     <h3 className="font-sans font-bold text-sm sm:text-base uppercase tracking-tight text-neutral-900 flex items-center gap-2">
                       <UtensilsCrossed className="w-4 h-4 text-neutral-700" />
-                      <span>Mode Penyajian Cafe</span>
+                      <span>Cafe Dining Mode</span>
                     </h3>
                     <span className="text-[10px] font-mono text-emerald-700 font-bold uppercase">
                       {orderType === 'dine_in' ? 'Dine-In' : orderType === 'takeaway' ? 'Takeaway' : 'Delivery'}
@@ -406,9 +405,9 @@ export default function CheckoutPage() {
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                     {(
                       [
-                        { type: 'dine_in', label: 'Dine-In', icon: UtensilsCrossed, desc: 'Disajikan di meja cafe' },
-                        { type: 'takeaway', label: 'Takeaway', icon: Package, desc: 'Bawa pulang (siap ambil)' },
-                        { type: 'delivery', label: 'Delivery', icon: Bike, desc: 'Kirim kurir (+Rp 10.000)' },
+                        { type: 'dine_in', label: 'Dine-In', icon: UtensilsCrossed, desc: 'Served at cafe table' },
+                        { type: 'takeaway', label: 'Takeaway', icon: Package, desc: 'Pick up at brew bar' },
+                        { type: 'delivery', label: 'Delivery', icon: Bike, desc: 'Courier delivery (+Rp 10K)' },
                       ] as const
                     ).map(({ type, label, icon: Icon, desc }) => (
                       <button
@@ -431,7 +430,7 @@ export default function CheckoutPage() {
                           </div>
                         </div>
                         {orderType === type && (
-                          <span className="text-[9px] font-bold uppercase sm:hidden bg-white/20 px-2 py-0.5 rounded-md">Aktif</span>
+                          <span className="text-[9px] font-bold uppercase sm:hidden bg-white/20 px-2 py-0.5 rounded-md">Active</span>
                         )}
                       </button>
                     ))}
@@ -441,18 +440,18 @@ export default function CheckoutPage() {
                   {orderType === 'dine_in' && (
                     <div className="p-4 rounded-2xl bg-[#FAFAF8] border border-neutral-200/80 space-y-2">
                       <label className="block text-[10px] font-sans font-bold uppercase tracking-wider text-neutral-500">
-                        Pilih Meja Cafe
+                        Select Cafe Table
                       </label>
                       <select
                         value={tableNumber}
                         onChange={e => setTableNumber(e.target.value)}
                         className="w-full bg-white border border-neutral-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-neutral-900 focus:outline-none focus:border-neutral-900 font-sans cursor-pointer"
                       >
-                        <option value="Meja 01">Meja 01 (Indoor Window)</option>
-                        <option value="Meja 02">Meja 02 (Indoor Center)</option>
-                        <option value="Meja 03">Meja 03 (Botanical Lounge)</option>
-                        <option value="Meja 04">Meja 04 (Communal Table)</option>
-                        <option value="Meja 05">Meja 05 (Garden Terrace)</option>
+                        <option value="Meja 01">Table 01 (Indoor Window)</option>
+                        <option value="Meja 02">Table 02 (Indoor Center)</option>
+                        <option value="Meja 03">Table 03 (Botanical Lounge)</option>
+                        <option value="Meja 04">Table 04 (Communal Table)</option>
+                        <option value="Meja 05">Table 05 (Garden Terrace)</option>
                         <option value="Bar 06">Bar 06 (Counter Barista)</option>
                       </select>
                     </div>
@@ -461,18 +460,18 @@ export default function CheckoutPage() {
                   {orderType === 'takeaway' && (
                     <div className="p-4 rounded-2xl bg-[#FAFAF8] border border-neutral-200/80 space-y-2">
                       <label className="block text-[10px] font-sans font-bold uppercase tracking-wider text-neutral-500">
-                        Perkiraan Waktu Pengambilan Seduhan
+                        Estimated Pickup Time
                       </label>
                       <select
                         value={pickupTime}
                         onChange={e => setPickupTime(e.target.value)}
                         className="w-full bg-white border border-neutral-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-amber-800 focus:outline-none focus:border-neutral-900 font-sans cursor-pointer"
                       >
-                        <option value="Segera">Segera (5-10 Menit)</option>
-                        <option value="15 Menit Lagi">15 Menit Lagi</option>
-                        <option value="30 Menit Lagi">30 Menit Lagi</option>
-                        <option value="45 Menit Lagi">45 Menit Lagi</option>
-                        <option value="1 Jam Lagi">1 Jam Lagi</option>
+                        <option value="Segera">ASAP (5-10 Mins)</option>
+                        <option value="15 Menit Lagi">In 15 Mins</option>
+                        <option value="30 Menit Lagi">In 30 Mins</option>
+                        <option value="45 Menit Lagi">In 45 Mins</option>
+                        <option value="1 Jam Lagi">In 1 Hour</option>
                       </select>
                     </div>
                   )}
@@ -481,27 +480,27 @@ export default function CheckoutPage() {
                     <div className="p-4 rounded-2xl bg-[#FAFAF8] border border-neutral-200/80 space-y-3">
                       <div>
                         <label className="block text-[10px] font-sans font-bold uppercase tracking-wider text-neutral-500 mb-1">
-                          Alamat Pengiriman Lengkap *
+                          Complete Delivery Address *
                         </label>
                         <textarea
                           required
                           rows={2}
                           value={deliveryAddress}
                           onChange={e => setDeliveryAddress(e.target.value)}
-                          placeholder="Jalan, Nomor Rumah, RT/RW, Kecamatan, Patokan lokasi..."
+                          placeholder="Street, Building/House Number, Floor, District, Landmark..."
                           className="w-full bg-white border border-neutral-200 rounded-xl p-3 text-xs text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-neutral-900 font-sans"
                         />
                       </div>
 
                       <div>
                         <label className="block text-[10px] font-sans font-bold uppercase tracking-wider text-neutral-500 mb-1">
-                          Catatan Tambahan Driver (Opsional)
+                          Special Driver Instructions (Optional)
                         </label>
                         <input
                           type="text"
                           value={deliveryNotes}
                           onChange={e => setDeliveryNotes(e.target.value)}
-                          placeholder="Contoh: Titipkan di resepsionis / satpam..."
+                          placeholder="E.g. Leave at lobby reception / security post..."
                           className="w-full bg-white border border-neutral-200 rounded-xl px-3.5 py-2.5 text-xs text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-neutral-900 font-sans"
                         />
                       </div>
@@ -515,7 +514,7 @@ export default function CheckoutPage() {
                   onClick={handleNextToPayment}
                   className="w-full py-3.5 px-6 rounded-2xl bg-neutral-900 hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer shadow-xs active:scale-98 transition-all"
                 >
-                  <span>Lanjut ke Metode Pembayaran &amp; Catatan</span>
+                  <span>Continue to Payment &amp; Notes</span>
                   <ArrowRight className="w-4 h-4 stroke-[2.5]" />
                 </button>
 
@@ -531,9 +530,9 @@ export default function CheckoutPage() {
                   <div className="flex items-center justify-between pb-3 border-b border-neutral-100">
                     <h3 className="font-sans font-bold text-sm sm:text-base uppercase tracking-tight text-neutral-900 flex items-center gap-2">
                       <CreditCard className="w-4 h-4 text-neutral-700" />
-                      <span>Metode Pembayaran</span>
+                      <span>Payment Method</span>
                     </h3>
-                    <span className="text-[10px] font-mono text-neutral-400 uppercase tracking-wider">Langkah 2/2</span>
+                    <span className="text-[10px] font-mono text-neutral-400 uppercase tracking-wider">Step 2/2</span>
                   </div>
 
                   <div className="space-y-2.5 text-xs">
@@ -541,21 +540,21 @@ export default function CheckoutPage() {
                       [
                         {
                           method: 'qris',
-                          label: 'QRIS Real-Time (Semua E-Wallet & Bank)',
+                          label: 'QRIS Real-Time (All E-Wallets & Banks)',
                           icon: QrCode,
-                          badge: 'Rekomendasi',
-                          desc: 'Scan instan via GoPay, OVO, Dana, ShopeePay, BCA, Mandiri, BRI.',
+                          badge: 'Recommended',
+                          desc: 'Instant scan via GoPay, OVO, Dana, ShopeePay, BCA, Mandiri, BRI.',
                         },
                         {
                           method: 'cashier',
-                          label: 'Bayar Langsung di Kasir / Bar Cafe',
+                          label: 'Pay at Cafe Counter / Bar Cashier',
                           icon: Wallet,
-                          badge: 'Tunai / EDC',
-                          desc: 'Bayar tunai atau kartu saat mengambil seduhan di meja bar.',
+                          badge: 'Cash / EDC',
+                          desc: 'Pay with cash or card directly when collecting your tea at the brew bar.',
                         },
                         {
                           method: 'bank_transfer',
-                          label: 'Transfer Bank Manual',
+                          label: 'Manual Bank Transfer',
                           icon: Building2,
                           badge: 'BCA Atelier',
                           desc: 'BCA 123-456-7890 a/n CHANGKEER ATELIER.',
@@ -599,22 +598,22 @@ export default function CheckoutPage() {
                 <div className="bg-white border border-neutral-200/90 rounded-3xl p-5 sm:p-6 shadow-xs space-y-3">
                   <div className="flex items-center justify-between">
                     <label className="block text-[10px] font-sans font-bold uppercase tracking-wider text-neutral-500">
-                      Catatan Tambahan untuk Barista (Opsional)
+                      Special Instructions for Barista (Optional)
                     </label>
-                    <span className="text-[10px] text-neutral-400">Instruksi Racikan</span>
+                    <span className="text-[10px] text-neutral-400">Brewing Notes</span>
                   </div>
 
                   <textarea
                     rows={2}
                     value={notes}
                     onChange={e => setNotes(e.target.value)}
-                    placeholder="Contoh: Seduhan dibuat lebih kental, pisahkan gula, sediakan sedotan bambu..."
+                    placeholder="E.g. Extra hot, separate sweetener, bamboo straw..."
                     className="w-full bg-[#FAFAF8] border border-neutral-200 rounded-xl p-3 text-xs text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-neutral-900 font-sans"
                   />
 
                   {/* Micro note suggestions */}
                   <div className="flex flex-wrap items-center gap-1.5 pt-1">
-                    {['Seduhan Lebih Kental', 'Gula Terpisah', 'Kurang Es', 'Extra Cup'].map((chip) => (
+                    {['Stronger Brew', 'Separate Sweetener', 'Less Ice', 'Extra Cup'].map((chip) => (
                       <button
                         key={chip}
                         type="button"
@@ -635,7 +634,7 @@ export default function CheckoutPage() {
                     className="py-3.5 px-5 rounded-2xl border border-neutral-200 bg-white hover:bg-neutral-50 text-neutral-800 font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 cursor-pointer transition-all"
                   >
                     <ArrowLeft className="w-3.5 h-3.5" />
-                    <span>Kembali ke Data</span>
+                    <span>Back to Details</span>
                   </button>
 
                   <button
@@ -644,10 +643,10 @@ export default function CheckoutPage() {
                     className="flex-1 py-3.5 px-6 rounded-2xl bg-neutral-900 hover:bg-neutral-800 active:scale-98 disabled:opacity-50 text-white font-sans font-bold text-xs uppercase tracking-wider transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer"
                   >
                     {submitting ? (
-                      <span>Memproses Pesanan...</span>
+                      <span>Processing Order...</span>
                     ) : (
                       <>
-                        <span className="truncate">Bayar Sekarang &bull; {formatRupiah(totalAmount)}</span>
+                        <span className="truncate">Pay Now &bull; {formatRupiah(totalAmount)}</span>
                         <CheckCircle2 className="w-4 h-4 shrink-0" />
                       </>
                     )}
@@ -661,7 +660,6 @@ export default function CheckoutPage() {
 
           {/* =========================================================================
               RIGHT COLUMN: ORDER SUMMARY & VOUCHER (5 COLS)
-              Sleek, compact, sticky
               ========================================================================= */}
           <div className="lg:col-span-5 space-y-4 sm:space-y-6">
             
@@ -671,7 +669,7 @@ export default function CheckoutPage() {
               <div className="flex items-center justify-between pb-3 sm:pb-4 border-b border-neutral-100">
                 <div>
                   <h3 className="font-sans font-bold text-sm sm:text-base uppercase tracking-tight text-neutral-900">
-                    Ringkasan Seduhan ({totalItemCount})
+                    Order Summary ({totalItemCount})
                   </h3>
                   <span className="text-[10px] text-neutral-400 font-mono">
                     Mode: {orderType === 'dine_in' ? `Dine-In (${tableNumber})` : orderType === 'takeaway' ? 'Takeaway' : 'Delivery'}
@@ -681,11 +679,11 @@ export default function CheckoutPage() {
                   href="/order"
                   className="text-xs text-neutral-500 hover:text-neutral-900 font-bold uppercase tracking-wider"
                 >
-                  Ubah
+                  Edit
                 </Link>
               </div>
 
-              {/* Items List (Compact scrollable) */}
+              {/* Items List */}
               <div className="space-y-3 max-h-60 overflow-y-auto pr-1 divide-y divide-neutral-100 scrollbar-thin">
                 {items.map(item => (
                   <div key={item.cart_item_id} className="pt-3 first:pt-0 flex items-start justify-between gap-3 text-xs">
@@ -694,11 +692,11 @@ export default function CheckoutPage() {
                         {item.product_name} <span className="text-neutral-400 font-normal">x{item.quantity}</span>
                       </div>
                       <div className="text-[11px] text-neutral-500 mt-0.5 font-sans">
-                        {item.temperature === 'hot' ? 'Hangat' : 'Dingin'} &bull; Gula: {item.sweetness_level}
+                        {item.temperature === 'hot' ? 'Hot' : 'Iced (+2K)'} &bull; Sweet: {item.sweetness_level}
                         {item.selected_addons?.length ? ` &bull; +${item.selected_addons.map(a => a.name).join(', ')}` : ''}
                       </div>
                     </div>
-                    <span className="font-sans font-bold text-neutral-900 shrink-0">
+                    <span className="font-mono font-bold text-neutral-900 shrink-0">
                       {formatRupiah(item.subtotal)}
                     </span>
                   </div>
@@ -712,8 +710,8 @@ export default function CheckoutPage() {
                     <div className="flex items-center gap-2">
                       <Ticket className="w-4 h-4 text-emerald-600 shrink-0" />
                       <div>
-                        <span className="font-bold uppercase tracking-wider font-sans">{appliedVoucher.code}</span>
-                        <div className="text-[10px] text-emerald-700 font-sans">Hemat {formatRupiah(discountAmount)}</div>
+                        <span className="font-bold uppercase tracking-wider font-mono">{appliedVoucher.code}</span>
+                        <div className="text-[10px] text-emerald-700 font-sans">Saved {formatRupiah(discountAmount)}</div>
                       </div>
                     </div>
                     <button
@@ -721,7 +719,7 @@ export default function CheckoutPage() {
                       onClick={removeVoucher}
                       className="text-neutral-400 hover:text-red-600 text-xs font-bold font-sans cursor-pointer"
                     >
-                      Batal
+                      Remove
                     </button>
                   </div>
                 ) : (
@@ -729,10 +727,10 @@ export default function CheckoutPage() {
                     <div className="flex gap-2">
                       <input
                         type="text"
-                        placeholder="KODE PROMO / VOUCHER"
+                        placeholder="PROMO / VOUCHER CODE"
                         value={voucherCode}
                         onChange={e => setVoucherCode(e.target.value.toUpperCase())}
-                        className="flex-1 min-w-0 bg-[#FAFAF8] border border-neutral-200 rounded-xl px-3 py-2 text-xs font-sans uppercase text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-neutral-900"
+                        className="flex-1 min-w-0 bg-[#FAFAF8] border border-neutral-200 rounded-xl px-3 py-2 text-xs font-mono uppercase text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-neutral-900"
                       />
                       <button
                         type="button"
@@ -740,7 +738,7 @@ export default function CheckoutPage() {
                         disabled={voucherLoading || !voucherCode.trim()}
                         className="px-3.5 py-2 bg-neutral-900 text-white rounded-xl text-xs font-bold uppercase tracking-wider hover:bg-neutral-800 disabled:opacity-50 transition-colors shrink-0 cursor-pointer font-sans"
                       >
-                        {voucherLoading ? '...' : 'Gunakan'}
+                        {voucherLoading ? '...' : 'Apply'}
                       </button>
                     </div>
                     {voucherError && (
@@ -754,37 +752,37 @@ export default function CheckoutPage() {
               <div className="pt-3 border-t border-neutral-100 space-y-2 text-xs font-sans">
                 <div className="flex justify-between text-neutral-500">
                   <span>Subtotal:</span>
-                  <span className="text-neutral-900 font-bold">{formatRupiah(subtotal)}</span>
+                  <span className="text-neutral-900 font-bold font-mono">{formatRupiah(subtotal)}</span>
                 </div>
 
                 {discountAmount > 0 && (
                   <div className="flex justify-between text-emerald-700">
-                    <span>Diskon Voucher:</span>
-                    <span className="font-bold">-{formatRupiah(discountAmount)}</span>
+                    <span>Voucher Discount:</span>
+                    <span className="font-bold font-mono">-{formatRupiah(discountAmount)}</span>
                   </div>
                 )}
 
                 {deliveryFee > 0 && (
                   <div className="flex justify-between text-neutral-500">
-                    <span>Biaya Antar:</span>
-                    <span className="text-neutral-900 font-bold">{formatRupiah(deliveryFee)}</span>
+                    <span>Delivery Fee:</span>
+                    <span className="text-neutral-900 font-bold font-mono">{formatRupiah(deliveryFee)}</span>
                   </div>
                 )}
 
                 <div className="flex justify-between items-baseline pt-3 border-t border-neutral-200 text-sm sm:text-base font-bold text-neutral-900 font-sans">
-                  <span>Total Tagihan:</span>
-                  <span className="font-sans font-bold text-lg sm:text-xl text-neutral-900">{formatRupiah(totalAmount)}</span>
+                  <span>Total Amount:</span>
+                  <span className="font-mono font-bold text-lg sm:text-xl text-neutral-900">{formatRupiah(totalAmount)}</span>
                 </div>
               </div>
 
-              {/* Submit CTA (Available if on Tab 2 or directly accessible) */}
+              {/* Submit CTA */}
               {activeTab === 'details' ? (
                 <button
                   type="button"
                   onClick={handleNextToPayment}
                   className="w-full py-3.5 px-4 rounded-2xl bg-neutral-900 hover:bg-neutral-800 active:scale-98 text-white font-sans font-bold text-xs uppercase tracking-wider transition-all shadow-xs flex items-center justify-center gap-2 cursor-pointer"
                 >
-                  <span>Lanjut ke Pembayaran &rarr;</span>
+                  <span>Continue to Payment &rarr;</span>
                 </button>
               ) : (
                 <button
@@ -793,10 +791,10 @@ export default function CheckoutPage() {
                   className="w-full py-3.5 px-4 rounded-2xl bg-neutral-900 hover:bg-neutral-800 active:scale-98 disabled:opacity-50 text-white font-sans font-bold text-xs uppercase tracking-wider transition-all shadow-xs flex items-center justify-center gap-2 cursor-pointer"
                 >
                   {submitting ? (
-                    <span>Memproses Pesanan...</span>
+                    <span>Processing Order...</span>
                   ) : (
                     <>
-                      <span className="truncate">Bayar Sekarang &bull; {formatRupiah(totalAmount)}</span>
+                      <span className="truncate">Pay Now &bull; {formatRupiah(totalAmount)}</span>
                       <CheckCircle2 className="w-4 h-4 shrink-0" />
                     </>
                   )}
@@ -805,7 +803,7 @@ export default function CheckoutPage() {
 
               <div className="flex items-center justify-center gap-2 text-[10px] font-sans text-neutral-400 text-center">
                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                <span className="leading-tight">Transaksi Terenkripsi &amp; Terhubung ke Kitchen Barista</span>
+                <span className="leading-tight">Encrypted Transaction &bull; Direct Barista Dispatch</span>
               </div>
 
             </div>

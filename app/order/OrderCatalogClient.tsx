@@ -143,7 +143,7 @@ export function OrderCatalogClient({ initialProducts }: OrderCatalogClientProps)
 
   // Extract unique categories
   const categories = useMemo(() => [
-    { slug: 'all', name: 'Semua Produk' },
+    { slug: 'all', name: 'All Blends' },
     ...Array.from(
       new Map(
         initialProducts
@@ -236,15 +236,15 @@ export function OrderCatalogClient({ initialProducts }: OrderCatalogClientProps)
 
   return (
     <ClientLayout 
-      pageTitle="Katalog Seduhan Khusus" 
-      subtitle="Eksplorasi Racikan Teh dan Daun Botani Asli"
+      pageTitle="Seasonal Tea Catalog" 
+      subtitle="Artisanal Loose-Leaf Tea & Botanical Infusions"
     >
       {/* Table Welcome Banner if QR Scanned */}
       {detectedTableFromUrl && (
         <div className="bg-emerald-50 border-b border-emerald-200 py-2.5 px-4 text-center sticky top-16 z-20 backdrop-blur-md">
           <div className="inline-flex items-center gap-2 text-xs sm:text-sm text-emerald-800 font-medium">
             <CheckCircle className="w-4 h-4 text-emerald-600" />
-            <span>Terhubung ke <strong>{detectedTableFromUrl}</strong>. Pesanan akan disajikan langsung ke meja Anda.</span>
+            <span>Connected to <strong>{detectedTableFromUrl}</strong>. Your order will be served directly to your table.</span>
           </div>
         </div>
       )}
@@ -303,7 +303,7 @@ export function OrderCatalogClient({ initialProducts }: OrderCatalogClientProps)
                   href={`/katalog/${currentSlide.slug}`}
                   className="inline-flex items-center gap-1.5 text-xs font-semibold text-neutral-300 hover:text-white transition-colors border-b border-white/20 pb-0.5"
                 >
-                  <span>Filosofi Racikan</span>
+                  <span>Blend Philosophy</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </div>
@@ -333,7 +333,7 @@ export function OrderCatalogClient({ initialProducts }: OrderCatalogClientProps)
             {/* Right Zone: Price & Quick Action (3 cols on desktop) */}
             <div className="md:col-span-3 flex md:flex-col items-center md:items-end justify-between md:justify-center gap-4 text-right order-3">
               <div>
-                <span className="text-[10px] sm:text-xs font-mono text-neutral-400 uppercase tracking-wider block">Harga Racikan</span>
+                <span className="text-[10px] sm:text-xs font-mono text-neutral-400 uppercase tracking-wider block">Price</span>
                 <span className="text-xl sm:text-3xl font-extrabold font-mono text-white">
                   {currentSlide.formattedPrice}
                 </span>
@@ -345,7 +345,7 @@ export function OrderCatalogClient({ initialProducts }: OrderCatalogClientProps)
                 className="px-5 py-2.5 sm:py-3 rounded-xl bg-white text-neutral-900 hover:bg-neutral-100 font-bold text-xs uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer shadow-md active:scale-95 shrink-0 font-sans"
               >
                 <Plus className="w-4 h-4 stroke-[2.5]" />
-                <span>+ Pesan Seduhan</span>
+                <span>+ Order Blend</span>
               </button>
             </div>
 
@@ -399,14 +399,14 @@ export function OrderCatalogClient({ initialProducts }: OrderCatalogClientProps)
           <div className="flex items-end justify-between pb-2 border-b border-neutral-100">
             <div>
               <span className="text-[10px] font-mono font-bold tracking-widest text-neutral-400 uppercase block">
-                FAVORIT PELANGGAN
+                CUSTOMER FAVORITES
               </span>
               <h2 className="text-lg sm:text-2xl font-extrabold uppercase tracking-tight text-neutral-900">
-                Best Seller Racikan Atelier
+                Best Seller Atelier Blends
               </h2>
             </div>
             <span className="text-xs font-sans text-neutral-500 hidden sm:inline">
-              Paling banyak diseduh minggu ini
+              Most brewed this week
             </span>
           </div>
 
@@ -452,7 +452,7 @@ export function OrderCatalogClient({ initialProducts }: OrderCatalogClientProps)
 
                     <div className="pt-2 border-t border-neutral-100 flex items-center justify-between gap-3">
                       <div>
-                        <span className="text-[9px] font-mono uppercase text-neutral-400 block">Harga</span>
+                        <span className="text-[9px] font-mono uppercase text-neutral-400 block">Price</span>
                         <span className="font-mono font-bold text-sm sm:text-base text-neutral-900">
                           {formattedPrice}
                         </span>
@@ -464,7 +464,7 @@ export function OrderCatalogClient({ initialProducts }: OrderCatalogClientProps)
                           onClick={() => setCustomizingProduct(product)}
                           className="px-2.5 py-1.5 rounded-lg border border-neutral-200 hover:border-neutral-400 text-neutral-700 text-xs font-semibold transition-all hover:bg-neutral-50"
                         >
-                          Atur
+                          Customize
                         </button>
 
                         <button
@@ -475,7 +475,7 @@ export function OrderCatalogClient({ initialProducts }: OrderCatalogClientProps)
                           }`}
                         >
                           {isAdded ? <Check className="w-3.5 h-3.5" /> : <Plus className="w-3.5 h-3.5" />}
-                          <span>{isAdded ? 'Masuk' : 'Pesan'}</span>
+                          <span>{isAdded ? 'Added' : 'Order'}</span>
                         </button>
                       </div>
                     </div>
@@ -495,26 +495,26 @@ export function OrderCatalogClient({ initialProducts }: OrderCatalogClientProps)
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-2 border-b border-neutral-100">
             <div>
               <span className="text-[10px] font-mono font-bold tracking-widest text-neutral-400 uppercase block">
-                KATALOG LENGKAP
+                COMPLETE CATALOG
               </span>
               <h2 className="text-lg sm:text-2xl font-extrabold uppercase tracking-tight text-neutral-900">
-                Seluruh Menu Seduhan
+                All Seasonal Blends
               </h2>
             </div>
 
             {/* Sort Selector */}
             <div className="flex items-center gap-2">
               <span className="text-[11px] font-sans font-bold text-neutral-400 uppercase tracking-wider">
-                Urutkan:
+                Sort by:
               </span>
               <select
                 value={sortOrder}
                 onChange={(e) => setSortOrder(e.target.value as any)}
                 className="bg-white border border-neutral-200/90 rounded-xl px-3 py-1.5 text-xs font-semibold text-neutral-800 focus:outline-none focus:border-neutral-900 shadow-2xs cursor-pointer font-sans"
               >
-                <option value="featured">Paling Populer</option>
-                <option value="price-asc">Harga: Terendah</option>
-                <option value="price-desc">Harga: Tertinggi</option>
+                <option value="featured">Most Popular</option>
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
               </select>
             </div>
           </div>
@@ -524,7 +524,7 @@ export function OrderCatalogClient({ initialProducts }: OrderCatalogClientProps)
             <div className="relative max-w-md w-full">
               <input
                 type="text"
-                placeholder="Cari seduhan, bunga, rempah, atau khasiat..."
+                placeholder="Search blends, flowers, herbs, or tasting notes..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-10 pr-9 py-2 rounded-xl bg-white border border-neutral-200/90 text-xs text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-neutral-900 focus:ring-1 focus:ring-neutral-900 shadow-2xs transition-all font-medium"
@@ -572,18 +572,18 @@ export function OrderCatalogClient({ initialProducts }: OrderCatalogClientProps)
             </div>
           </div>
 
-          {/* Compact Portrait Product Grid (4 cols on lg, 3 cols on md, 2 cols on mobile) */}
+          {/* Compact Portrait Product Grid */}
           {filteredProducts.length === 0 ? (
             <div className="py-16 text-center space-y-3">
               <ShoppingBag className="w-10 h-10 text-neutral-300 mx-auto" />
-              <h3 className="text-sm font-bold text-neutral-900 uppercase">Tidak Ada Seduhan Ditemukan</h3>
-              <p className="text-xs text-neutral-500">Coba kata kunci lain atau reset filter kategori.</p>
+              <h3 className="text-sm font-bold text-neutral-900 uppercase">No Blends Found</h3>
+              <p className="text-xs text-neutral-500">Try a different keyword or reset category filter.</p>
               <button
                 type="button"
                 onClick={() => { setSearchQuery(''); setSelectedCategory('all'); }}
                 className="px-3.5 py-1.5 rounded-lg bg-neutral-900 text-white text-xs font-bold uppercase tracking-wider"
               >
-                Reset Filter
+                Reset Filters
               </button>
             </div>
           ) : (
@@ -617,7 +617,7 @@ export function OrderCatalogClient({ initialProducts }: OrderCatalogClientProps)
                             setCustomizingProduct(product);
                           }}
                           className="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/90 hover:bg-white text-neutral-800 flex items-center justify-center shadow-xs opacity-0 group-hover:opacity-100 transition-all duration-200 cursor-pointer"
-                          title="Lihat Detail Seduhan"
+                          title="View Blend Details"
                         >
                           <Eye className="w-3.5 h-3.5" />
                         </button>
@@ -626,7 +626,7 @@ export function OrderCatalogClient({ initialProducts }: OrderCatalogClientProps)
                       {/* Compact Card Body */}
                       <div className="p-3 sm:p-3.5 space-y-1.5">
                         <span className="text-[9px] font-mono font-bold tracking-wider uppercase text-neutral-400 block truncate">
-                          {product.category?.name || 'RACIKAN'}
+                          {product.category?.name || 'SIGNATURE'}
                         </span>
                         
                         <h3 className="font-bold text-xs sm:text-sm text-neutral-900 group-hover:text-neutral-700 transition-colors line-clamp-1 leading-snug">
@@ -651,7 +651,7 @@ export function OrderCatalogClient({ initialProducts }: OrderCatalogClientProps)
                           onClick={() => setCustomizingProduct(product)}
                           className="px-2 py-1 rounded-lg border border-neutral-200 hover:border-neutral-400 text-neutral-700 text-[11px] font-semibold transition-all hover:bg-neutral-50"
                         >
-                          Atur
+                          Customize
                         </button>
 
                         <button
@@ -664,7 +664,7 @@ export function OrderCatalogClient({ initialProducts }: OrderCatalogClientProps)
                           }`}
                         >
                           {isAdded ? <Check className="w-3 h-3" /> : <Plus className="w-3 h-3" />}
-                          <span className="hidden xs:inline">{isAdded ? 'Masuk' : 'Pesan'}</span>
+                          <span className="hidden xs:inline">{isAdded ? 'Added' : 'Order'}</span>
                         </button>
                       </div>
                     </div>

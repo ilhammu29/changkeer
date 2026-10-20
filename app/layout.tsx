@@ -28,25 +28,24 @@ export const metadata: Metadata = {
     template: '%s | CHANGKEER',
   },
   description:
-    'Website resmi teh herbal CHANGKEER. Racikan herbal murni dari daun, bunga, dan rempah nusantara untuk menemani kebugaran alami dan ketenangan sejati.',
+    'Official website of CHANGKEER Botanical Atelier. Pure artisanal tisanes crafted from whole leaves, flowers, and archipelago botanicals for circadian wellness and mindful living.',
   keywords: [
     'changkeer',
-    'teh herbal',
     'herbal tea',
-    'tisane',
+    'botanical tisane',
     '24 solar terms tea',
     'first bloom herbal tea',
-    'teh herbal musiman nusantara',
-    'teh kesehatan nusantara',
+    'seasonal herbal blends',
+    'artisan tea atelier',
   ],
   authors: [{ name: 'CHANGKEER Botanical' }],
   openGraph: {
     title: 'CHANGKEER | More Than Tea. A Better You.',
     description:
-      'Racikan teh herbal murni tanpa kompromi. Diramu dari tanaman rempah dan kelopak bunga terbaik nusantara.',
+      'Pure artisanal botanical tea infusions. Handcrafted from fine blossoms, herbs, and heritage botanicals.',
     url: 'https://changkeer.vercel.app',
     siteName: 'CHANGKEER',
-    locale: 'id_ID',
+    locale: 'en_US',
     type: 'website',
   },
   icons: {
@@ -68,7 +67,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="id" className={`h-full antialiased ${sans.variable} ${serif.variable}`}>
+    <html lang="en" className={`h-full antialiased ${sans.variable} ${serif.variable}`}>
       <body className="min-h-full flex flex-col bg-background text-foreground font-sans">
         <CartProvider>
           <ScrollRevealProvider>

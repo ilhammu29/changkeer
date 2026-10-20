@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          error: saveResult.error || 'Gagal menyimpan pesan',
+          error: saveResult.error || 'Failed to submit message',
         },
         { status: 500 }
       );
@@ -33,14 +33,14 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      message: 'Pesan Anda berhasil diterima oleh tim CHANGKEER. Kami akan meninjau pesan Anda secepatnya.',
+      message: 'Your message has been received by the CHANGKEER concierge. We will review and reply shortly.',
     });
   } catch (err: any) {
     console.error('Contact API error:', err);
     return NextResponse.json(
       {
         success: false,
-        error: 'Terjadi kendala pada server. Silakan coba kembali sesaat lagi.',
+        error: 'A server error occurred. Please try again in a moment.',
       },
       { status: 500 }
     );

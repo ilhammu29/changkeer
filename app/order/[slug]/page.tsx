@@ -22,11 +22,11 @@ export async function generateMetadata({
   const product = await getProductBySlug(slug);
 
   if (!product || product.status !== 'published') {
-    return { title: 'Produk Tidak Ditemukan | CHANGKEER' };
+    return { title: 'Product Not Found | CHANGKEER' };
   }
 
   return {
-    title: `${product.name} | Pesan Khusus Atelier CHANGKEER`,
+    title: `${product.name} | Order Atelier Blend CHANGKEER`,
     description: product.seo_description || product.description || undefined,
   };
 }
@@ -58,7 +58,7 @@ export default async function ClientProductDetailPage({
   return (
     <ClientLayout 
       pageTitle={product.name} 
-      subtitle="Detail Racikan Botani &amp; Kustomisasi Saji"
+      subtitle="Botanical Blend Profile &amp; Customization"
     >
       <main className="flex-1 pt-3 sm:pt-4 pb-12 sm:pb-16 font-sans">
         <Container size="wide">
@@ -67,13 +67,13 @@ export default async function ClientProductDetailPage({
           <div className="flex items-center gap-2 text-xs font-sans font-semibold uppercase tracking-wider text-neutral-400 mb-3 sm:mb-4">
             <Link href="/order" className="hover:text-neutral-900 flex items-center gap-1.5 transition-colors">
               <ArrowLeft className="w-3.5 h-3.5" />
-              <span>Katalog E-Commerce</span>
+              <span>Tea Catalog</span>
             </Link>
             <span>/</span>
             <span className="text-neutral-900 truncate max-w-[240px] font-bold">{product.name}</span>
           </div>
 
-          {/* Interactive Client Product Showcase (Rich 3-Column Layout Matching Landing Page) */}
+          {/* Interactive Client Product Showcase */}
           <ClientProductDetailInteractive
             product={product}
             contactPhone={settings.contact_phone || '+62 812-3456-7890'}
@@ -86,16 +86,16 @@ export default async function ClientProductDetailPage({
             </div>
           )}
 
-          {/* Related Products Section (Clean, No Badges, No Dots) */}
+          {/* Related Products Section */}
           {relatedProducts.length > 0 && (
             <div className="pt-6 sm:pt-10">
               <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6">
                 <div className="space-y-1">
                   <span className="text-xs font-bold uppercase tracking-wider text-neutral-400 block">
-                    Rekomendasi Barista
+                    Barista Recommendations
                   </span>
                   <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-neutral-900">
-                    Seduhan Serupa
+                    Similar Blends
                   </h2>
                 </div>
 
@@ -103,7 +103,7 @@ export default async function ClientProductDetailPage({
                   href="/order"
                   className="text-xs font-bold uppercase tracking-wider text-neutral-900 hover:underline"
                 >
-                  Lihat Semua Menu &rarr;
+                  View All Blends &rarr;
                 </Link>
               </div>
 
@@ -144,7 +144,7 @@ export default async function ClientProductDetailPage({
                             {formatRupiah(rel.price || 28000)}
                           </span>
                           <span className="px-3 py-1.5 rounded-lg bg-neutral-100 group-hover:bg-neutral-200 text-neutral-900 text-xs font-semibold tracking-wide transition-colors">
-                            Pesan
+                            Order
                           </span>
                         </div>
                       </div>

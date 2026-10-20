@@ -21,13 +21,13 @@ export async function PATCH(req: NextRequest) {
       safeParseCustomerSession(typeof bodySession === 'string' ? bodySession : JSON.stringify(bodySession));
 
     if (!currentProfile || !currentProfile.email) {
-      return NextResponse.json({ error: 'Sesi pelanggan tidak ditemukan. Silakan masuk terlebih dahulu.' }, { status: 401 });
+      return NextResponse.json({ error: 'Customer session not found. Please sign in first.' }, { status: 401 });
     }
 
     // 2. Prepare updated profile
     const updatedProfile: CustomerProfile & Record<string, any> = {
       ...currentProfile,
-      full_name: (body.full_name !== undefined ? body.full_name : currentProfile.full_name)?.trim() || 'Pelanggan Changkeer',
+      full_name: (body.full_name !== undefined ? body.full_name : currentProfile.full_name)?.trim() || 'Changkeer Patron',
       phone_number: body.phone_number !== undefined ? body.phone_number?.trim() || null : currentProfile.phone_number,
       default_address: body.default_address !== undefined ? body.default_address?.trim() || null : currentProfile.default_address,
       avatar_url: body.avatar_url !== undefined ? body.avatar_url : currentProfile.avatar_url,

@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
     const parsed = checkoutSchema.safeParse(body);
     if (!parsed.success) {
       return NextResponse.json(
-        { error: 'Validasi data pesanan gagal', details: parsed.error.format() },
+        { error: 'Order validation failed', details: parsed.error.format() },
         { status: 400 }
       );
     }
@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
   } catch (err: any) {
     console.error('API Error POST /api/orders:', err);
     return NextResponse.json(
-      { error: err.message || 'Gagal memproses pesanan' },
+      { error: err.message || 'Failed to process order' },
       { status: 500 }
     );
   }
@@ -35,7 +35,7 @@ export async function GET(req: NextRequest) {
     const identifier = customerId || email;
     if (!identifier) {
       return NextResponse.json(
-        { error: 'Parameter email atau customer_id diperlukan' },
+        { error: 'Email or customer_id parameter is required' },
         { status: 400 }
       );
     }
@@ -45,7 +45,7 @@ export async function GET(req: NextRequest) {
   } catch (err: any) {
     console.error('API Error GET /api/orders:', err);
     return NextResponse.json(
-      { error: err.message || 'Gagal mengambil riwayat pesanan' },
+      { error: err.message || 'Failed to retrieve order history' },
       { status: 500 }
     );
   }

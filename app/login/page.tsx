@@ -17,7 +17,6 @@ function CustomerLoginForm() {
   const [loading, setLoading] = useState(false);
 
   const completeLogin = (profile: any) => {
-    // Write cookie & localStorage on client to ensure immediate availability
     try {
       document.cookie = `changkeer_customer_session=${encodeURIComponent(
         JSON.stringify(profile)
@@ -26,7 +25,6 @@ function CustomerLoginForm() {
     } catch (e) {
       console.warn('Cookie/localStorage set warning:', e);
     }
-    // Hard navigate to guarantee all server/client components reload session
     window.location.href = redirectTarget;
   };
 
@@ -44,13 +42,13 @@ function CustomerLoginForm() {
 
       const data = await res.json();
       if (!res.ok || !data.success) {
-        setError(data.error || 'Email atau kata sandi tidak cocok.');
+        setError(data.error || 'Email or password does not match.');
         setLoading(false);
       } else {
         completeLogin(data.profile);
       }
     } catch {
-      setError('Gagal menghubungi server. Silakan coba beberapa saat lagi.');
+      setError('Failed to connect to server. Please try again in a moment.');
       setLoading(false);
     }
   };
@@ -71,13 +69,13 @@ function CustomerLoginForm() {
 
       const data = await res.json();
       if (!res.ok || !data.success) {
-        setError(data.error || 'Gagal masuk dengan Google.');
+        setError(data.error || 'Failed to sign in with Google.');
         setLoading(false);
       } else {
         completeLogin(data.profile);
       }
     } catch {
-      setError('Terjadi kendala autentikasi Google.');
+      setError('Google authentication error.');
       setLoading(false);
     }
   };
@@ -98,13 +96,13 @@ function CustomerLoginForm() {
 
       const data = await res.json();
       if (!res.ok || !data.success) {
-        setError(data.error || 'Gagal masuk akun demo.');
+        setError(data.error || 'Failed to sign in to demo account.');
         setLoading(false);
       } else {
         completeLogin(data.profile);
       }
     } catch {
-      setError('Terjadi kendala saat masuk akun demo.');
+      setError('An error occurred while signing in to demo account.');
       setLoading(false);
     }
   };
@@ -112,9 +110,7 @@ function CustomerLoginForm() {
   return (
     <div className="min-h-screen lg:h-screen lg:max-h-screen w-full bg-white text-neutral-900 font-sans overflow-y-auto lg:overflow-hidden flex flex-col lg:flex-row select-none">
       
-      {/* ========================================================================= */}
-      {/* SISI KIRI: INFORMASI SIMPLE & ELEGAN (DESKTOP ONLY) */}
-      {/* ========================================================================= */}
+      {/* Left Column: Narrative (Desktop) */}
       <div className="hidden lg:flex lg:w-5/12 xl:w-5/12 bg-[#F9F8F5] border-r border-neutral-200/80 p-10 lg:p-12 xl:p-14 flex-col justify-between shrink-0 h-full">
         
         {/* Top: Back Link & Logo */}
@@ -124,7 +120,7 @@ function CustomerLoginForm() {
             className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-neutral-600 hover:text-neutral-900 transition-colors py-1.5 px-3 rounded-full hover:bg-black/5 w-fit"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
-            <span>Kembali ke Beranda</span>
+            <span>Back to Home</span>
           </Link>
 
           <div className="flex items-center gap-3 pt-2">
@@ -155,26 +151,26 @@ function CustomerLoginForm() {
           </h2>
 
           <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed max-w-md font-normal font-sans">
-            Akses seduhan herbal murni 24 Solar Terms, pantau pesanan cafe Anda secara real-time, dan gunakan voucher diskon member di setiap kunjungan.
+            Access pure 24 Solar Terms herbal tea blends, track your cafe orders in real-time, and apply member discount vouchers on every visit.
           </p>
 
           <div className="space-y-2.5 pt-2">
             <div className="flex items-center gap-2.5 text-xs text-neutral-700 font-medium font-sans">
               <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-              <span>100% Daun &amp; Bunga Herbal Pilihan Tanpa Pengawet</span>
+              <span>100% Whole Loose Leaves &amp; Petals, Zero Preservatives</span>
             </div>
             <div className="flex items-center gap-2.5 text-xs text-neutral-700 font-medium font-sans">
               <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-              <span>Unsweetened by Default &bull; Seduhan Segar &lt; 3 Menit</span>
+              <span>Unsweetened by Default &bull; Freshly Brewed &lt; 3 Minutes</span>
             </div>
             <div className="flex items-center gap-2.5 text-xs text-neutral-700 font-medium font-sans">
               <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-              <span>Pesan di Meja Cafe (Dine-In), Bawa Pulang, atau Antar</span>
+              <span>Order at Cafe Tables (Dine-In), Takeaway, or Delivery</span>
             </div>
           </div>
         </div>
 
-        {/* Bottom: Minimalist note */}
+        {/* Bottom */}
         <div className="pt-4 border-t border-neutral-200/60">
           <p className="text-[10px] font-sans text-neutral-400 tracking-widest uppercase font-semibold">
             ATELIER BREW BAR JAKARTA &bull; OPEN DAILY 08:00 - 22:00
@@ -182,20 +178,18 @@ function CustomerLoginForm() {
         </div>
       </div>
 
-      {/* ========================================================================= */}
-      {/* SISI KANAN: FORM LOGIN (BACKGROUND PUTIH, PAS LAYOUT) */}
-      {/* ========================================================================= */}
+      {/* Right Column: Form */}
       <div className="w-full lg:w-7/12 xl:w-7/12 bg-white px-5 py-8 sm:p-10 lg:p-12 xl:p-16 flex flex-col justify-center items-center min-h-screen lg:h-full overflow-y-auto lg:overflow-hidden">
         <div className="w-full max-w-sm sm:max-w-md mx-auto space-y-5">
           
-          {/* Mobile-only Header: Back link & Logo */}
+          {/* Mobile Header */}
           <div className="lg:hidden flex items-center justify-between pb-3 border-b border-neutral-100">
             <Link
               href="/"
               className="inline-flex items-center gap-1.5 text-xs font-semibold text-neutral-500 hover:text-neutral-900 transition-colors"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
-              <span>Kembali</span>
+              <span>Back</span>
             </Link>
             <div className="flex items-center gap-2">
               <div className="relative w-6 h-6 rounded-full overflow-hidden border border-neutral-200 bg-white">
@@ -208,13 +202,13 @@ function CustomerLoginForm() {
           {/* Header */}
           <div>
             <span className="text-[10px] font-mono font-bold uppercase tracking-[0.22em] text-neutral-500 block mb-1">
-              AUTENTIKASI PELANGGAN
+              CUSTOMER AUTHENTICATION
             </span>
             <h1 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-neutral-900 font-sans">
-              Masuk Akun
+              Sign In
             </h1>
             <p className="text-xs text-neutral-500 mt-1 font-normal">
-              Masukkan email terdaftar atau gunakan akses cepat Google.
+              Enter your registered email or use Google quick access.
             </p>
           </div>
 
@@ -251,7 +245,7 @@ function CustomerLoginForm() {
                 d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
               />
             </svg>
-            <span>Masuk dengan Akun Google</span>
+            <span>Sign In with Google</span>
           </button>
 
           {/* Divider */}
@@ -260,7 +254,7 @@ function CustomerLoginForm() {
               <div className="w-full border-t border-neutral-200" />
             </div>
             <span className="relative bg-white px-3 text-[10px] text-neutral-400 uppercase tracking-widest font-mono">
-              atau gunakan email
+              or use your email
             </span>
           </div>
 
@@ -268,14 +262,14 @@ function CustomerLoginForm() {
           <form onSubmit={handleSubmit} className="space-y-3 text-xs font-sans">
             <div>
               <label className="block text-neutral-700 font-semibold mb-1 uppercase tracking-wider text-[11px]">
-                Alamat Email
+                Email Address
               </label>
               <div className="relative">
                 <Mail className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-400" />
                 <input
                   type="email"
                   required
-                  placeholder="nama@email.com"
+                  placeholder="name@email.com"
                   value={email}
                   onChange={e => setEmail(e.target.value)}
                   className="w-full bg-[#FAFAF8] border border-neutral-200 rounded-xl pl-10 pr-3.5 py-2.5 text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:bg-white focus:border-neutral-900 focus:ring-1 focus:ring-neutral-900 font-sans transition-colors"
@@ -286,7 +280,7 @@ function CustomerLoginForm() {
             <div>
               <div className="flex items-center justify-between mb-1">
                 <label className="block text-neutral-700 font-semibold uppercase tracking-wider text-[11px]">
-                  Kata Sandi
+                  Password
                 </label>
               </div>
               <div className="relative">
@@ -303,7 +297,7 @@ function CustomerLoginForm() {
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3.5 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-900 transition-colors cursor-pointer"
-                  aria-label={showPassword ? 'Sembunyikan sandi' : 'Tampilkan sandi'}
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
@@ -319,7 +313,7 @@ function CustomerLoginForm() {
                 <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
               ) : (
                 <>
-                  <span>Masuk ke Akun</span>
+                  <span>Sign In to Account</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </>
               )}
@@ -336,19 +330,19 @@ function CustomerLoginForm() {
             >
               <div className="flex items-center gap-2 font-medium">
                 <UserCheck className="w-3.5 h-3.5 text-neutral-700" />
-                <span>Masuk Cepat Demo (Dewi Lestari)</span>
+                <span>Quick Demo Sign In (Dewi Lestari)</span>
               </div>
               <span className="font-mono text-[10px] text-neutral-600 font-bold bg-white px-2 py-0.5 rounded-md border border-neutral-200">
-                1-Klik Masuk
+                1-Click Login
               </span>
             </button>
           </div>
 
           {/* Switch to Register */}
           <div className="text-center text-xs text-neutral-500 pt-1">
-            Belum memiliki akun Changkeer?{' '}
+            Don&apos;t have a Changkeer account?{' '}
             <Link href="/register" className="text-neutral-900 font-bold hover:underline">
-              Daftar Sekarang
+              Register Now
             </Link>
           </div>
 

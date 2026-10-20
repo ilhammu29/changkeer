@@ -82,7 +82,7 @@ export function ClientHeader() {
                   CHANGKEER
                 </span>
                 <span className="text-[9px] sm:text-[10px] font-mono tracking-wider uppercase text-neutral-500 font-semibold pt-0.5">
-                  PORTAL PELANGGAN
+                  ATELIER PORTAL
                 </span>
               </div>
             </Link>
@@ -98,7 +98,7 @@ export function ClientHeader() {
                 }`}
               >
                 <Package className="w-3.5 h-3.5" />
-                <span>Katalog E-Commerce</span>
+                <span>Atelier Catalog</span>
               </Link>
 
               <Link
@@ -110,7 +110,7 @@ export function ClientHeader() {
                 }`}
               >
                 <User className="w-3.5 h-3.5" />
-                <span>Dashboard Akun</span>
+                <span>Account Dashboard</span>
               </Link>
             </nav>
           </div>
@@ -130,7 +130,7 @@ export function ClientHeader() {
                 }`}
               >
                 <UtensilsCrossed className="w-3 h-3" />
-                <span>Meja Cafe</span>
+                <span>Dine-In</span>
               </button>
               <button
                 type="button"
@@ -163,10 +163,10 @@ export function ClientHeader() {
               type="button"
               onClick={() => setIsCartOpen(true)}
               className="relative flex items-center gap-2 px-3.5 py-2 rounded-xl bg-neutral-900 hover:bg-neutral-800 text-white text-xs font-bold uppercase tracking-wider transition-all cursor-pointer shadow-xs active:scale-95"
-              aria-label="Buka Keranjang Pesanan"
+              aria-label="Open Brewing Bag"
             >
               <ShoppingBag className="w-4 h-4" />
-              <span className="hidden sm:inline">Keranjang</span>
+              <span className="hidden sm:inline">Bag</span>
               <span className="bg-white text-neutral-900 text-[10px] font-mono font-black w-5 h-5 rounded-full flex items-center justify-center shrink-0">
                 {totalItemCount}
               </span>
@@ -178,7 +178,7 @@ export function ClientHeader() {
                 <Link
                   href="/account"
                   className="hidden sm:flex items-center gap-2 py-1.5 px-3 rounded-xl border border-neutral-200 bg-neutral-50 hover:bg-neutral-100 text-neutral-800 text-xs font-semibold transition-colors"
-                  title="Ke Halaman Akun"
+                  title="Go to Account Page"
                 >
                   <div className="w-6 h-6 rounded-full bg-neutral-900 text-white flex items-center justify-center font-bold text-[10px]">
                     {customer.full_name ? customer.full_name[0].toUpperCase() : 'C'}
@@ -190,7 +190,7 @@ export function ClientHeader() {
                   type="button"
                   onClick={handleLogout}
                   className="p-2 sm:py-2 sm:px-2.5 rounded-xl border border-neutral-200 hover:border-red-300 hover:bg-red-50 text-neutral-600 hover:text-red-600 text-xs transition-colors cursor-pointer"
-                  title="Keluar Akun"
+                  title="Sign Out"
                 >
                   <LogOut className="w-4 h-4" />
                 </button>
@@ -200,7 +200,7 @@ export function ClientHeader() {
                 href="/login"
                 className="py-2 px-3.5 rounded-xl border border-neutral-200 hover:bg-neutral-100 text-neutral-900 text-xs font-bold uppercase tracking-wider transition-colors"
               >
-                Masuk
+                Sign In
               </Link>
             )}
 
@@ -208,10 +208,10 @@ export function ClientHeader() {
             <Link
               href="/"
               className="hidden xl:inline-flex items-center gap-1.5 py-2 px-3 rounded-xl text-neutral-500 hover:text-neutral-900 text-xs font-semibold hover:bg-neutral-100 transition-colors"
-              title="Kembali ke Landing Page Utama"
+              title="Back to Main Site"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
-              <span>Web Utama</span>
+              <span>Main Site</span>
             </Link>
 
             {/* Mobile Menu Button */}
@@ -219,7 +219,7 @@ export function ClientHeader() {
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="md:hidden p-2 rounded-xl border border-neutral-200 text-neutral-700 hover:bg-neutral-100 transition-colors"
-              aria-label="Buka Menu Portal"
+              aria-label="Open Navigation Menu"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
@@ -239,7 +239,7 @@ export function ClientHeader() {
               }`}
             >
               <Package className="w-4 h-4" />
-              <span>Katalog E-Commerce</span>
+              <span>Atelier Catalog</span>
             </Link>
 
             <Link
@@ -250,7 +250,7 @@ export function ClientHeader() {
               }`}
             >
               <User className="w-4 h-4" />
-              <span>Dashboard Akun</span>
+              <span>Account Dashboard</span>
             </Link>
 
             <Link
@@ -259,13 +259,13 @@ export function ClientHeader() {
               className="p-2.5 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-2 text-neutral-600 hover:bg-neutral-100"
             >
               <ArrowLeft className="w-4 h-4" />
-              <span>Kembali ke Web Utama</span>
+              <span>Back to Main Site</span>
             </Link>
           </div>
 
           <div className="pt-2 border-t border-neutral-200 flex items-center justify-between">
             <div className="text-xs text-neutral-600 font-medium">
-              {customer ? customer.full_name : 'Tamu'}
+              {customer ? customer.full_name : 'Guest'}
             </div>
             {customer && (
               <button
@@ -274,7 +274,7 @@ export function ClientHeader() {
                 className="text-xs font-bold text-red-600 hover:underline flex items-center gap-1"
               >
                 <LogOut className="w-3.5 h-3.5" />
-                <span>Keluar</span>
+                <span>Sign Out</span>
               </button>
             )}
           </div>

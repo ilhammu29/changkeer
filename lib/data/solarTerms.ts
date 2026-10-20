@@ -578,10 +578,10 @@ export const DRIED_FLOWERS: AddOnItem[] = [
 
 export const SWEETENERS: AddOnItem[] = [
   { name: 'Unsweetened', noteOrTaste: 'default for every cup', price: 'Free' },
-  { name: 'Sorghum sugar', noteOrTaste: 'local, mild caramel taste', price: '+2K' },
-  { name: 'Palm sugar syrup (gula aren)', noteOrTaste: 'deep, smoky sweetness', price: '+2K' },
-  { name: 'Stevia leaf', noteOrTaste: 'zero-calorie, plant-based', price: '+2K' },
-  { name: 'Raw local honey', noteOrTaste: 'floral; best in hot cups', price: '+4K' },
+  { name: 'Organic sorghum syrup', noteOrTaste: 'local, mild caramel taste (low GI)', price: 'Free' },
+  { name: 'Organic palm nectar', noteOrTaste: 'deep, smoky sweetness', price: '+2K' },
+  { name: 'Stevia leaf', noteOrTaste: 'zero-calorie, plant-based', price: 'Free' },
+  { name: 'Raw wild forest honey', noteOrTaste: 'rich floral nectar; rich in antioxidants', price: '+3K' },
 ];
 
 export const HEALTH_CAUTIONS = [
