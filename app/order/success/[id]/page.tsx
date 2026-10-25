@@ -343,7 +343,7 @@ export default function OrderSuccessPage({
               <div>
                 <span className="text-[10px] text-neutral-400 block uppercase">Account Number:</span>
                 <span className="font-bold text-neutral-900 text-sm">8280-192-349</span>
-                <span className="text-[11px] text-neutral-500 block">a/n OXID PROJECT CHANGKEER</span>
+                <span className="text-[11px] text-neutral-500 block">a/n CHANGKEER ATELIER</span>
               </div>
               <button
                 type="button"

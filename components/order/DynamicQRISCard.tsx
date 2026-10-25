@@ -166,7 +166,7 @@ export function DynamicQRISCard({
         <div className="pt-3 mt-3 border-t border-white/20 flex items-center justify-between text-xs">
           <div>
             <span className="text-[9px] font-mono text-red-200 uppercase block">MERCHANT:</span>
-            <span className="font-extrabold tracking-wide uppercase text-white">OXID PROJECT / CHANGKEER</span>
+            <span className="font-extrabold tracking-wide uppercase text-white">CHANGKEER ATELIER</span>
           </div>
           <div className="text-right">
             <span className="text-[9px] font-mono text-red-200 uppercase block">ORDER TICKET:</span>

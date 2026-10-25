@@ -98,7 +98,7 @@ Pelanggan dapat menentukan racikan cangkir teh sesuai kebutuhan tubuh mereka:
 ### 3.3 Engine QRIS Dinamis & Fleksibilitas Pembayaran
 Sistem pembayaran CHANGKEER dirancang khusus untuk pasar Indonesia:
 - **QRIS Dinamis Otomatis**:
-  - Mengonversi barcode statis merchant (`OXID PROJECT / CHANGKEER`, NMID: `ID1026598652240`) menjadi QRIS dinamis berstandar EMVCo MPM / ASPI.
+  - Mengonversi barcode statis merchant (`CHANGKEER ATELIER`, NMID: `ID1026598652240`) menjadi QRIS dinamis berstandar EMVCo MPM / ASPI.
   - Memasukkan nominal transaksi secara otomatis pada Tag `54` dan menghitung ulang kode integritas **CRC16-CCITT**.
   - Saat pelanggan memindai barcode menggunakan BCA, Mandiri Livin', GoPay, Dana, OVO, atau ShopeePay, nominal pembayaran langsung terkunci dan tidak perlu diketik manual.
 - **Dual-Mode Switcher**:

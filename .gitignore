@@ -49,3 +49,8 @@ next-env.d.ts
 # raw asset sources
 assets-changker/
 promo-motion/
+
+# Python
+__pycache__/
+*.pyc
+
