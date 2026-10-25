@@ -46,8 +46,9 @@ export function generateDynamicQRIS(
   // 3. Remove existing Tag 54 if any was present
   raw = raw.replace(/54\d{2}\d+/, '');
 
-  // 4. Build Tag 54 (Transaction Amount)
-  const amountStr = Math.max(1, Math.round(amount)).toString();
+  // 4. Build Tag 54 (Transaction Amount) with safe numeric fallback
+  const safeAmount = Number.isFinite(amount) && amount > 0 ? Math.round(amount) : 10000;
+  const amountStr = safeAmount.toString();
   const tag54 = `54${amountStr.length.toString().padStart(2, '0')}${amountStr}`;
 
   // 5. Insert Tag 54 before Tag 58 (Country Code: 5802ID)
@@ -63,6 +64,13 @@ export function generateDynamicQRIS(
   const checksum = calculateCRC16(raw);
 
   return `${raw}${checksum}`;
+}
+
+/**
+ * Return default Static Merchant QRIS payload
+ */
+export function getStaticMerchantQRIS(): string {
+  return DEFAULT_STATIC_QRIS;
 }
 
 /**

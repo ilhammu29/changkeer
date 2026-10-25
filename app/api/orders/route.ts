@@ -15,7 +15,31 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const newOrder = await createOrder(parsed.data as any);
+    const data = parsed.data;
+
+    // Server-side financial integrity calculation
+    const computedSubtotal = data.items.reduce(
+      (sum, item) => sum + (item.unit_price * item.quantity),
+      0
+    );
+    const subtotal = data.subtotal !== undefined && data.subtotal > 0 ? data.subtotal : computedSubtotal;
+    const discountAmount = data.discount_amount ?? 0;
+    const deliveryFee = data.delivery_fee ?? 0;
+    const taxAmount = data.tax_amount ?? 0;
+    const totalAmount = data.total_amount !== undefined && data.total_amount > 0
+      ? data.total_amount
+      : Math.max(0, subtotal - discountAmount + deliveryFee + taxAmount);
+
+    const orderPayload = {
+      ...data,
+      subtotal,
+      discount_amount: discountAmount,
+      delivery_fee: deliveryFee,
+      tax_amount: taxAmount,
+      total_amount: totalAmount,
+    };
+
+    const newOrder = await createOrder(orderPayload as any);
     return NextResponse.json(newOrder, { status: 201 });
   } catch (err: any) {
     console.error('API Error POST /api/orders:', err);

@@ -126,6 +126,7 @@ export const orderItemInputSchema = z.object({
   })).default([]),
   unit_price: z.number().min(0),
   quantity: z.number().int().min(1, { message: 'Quantity must be at least 1' }),
+  subtotal: z.number().min(0).optional(),
   item_notes: z.string().max(200).optional().default(''),
 });
 
@@ -138,8 +139,14 @@ export const checkoutSchema = z.object({
   pickup_time: z.string().optional().nullable(),
   delivery_address: z.string().optional().nullable(),
   delivery_notes: z.string().optional().nullable(),
-  payment_method: z.enum(['qris', 'cashier', 'bank_transfer']),
+  subtotal: z.number().min(0).optional(),
+  discount_amount: z.number().min(0).optional().default(0),
+  delivery_fee: z.number().min(0).optional().default(0),
+  tax_amount: z.number().min(0).optional().default(0),
+  total_amount: z.number().min(0).optional(),
+  voucher_id: z.string().optional().nullable(),
   voucher_code: z.string().optional().nullable(),
+  payment_method: z.enum(['qris', 'cashier', 'bank_transfer']),
   notes: z.string().max(500).optional().nullable(),
   items: z.array(orderItemInputSchema).min(1, { message: 'Shopping cart cannot be empty' }),
 });

@@ -225,6 +225,13 @@ export default function CheckoutPage() {
       // Clear local cart
       clearCart();
 
+      // Cache order locally for instant client-side hydration
+      try {
+        localStorage.setItem('changkeer_latest_order', JSON.stringify(data));
+        if (data.id) sessionStorage.setItem(`changkeer_order_${data.id}`, JSON.stringify(data));
+        if (data.order_number) sessionStorage.setItem(`changkeer_order_${data.order_number}`, JSON.stringify(data));
+      } catch {}
+
       // Redirect to digital receipt & tracker
       router.push(`/order/success/${data.id || data.order_number}`);
     } catch (err: any) {

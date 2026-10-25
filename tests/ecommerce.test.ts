@@ -3,6 +3,7 @@ import { validateVoucherCode } from '@/lib/data/vouchers';
 import { createOrder, getOrderById, updateOrderStatus, updatePaymentStatus } from '@/lib/data/orders';
 import { checkoutSchema, voucherSchema } from '@/lib/validation/schemas';
 import { BOTANICAL_ADDONS } from '@/lib/data/mock-seed';
+import { generateDynamicQRIS, calculateCRC16 } from '@/lib/utils/qris';
 
 describe('Voucher Validation System', () => {
   it('validates a valid percentage voucher with min spend met', async () => {
@@ -74,6 +75,11 @@ describe('Orders and Checkout Flow', () => {
 
     const parsed = checkoutSchema.safeParse(validPayload);
     expect(parsed.success).toBe(true);
+    if (parsed.success) {
+      expect(parsed.data.total_amount).toBe(48000);
+      expect(parsed.data.subtotal).toBe(58000);
+      expect(parsed.data.discount_amount).toBe(10000);
+    }
   });
 
   it('creates an order, retrieves it, and updates its status', async () => {
@@ -124,5 +130,18 @@ describe('Orders and Checkout Flow', () => {
     const paid = await updatePaymentStatus(created.id, 'paid');
     expect(paid?.payment_status).toBe('paid');
     expect(paid?.paid_at).toBeDefined();
+  });
+
+  it('generates valid dynamic QRIS with locked amount and verified CRC', () => {
+    const dynamicString = generateDynamicQRIS(25000);
+
+    expect(dynamicString).toContain('010212'); // dynamic indicator
+    expect(dynamicString).toContain('540525000'); // Tag 54: length 05, value 25000
+    expect(dynamicString).toContain('ID1026598652240'); // NMID
+
+    // Verify CRC
+    const rawData = dynamicString.slice(0, -4);
+    const checksum = dynamicString.slice(-4);
+    expect(calculateCRC16(rawData)).toBe(checksum);
   });
 });

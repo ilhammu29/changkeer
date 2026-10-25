@@ -81,17 +81,38 @@ export default function OrderSuccessPage({
   const [isThermalModalOpen, setIsThermalModalOpen] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
 
+  // Fast client-side hydration from sessionStorage / localStorage
+  useEffect(() => {
+    if (!orderId) return;
+    try {
+      const stored =
+        sessionStorage.getItem(`changkeer_order_${orderId}`) ||
+        localStorage.getItem('changkeer_latest_order');
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (parsed && (parsed.id === orderId || parsed.order_number === orderId)) {
+          setOrder(parsed);
+          setLoading(false);
+        }
+      }
+    } catch {}
+  }, [orderId]);
+
   const fetchOrder = async () => {
     if (!orderId) return;
     try {
       const res = await fetch(`/api/orders/${orderId}`);
       if (!res.ok) {
-        throw new Error('Order not found');
+        // If not ok and we don't already have local order, throw
+        if (!order) throw new Error('Order not found');
+        return;
       }
       const data = await res.json();
       setOrder(data);
     } catch (err: any) {
-      setError(err.message || 'Failed to load order details');
+      if (!order) {
+        setError(err.message || 'Failed to load order details');
+      }
     } finally {
       setLoading(false);
     }
@@ -121,12 +142,29 @@ export default function OrderSuccessPage({
   const handleSimulatePayment = async () => {
     if (!order) return;
     setSimulatingPay(true);
+
+    // Optimistically mark as paid in local state
+    setOrder((prev) =>
+      prev
+        ? {
+            ...prev,
+            payment_status: 'paid',
+            order_status: prev.order_status === 'received' ? 'brewing' : prev.order_status,
+          }
+        : null
+    );
+
     try {
       const res = await fetch(`/api/orders/${order.id}/pay`, {
         method: 'POST',
       });
       if (res.ok) {
-        await fetchOrder();
+        const data = await res.json();
+        if (data.order) {
+          setOrder(data.order);
+        } else {
+          await fetchOrder();
+        }
       }
     } catch (err) {
       console.error('Failed to simulate payment:', err);
@@ -247,16 +285,77 @@ export default function OrderSuccessPage({
           </div>
         </div>
 
-        {/* Payment QR Box (if QRIS and unpaid) with Dynamic Locked Amount */}
-        {order.payment_method === 'qris' && order.payment_status === 'unpaid' && (
+        {/* Payment QR Box (if QRIS) with Dynamic Locked Amount & Dual Mode */}
+        {order.payment_method === 'qris' && (
           <div className="mb-6 sm:mb-8">
             <DynamicQRISCard
               amount={order.total_amount}
               orderNumber={order.order_number}
               customerName={order.customer_name}
-              onSimulatePay={handleSimulatePayment}
+              onSimulatePay={order.payment_status === 'unpaid' ? handleSimulatePayment : undefined}
               isSimulating={simulatingPay}
+              paymentStatus={order.payment_status}
             />
+          </div>
+        )}
+
+        {/* Cashier Counter Guidance Box */}
+        {order.payment_method === 'cashier' && order.payment_status === 'unpaid' && (
+          <div className="bg-white border border-amber-200/90 rounded-2xl p-5 sm:p-6 mb-6 sm:mb-8 shadow-xs font-sans">
+            <div className="flex items-start gap-3.5">
+              <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 border border-amber-200 flex items-center justify-center shrink-0">
+                <UtensilsCrossed className="w-5 h-5" />
+              </div>
+              <div className="space-y-1">
+                <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-amber-800">
+                  Pay at Cashier Counter
+                </span>
+                <h4 className="font-bold text-sm text-neutral-900">
+                  Please proceed to the brew bar counter
+                </h4>
+                <p className="text-xs text-neutral-500 leading-relaxed">
+                  Present your ticket <strong className="text-neutral-900 font-mono">#{order.order_number}</strong> to the barista on duty and settle the payment of <strong className="text-neutral-900 font-bold">{formatRupiah(order.total_amount)}</strong> via cash or EDC debit.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Bank Transfer Guidance Box */}
+        {order.payment_method === 'bank_transfer' && order.payment_status === 'unpaid' && (
+          <div className="bg-white border border-blue-200/90 rounded-2xl p-5 sm:p-6 mb-6 sm:mb-8 shadow-xs font-sans space-y-3">
+            <div className="flex items-start justify-between">
+              <div>
+                <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-blue-800 block">
+                  Manual Bank Transfer
+                </span>
+                <h4 className="font-bold text-sm text-neutral-900 mt-0.5">
+                  Bank Central Asia (BCA)
+                </h4>
+              </div>
+              <span className="text-xs font-mono font-extrabold text-neutral-900 bg-neutral-100 px-2.5 py-1 rounded-md">
+                {formatRupiah(order.total_amount)}
+              </span>
+            </div>
+            <div className="p-3 bg-neutral-50 border border-neutral-200 rounded-xl flex items-center justify-between text-xs font-mono">
+              <div>
+                <span className="text-[10px] text-neutral-400 block uppercase">Account Number:</span>
+                <span className="font-bold text-neutral-900 text-sm">8280-192-349</span>
+                <span className="text-[11px] text-neutral-500 block">a/n OXID PROJECT CHANGKEER</span>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  navigator.clipboard.writeText('8280192349');
+                }}
+                className="px-2.5 py-1.5 rounded-lg bg-neutral-900 hover:bg-neutral-800 text-white text-[10px] font-bold uppercase tracking-wider transition-colors cursor-pointer"
+              >
+                Copy No. Rek
+              </button>
+            </div>
+            <p className="text-[11px] text-neutral-500">
+              After transferring, please confirm via WhatsApp with your proof of payment.
+            </p>
           </div>
         )}
 

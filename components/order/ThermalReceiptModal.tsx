@@ -35,7 +35,8 @@ export function ThermalReceiptModal({ order, isOpen, onClose }: ThermalReceiptMo
   useEffect(() => {
     if (order && order.payment_method === 'qris') {
       try {
-        const payload = generateDynamicQRIS(order.total_amount);
+        const safeAmount = Number.isFinite(order.total_amount) && order.total_amount > 0 ? order.total_amount : 10000;
+        const payload = generateDynamicQRIS(safeAmount);
         generateQRCodeDataUrl(payload, { width: 160, margin: 1 }).then(setReceiptQrUrl);
       } catch (e) {
         console.error('Failed to generate receipt QRIS:', e);
