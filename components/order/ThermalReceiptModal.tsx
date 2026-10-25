@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   X, 
   Printer, 
@@ -12,6 +12,7 @@ import {
   Tag
 } from 'lucide-react';
 import { Order } from '@/types';
+import { generateDynamicQRIS, generateQRCodeDataUrl } from '@/lib/utils/qris';
 
 interface ThermalReceiptModalProps {
   order: Order | null;
@@ -29,6 +30,18 @@ function formatRupiah(amount: number): string {
 
 export function ThermalReceiptModal({ order, isOpen, onClose }: ThermalReceiptModalProps) {
   const [printType, setPrintType] = useState<'pos-cashier' | 'cup-label'>('pos-cashier');
+  const [receiptQrUrl, setReceiptQrUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (order && order.payment_method === 'qris') {
+      try {
+        const payload = generateDynamicQRIS(order.total_amount);
+        generateQRCodeDataUrl(payload, { width: 160, margin: 1 }).then(setReceiptQrUrl);
+      } catch (e) {
+        console.error('Failed to generate receipt QRIS:', e);
+      }
+    }
+  }, [order]);
 
   if (!isOpen || !order) return null;
 
@@ -190,6 +203,15 @@ export function ThermalReceiptModal({ order, isOpen, onClose }: ThermalReceiptMo
                 </div>
                 <div className="border-b border-dashed border-neutral-400 pt-2" />
               </div>
+
+              {/* Dynamic QRIS on Printed Receipt */}
+              {receiptQrUrl && order.payment_method === 'qris' && (
+                <div className="text-center py-2 border-b border-dashed border-neutral-400">
+                  <img src={receiptQrUrl} alt="Dynamic QRIS" className="w-24 h-24 mx-auto" />
+                  <p className="text-[8px] font-mono font-bold text-neutral-800 mt-1">SCAN QRIS DINAMIS</p>
+                  <p className="text-[7px] text-neutral-500 font-mono">NMID: ID1026598652240</p>
+                </div>
+              )}
 
               {/* Footer */}
               <div className="text-center pt-2 space-y-1">

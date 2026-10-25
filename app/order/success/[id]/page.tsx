@@ -23,6 +23,7 @@ import {
 import { Order, OrderStatus } from '@/types';
 import { generateWhatsAppReceiptText, getWhatsAppUrl } from '@/lib/utils/whatsapp';
 import { ThermalReceiptModal } from '@/components/order/ThermalReceiptModal';
+import { DynamicQRISCard } from '@/components/order/DynamicQRISCard';
 
 function formatRupiah(amount: number): string {
   return new Intl.NumberFormat('id-ID', {
@@ -246,44 +247,16 @@ export default function OrderSuccessPage({
           </div>
         </div>
 
-        {/* Payment QR Box (if QRIS and unpaid) */}
+        {/* Payment QR Box (if QRIS and unpaid) with Dynamic Locked Amount */}
         {order.payment_method === 'qris' && order.payment_status === 'unpaid' && (
-          <div className="bg-white border border-neutral-200/90 rounded-2xl p-4 sm:p-8 shadow-xs text-center space-y-4 mb-6 sm:mb-8">
-            <div className="text-xs font-bold uppercase tracking-wider text-amber-800 font-sans">
-              Awaiting QRIS Payment
-            </div>
-
-            <h3 className="font-sans font-bold text-base sm:text-lg uppercase tracking-tight text-neutral-900">
-              Scan QRIS to Complete Your Order
-            </h3>
-
-            <div className="w-44 h-44 sm:w-56 sm:h-56 bg-[#FAFAF8] border border-neutral-200 rounded-xl p-3 mx-auto flex items-center justify-center relative shadow-xs">
-              <QrCode className="w-full h-full text-neutral-900 stroke-[1.2]" />
-            </div>
-
-            <p className="text-xs text-neutral-500 font-sans">
-              Total Amount: <strong className="text-neutral-900 font-mono text-sm font-black">{formatRupiah(order.total_amount)}</strong>
-            </p>
-
-            {/* Instant Demo Simulator */}
-            <button
-              type="button"
-              onClick={handleSimulatePayment}
-              disabled={simulatingPay}
-              className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-neutral-900 text-white hover:bg-neutral-800 font-bold text-xs tracking-wider uppercase transition-all shadow-xs inline-flex items-center justify-center gap-2 cursor-pointer active:scale-98 font-sans"
-            >
-              {simulatingPay ? (
-                <>
-                  <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  <span>Confirming Payment...</span>
-                </>
-              ) : (
-                <>
-                  <Sparkles className="w-4 h-4 text-amber-400 shrink-0" />
-                  <span>Simulate QRIS Payment (Test Mode)</span>
-                </>
-              )}
-            </button>
+          <div className="mb-6 sm:mb-8">
+            <DynamicQRISCard
+              amount={order.total_amount}
+              orderNumber={order.order_number}
+              customerName={order.customer_name}
+              onSimulatePay={handleSimulatePayment}
+              isSimulating={simulatingPay}
+            />
           </div>
         )}
 
