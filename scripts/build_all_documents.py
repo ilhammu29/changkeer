@@ -7,16 +7,17 @@ Compiles 4 distinct PDF documents via WeasyPrint:
 3. CHANGKEER_PRESENTATION_ID.pdf (Slide Presentasi Proyek - A4 Landscape)
 4. CHANGKEER_PRESENTATION_EN.pdf (Project Presentation Deck - A4 Landscape)
 
-Enforces:
+Strict Rules:
+- Web Official Logo (logo_new.png)
+- 5 Co-Founders from the website About page
+- Complete 24 Seasonal Products Catalog
+- High contrast, pristine professional typography, zero unreadable text
 - Zero AI-slop colors & cardbox overload
 - Zero badges
 - Zero asterisks (*)
+- Zero mention of user's personal name
 - Zero mention of OXID
 - Round bullets
-- Visual flow diagrams (no terminal ASCII)
-- Layman-friendly analogies
-- Real product photography
-- Team / Kelompok specification
 """
 
 import os
@@ -38,11 +39,14 @@ os.makedirs(DOCS_DIR, exist_ok=True)
 def sanitize_and_validate(html: str, name: str) -> str:
     """Rigorous validation against user constraints."""
     if "*" in html:
-        print(f"Warning: Asterisk detected in {name}, cleaning...")
+        print(f"Notice: Asterisk stripped in {name}")
         html = html.replace("*", "")
     
     if "oxid" in html.lower():
         raise ValueError(f"CRITICAL: Found 'oxid' in {name}! Must be completely removed.")
+
+    if "muhammad ilham" in html.lower() or "ilhammu29" in html.lower():
+        raise ValueError(f"CRITICAL: Found user personal name in {name}! Must only use the 5 Co-Founders.")
     
     return html
 
@@ -81,9 +85,11 @@ def main():
     print("CHANGKEER ATELIER — COMPILATION OF OFFICIAL PUBLICATIONS & DECKS")
     print("=" * 70)
     
-    print("\n[1/5] Loading and optimizing visual assets...")
+    print("\n[1/5] Loading official logo, 5 founders, and 24 seasonal products...")
     assets = get_all_assets()
-    print(f"      Loaded {len(assets)} visual assets.")
+    print(f"      Logo size: {len(assets['logo'])} bytes")
+    print(f"      Founders: {len(assets['founders'])} co-founders")
+    print(f"      Products: {len(assets['solar_terms'])} seasonal blends")
     
     # 1. Manual Book ID
     print("\n[2/5] Generating Indonesian Manual Book (A4 Portrait)...")
@@ -104,6 +110,11 @@ def main():
     print("\n[5/5] Generating English Presentation Deck (A4 Landscape)...")
     html_pres_en = sanitize_and_validate(generate_presentation_en(assets), "Presentation EN")
     compile_pdf(html_pres_en, "CHANGKEER_PRESENTATION_EN.pdf")
+    
+    # Also mirror the default CHANGKEER_MANUAL_BOOK.pdf
+    shutil.copyfile(os.path.join(DOCS_DIR, "CHANGKEER_MANUAL_BOOK_ID.pdf"), os.path.join(DOCS_DIR, "CHANGKEER_MANUAL_BOOK.pdf"))
+    shutil.copyfile(os.path.join(DOCS_DIR, "CHANGKEER_MANUAL_BOOK_ID.pdf"), os.path.join(BASE_DIR, "CHANGKEER_MANUAL_BOOK.pdf"))
+    shutil.copyfile(os.path.join(DOCS_DIR, "CHANGKEER_MANUAL_BOOK_ID.pdf"), os.path.join(HOME_DIR, "CHANGKEER_MANUAL_BOOK.pdf"))
     
     print("\n" + "=" * 70)
     print("ALL 4 PUBLICATIONS SUCCESSFULLY GENERATED & VERIFIED!")

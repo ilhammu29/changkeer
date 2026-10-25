@@ -1,20 +1,66 @@
 #!/usr/bin/env python3
 """
-presentation_id.py - Generator for Indonesian Presentation Deck (A4 Landscape)
-Clean Editorial Craft Style, Zero AI-Slop, No Badges, Round Bullets,
-No Terminal ASCII, Real Product Photos, Layman-Friendly Explanations,
-Team / Kelompok Specification, and Zero Markdown Asterisks.
-Exact 10 Slides = 10 Landscape Pages.
+presentation_id.py - Indonesian Presentation Deck (A4 Landscape)
+Featuring:
+- Official Web Logo (logo_new.png)
+- The 5 Co-Founders from the website About page (Zero mention of user's personal name)
+- Complete 24 Seasonal Products Showcase with simple, compact images (Terms 01-12 & Terms 13-24)
+- High Contrast, Pristine Professional Typography, Zero AI-slop, No Badges, Round Bullets
+- Zero mention of OXID
+- Zero asterisks
+- Exact 11 Slides = 11 Landscape Pages
 """
 
 def generate_presentation_id(assets: dict) -> str:
+    founders = assets.get("founders", [])
+    solar = assets.get("solar_terms", [])
+    logo_b64 = assets.get("logo", "")
+
+    def render_12_grid_id(items):
+        html = '<div style="display: table; width: 100%; table-layout: fixed; margin-top: 5pt;">'
+        for row_idx in range(0, len(items), 6):
+            html += '<div style="display: table-row;">'
+            for col_idx in range(6):
+                if row_idx + col_idx < len(items):
+                    it = items[row_idx + col_idx]
+                    ingr = ", ".join(it.get('ingredients', [])[:2])
+                    html += f'''
+                    <div style="display: table-cell; width: 16.66%; vertical-align: top; padding: 4.5pt; border: 1px solid #cbd5e1; background: #ffffff; text-align: center;">
+                        <img src="{it['thumb_b64']}" style="width: 44px; height: 44px; object-fit: cover; border: 1px solid #94a3b8; margin: 0 auto 3pt auto; display: block;" alt="{it['term']}">
+                        <div style="font-family: 'Playfair Display', serif; font-size: 8pt; font-weight: 700; color: #143828; line-height: 1.15;">{it['term']}</div>
+                        <div style="font-size: 7.2pt; color: #946c38; font-weight: 600;">{it['blend']} ({it['termChinese']})</div>
+                        <div style="font-size: 6.8pt; color: #334155; margin-top: 1.5pt; line-height: 1.2;">Hot {it['hotPrice']} / Ice {it['icedPrice']}</div>
+                        <div style="font-size: 6.5pt; color: #64748b; margin-top: 1pt; font-style: italic;">{ingr}</div>
+                    </div>
+                    '''
+                else:
+                    html += '<div style="display: table-cell; width: 16.66%;"></div>'
+            html += '</div>'
+        html += '</div>'
+        return html
+
+    grid_spring_summer = render_12_grid_id(solar[:12])
+    grid_autumn_winter = render_12_grid_id(solar[12:])
+
+    # Founders Table Rows for Slide 11
+    founders_rows = ""
+    for f in founders:
+        founders_rows += f"""
+        <tr>
+            <td style="text-align: center; font-weight: 700; color: #143828;">{f['num']}</td>
+            <td><strong>{f['name']}</strong></td>
+            <td>{f['role']}</td>
+            <td>{f['focus_id']}</td>
+        </tr>
+        """
+
     html = f"""<!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8">
 <title>CHANGKEER ATELIER — PRESENTASI PROYEK &amp; PENJELASAN SISTEM</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap');
 
 @page {{
     size: A4 landscape;
@@ -28,10 +74,10 @@ def generate_presentation_id(assets: dict) -> str:
 }}
 
 body {{
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     font-size: 9pt;
     line-height: 1.5;
-    color: #24292f;
+    color: #1a202c;
     background-color: #ffffff;
     margin: 0;
     padding: 0;
@@ -53,11 +99,10 @@ body {{
     justify-content: space-between;
 }}
 
-/* Slide Running Header & Footer */
 .slide-header {{
     display: table;
     width: 100%;
-    border-bottom: 1px solid #e5e2da;
+    border-bottom: 1.5px solid #143828;
     padding-bottom: 4pt;
     margin-bottom: 6pt;
 }}
@@ -75,18 +120,18 @@ body {{
     display: table-cell;
     text-align: right;
     font-size: 7.5pt;
-    font-weight: 600;
-    color: #6b7280;
+    font-weight: 700;
+    color: #143828;
 }}
 
 .slide-footer {{
     display: table;
     width: 100%;
-    border-top: 1px solid #e5e2da;
+    border-top: 1px solid #cbd5e1;
     padding-top: 4pt;
     margin-top: 6pt;
     font-size: 7.5pt;
-    color: #9ca3af;
+    color: #64748b;
 }}
 
 .slide-footer-left {{
@@ -97,11 +142,10 @@ body {{
 .slide-footer-right {{
     display: table-cell;
     text-align: right;
-    font-weight: 600;
+    font-weight: 700;
     color: #143828;
 }}
 
-/* Typography */
 h1, h2, h3 {{
     font-family: 'Playfair Display', Georgia, serif;
     font-weight: 700;
@@ -117,7 +161,7 @@ h1, h2, h3 {{
 
 .slide-subtitle {{
     font-size: 9pt;
-    color: #6b7280;
+    color: #4a5568;
     margin-bottom: 6pt;
 }}
 
@@ -125,9 +169,9 @@ p {{
     margin-top: 0;
     margin-bottom: 5pt;
     text-align: justify;
+    color: #2d3748;
 }}
 
-/* Lists with Circular Bullets */
 ul {{
     list-style-type: disc !important;
     margin-top: 2pt;
@@ -138,9 +182,9 @@ ul {{
 ul li {{
     margin-bottom: 2.5pt;
     line-height: 1.4;
+    color: #2d3748;
 }}
 
-/* Multi-Column Layout */
 .col-container {{
     display: table;
     width: 100%;
@@ -170,25 +214,26 @@ ul li {{
     padding-right: 0;
 }}
 
-/* Editorial Note / Layman Box */
 .layman-box {{
-    border-left: 3px solid #143828;
-    background-color: #fbfaf7;
-    padding: 5pt 9pt;
+    border-left: 3.5px solid #143828;
+    background-color: #f8fafc;
+    border-right: 1px solid #e2e8f0;
+    border-top: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 6pt 10pt;
     margin: 5pt 0;
-    font-size: 8pt;
+    font-size: 8.5pt;
 }}
 
 .layman-box-title {{
     font-weight: 700;
     color: #143828;
-    font-size: 7.5pt;
+    font-size: 8pt;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.05em;
     margin-bottom: 2pt;
 }}
 
-/* Tables */
 table.slide-table {{
     width: 100%;
     border-collapse: collapse;
@@ -205,16 +250,16 @@ table.slide-table th {{
     color: #143828;
     font-size: 7.5pt;
     text-transform: uppercase;
-    background-color: #f7f6f1;
+    background-color: #f1f5f9;
 }}
 
 table.slide-table td {{
-    border-bottom: 1px solid #e5e2da;
+    border-bottom: 1px solid #cbd5e1;
     padding: 4pt 6pt;
     vertical-align: top;
+    color: #2d3748;
 }}
 
-/* Horizontal Workflow Diagram (No Terminal ASCII) */
 .h-workflow {{
     display: table;
     width: 100%;
@@ -226,8 +271,8 @@ table.slide-table td {{
     display: table-cell;
     vertical-align: top;
     padding: 6pt 8pt;
-    background-color: #fbfaf7;
-    border: 1px solid #e5e2da;
+    background-color: #f8fafc;
+    border: 1px solid #cbd5e1;
 }}
 
 .h-step-num {{
@@ -247,7 +292,7 @@ table.slide-table td {{
 
 .h-step-desc {{
     font-size: 7.5pt;
-    color: #4b5563;
+    color: #4a5568;
     line-height: 1.35;
 }}
 
@@ -260,39 +305,11 @@ table.slide-table td {{
     font-size: 12pt;
 }}
 
-/* Product Card in Slide */
-.product-slide-card {{
-    text-align: center;
-    border: 1px solid #e5e2da;
-    padding: 5pt;
-    background-color: #fbfaf7;
-}}
-
-.product-slide-card img {{
-    width: 100%;
-    height: 85px;
-    object-fit: cover;
-    margin-bottom: 3pt;
-}}
-
-.product-slide-title {{
-    font-family: 'Playfair Display', serif;
-    font-weight: 700;
-    font-size: 9pt;
-    color: #143828;
-}}
-
-.product-slide-desc {{
-    font-size: 7.5pt;
-    color: #6b7280;
-    margin-top: 2pt;
-}}
-
-/* Cover Slide Special Styling */
+/* Cover Slide */
 .slide-cover {{
     background-color: #143828;
-    color: #f7f6f1;
-    padding: 16mm 20mm 12mm 20mm;
+    color: #ffffff;
+    padding: 18mm 20mm 14mm 20mm;
     max-height: 210mm;
     overflow: hidden;
     page-break-after: always;
@@ -301,7 +318,7 @@ table.slide-table td {{
 
 .cover-title-big {{
     font-family: 'Playfair Display', Georgia, serif;
-    font-size: 26pt;
+    font-size: 27pt;
     font-weight: 700;
     line-height: 1.15;
     color: #ffffff;
@@ -309,8 +326,8 @@ table.slide-table td {{
 }}
 
 .cover-tagline {{
-    font-size: 10.5pt;
-    color: #d1d5db;
+    font-size: 11pt;
+    color: #e2e8f0;
     max-width: 620px;
     line-height: 1.45;
     margin-bottom: 14pt;
@@ -319,7 +336,7 @@ table.slide-table td {{
 .cover-team-box {{
     display: table;
     width: 100%;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    border-top: 1px solid rgba(255, 255, 255, 0.25);
     padding-top: 10pt;
 }}
 
@@ -354,7 +371,7 @@ table.slide-table td {{
             CHANGKEER ATELIER • PRESENTASI PROYEK &amp; PENJELASAN SISTEM
         </div>
         <div style="margin-bottom: 10pt;">
-            <img src="{assets['logo']}" style="width: 55px; height: 55px; border-radius: 50%; border: 2px solid #dfba7c;" alt="Logo Changkeer">
+            <img src="{logo_b64}" style="width: 58px; height: 58px; border-radius: 50%; border: 2px solid #dfba7c; background: #ffffff;" alt="Logo Changkeer Web">
         </div>
         <div class="cover-title-big">Digitalisasi Seduhan Teh Herbal 24 Musim</div>
         <div class="cover-tagline">
@@ -364,12 +381,12 @@ table.slide-table td {{
 
     <div class="cover-team-box">
         <div class="cover-team-cell">
-            <div class="cover-team-lbl">Kelompok Proyek</div>
-            <div class="cover-team-val">Tim Pengembang Sistem</div>
+            <div class="cover-team-lbl">Kelompok Pendiri</div>
+            <div class="cover-team-val">5 Co-Founders</div>
         </div>
         <div class="cover-team-cell">
-            <div class="cover-team-lbl">Ketua &amp; Arsitek Sistem</div>
-            <div class="cover-team-val">Muhammad Ilham</div>
+            <div class="cover-team-lbl">Inisiator Proyek</div>
+            <div class="cover-team-val">Dewan Pendiri CHANGKEER</div>
         </div>
         <div class="cover-team-cell">
             <div class="cover-team-lbl">Institusi / Gerai</div>
@@ -395,12 +412,12 @@ table.slide-table td {{
 
         <div class="col-container">
             <div class="col-2">
-                <h3 style="margin-bottom: 4pt;">Masalah di Lapangan (Metode Tradisional)</h3>
+                <h3 style="margin-bottom: 4pt;">Masalah Nyata di Lapangan (Metode Tradisional)</h3>
                 <ul>
-                    <li><strong>Antrean Kasir Panjang &amp; Melelahkan:</strong> Pelanggan harus berdiri lama hanya untuk memilih racikan teh dan membayar, merusak pengalaman bersantai.</li>
-                    <li><strong>Risiko Salah Transfer pada QRIS Kertas:</strong> Menggunakan QRIS statis mewajibkan pelanggan mengetik nominal manual; sering terjadi salah ketik nol (kurang atau berlebih).</li>
+                    <li><strong>Antrean Kasir Panjang &amp; Melelahkan:</strong> Tamu harus berdiri lama di kasir hanya untuk memilih racikan teh dan membayar, merusak kenyamanan bersantai.</li>
+                    <li><strong>Risiko Salah Transfer pada QRIS Kertas:</strong> Menggunakan QRIS statis mewajibkan tamu mengetik nominal manual; sering terjadi salah ketik nol (kurang atau berlebih).</li>
                     <li><strong>Kertas Bon Rusak di Meja Seduh:</strong> Nota kertas mudah basah terkena uap air panas atau hilang, menyebabkan pesanan tertukar dan waktu seduh tidak akurat.</li>
-                    <li><strong>Ketiadaan Standarisasi Racikan:</strong> Rasa teh berubah-ubah bergantung pada barista yang bertugas karena tidak ada panduan resep digital.</li>
+                    <li><strong>Ketiadaan Standarisasi Racikan:</strong> Rasa teh berubah-ubah bergantung pada barista yang bertugas karena tidak ada panduan takaran digital yang baku.</li>
                 </ul>
             </div>
             <div class="col-2">
@@ -417,7 +434,7 @@ table.slide-table td {{
     </div>
 
     <div class="slide-footer">
-        <div class="slide-footer-left">Tim Pengembang Sistem CHANGKEER</div>
+        <div class="slide-footer-left">Dewan Pendiri CHANGKEER ATELIER</div>
         <div class="slide-footer-right">Slide 02</div>
     </div>
 </div>
@@ -480,57 +497,55 @@ table.slide-table td {{
     </div>
 
     <div class="slide-footer">
-        <div class="slide-footer-left">Tim Pengembang Sistem CHANGKEER</div>
+        <div class="slide-footer-left">Dewan Pendiri CHANGKEER ATELIER</div>
         <div class="slide-footer-right">Slide 03</div>
     </div>
 </div>
 
-<!-- SLIDE 4: GALERI PRODUK UNGGULAN -->
+<!-- SLIDE 4: GALERI 24 PRODUK (SEMI & PANAS) -->
 <div class="slide">
     <div class="slide-header">
-        <div class="slide-header-left">03 / Galeri Produk &amp; Bahan Baku</div>
+        <div class="slide-header-left">03 / Galeri 24 Racikan Musim Alam (Bagian I)</div>
         <div class="slide-header-right">CHANGKEER ATELIER</div>
     </div>
 
     <div>
-        <div class="slide-title">Tiga Racikan Khas (Signature Blends)</div>
-        <div class="slide-subtitle">Bahan baku botani pilihan yang diseduh dengan suhu dan durasi waktu presisi.</div>
+        <div class="slide-title">Racikan Musim Semi &amp; Musim Panas (Terms 01–12)</div>
+        <div class="slide-subtitle">12 varian botani segar dengan gambar simpel, komposisi bahan pilihan, dan kalibrasi harga resmi.</div>
 
-        <div class="col-container">
-            <div class="col-3">
-                <div class="product-slide-card">
-                    <img src="{assets['jasmine']}" alt="Jasmine Tea">
-                    <div class="product-slide-title">Jasmine Tea Signature</div>
-                    <div class="product-slide-desc">Pucuk teh hijau &amp; kelopak melati alami. Menghadirkan aroma bunga menenangkan dan rasa manis halus di lidah.</div>
-                </div>
-            </div>
-            <div class="col-3">
-                <div class="product-slide-card">
-                    <img src="{assets['vanilla_mint']}" alt="Vanilla Mint Tea">
-                    <div class="product-slide-title">Vanilla Mint Tea</div>
-                    <div class="product-slide-desc">Daun peppermint pegunungan berpadu aroma vanila lembut. Melegakan pernapasan dan mendinginkan tubuh.</div>
-                </div>
-            </div>
-            <div class="col-3">
-                <div class="product-slide-card">
-                    <img src="{assets['english_breakfast']}" alt="English Breakfast Tea">
-                    <div class="product-slide-title">English Breakfast Tea</div>
-                    <div class="product-slide-desc">Teh hitam berkarakter mantap untuk dorongan fokus pagi hari. 100% bebas kantong mikroplastik.</div>
-                </div>
-            </div>
-        </div>
+        {grid_spring_summer}
     </div>
 
     <div class="slide-footer">
-        <div class="slide-footer-left">Tim Pengembang Sistem CHANGKEER</div>
+        <div class="slide-footer-left">Dewan Pendiri CHANGKEER ATELIER</div>
         <div class="slide-footer-right">Slide 04</div>
     </div>
 </div>
 
-<!-- SLIDE 5: PENGALAMAN PELANGGAN -->
+<!-- SLIDE 5: GALERI 24 PRODUK (GUGUR & DINGIN) -->
 <div class="slide">
     <div class="slide-header">
-        <div class="slide-header-left">04 / Fitur Pengguna &amp; Kustomisasi</div>
+        <div class="slide-header-left">04 / Galeri 24 Racikan Musim Alam (Bagian II)</div>
+        <div class="slide-header-right">CHANGKEER ATELIER</div>
+    </div>
+
+    <div>
+        <div class="slide-title">Racikan Musim Gugur &amp; Musim Dingin (Terms 13–24)</div>
+        <div class="slide-subtitle">12 varian rempah hangat dan bunga menenangkan untuk memulihkan energi serta daya tahan tubuh.</div>
+
+        {grid_autumn_winter}
+    </div>
+
+    <div class="slide-footer">
+        <div class="slide-footer-left">Dewan Pendiri CHANGKEER ATELIER</div>
+        <div class="slide-footer-right">Slide 05</div>
+    </div>
+</div>
+
+<!-- SLIDE 6: PENGALAMAN PELANGGAN -->
+<div class="slide">
+    <div class="slide-header">
+        <div class="slide-header-left">05 / Fitur Pengguna &amp; Kustomisasi</div>
         <div class="slide-header-right">CHANGKEER ATELIER</div>
     </div>
 
@@ -558,15 +573,15 @@ table.slide-table td {{
     </div>
 
     <div class="slide-footer">
-        <div class="slide-footer-left">Tim Pengembang Sistem CHANGKEER</div>
-        <div class="slide-footer-right">Slide 05</div>
+        <div class="slide-footer-left">Dewan Pendiri CHANGKEER ATELIER</div>
+        <div class="slide-footer-right">Slide 06</div>
     </div>
 </div>
 
-<!-- SLIDE 6: ALUR WORKFLOW & QRIS DINAMIS -->
+<!-- SLIDE 7: ALUR WORKFLOW & QRIS DINAMIS -->
 <div class="slide">
     <div class="slide-header">
-        <div class="slide-header-left">05 / Alur Transaksi &amp; QRIS Dinamis</div>
+        <div class="slide-header-left">06 / Alur Transaksi &amp; QRIS Dinamis</div>
         <div class="slide-header-right">CHANGKEER ATELIER</div>
     </div>
 
@@ -574,7 +589,6 @@ table.slide-table td {{
         <div class="slide-title">Diagram Alur Transaksi Dari Meja ke Dapur Bar</div>
         <div class="slide-subtitle">Otomasi penuh dari pemilihan menu, penerbitan barcode QRIS, hingga serah terima cangkir.</div>
 
-        <!-- Horizontal Visual Flow -->
         <div class="h-workflow">
             <div class="h-step">
                 <div class="h-step-num">1</div>
@@ -614,15 +628,15 @@ table.slide-table td {{
     </div>
 
     <div class="slide-footer">
-        <div class="slide-footer-left">Tim Pengembang Sistem CHANGKEER</div>
-        <div class="slide-footer-right">Slide 06</div>
+        <div class="slide-footer-left">Dewan Pendiri CHANGKEER ATELIER</div>
+        <div class="slide-footer-right">Slide 07</div>
     </div>
 </div>
 
-<!-- SLIDE 7: KEAMANAN PEMBAYARAN -->
+<!-- SLIDE 8: KEAMANAN PEMBAYARAN -->
 <div class="slide">
     <div class="slide-header">
-        <div class="slide-header-left">06 / Keamanan &amp; Audit Sistem</div>
+        <div class="slide-header-left">07 / Keamanan Finansial Gerai</div>
         <div class="slide-header-right">CHANGKEER ATELIER</div>
     </div>
 
@@ -655,15 +669,15 @@ table.slide-table td {{
     </div>
 
     <div class="slide-footer">
-        <div class="slide-footer-left">Tim Pengembang Sistem CHANGKEER</div>
-        <div class="slide-footer-right">Slide 07</div>
+        <div class="slide-footer-left">Dewan Pendiri CHANGKEER ATELIER</div>
+        <div class="slide-footer-right">Slide 08</div>
     </div>
 </div>
 
-<!-- SLIDE 8: KITCHEN DISPLAY SYSTEM -->
+<!-- SLIDE 9: KITCHEN DISPLAY SYSTEM -->
 <div class="slide">
     <div class="slide-header">
-        <div class="slide-header-left">07 / Operasional Barista &amp; KDS</div>
+        <div class="slide-header-left">08 / Operasional Barista &amp; KDS</div>
         <div class="slide-header-right">CHANGKEER ATELIER</div>
     </div>
 
@@ -718,15 +732,15 @@ table.slide-table td {{
     </div>
 
     <div class="slide-footer">
-        <div class="slide-footer-left">Tim Pengembang Sistem CHANGKEER</div>
-        <div class="slide-footer-right">Slide 08</div>
+        <div class="slide-footer-left">Dewan Pendiri CHANGKEER ATELIER</div>
+        <div class="slide-footer-right">Slide 09</div>
     </div>
 </div>
 
-<!-- SLIDE 9: ARSITEKTUR TEKNOLOGI -->
+<!-- SLIDE 10: TEKNOLOGI & EFISIENSI -->
 <div class="slide">
     <div class="slide-header">
-        <div class="slide-header-left">08 / Fondasi Teknologi &amp; Keandalan</div>
+        <div class="slide-header-left">09 / Fondasi Teknologi &amp; Keandalan</div>
         <div class="slide-header-right">CHANGKEER ATELIER</div>
     </div>
 
@@ -736,21 +750,21 @@ table.slide-table td {{
 
         <div class="col-container">
             <div class="col-3">
-                <div style="background-color: #fbfaf7; border: 1px solid #e5e2da; padding: 8pt;">
+                <div style="background-color: #f8fafc; border: 1px solid #cbd5e1; padding: 8pt;">
                     <div style="font-weight: 700; color: #143828; font-size: 9.5pt; margin-bottom: 2pt;">Next.js 16 &amp; React 19</div>
-                    <div style="font-size: 8pt; color: #4b5563;">Halaman katalog terbuka sekejap di HP pengunjung tanpa membebani kuota data.</div>
+                    <div style="font-size: 8pt; color: #334155;">Halaman katalog terbuka sekejap di HP pengunjung tanpa membebani kuota data.</div>
                 </div>
             </div>
             <div class="col-3">
-                <div style="background-color: #fbfaf7; border: 1px solid #e5e2da; padding: 8pt;">
+                <div style="background-color: #f8fafc; border: 1px solid #cbd5e1; padding: 8pt;">
                     <div style="font-weight: 700; color: #143828; font-size: 9.5pt; margin-bottom: 2pt;">Supabase Cloud &amp; RLS</div>
-                    <div style="font-size: 8pt; color: #4b5563;">Basis data PostgreSQL terenkripsi dengan proteksi hak akses ketat di setiap baris data.</div>
+                    <div style="font-size: 8pt; color: #334155;">Basis data PostgreSQL terenkripsi dengan proteksi hak akses ketat di setiap baris data.</div>
                 </div>
             </div>
             <div class="col-3">
-                <div style="background-color: #fbfaf7; border: 1px solid #e5e2da; padding: 8pt;">
+                <div style="background-color: #f8fafc; border: 1px solid #cbd5e1; padding: 8pt;">
                     <div style="font-weight: 700; color: #143828; font-size: 9.5pt; margin-bottom: 2pt;">Resiliensi Dual-Tier</div>
-                    <div style="font-size: 8pt; color: #4b5563;">Jika internet gerai terganggu, sistem beralih ke penyimpanan lokal agar kasir tetap berjalan.</div>
+                    <div style="font-size: 8pt; color: #334155;">Jika internet gerai terganggu, sistem beralih ke penyimpanan lokal agar kasir tetap berjalan.</div>
                 </div>
             </div>
         </div>
@@ -762,63 +776,49 @@ table.slide-table td {{
     </div>
 
     <div class="slide-footer">
-        <div class="slide-footer-left">Tim Pengembang Sistem CHANGKEER</div>
-        <div class="slide-footer-right">Slide 09</div>
+        <div class="slide-footer-left">Dewan Pendiri CHANGKEER ATELIER</div>
+        <div class="slide-footer-right">Slide 10</div>
     </div>
 </div>
 
-<!-- SLIDE 10: TIM & PENUTUP -->
+<!-- SLIDE 11: TIM FOUNDERS & PENUTUP -->
 <div class="slide">
     <div class="slide-header">
-        <div class="slide-header-left">09 / Tim Proyek &amp; Penutup</div>
+        <div class="slide-header-left">10 / Dewan Pendiri &amp; Penutup</div>
         <div class="slide-header-right">CHANGKEER ATELIER</div>
     </div>
 
     <div>
-        <div class="slide-title">Kelompok Pengembang Sistem &amp; Sesi Tanya Jawab</div>
-        <div class="slide-subtitle">Mewujudkan masa depan ritual teh Nusantara melalui rekayasa teknologi berintegritas.</div>
+        <div class="slide-title">Dewan Pendiri CHANGKEER &amp; Sesi Tanya Jawab</div>
+        <div class="slide-subtitle">Lima pendiri yang merumuskan visi hidrasi botani Nusantara yang berintegritas.</div>
 
         <div class="col-container">
             <div class="col-2">
-                <h3 style="margin-bottom: 4pt;">Roster Kelompok Pengembang Proyek</h3>
+                <h3 style="margin-bottom: 4pt;">Roster Dewan Pendiri (5 Co-Founders)</h3>
                 <table class="slide-table">
                     <thead>
                         <tr>
-                            <th>Peran Tim</th>
-                            <th>Penanggung Jawab</th>
+                            <th style="width: 10%;">No</th>
+                            <th style="width: 45%;">Nama Co-Founder</th>
+                            <th>Fokus Utama</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><strong>Ketua Kelompok &amp; Arsitek Sistem</strong></td>
-                            <td><strong>Muhammad Ilham</strong></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Divisi Frontend &amp; Desain Antarmuka</strong></td>
-                            <td>Tim Antarmuka Pengguna</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Divisi Riset Botani &amp; SOP Barista</strong></td>
-                            <td>Tim R&amp;D Teh Herbal</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Divisi Operasional &amp; Layanan Kasir</strong></td>
-                            <td>Tim Operasional Gerai</td>
-                        </tr>
+                        {founders_rows}
                     </tbody>
                 </table>
             </div>
             <div class="col-2">
                 <div class="layman-box">
                     <div class="layman-box-title">Kesimpulan Akhir</div>
-                    CHANGKEER membuktikan bahwa tradisi teh herbal nusantara yang bernilai tinggi dapat dipadukan secara harmonis dengan teknologi digital mutakhir. Sistem ini siap diimplementasikan secara komersial di gerai fisik.
+                    CHANGKEER membuktikan bahwa warisan teh herbal Nusantara dapat dipadukan secara harmonis dengan teknologi digital mutakhir. Sistem ini siap diimplementasikan secara komersial di gerai fisik.
                 </div>
-                <div style="text-align: center; margin-top: 14pt;">
+                <div style="text-align: center; margin-top: 12pt;">
                     <div style="font-family: 'Playfair Display', serif; font-size: 15pt; font-weight: 700; color: #143828; margin-bottom: 2pt;">
                         Terima Kasih Atas Perhatian Anda
                     </div>
-                    <div style="font-size: 8.5pt; color: #6b7280;">
-                        Kami membuka sesi diskusi, saran, dan tanya jawab.
+                    <div style="font-size: 8.5pt; color: #4a5568;">
+                        Kami membuka sesi diskusi, evaluasi, dan tanya jawab.
                     </div>
                 </div>
             </div>
@@ -827,7 +827,7 @@ table.slide-table td {{
 
     <div class="slide-footer">
         <div class="slide-footer-left">CHANGKEER ATELIER • Seluruh Hak Cipta Dilindungi Undang-Undang</div>
-        <div class="slide-footer-right">Slide 10</div>
+        <div class="slide-footer-right">Slide 11</div>
     </div>
 </div>
 

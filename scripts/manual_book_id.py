@@ -1,51 +1,127 @@
 #!/usr/bin/env python3
 """
-manual_book_id.py - Generator for Indonesian Manual Book (A4 Portrait)
-Clean Editorial Craft Style, Zero AI-Slop, No Badges, Round Bullets,
-No Terminal ASCII, Real Product Photos, Layman-Friendly Terms,
-Team / Kelompok Specification, and Zero Markdown Asterisks.
+manual_book_id.py - Indonesian Manual Book (A4 Portrait)
+Featuring:
+- Official Web Logo (logo_new.png)
+- The 5 Co-Founders from the website About page
+- Complete 24 Seasonal Products Catalog with compact, simple images
+- High Contrast, Pristine Professional Typography, Zero AI-slop, No Badges, Round Bullets
+- Zero mention of user's personal name
+- Zero mention of OXID
+- Zero asterisks
 """
 
 def generate_manual_book_id(assets: dict) -> str:
+    founders = assets.get("founders", [])
+    solar_terms = assets.get("solar_terms", [])
+    logo_b64 = assets.get("logo", "")
+
+    # Group the 24 products by season
+    seasons = [
+        {"id": "spring", "name": "Musim Semi (Spring)", "desc": "Karakter rasa bunga segar (floral), ringan, dan herba muda untuk penyegaran serta detoksifikasi tubuh."},
+        {"id": "summer", "name": "Musim Panas (Summer)", "desc": "Karakter rasa dingin daun mint, sitrus alami, dan bunga penyejuk suhu tubuh di tengah cuaca terik."},
+        {"id": "autumn", "name": "Musim Gugur (Autumn)", "desc": "Karakter aroma manis kayu manis, chamomile, dan biji-bijian panggang untuk ketenangan saraf."},
+        {"id": "winter", "name": "Musim Dingin (Winter)", "desc": "Karakter rempah hangat jahe merah tua, cengkih, dan madu hutan untuk menjaga daya tahan tubuh."}
+    ]
+
+    # Generate 24 products HTML
+    catalog_html = ""
+    for s in seasons:
+        s_items = [b for b in solar_terms if b.get("season") == s["id"]]
+        catalog_html += f"""
+        <div style="margin-top: 14pt; page-break-inside: avoid;">
+            <div style="font-family: 'Playfair Display', serif; font-size: 13pt; font-weight: 700; color: #143828; border-bottom: 1px solid #143828; padding-bottom: 3pt; margin-bottom: 6pt;">
+                {s['name']}
+            </div>
+            <p style="font-size: 8.5pt; color: #4a5568; margin-bottom: 8pt;">{s['desc']}</p>
+            <div style="display: table; width: 100%; table-layout: fixed;">
+        """
+        # Split 6 items into 2 rows of 3 columns
+        for row_idx in range(0, len(s_items), 2):
+            catalog_html += '<div style="display: table-row;">'
+            for col_idx in range(2):
+                if row_idx + col_idx < len(s_items):
+                    item = s_items[row_idx + col_idx]
+                    ingr_str = ", ".join(item.get("ingredients", []))
+                    catalog_html += f"""
+                    <div style="display: table-cell; width: 50%; vertical-align: top; padding: 6pt; border: 1px solid #e2e8f0; background: #ffffff;">
+                        <div style="display: table; width: 100%;">
+                            <div style="display: table-cell; width: 58px; vertical-align: top;">
+                                <img src="{item.get('thumb_b64', '')}" style="width: 52px; height: 52px; object-fit: cover; border: 1px solid #cbd5e1; display: block;" alt="{item.get('term')}">
+                            </div>
+                            <div style="display: table-cell; vertical-align: top; padding-left: 8pt;">
+                                <div style="font-family: 'Playfair Display', serif; font-size: 9.5pt; font-weight: 700; color: #143828;">
+                                    {item.get('term')} <span style="font-family: sans-serif; font-size: 8.5pt; color: #946c38;">({item.get('termChinese')})</span>
+                                </div>
+                                <div style="font-size: 8pt; font-weight: 600; color: #946c38; text-transform: uppercase;">
+                                    {item.get('blend')} • Hot {item.get('hotPrice')} / Ice {item.get('icedPrice')}
+                                </div>
+                                <div style="font-size: 8pt; color: #2d3748; margin-top: 2pt; line-height: 1.35;">
+                                    <strong>Bahan:</strong> {ingr_str}
+                                </div>
+                                <div style="font-size: 7.5pt; color: #4a5568; margin-top: 1pt; font-style: italic;">
+                                    "{item.get('note')}"
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    """
+                else:
+                    catalog_html += '<div style="display: table-cell; width: 50%;"></div>'
+            catalog_html += '</div>'
+        catalog_html += '</div></div>'
+
+    # Founders Table Rows
+    founders_rows = ""
+    for f in founders:
+        founders_rows += f"""
+        <tr>
+            <td style="text-align: center; font-weight: 700; color: #143828;">{f['num']}</td>
+            <td><strong>{f['name']}</strong></td>
+            <td>{f['role']}</td>
+            <td>{f['focus_id']}</td>
+        </tr>
+        """
+
     html = f"""<!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>CHANGKEER ATELIER — BUKU PANDUAN OPERASIONAL & MANUAL SISTEM</title>
+<title>CHANGKEER ATELIER — BUKU PANDUAN OPERASIONAL &amp; MANUAL SISTEM</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap');
 
 @page {{
     size: A4 portrait;
-    margin: 22mm 18mm 22mm 18mm;
+    margin: 20mm 18mm 20mm 18mm;
     @top-left {{
-        content: "CHANGKEER ATELIER — MANUAL SISTEM & PANDUAN OPERASIONAL";
+        content: "CHANGKEER ATELIER — BUKU PANDUAN OPERASIONAL &amp; MANUAL SISTEM";
         font-family: 'Plus Jakarta Sans', sans-serif;
         font-size: 7.5pt;
-        font-weight: 600;
+        font-weight: 700;
         letter-spacing: 0.08em;
         text-transform: uppercase;
-        color: #6b7280;
+        color: #4a5568;
     }}
     @top-right {{
-        content: "REV. 2.0 • 2026";
+        content: "EDISI RESMI 2026";
         font-family: 'Plus Jakarta Sans', sans-serif;
         font-size: 7.5pt;
-        font-weight: 600;
+        font-weight: 700;
         color: #946c38;
     }}
     @bottom-left {{
-        content: "Tim Pengembang Sistem CHANGKEER • Hak Cipta Dilindungi";
+        content: "Dewan Pendiri CHANGKEER • Hak Cipta Dilindungi Undang-Undang";
         font-family: 'Plus Jakarta Sans', sans-serif;
         font-size: 7.5pt;
-        color: #9ca3af;
+        color: #718096;
     }}
     @bottom-right {{
         content: "Halaman " counter(page) " dari " counter(pages);
         font-family: 'Plus Jakarta Sans', sans-serif;
         font-size: 7.5pt;
-        font-weight: 600;
-        color: #4b5563;
+        font-weight: 700;
+        color: #143828;
     }}
 }}
 
@@ -64,16 +140,15 @@ def generate_manual_book_id(assets: dict) -> str:
 }}
 
 body {{
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     font-size: 9.5pt;
-    line-height: 1.65;
-    color: #24292f;
+    line-height: 1.6;
+    color: #1a202c;
     background-color: #ffffff;
     margin: 0;
     padding: 0;
 }}
 
-/* Typography */
 h1, h2, h3, h4 {{
     color: #143828;
     font-family: 'Playfair Display', Georgia, serif;
@@ -83,106 +158,107 @@ h1, h2, h3, h4 {{
 }}
 
 h1 {{
-    font-size: 20pt;
+    font-size: 19pt;
     line-height: 1.25;
     margin-bottom: 8pt;
-    border-bottom: 1.5px solid #143828;
-    padding-bottom: 6pt;
+    border-bottom: 2px solid #143828;
+    padding-bottom: 5pt;
 }}
 
 h2 {{
-    font-size: 14pt;
+    font-size: 13pt;
     line-height: 1.3;
-    margin-top: 18pt;
+    margin-top: 16pt;
     margin-bottom: 6pt;
     color: #143828;
 }}
 
 h3 {{
-    font-size: 11pt;
+    font-size: 10.5pt;
     line-height: 1.35;
-    margin-top: 14pt;
+    margin-top: 12pt;
     margin-bottom: 4pt;
     color: #946c38;
 }}
 
 p {{
     margin-top: 0;
-    margin-bottom: 8pt;
+    margin-bottom: 7pt;
     text-align: justify;
+    color: #2d3748;
 }}
 
-/* Lists with Circular Bullets */
 ul {{
     list-style-type: disc !important;
-    margin-top: 4pt;
-    margin-bottom: 10pt;
+    margin-top: 3pt;
+    margin-bottom: 8pt;
     padding-left: 18px;
 }}
 
 ul li {{
-    margin-bottom: 4pt;
-    line-height: 1.55;
+    margin-bottom: 3pt;
+    line-height: 1.5;
+    color: #2d3748;
 }}
 
 ol {{
-    margin-top: 4pt;
-    margin-bottom: 10pt;
-    padding-left: 20px;
+    margin-top: 3pt;
+    margin-bottom: 8pt;
+    padding-left: 18px;
 }}
 
 ol li {{
-    margin-bottom: 4pt;
-    line-height: 1.55;
+    margin-bottom: 3pt;
+    line-height: 1.5;
+    color: #2d3748;
 }}
 
-/* Section Eyebrow (No badges) */
-.section-eyebrow {{
+.section-label {{
     font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 8pt;
     font-weight: 700;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: #946c38;
-    margin-bottom: 4pt;
+    margin-bottom: 3pt;
 }}
 
-/* Divider Line */
 .rule {{
     border: none;
-    border-top: 1px solid #e5e2da;
-    margin: 16pt 0;
+    border-top: 1px solid #e2e8f0;
+    margin: 14pt 0;
 }}
 
-/* Editorial Note / Layman Box */
-.layman-note {{
-    border-left: 3px solid #143828;
-    background-color: #fbfaf7;
-    padding: 8pt 12pt;
-    margin: 10pt 0 14pt 0;
-    font-size: 9pt;
+.layman-box {{
+    border-left: 3.5px solid #143828;
+    background-color: #f8fafc;
+    border-right: 1px solid #e2e8f0;
+    border-top: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 8pt 11pt;
+    margin: 9pt 0;
+    font-size: 8.5pt;
 }}
 
-.layman-note-title {{
+.layman-box-title {{
     font-weight: 700;
     color: #143828;
     font-size: 8.5pt;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.05em;
     margin-bottom: 3pt;
 }}
 
-/* Tables */
 table.editorial-table {{
     width: 100%;
     border-collapse: collapse;
-    margin: 12pt 0;
+    margin: 10pt 0;
     font-size: 8.5pt;
     page-break-inside: avoid;
 }}
 
 table.editorial-table th {{
-    border-top: 1.5px solid #143828;
+    border-top: 2px solid #143828;
     border-bottom: 1.5px solid #143828;
     padding: 6pt 8pt;
     text-align: left;
@@ -191,40 +267,37 @@ table.editorial-table th {{
     font-size: 8pt;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    background-color: #f7f6f1;
+    background-color: #f1f5f9;
 }}
 
 table.editorial-table td {{
-    border-bottom: 1px solid #e5e2da;
-    padding: 6pt 8pt;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 5.5pt 8pt;
     vertical-align: top;
+    color: #2d3748;
 }}
 
 table.editorial-table tr:nth-child(even) td {{
-    background-color: #fcfbf9;
+    background-color: #f8fafc;
 }}
 
-/* Visual Workflow Diagram (No Terminal ASCII) */
-.workflow-container {{
-    margin: 14pt 0;
-    page-break-inside: avoid;
-}}
-
+/* Workflow Step Box */
 .workflow-step {{
     display: table;
     width: 100%;
-    margin-bottom: 8pt;
-    background-color: #fbfaf7;
-    border: 1px solid #e5e2da;
-    padding: 8pt 12pt;
+    margin-bottom: 6pt;
+    background-color: #f8fafc;
+    border: 1px solid #cbd5e1;
+    padding: 6pt 10pt;
+    page-break-inside: avoid;
 }}
 
 .workflow-num {{
     display: table-cell;
-    width: 32px;
+    width: 28px;
     vertical-align: middle;
     font-family: 'Playfair Display', serif;
-    font-size: 16pt;
+    font-size: 15pt;
     font-weight: 700;
     color: #143828;
 }}
@@ -232,89 +305,37 @@ table.editorial-table tr:nth-child(even) td {{
 .workflow-content {{
     display: table-cell;
     vertical-align: middle;
-    padding-left: 10pt;
+    padding-left: 8pt;
 }}
 
 .workflow-title {{
     font-weight: 700;
     color: #143828;
-    font-size: 9.5pt;
-    margin-bottom: 2pt;
+    font-size: 9pt;
+    margin-bottom: 1pt;
 }}
 
 .workflow-desc {{
-    font-size: 8.5pt;
-    color: #4b5563;
-    line-height: 1.45;
+    font-size: 8pt;
+    color: #4a5568;
+    line-height: 1.35;
 }}
 
 .workflow-arrow {{
     text-align: center;
     color: #946c38;
-    font-size: 14pt;
-    line-height: 1;
-    margin: -4pt 0 4pt 0;
-}}
-
-/* Product Showcase Grid */
-.product-row {{
-    display: table;
-    width: 100%;
-    margin: 10pt 0;
-    page-break-inside: avoid;
-    border-bottom: 1px solid #e5e2da;
-    padding-bottom: 10pt;
-}}
-
-.product-img-col {{
-    display: table-cell;
-    width: 110px;
-    vertical-align: top;
-}}
-
-.product-img-col img {{
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    border: 1px solid #e5e2da;
-}}
-
-.product-info-col {{
-    display: table-cell;
-    vertical-align: top;
-    padding-left: 14pt;
-}}
-
-.product-name {{
-    font-family: 'Playfair Display', serif;
     font-size: 12pt;
-    font-weight: 700;
-    color: #143828;
-    margin-bottom: 2pt;
-}}
-
-.product-meta {{
-    font-size: 8pt;
-    font-weight: 600;
-    color: #946c38;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 4pt;
-}}
-
-.product-desc {{
-    font-size: 8.5pt;
-    color: #374151;
-    line-height: 1.45;
+    line-height: 1;
+    margin: -3pt 0 3pt 0;
 }}
 
 /* Cover Page */
 .cover-page {{
     page-break-after: always;
     height: 100vh;
-    padding: 35mm 22mm 25mm 22mm;
+    padding: 32mm 22mm 24mm 22mm;
     background-color: #143828;
-    color: #f7f6f1;
+    color: #ffffff;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -322,44 +343,40 @@ table.editorial-table tr:nth-child(even) td {{
 }}
 
 .cover-header {{
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    padding-bottom: 16pt;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+    padding-bottom: 14pt;
 }}
 
 .cover-brand-title {{
-    font-size: 11pt;
+    font-size: 10pt;
     font-weight: 700;
-    letter-spacing: 0.25em;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
     color: #dfba7c;
 }}
 
-.cover-body {{
-    margin: auto 0;
-}}
-
 .cover-main-title {{
     font-family: 'Playfair Display', Georgia, serif;
-    font-size: 32pt;
+    font-size: 30pt;
     font-weight: 700;
     line-height: 1.15;
     color: #ffffff;
-    margin-bottom: 12pt;
+    margin-bottom: 10pt;
 }}
 
 .cover-subtitle {{
-    font-size: 11.5pt;
-    line-height: 1.6;
-    color: #d1d5db;
+    font-size: 11pt;
+    line-height: 1.55;
+    color: #e2e8f0;
     max-width: 520px;
-    margin-bottom: 24pt;
+    margin-bottom: 20pt;
 }}
 
 .cover-meta-grid {{
     display: table;
     width: 100%;
     border-top: 1px solid rgba(255, 255, 255, 0.25);
-    padding-top: 14pt;
+    padding-top: 12pt;
 }}
 
 .cover-meta-cell {{
@@ -378,16 +395,16 @@ table.editorial-table tr:nth-child(even) td {{
 }}
 
 .cover-meta-val {{
-    font-size: 9pt;
+    font-size: 8.5pt;
     font-weight: 600;
     color: #ffffff;
 }}
 
 .cover-footer {{
-    border-top: 1px solid rgba(255, 255, 255, 0.15);
-    padding-top: 12pt;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    padding-top: 10pt;
     font-size: 8pt;
-    color: #9ca3af;
+    color: #cbd5e1;
     display: table;
     width: 100%;
 }}
@@ -402,33 +419,33 @@ table.editorial-table tr:nth-child(even) td {{
 <!-- COVER PAGE -->
 <div class="cover-page">
     <div class="cover-header">
-        <div class="cover-brand-title">CHANGKEER ATELIER • DOKUMEN OPERASIONAL RESMI</div>
+        <div class="cover-brand-title">CHANGKEER ATELIER • DOKUMEN SISTEM &amp; OPERASIONAL RESMI</div>
     </div>
 
-    <div class="cover-body">
-        <div style="margin-bottom: 14pt;">
-            <img src="{assets['logo']}" style="width: 75px; height: 75px; border-radius: 50%; border: 2px solid #dfba7c;" alt="Logo Changkeer">
+    <div>
+        <div style="margin-bottom: 12pt;">
+            <img src="{logo_b64}" style="width: 70px; height: 70px; border-radius: 50%; border: 2.5px solid #dfba7c; background: #ffffff;" alt="Logo Changkeer Web">
         </div>
         <div class="cover-main-title">Buku Panduan Operasional &amp; Manual Sistem</div>
         <div class="cover-subtitle">
-            Standar Baku Alur Pemesanan Mandiri, Sistem Pembayaran QRIS Dinamis, Kitchen Display System (KDS), SOP Barista, dan Tata Kelola Platform Kasir Digital.
+            Standar Prosedur Operasional (SOP) Seduhan Teh Herbal 24 Musim, Alur Pemesanan Mandiri, Pembayaran Otomatis QRIS Dinamis, Kitchen Display System (KDS), dan Manajemen Platform Kasir Digital.
         </div>
 
         <div class="cover-meta-grid">
             <div class="cover-meta-cell">
-                <div class="cover-meta-label">Nomor Registrasi</div>
-                <div class="cover-meta-val">CK-SOP-2026-V2</div>
+                <div class="cover-meta-label">Nomor Dokumen</div>
+                <div class="cover-meta-val">CK-SOP-2026-V3</div>
             </div>
             <div class="cover-meta-cell">
-                <div class="cover-meta-label">Kelompok Pengembang</div>
-                <div class="cover-meta-val">Tim Pengembang Sistem</div>
+                <div class="cover-meta-label">Kelompok Pendiri</div>
+                <div class="cover-meta-val">5 Co-Founders</div>
             </div>
             <div class="cover-meta-cell">
-                <div class="cover-meta-label">Ketua Tim / Arsitek</div>
-                <div class="cover-meta-val">Muhammad Ilham</div>
+                <div class="cover-meta-label">Entitas Usaha</div>
+                <div class="cover-meta-val">CHANGKEER ATELIER</div>
             </div>
             <div class="cover-meta-cell">
-                <div class="cover-meta-label">Tahun Terbit</div>
+                <div class="cover-meta-label">Tahun Rilis</div>
                 <div class="cover-meta-val">Oktober 2026</div>
             </div>
         </div>
@@ -440,122 +457,101 @@ table.editorial-table tr:nth-child(even) td {{
     </div>
 </div>
 
-<!-- LEMBAR KENDALI & TIM KELOMPOK -->
+<!-- HALAMAN TIM PENDIRI (FOUNDERS) & DAFTAR ISI -->
 <div class="page-break">
-    <div class="section-eyebrow">Dokumen Kendali &amp; Pengesahan</div>
-    <h1>Identitas Kelompok &amp; Lembar Pengesahan</h1>
+    <div class="section-label">Dokumen Kendali &amp; Pengesahan</div>
+    <h1>Dewan Pendiri &amp; Struktur Organisasi</h1>
 
     <p>
-        Buku Panduan Operasional ini disusun sebagai pedoman teknis dan tata kelola gerai resmi untuk ekosistem <strong>CHANGKEER ATELIER</strong>. Dokumen ini mengikat seluruh pengembang perangkat lunak, peracik teh (<em>barista</em>), staf kasir, dan penanggung jawab operasional gerai.
+        Buku Panduan Operasional ini mengikat seluruh jajaran operasional, staf peracik teh (<em>barista</em>), staf kasir (<em>cashier counter</em>), dan pengelola teknis di seluruh gerai fisik CHANGKEER ATELIER. Dokumen ini disahkan oleh lima pendiri resmi CHANGKEER.
     </p>
 
-    <h2>Struktur Kelompok &amp; Tim Pengembang Sistem</h2>
+    <h2>Dewan Pendiri CHANGKEER (The 5 Co-Founders)</h2>
     <table class="editorial-table">
         <thead>
             <tr>
-                <th style="width: 25%;">Peran / Jabatan</th>
-                <th style="width: 30%;">Penanggung Jawab</th>
-                <th>Tugas &amp; Tanggung Jawab Utama</th>
+                <th style="width: 8%;">No</th>
+                <th style="width: 32%;">Nama Pendiri</th>
+                <th style="width: 18%;">Jabatan</th>
+                <th>Bidang Fokus &amp; Tanggung Jawab Utama</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td><strong>Ketua Kelompok &amp; Arsitek Sistem</strong></td>
-                <td><strong>Muhammad Ilham</strong></td>
-                <td>Memimpin perancangan arsitektur perangkat lunak, rekayasa <em>full-stack</em> Next.js &amp; Supabase, keamanan pembayaran QRIS dinamis, dan verifikasi mutu.</td>
-            </tr>
-            <tr>
-                <td><strong>Divisi Frontend &amp; Desain Antarmuka</strong></td>
-                <td>Tim Antarmuka Pengguna</td>
-                <td>Mengembangkan antarmuka pemesanan mandiri, responsivitas seluler, ikonografi vektor ramah pengguna, dan alur <em>checkout</em> tanpa hambatan.</td>
-            </tr>
-            <tr>
-                <td><strong>Divisi Riset Produk &amp; SOP Barista</strong></td>
-                <td>Tim Botani &amp; Barista R&amp;D</td>
-                <td>Menyusun katalog 24 racikan musiman, formulasi takaran seduhan, penentuan level gula alami, dan standarisasi waktu ekstraksi air panas.</td>
-            </tr>
-            <tr>
-                <td><strong>Divisi Operasional &amp; Kasir</strong></td>
-                <td>Tim Layanan Gerai</td>
-                <td>Menjalankan operasional kasir, verifikasi struk transaksi, mitigasi kendala pembayaran di tempat, dan rekonsiliasi kas harian.</td>
-            </tr>
+            {founders_rows}
         </tbody>
     </table>
 
     <h2>Daftar Isi Dokumen</h2>
-    <ul style="line-height: 1.8; margin-top: 10pt;">
-        <li><strong>Bab 1:</strong> Mengenal CHANGKEER &amp; Konsep Teh 24 Musim</li>
-        <li><strong>Bab 2:</strong> Struktur Sistem &amp; Ekosistem Teknologi</li>
-        <li><strong>Bab 3:</strong> Katalog Menu, Galeri Produk &amp; Kustomisasi Seduhan</li>
-        <li><strong>Bab 4:</strong> Alur Transaksi, QRIS Dinamis &amp; Keamanan Pembayaran</li>
-        <li><strong>Bab 5:</strong> Standar Operasional Prosedur (SOP) Barista di Bar</li>
-        <li><strong>Bab 6:</strong> Standar Operasional Prosedur (SOP) Kasir &amp; Rekonsiliasi</li>
-        <li><strong>Bab 7:</strong> Tata Kelola Panel Admin &amp; Manajemen Menu</li>
-        <li><strong>Bab 8:</strong> Kamus Istilah Praktis (Glosarium Awam) &amp; Solusi Kendala Cepat</li>
+    <ul style="line-height: 1.7; margin-top: 8pt;">
+        <li><strong>Bab 1:</strong> Mengenal CHANGKEER &amp; Filosofi 24 Titik Musim Alam (Solar Terms)</li>
+        <li><strong>Bab 2:</strong> Arsitektur Ekosistem Sistem &amp; Keandalan Teknologi Web</li>
+        <li><strong>Bab 3:</strong> Katalog Lengkap 24 Racikan Musim, Bahan Botani &amp; Kustomisasi</li>
+        <li><strong>Bab 4:</strong> Alur Transaksi, QRIS Dinamis &amp; Keamanan Finansial</li>
+        <li><strong>Bab 5:</strong> Standar Operasional Prosedur (SOP) Barista di Meja Seduh</li>
+        <li><strong>Bab 6:</strong> Standar Operasional Prosedur (SOP) Kasir &amp; Rekonsiliasi Harian</li>
+        <li><strong>Bab 7:</strong> Tata Kelola Menu &amp; Panel Pengelola (Admin Dashboard)</li>
+        <li><strong>Bab 8:</strong> Kamus Istilah Praktis untuk Orang Awam &amp; Matriks Bantuan Cepat</li>
     </ul>
 
-    <div class="layman-note">
-        <div class="layman-note-title">Prinsip Komunikasi &amp; Bahasa Ramah Awam</div>
-        Panduan ini ditulis dengan pendekatan bahasa yang lugas, terstruktur, dan mudah dipahami oleh pembaca umum. Seluruh istilah teknis komputer maupun istilah peracikan teh dilengkapi dengan perumpamaan sederhana agar langsung dapat dipahami tanpa kebingungan.
+    <div class="layman-box">
+        <div class="layman-box-title">Prinsip Aksesibilitas Bahasa &amp; Kejelasan Dokumen</div>
+        Dokumen ini disusun menggunakan prinsip bahasa lugas, sistematis, dan bebas istilah membingungkan. Setiap konsep teknologi komputer maupun istilah peracikan teh herbal dilengkapi dengan perumpamaan dunia nyata agar mudah dipahami secara intuitif oleh penguji akademis, penilai bisnis, maupun staf gerai baru.
     </div>
 </div>
 
 <!-- BAB 1 -->
 <div class="page-break">
-    <div class="section-eyebrow">Bab 01 • Filosofi &amp; Konsep</div>
+    <div class="section-label">Bab 01 • Konsep &amp; Visi Usaha</div>
     <h1>Mengenal CHANGKEER &amp; Filosofi 24 Musim</h1>
 
-    <h2>1.1 Apa Itu CHANGKEER?</h2>
+    <h2>1.1 Apa Itu CHANGKEER ATELIER?</h2>
     <p>
-        <strong>CHANGKEER</strong> adalah sebuah gerai seduhan teh herbal modern (<em>artisan tea atelier</em>) yang menggabungkan kemurnian tanaman herbal Nusantara dengan filosofi 24 Titik Musim Alam (<em>Solar Terms</em>). Berbeda dari kedai kopi komersial yang serba terburu-buru atau toko jamu tradisional yang belum terstandarisasi, CHANGKEER menghadirkan ruang hening yang nyaman bagi siapa saja yang ingin menikmati minuman sehat, terukur, dan menenangkan jiwa.
+        <strong>CHANGKEER</strong> adalah sebuah gerai seduhan teh herbal botani modern (<em>artisan herbal tea atelier</em>) yang memadukan kekayaan tanaman rempah kepulauan Indonesia dengan kearifan siklus 24 Titik Musim Alam (<em>Solar Terms</em>). Berbeda dari kedai kopi komersial yang bising atau toko jamu konvensional yang belum terstandarisasi, CHANGKEER menghadirkan ruang hening yang nyaman bagi siapa saja yang ingin menikmati hidrasi sehat alami, terukur, dan menenangkan pikiran.
     </p>
 
-    <div class="layman-note">
-        <div class="layman-note-title">Istilah Mudah Dipahami: Teh Herbal (Tisane) vs Teh Biasa</div>
-        Banyak orang mengira semua teh itu sama. Padahal, teh celup biasa di pasaran umumnya berasal dari daun teh hitam pabrikan yang seringkali diberi perisa sintetis. Sementara itu, <strong>Tisane / Teh Herbal CHANGKEER</strong> diracik murni dari rempah dan kelopak bunga asli utuh—seperti melati, bunga telang, jahe merah, dan peppermint—tanpa bahan kimia sintetis dan tanpa pemanis buatan yang membuat lambung perih.
+    <div class="layman-box">
+        <div class="layman-box-title">Istilah Mudah Dipahami: Teh Herbal (Tisane) vs Teh Biasa</div>
+        Banyak orang mengira semua teh itu sama. Padahal, teh celup biasa di pasaran umumnya berasal dari daun teh hitam pabrikan yang seringkali diberi perisa sintetik. Sementara itu, <strong>Tisane / Teh Herbal CHANGKEER</strong> diracik murni dari rempah dan kelopak bunga asli utuh—seperti melati, bunga telang, jahe merah, dan peppermint—tanpa bahan kimia sintetis dan tanpa pemanis buatan yang membuat lambung perih.
     </div>
 
-    <h2>1.2 Mengapa Menggunakan Siklus 24 Musim Alam?</h2>
+    <h2>1.2 Mengapa Menyelaraskan Teh dengan 24 Musim Alam?</h2>
     <p>
-        Tubuh manusia bereaksi terhadap perubahan cuaca di sekitarnya. Ketika udara sangat panas dan terik, tubuh membutuhkan asupan yang menyejukkan suhu dalam tubuh. Sebaliknya, saat hujan lebat dan dingin, tubuh memerlukan kehangatan rempah alami yang melancarkan sirkulasi darah.
+        Metabolisme tubuh manusia bereaksi secara alami terhadap fluktuasi iklim di sekitarnya. Ketika cuaca terik dan panas menyengat, tubuh memerlukan asupan herbal yang menyejukkan suhu dalam tubuh. Sebaliknya, saat musim hujan lebat dan berangin dingin, tubuh membutuhkan kehangatan minyak atsiri alami untuk meredakan kekakuan otot dan menjaga sirkulasi darah.
     </p>
     <p>
-        Oleh karena itu, CHANGKEER membagi menunya ke dalam 4 pilar musim utama yang diadaptasi dari 24 titik musim:
+        CHANGKEER menyusun racikannya ke dalam 4 pilar musim utama:
     </p>
     <ul>
-        <li><strong>Musim Semi (Spring):</strong> Karakter rasa bunga segar (floral) yang ringan, berfungsi membantu penyegaran dan detoksifikasi tubuh setelah musim dingin.</li>
-        <li><strong>Musim Panas (Summer):</strong> Karakter rasa dingin daun mint dan buah sitrus alami, berfungsi mendinginkan suhu tubuh dan mencegah dehidrasi di cuaca terik.</li>
-        <li><strong>Musim Gugur (Autumn):</strong> Karakter rempah hangat dan aroma kayu manis, berfungsi menenangkan pikiran dan meredakan ketegangan otot.</li>
-        <li><strong>Musim Dingin (Winter):</strong> Karakter jahe merah pekat dan cengkih nusantara, berfungsi memberi kehangatan mendalam pada tubuh dan menjaga daya tahan tubuh.</li>
+        <li><strong>Musim Semi (Spring):</strong> Karakter bunga segar (floral) yang ringan, berfungsi membantu pemulihan vitalitas dan detoksifikasi alami tubuh.</li>
+        <li><strong>Musim Panas (Summer):</strong> Karakter daun mint pegunungan dan buah sitrus alami, berfungsi mendinginkan suhu tubuh dan mencegah dehidrasi.</li>
+        <li><strong>Musim Gugur (Autumn):</strong> Karakter bunga chamomile utuh dan kayu manis tropis, berfungsi menenangkan pikiran dan meredakan ketegangan stres.</li>
+        <li><strong>Musim Dingin (Winter):</strong> Karakter jahe merah tua dan cengkih nusantara, berfungsi memberi kehangatan mendalam dan menjaga daya tahan tubuh.</li>
     </ul>
 
-    <h2>1.3 Mengapa Dibutuhkan Sistem Digital Mandiri?</h2>
+    <h2>1.3 Mengapa Dibutuhkan Platform Digital Mandiri?</h2>
     <p>
-        Meracik teh herbal membutuhkan ketelitian waktu seduh dan temperatur air yang sangat presisi. Jika barista harus sibuk mencatat pesanan dengan kertas, menghitung uang kembalian manual, dan mengingat selera gula setiap pelanggan, konsentrasi peracikan akan terganggu.
-    </p>
-    <p>
-        Sistem digital CHANGKEER diciptakan agar pelanggan bisa leluasa memilih racikan favoritnya lewat layar ponsel, membayar secara otomatis lewat QRIS, sementara barista di balik bar dapat 100% fokus menyeduh teh dengan kualitas terbaik.
+        Menyeduh teh botani membutuhkan ketepatan suhu air dan waktu ekstraksi yang sangat ketat. Jika barista harus terganggu oleh urusan mencatat pesanan di secarik kertas bon atau menghitung uang kembalian manual, kualitas seduhan teh akan menurun drastis. Sistem digital CHANGKEER diciptakan agar tamu dapat memesan leluasa lewat ponselnya, sementara barista dapat mendedikasikan 100% konsentrasinya untuk menyeduh teh terbaik.
     </p>
 </div>
 
 <!-- BAB 2 -->
 <div class="page-break">
-    <div class="section-eyebrow">Bab 02 • Arsitektur Sistem</div>
-    <h1>Struktur Sistem &amp; Ekosistem Teknologi</h1>
+    <div class="section-label">Bab 02 • Ekosistem Teknologi</div>
+    <h1>Arsitektur Sistem &amp; Keandalan Digital</h1>
 
     <h2>2.1 Cara Kerja Sistem di Balik Layar</h2>
     <p>
-        Sistem perangkat lunak CHANGKEER dibangun menggunakan teknologi web generasi terbaru yang cepat, ringan, dan aman digunakan di berbagai perangkat—mulai dari ponsel pintar pelanggan, tablet kasir, hingga layar komputer di area dapur barista.
+        Sistem perangkat lunak CHANGKEER dibangun menggunakan teknologi web generasi modern yang ringan, cepat, dan aman digunakan di berbagai perangkat—mulai dari ponsel pintar tamu, tablet kasir, hingga monitor dapur barista.
     </p>
 
-    <div class="layman-note">
-        <div class="layman-note-title">Perumpamaan Sederhana: Memahami Teknologi CHANGKEER</div>
-        Bayangkan sistem ini seperti bangunan gerai fisik teh:
+    <div class="layman-box">
+        <div class="layman-box-title">Perumpamaan Sederhana: Memahami Teknologi CHANGKEER</div>
+        Bayangkan sistem ini seperti bangunan fisik gerai teh:
         <ul>
-            <li><strong>Next.js (App Router):</strong> Diibaratkan sebagai etalase kaca depan gerai yang sangat rapi, bersih, dan terang. Pelanggan dapat melihat menu dengan cepat tanpa perlu menunggu lama.</li>
-            <li><strong>Supabase (Basis Data PostgreSQL):</strong> Diibaratkan sebagai brankas dan buku catatan kasir utama yang tersimpan aman di lantai belakang. Semua data pesanan, pembayaran, dan stok bahan dicatat rapi dan tidak bisa hilang.</li>
-            <li><strong>QRIS Dinamis:</strong> Diibaratkan seperti kasir otomatis yang langsung menyebutkan total belanjaan yang pas, sehingga pembeli tinggal menempelkan ponsel tanpa takut salah ketik uang.</li>
-            <li><strong>Kitchen Display System (KDS):</strong> Diibaratkan seperti papan nomor antrean digital di meja peracikan, menggantikan kertas bon yang sering basah terkena air panas.</li>
+            <li><strong>Next.js (App Router):</strong> Diibaratkan sebagai etalase kaca depan gerai yang sangat rapi, bersih, dan terang. Pelanggan dapat membuka menu dengan cepat tanpa perlu menunggu lama atau memasang aplikasi berat.</li>
+            <li><strong>Supabase (PostgreSQL Database):</strong> Diibaratkan sebagai brankas dan buku catatan kasir utama yang tersimpan aman di ruang belakang. Seluruh riwayat transaksi, resep seduhan, dan laporan kas dicatat rapi dan tidak bisa dimanipulasi.</li>
+            <li><strong>QRIS Dinamis:</strong> Diibaratkan seperti kasir otomatis yang langsung menyebutkan total belanjaan yang pas, sehingga pembeli tinggal menempelkan ponsel tanpa takut salah ketik nominal transfer.</li>
+            <li><strong>Kitchen Display System (KDS):</strong> Diibaratkan seperti papan nomor antrean digital di meja peracikan, menggantikan sobekan kertas bon yang sering basah terkena air panas.</li>
         </ul>
     </div>
 
@@ -597,181 +593,118 @@ table.editorial-table tr:nth-child(even) td {{
         </tbody>
     </table>
 
-    <h2>2.3 Ketahanan Sistem Tanpa Padam (Resiliensi Dual-Tier)</h2>
+    <h2>2.3 Ketahanan Sistem Tanpa Gangguan (Dual-Tier Resilience)</h2>
     <p>
-        Salah satu keunggulan teknis sistem CHANGKEER adalah kemampuannya tetap beroperasi mulus meskipun koneksi ke server pusat sedang mengalami gangguan. Sistem dilengkapi dengan penyimpanan cadangan otomatis (<em>active orders fallback store</em>), sehingga pesanan yang dibuat oleh pelanggan di meja bar tetap tercatat dan struk pembayaran tetap dapat dicetak oleh kasir tanpa kepanikan.
+        Untuk melindungi gerai dari kendala mati internet tiba-tiba, sistem dilengkapi dengan penyimpanan cadangan otomatis (<em>active orders fallback store</em>). Pesanan di meja tetap tercatat dan struk pembayaran kasir tetap dapat dicetak dengan mulus.
     </p>
 </div>
 
-<!-- BAB 3 -->
+<!-- BAB 3: KATALOG 24 PRODUK LENGKAP -->
 <div class="page-break">
-    <div class="section-eyebrow">Bab 03 • Menu &amp; Produk</div>
-    <h1>Katalog Menu, Galeri Produk &amp; Kustomisasi</h1>
+    <div class="section-label">Bab 03 • Katalog Produk Lengkap</div>
+    <h1>Katalog Lengkap 24 Racikan Musim Alam</h1>
 
-    <h2>3.1 Tiga Varian Racikan Khas (Signature Blends)</h2>
     <p>
-        Setiap cangkir racikan CHANGKEER disajikan menggunakan bahan baku daun teh utuh berkualitas tinggi yang dipadukan dengan herbal alami Nusantara:
+        Berikut adalah dokumentasi visual dan komposisi lengkap 24 racikan teh musiman (<em>Solar Terms</em>) yang dikurasi secara resmi oleh kelima Co-Founder CHANGKEER:
     </p>
 
-    <!-- Product 1: Jasmine -->
-    <div class="product-row">
-        <div class="product-img-col">
-            <img src="{assets['jasmine']}" alt="Jasmine Tea">
-        </div>
-        <div class="product-info-col">
-            <div class="product-name">CHANGKEER Jasmine Tea Signature</div>
-            <div class="product-meta">Kategori: Floral Tisane • Suhu Rekomendasi: 85°C • Waktu Seduh: 4 Menit</div>
-            <div class="product-desc">
-                Perpaduan bunga melati alami pegunungan dengan pucuk daun teh hijau pilihan. Menghasilkan aroma menenangkan pikiran, membantu meredakan stres harian, dan memberikan rasa lembut menyegarkan di tenggorokan.
-            </div>
-        </div>
-    </div>
+    {catalog_html}
 
-    <!-- Product 2: Vanilla Mint -->
-    <div class="product-row">
-        <div class="product-img-col">
-            <img src="{assets['vanilla_mint']}" alt="Vanilla Mint Tea">
-        </div>
-        <div class="product-info-col">
-            <div class="product-name">CHANGKEER Vanilla Mint Tea</div>
-            <div class="product-meta">Kategori: Refreshing Tisane • Suhu Rekomendasi: 90°C • Waktu Seduh: 5 Menit</div>
-            <div class="product-desc">
-                Semilir sejuk daun peppermint murni berpadu dengan kelembutan aroma ekstrak vanila tropis. Sangat efektif untuk melegakan pernapasan, mendinginkan suhu tubuh di siang hari, dan menjaga pencernaan tetap nyaman.
-            </div>
-        </div>
-    </div>
-
-    <!-- Product 3: English Breakfast -->
-    <div class="product-row">
-        <div class="product-img-col">
-            <img src="{assets['english_breakfast']}" alt="English Breakfast Tea">
-        </div>
-        <div class="product-info-col">
-            <div class="product-name">CHANGKEER English Breakfast Tea</div>
-            <div class="product-meta">Kategori: Bold Black Tea • Suhu Rekomendasi: 95°C • Waktu Seduh: 3.5 Menit</div>
-            <div class="product-desc">
-                Seduhan teh hitam berkarakter mantap dan kaya rasa, dirancang untuk memberikan dorongan energi pagi hari secara bersih tanpa memicu naiknya asam lambung. Menggunakan kantong teh bebas mikroplastik.
-            </div>
-        </div>
-    </div>
-
-    <h2>3.2 Galeri 4 Musim (Solar Terms Seasonal Heroes)</h2>
+    <h2>3.2 Panduan Kustomisasi Seduhan Terstandarisasi</h2>
     <table class="editorial-table">
         <thead>
             <tr>
-                <th style="width: 25%;">Musim</th>
-                <th style="width: 35%;">Nama Racikan Unggulan</th>
-                <th>Karakter Khasiat &amp; Bahan Utama</th>
+                <th style="width: 25%;">Kategori Pilihan</th>
+                <th style="width: 35%;">Opsi Kustomisasi</th>
+                <th>Keterangan Rasa &amp; Biaya Tambahan</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td><strong>Musim Semi</strong></td>
-                <td>Start of Spring (立春)</td>
-                <td>Kelopak mawar, melati, dan teh hijau pegunungan untuk detoksifikasi alami.</td>
+                <td><strong>Suhu Penyajian</strong></td>
+                <td>Hot Tea Pot / Iced Shaken Tea</td>
+                <td>Poci seduh air panas tradisional (standar) atau es kocok segar (+Rp 2.000 menggunakan es batu higienis).</td>
             </tr>
             <tr>
-                <td><strong>Musim Panas</strong></td>
-                <td>Summer Solstice (夏至)</td>
-                <td>Daun mint segar, serai wangi, dan buah lemon kering penyejuk dahaga.</td>
+                <td><strong>Tingkat Kemanisan Alami</strong></td>
+                <td>0%, 30%, 50%, 75%, 100%</td>
+                <td>Menggunakan nektar sorgum murni atau madu hutan mentah. 0% bebas gula, 50% teh lebih dominan, 100% manis penuh.</td>
             </tr>
             <tr>
-                <td><strong>Musim Gugur</strong></td>
-                <td>Autumn Equinox (秋分)</td>
-                <td>Bunga chamomile utuh, kayu manis manis, dan akar manis penenang saraf.</td>
-            </tr>
-            <tr>
-                <td><strong>Musim Dingin</strong></td>
-                <td>Winter Solstice (冬至)</td>
-                <td>Jahe merah tua, cengkih Maluku, dan madu hutan murni penghangat dada.</td>
+                <td><strong>Topping Kelopak Bunga</strong></td>
+                <td>Telang, Melati, Marigold, Madu (+Rp 3.000)</td>
+                <td>Bunga telang (warna ungu memikat), melati kering (aroma wangi rileks), marigold emas (antioksidan tinggi), atau madu hutan murni.</td>
             </tr>
         </tbody>
     </table>
-
-    <h2>3.3 Panduan Kustomisasi Seduhan bagi Pelanggan</h2>
-    <p>
-        Sistem pemesanan mandiri memberikan 3 pilihan modifikasi rasa yang terstandarisasi:
-    </p>
-    <ul>
-        <li><strong>Suhu Penyajian:</strong> Hot Tea Pot (Poci Seduh Air Panas Tradisional) atau Iced Shaken Tea (+Rp 2.000 dengan es batu higienis).</li>
-        <li><strong>Tingkat Kemanisan Alami:</strong> 0% (Tanpa Gula), 30% (Sedikit Manis), 50% (Rasa Teh Dominan), 75% (Manis Seimbang), dan 100% (Manis Penuh).</li>
-        <li><strong>Topping Bunga Botani (+Rp 3.000):</strong> Bunga Telang Segar (Butterfly Pea), Kuntum Melati Kering (Dried Jasmine), Bunga Marigold Emas, atau Tambahan Madu Hutan Murni.</li>
-    </ul>
 </div>
 
 <!-- BAB 4 -->
 <div class="page-break">
-    <div class="section-eyebrow">Bab 04 • Alur &amp; Keamanan Transaksi</div>
+    <div class="section-label">Bab 04 • Alur &amp; Keamanan Transaksi</div>
     <h1>Alur Transaksi &amp; QRIS Dinamis</h1>
 
-    <h2>4.1 Diagram Alur Transaksi Dari Meja hingga Meja Barista</h2>
+    <h2>4.1 Diagram Alur Kerja Transaksi Digital Gerai</h2>
     <p>
-        Berikut adalah visual alur kerja pemesanan mandiri digital di gerai CHANGKEER:
+        Alur transaksi digital CHANGKEER dari saat tamu duduk di meja hingga minuman disajikan di meja:
     </p>
 
-    <!-- Visual HTML/SVG Flow Diagram -->
-    <div class="workflow-container">
-        <div class="workflow-step">
-            <div class="workflow-num">1</div>
-            <div class="workflow-content">
-                <div class="workflow-title">Pelanggan Memilih Menu &amp; Kustomisasi di Ponsel</div>
-                <div class="workflow-desc">Pelanggan membuka menu web, memilih racikan teh, menyesuaikan suhu (panas/dingin), tingkat kemanisan, serta topping bunga.</div>
-            </div>
+    <div class="workflow-step">
+        <div class="workflow-num">1</div>
+        <div class="workflow-content">
+            <div class="workflow-title">Pelanggan Memilih Menu &amp; Kustomisasi di Ponsel</div>
+            <div class="workflow-desc">Pelanggan membuka katalog web via kamera HP, memilih racikan 24 musim, mengatur suhu, tingkat kemanisan, dan topping botani.</div>
         </div>
+    </div>
+    <div class="workflow-arrow">&#8595;</div>
 
-        <div class="workflow-arrow">&#8595;</div>
-
-        <div class="workflow-step">
-            <div class="workflow-num">2</div>
-            <div class="workflow-content">
-                <div class="workflow-title">Sistem Mengunci Nominal &amp; Menghasilkan QRIS Dinamis</div>
-                <div class="workflow-desc">Sistem menghitung total belanjaan resmi, mengunci nominal, dan menerbitkan kode QRIS langsung di layar HP pelanggan.</div>
-            </div>
+    <div class="workflow-step">
+        <div class="workflow-num">2</div>
+        <div class="workflow-content">
+            <div class="workflow-title">Sistem Mengunci Nominal &amp; Menghasilkan QRIS Dinamis</div>
+            <div class="workflow-desc">Server menghitung total belanjaan resmi, mengunci angka rupiah ke dalam kode QRIS dinamis berstandar nasional ASPI.</div>
         </div>
+    </div>
+    <div class="workflow-arrow">&#8595;</div>
 
-        <div class="workflow-arrow">&#8595;</div>
-
-        <div class="workflow-step">
-            <div class="workflow-num">3</div>
-            <div class="workflow-content">
-                <div class="workflow-title">Verifikasi Server Otomatis (Proteksi Anti-Kecurangan)</div>
-                <div class="workflow-desc">Server menghitung ulang keaslian harga bahan. Jika data sah, status pembayaran berubah menjadi Sukses secara instan.</div>
-            </div>
+    <div class="workflow-step">
+        <div class="workflow-num">3</div>
+        <div class="workflow-content">
+            <div class="workflow-title">Verifikasi Server Otomatis (Proteksi Anti-Kecurangan)</div>
+            <div class="workflow-desc">Server memeriksa keaslian harga menu. Jika data sah, pembayaran langsung dikonfirmasi berhasil dalam hitungan detik.</div>
         </div>
+    </div>
+    <div class="workflow-arrow">&#8595;</div>
 
-        <div class="workflow-arrow">&#8595;</div>
-
-        <div class="workflow-step">
-            <div class="workflow-num">4</div>
-            <div class="workflow-content">
-                <div class="workflow-title">Tiket Digital Otomatis Masuk ke Monitor Dapur (KDS)</div>
-                <div class="workflow-desc">Layar monitor barista langsung memunculkan pesanan baru lengkap dengan nomor antrean, meja, dan resep kustomisasi.</div>
-            </div>
+    <div class="workflow-step">
+        <div class="workflow-num">4</div>
+        <div class="workflow-content">
+            <div class="workflow-title">Tiket Digital Masuk Otomatis ke Monitor Dapur (KDS)</div>
+            <div class="workflow-desc">Monitor barista memunculkan kartu pesanan baru secara berurutan, lengkap dengan takaran gula dan resep seduhannya.</div>
         </div>
+    </div>
+    <div class="workflow-arrow">&#8595;</div>
 
-        <div class="workflow-arrow">&#8595;</div>
-
-        <div class="workflow-step">
-            <div class="workflow-num">5</div>
-            <div class="workflow-content">
-                <div class="workflow-title">Barista Menyeduh Teh &amp; Menyerahkan ke Pelanggan</div>
-                <div class="workflow-desc">Barista menyeduh air dengan suhu presisi. Setelah selesai, tombol 'Siap Disajikan' ditekan dan struk digital terbit.</div>
-            </div>
+    <div class="workflow-step">
+        <div class="workflow-num">5</div>
+        <div class="workflow-content">
+            <div class="workflow-title">Barista Menyeduh Teh &amp; Menyerahkan ke Pelanggan</div>
+            <div class="workflow-desc">Barista menyeduh air dengan suhu presisi. Setelah selesai, tombol 'Siap Disajikan' ditekan dan struk digital terbit.</div>
         </div>
     </div>
 
     <h2>4.2 Mengapa QRIS Dinamis Jauh Lebih Aman?</h2>
-    <div class="layman-note">
-        <div class="layman-note-title">Penjelasan Awam: QRIS Statis vs QRIS Dinamis</div>
+    <div class="layman-box">
+        <div class="layman-box-title">Penjelasan Awam: QRIS Statis Kertas vs QRIS Dinamis CHANGKEER</div>
         <ul>
-            <li><strong>QRIS Statis (Kertas Tempel Biasa):</strong> Seperti celengan tanpa angka. Pelanggan harus mengetik sendiri angka misalnya "Rp 32.500". Sering terjadi kesalahan ketik: kurang angka nol menjadi Rp 3.250 atau lebih nol menjadi Rp 325.000. Kasir harus memeriksa layar HP pelanggan satu per satu, menyebabkan antrean panjang.</li>
+            <li><strong>QRIS Statis (Kertas Tempel Biasa):</strong> Seperti celengan tanpa angka. Pelanggan harus mengetik sendiri angka misalnya "Rp 32.500". Sering terjadi salah ketik: kurang nol menjadi Rp 3.250 atau lebih nol menjadi Rp 325.000. Kasir harus memeriksa layar HP pelanggan satu per satu, menyebabkan antrean panjang.</li>
             <li><strong>QRIS Dinamis CHANGKEER:</strong> Seperti mesin kasir pintar. Saat barcode dipindai, nominal Rp 32.500 sudah otomatis terkunci di layar m-Banking pelanggan. Pelanggan tinggal menekan 'Konfirmasi Bayar'. Cepat, 100% tepat, dan bebas dari antrean kasir.</li>
         </ul>
     </div>
 
     <h2>4.3 Perlindungan Anti-Kecurangan (Server-Side Anti-Tampering)</h2>
     <p>
-        Banyak toko daring mengalami kerugian karena orang usil mengubah nominal belanjaan lewat kode peramban HP. Pada sistem CHANGKEER, harga barang <strong>tidak pernah dipercayakan pada HP pelanggan</strong>. Setiap item diperiksa ulang langsung ke katalog server pusat. Jika harga sengaja dimanipulasi, pesanan otomatis digugurkan oleh sistem keamanan.
+        Banyak toko daring mengalami kerugian karena orang usil mengubah nominal belanjaan lewat celah kode peramban HP. Pada sistem CHANGKEER, harga barang <strong>tidak pernah dipercayakan pada HP pelanggan</strong>. Setiap item diperiksa ulang langsung ke katalog server pusat. Jika harga sengaja dimanipulasi, pesanan otomatis digugurkan oleh sistem keamanan.
     </p>
 
     <h2>4.4 Proteksi Saldo Terpotong Ganda (Idempotensi)</h2>
@@ -782,7 +715,7 @@ table.editorial-table tr:nth-child(even) td {{
 
 <!-- BAB 5 -->
 <div class="page-break">
-    <div class="section-eyebrow">Bab 05 • Standar Operasional Barista</div>
+    <div class="section-label">Bab 05 • Standar Operasional Barista</div>
     <h1>Standar Operasional Prosedur (SOP) Barista di Bar</h1>
 
     <h2>5.1 Membaca Layar Kitchen Display System (KDS)</h2>
@@ -802,7 +735,7 @@ table.editorial-table tr:nth-child(even) td {{
                 <th style="width: 30%;">Jenis Daun / Tisane</th>
                 <th style="width: 25%;">Suhu Air Ideal</th>
                 <th style="width: 25%;">Durasi Seduh</th>
-                <th>Catatan Khusus Barista</th>
+                <th>Catatan Kualitas Barista</th>
             </tr>
         </thead>
         <tbody>
@@ -844,16 +777,11 @@ table.editorial-table tr:nth-child(even) td {{
         <li><strong>75% (Balanced):</strong> 18 ml madu hutan / sirup sorgum murni.</li>
         <li><strong>100% (Full Sweetness):</strong> 25 ml madu hutan / sirup sorgum murni.</li>
     </ul>
-
-    <h2>5.4 Tata Cara Penyerahan Teh ke Meja Pelanggan</h2>
-    <p>
-        Setelah seduhan selesai, tekan tombol <strong>'Siap Saji'</strong> di layar KDS. Bawa cangkir atau poci menggunakan nampan kayu sawo, sebutkan nama pelanggan serta nomor meja dengan ramah, dan jelaskan secara singkat aroma dominan teh yang disajikan.
-    </p>
 </div>
 
 <!-- BAB 6 -->
 <div class="page-break">
-    <div class="section-eyebrow">Bab 06 • Standar Operasional Kasir</div>
+    <div class="section-label">Bab 06 • Standar Operasional Kasir</div>
     <h1>Standar Operasional Kasir &amp; Rekonsiliasi</h1>
 
     <h2>6.1 Tanggung Jawab Staf Kasir</h2>
@@ -878,7 +806,7 @@ table.editorial-table tr:nth-child(even) td {{
             </tr>
             <tr>
                 <td><strong>Saldo Terpotong, Status Belum Berubah</strong></td>
-                <td>Keterlambatan jaringan bank (<em>bank network delay</em>) saat jam sibuk.</td>
+                <td>Keterlambatan jaringan bank saat jam sibuk.</td>
                 <td>Minta pelanggan memperlihatkan bukti mutasi berhasil di aplikasi m-Banking. Kasir membuka panel kasir dan menekan tombol konfirmasi pembayaran manual.</td>
             </tr>
             <tr>
@@ -900,50 +828,17 @@ table.editorial-table tr:nth-child(even) td {{
     </p>
 </div>
 
-<!-- BAB 7 -->
+<!-- BAB 7 & BAB 8 -->
 <div class="page-break">
-    <div class="section-eyebrow">Bab 07 • Pengelolaan Toko</div>
-    <h1>Tata Kelola Panel Admin &amp; Manajemen Menu</h1>
+    <div class="section-label">Bab 07 &amp; 08 • Panel Pengelola &amp; Glosarium</div>
+    <h1>Tata Kelola Toko &amp; Kamus Istilah Praktis</h1>
 
-    <h2>7.1 Akses Dashboard Pengelola (Admin Panel)</h2>
+    <h2>7.1 Pengaturan Menu &amp; Stok Bahan Cepat</h2>
     <p>
-        Panel pengelola beralamat di <code>/admin</code> dan hanya dapat diakses oleh staf berwenang yang memiliki akun terdaftar. Sistem melindungi halaman pengelola dengan kunci sesi terenkripsi untuk mencegah akses tanpa izin dari luar gerai.
+        Jika salah satu jenis kelopak bunga herbal (misalnya bunga chamomile utuh) habis karena panen terhambat cuaca, pengelola toko dapat mematikan status ketersediaan item tersebut dalam waktu 5 detik melalui panel <code>/admin</code> dengan menggeser sakelar menjadi <strong>'Out of Stock'</strong>.
     </p>
 
-    <h2>7.2 Mengatur Ketersediaan Menu &amp; Stok Bahan</h2>
-    <p>
-        Jika salah satu jenis kelopak bunga herbal (misalnya bunga chamomile utuh) habis karena panen terhambat cuaca, pengelola toko dapat mematikan status ketersediaan item tersebut dalam waktu 5 detik:
-    </p>
-    <ol>
-        <li>Buka menu <strong>Katalog Produk</strong> di bilah navigasi admin.</li>
-        <li>Cari produk atau topping yang bersangkutan.</li>
-        <li>Geser sakelar tombol status menjadi <strong>'Non-Aktif' (Out of Stock)</strong>.</li>
-        <li>Sistem otomatis menyembunyikan opsi tersebut dari layar pemesanan pelanggan seketika, mencegah kekecewaan pelanggan.</li>
-    </ol>
-
-    <h2>7.3 Mengelola Kupon Promo &amp; Diskon Member</h2>
-    <p>
-        Pengelola gerai dapat merancang program loyalitas musiman, misalnya diskon 15% untuk menyambut Musim Semi:
-    </p>
-    <ul>
-        <li><strong>Kode Promo:</strong> Dibuat dengan huruf kapital yang mudah diingat (contoh: <code>SPRINGWELLNESS</code>).</li>
-        <li><strong>Tipe Diskon:</strong> Dapat berupa persentase (misal 15%) atau potongan nominal langsung (misal Rp 10.000).</li>
-        <li><strong>Batas Minimum Belanja:</strong> Menentukan batas minimal transaksi agar promo dapat digunakan (contoh: Rp 50.000).</li>
-        <li><strong>Batas Kuota Pemakaian:</strong> Membatasi jumlah pelanggan beruntung yang dapat menukarkan kupon tersebut.</li>
-    </ul>
-
-    <h2>7.4 Mengunduh Laporan Keuangan &amp; Penjualan</h2>
-    <p>
-        Dashboard menyediakan grafik tren omzet harian, mingguan, dan bulanan serta rincian menu terlaris. Laporan dapat diekspor langsung ke format lembar kerja Excel (CSV) untuk keperluan audit akuntansi dan pelaporan pajak usaha.
-    </p>
-</div>
-
-<!-- BAB 8 -->
-<div class="page-break">
-    <div class="section-eyebrow">Bab 08 • Glosarium &amp; Bantuan Cepat</div>
-    <h1>Kamus Istilah Praktis &amp; Solusi Kendala Cepat</h1>
-
-    <h2>8.1 Kamus Istilah Praktis untuk Orang Awam</h2>
+    <h2>7.2 Kamus Istilah Praktis untuk Orang Awam</h2>
     <table class="editorial-table">
         <thead>
             <tr>
@@ -986,18 +881,11 @@ table.editorial-table tr:nth-child(even) td {{
         </tbody>
     </table>
 
-    <h2>8.2 Solusi Cepat Kendala Gerai (Quick Fix Matrix)</h2>
-    <ul>
-        <li><strong>Layar KDS Barista Mati Mendadak:</strong> Periksa kabel daya tablet/monitor bar. Pastikan perangkat terhubung ke Wi-Fi internal gerai <code>CHANGKEER_BAR_5G</code>. Buka peramban dan muat ulang halaman <code>/kds</code>.</li>
-        <li><strong>Koneksi Internet Gerai Terputus:</strong> Sistem kasir otomatis beralih ke mode penyimpanan lokal. Staf kasir dapat tetap mencatat pesanan tunai secara manual, dan data akan disinkronkan kembali saat internet pulih.</li>
-        <li><strong>Struk Printer Termal Tidak Keluar:</strong> Periksa gulungan kertas termal 58mm/80mm di dalam printer kasir. Pastikan tuas penutup terkunci rapat dan lampu indikator printer berwarna hijau.</li>
-    </ul>
-
     <div class="rule"></div>
 
-    <div style="text-align: center; font-size: 8pt; color: #6b7280; margin-top: 18pt;">
-        Dokumen ini diterbitkan secara resmi oleh <strong>Kelompok Pengembang Sistem CHANGKEER</strong>.<br>
-        Ketua Tim &amp; Arsitek Sistem: <strong>Muhammad Ilham</strong>.<br>
+    <div style="text-align: center; font-size: 8pt; color: #4a5568; margin-top: 16pt;">
+        Dokumen ini diterbitkan secara resmi oleh <strong>Dewan Pendiri CHANGKEER ATELIER</strong>.<br>
+        Almaidah Chaerudin Putri • Annisha Humaira • Johana Abigael Rumbiak • Keyla Putri Adisty • Nursoleha Romadhoni.<br>
         &copy; 2026 CHANGKEER ATELIER. Hak Cipta Dilindungi Undang-Undang.
     </div>
 </div>
@@ -1005,10 +893,7 @@ table.editorial-table tr:nth-child(even) td {{
 </body>
 </html>
 """
-    # Strict validation: Ensure NO asterisks leaked into HTML text
-    # In HTML, asterisks can cause formatting issues or violate user request
-    # Let's check text content
-    clean_html = html.replace("*", "")  # Guarantee zero asterisks
+    clean_html = html.replace("*", "")
     return clean_html
 
 if __name__ == "__main__":

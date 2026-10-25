@@ -1,20 +1,66 @@
 #!/usr/bin/env python3
 """
-presentation_en.py - Generator for English Presentation Deck (A4 Landscape)
-Clean Editorial Craft Style, Zero AI-Slop, No Badges, Round Bullets,
-No Terminal ASCII, Real Product Photos, Layman-Friendly Explanations,
-Team / Kelompok Specification, and Zero Markdown Asterisks.
-Exact 10 Slides = 10 Landscape Pages.
+presentation_en.py - English Presentation Deck (A4 Landscape)
+Featuring:
+- Official Web Logo (logo_new.png)
+- The 5 Co-Founders from the website About page (Zero mention of user's personal name)
+- Complete 24 Seasonal Products Showcase with simple, compact images (Terms 01-12 & Terms 13-24)
+- High Contrast, Pristine Professional Typography, Zero AI-slop, No Badges, Round Bullets
+- Zero mention of OXID
+- Zero asterisks
+- Exact 11 Slides = 11 Landscape Pages
 """
 
 def generate_presentation_en(assets: dict) -> str:
+    founders = assets.get("founders", [])
+    solar = assets.get("solar_terms", [])
+    logo_b64 = assets.get("logo", "")
+
+    def render_12_grid_en(items):
+        html = '<div style="display: table; width: 100%; table-layout: fixed; margin-top: 5pt;">'
+        for row_idx in range(0, len(items), 6):
+            html += '<div style="display: table-row;">'
+            for col_idx in range(6):
+                if row_idx + col_idx < len(items):
+                    it = items[row_idx + col_idx]
+                    ingr = ", ".join(it.get('ingredients', [])[:2])
+                    html += f'''
+                    <div style="display: table-cell; width: 16.66%; vertical-align: top; padding: 4.5pt; border: 1px solid #cbd5e1; background: #ffffff; text-align: center;">
+                        <img src="{it['thumb_b64']}" style="width: 44px; height: 44px; object-fit: cover; border: 1px solid #94a3b8; margin: 0 auto 3pt auto; display: block;" alt="{it['term']}">
+                        <div style="font-family: 'Playfair Display', serif; font-size: 8pt; font-weight: 700; color: #143828; line-height: 1.15;">{it['term']}</div>
+                        <div style="font-size: 7.2pt; color: #946c38; font-weight: 600;">{it['blend']} ({it['termChinese']})</div>
+                        <div style="font-size: 6.8pt; color: #334155; margin-top: 1.5pt; line-height: 1.2;">Hot {it['hotPrice']} / Ice {it['icedPrice']}</div>
+                        <div style="font-size: 6.5pt; color: #64748b; margin-top: 1pt; font-style: italic;">{ingr}</div>
+                    </div>
+                    '''
+                else:
+                    html += '<div style="display: table-cell; width: 16.66%;"></div>'
+            html += '</div>'
+        html += '</div>'
+        return html
+
+    grid_spring_summer = render_12_grid_en(solar[:12])
+    grid_autumn_winter = render_12_grid_en(solar[12:])
+
+    # Founders Table Rows for Slide 11
+    founders_rows = ""
+    for f in founders:
+        founders_rows += f"""
+        <tr>
+            <td style="text-align: center; font-weight: 700; color: #143828;">{f['num']}</td>
+            <td><strong>{f['name']}</strong></td>
+            <td>{f['role']}</td>
+            <td>{f['focus_en']}</td>
+        </tr>
+        """
+
     html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <title>CHANGKEER ATELIER — SYSTEM PRESENTATION &amp; PROJECT SHOWCASE</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap');
 
 @page {{
     size: A4 landscape;
@@ -28,10 +74,10 @@ def generate_presentation_en(assets: dict) -> str:
 }}
 
 body {{
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     font-size: 9pt;
     line-height: 1.5;
-    color: #24292f;
+    color: #1a202c;
     background-color: #ffffff;
     margin: 0;
     padding: 0;
@@ -53,11 +99,10 @@ body {{
     justify-content: space-between;
 }}
 
-/* Slide Running Header & Footer */
 .slide-header {{
     display: table;
     width: 100%;
-    border-bottom: 1px solid #e5e2da;
+    border-bottom: 1.5px solid #143828;
     padding-bottom: 4pt;
     margin-bottom: 6pt;
 }}
@@ -75,18 +120,18 @@ body {{
     display: table-cell;
     text-align: right;
     font-size: 7.5pt;
-    font-weight: 600;
-    color: #6b7280;
+    font-weight: 700;
+    color: #143828;
 }}
 
 .slide-footer {{
     display: table;
     width: 100%;
-    border-top: 1px solid #e5e2da;
+    border-top: 1px solid #cbd5e1;
     padding-top: 4pt;
     margin-top: 6pt;
     font-size: 7.5pt;
-    color: #9ca3af;
+    color: #64748b;
 }}
 
 .slide-footer-left {{
@@ -97,11 +142,10 @@ body {{
 .slide-footer-right {{
     display: table-cell;
     text-align: right;
-    font-weight: 600;
+    font-weight: 700;
     color: #143828;
 }}
 
-/* Typography */
 h1, h2, h3 {{
     font-family: 'Playfair Display', Georgia, serif;
     font-weight: 700;
@@ -117,7 +161,7 @@ h1, h2, h3 {{
 
 .slide-subtitle {{
     font-size: 9pt;
-    color: #6b7280;
+    color: #4a5568;
     margin-bottom: 6pt;
 }}
 
@@ -125,9 +169,9 @@ p {{
     margin-top: 0;
     margin-bottom: 5pt;
     text-align: justify;
+    color: #2d3748;
 }}
 
-/* Lists with Circular Bullets */
 ul {{
     list-style-type: disc !important;
     margin-top: 2pt;
@@ -138,9 +182,9 @@ ul {{
 ul li {{
     margin-bottom: 2.5pt;
     line-height: 1.4;
+    color: #2d3748;
 }}
 
-/* Multi-Column Layout */
 .col-container {{
     display: table;
     width: 100%;
@@ -170,25 +214,26 @@ ul li {{
     padding-right: 0;
 }}
 
-/* Editorial Note / Layman Box */
 .layman-box {{
-    border-left: 3px solid #143828;
-    background-color: #fbfaf7;
-    padding: 5pt 9pt;
+    border-left: 3.5px solid #143828;
+    background-color: #f8fafc;
+    border-right: 1px solid #e2e8f0;
+    border-top: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 6pt 10pt;
     margin: 5pt 0;
-    font-size: 8pt;
+    font-size: 8.5pt;
 }}
 
 .layman-box-title {{
     font-weight: 700;
     color: #143828;
-    font-size: 7.5pt;
+    font-size: 8pt;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.05em;
     margin-bottom: 2pt;
 }}
 
-/* Tables */
 table.slide-table {{
     width: 100%;
     border-collapse: collapse;
@@ -205,16 +250,16 @@ table.slide-table th {{
     color: #143828;
     font-size: 7.5pt;
     text-transform: uppercase;
-    background-color: #f7f6f1;
+    background-color: #f1f5f9;
 }}
 
 table.slide-table td {{
-    border-bottom: 1px solid #e5e2da;
+    border-bottom: 1px solid #cbd5e1;
     padding: 4pt 6pt;
     vertical-align: top;
+    color: #2d3748;
 }}
 
-/* Horizontal Workflow Diagram (No Terminal ASCII) */
 .h-workflow {{
     display: table;
     width: 100%;
@@ -226,8 +271,8 @@ table.slide-table td {{
     display: table-cell;
     vertical-align: top;
     padding: 6pt 8pt;
-    background-color: #fbfaf7;
-    border: 1px solid #e5e2da;
+    background-color: #f8fafc;
+    border: 1px solid #cbd5e1;
 }}
 
 .h-step-num {{
@@ -247,7 +292,7 @@ table.slide-table td {{
 
 .h-step-desc {{
     font-size: 7.5pt;
-    color: #4b5563;
+    color: #4a5568;
     line-height: 1.35;
 }}
 
@@ -260,39 +305,11 @@ table.slide-table td {{
     font-size: 12pt;
 }}
 
-/* Product Card in Slide */
-.product-slide-card {{
-    text-align: center;
-    border: 1px solid #e5e2da;
-    padding: 5pt;
-    background-color: #fbfaf7;
-}}
-
-.product-slide-card img {{
-    width: 100%;
-    height: 85px;
-    object-fit: cover;
-    margin-bottom: 3pt;
-}}
-
-.product-slide-title {{
-    font-family: 'Playfair Display', serif;
-    font-weight: 700;
-    font-size: 9pt;
-    color: #143828;
-}}
-
-.product-slide-desc {{
-    font-size: 7.5pt;
-    color: #6b7280;
-    margin-top: 2pt;
-}}
-
-/* Cover Slide Special Styling */
+/* Cover Slide */
 .slide-cover {{
     background-color: #143828;
-    color: #f7f6f1;
-    padding: 16mm 20mm 12mm 20mm;
+    color: #ffffff;
+    padding: 18mm 20mm 14mm 20mm;
     max-height: 210mm;
     overflow: hidden;
     page-break-after: always;
@@ -301,7 +318,7 @@ table.slide-table td {{
 
 .cover-title-big {{
     font-family: 'Playfair Display', Georgia, serif;
-    font-size: 26pt;
+    font-size: 27pt;
     font-weight: 700;
     line-height: 1.15;
     color: #ffffff;
@@ -309,8 +326,8 @@ table.slide-table td {{
 }}
 
 .cover-tagline {{
-    font-size: 10.5pt;
-    color: #d1d5db;
+    font-size: 11pt;
+    color: #e2e8f0;
     max-width: 620px;
     line-height: 1.45;
     margin-bottom: 14pt;
@@ -319,7 +336,7 @@ table.slide-table td {{
 .cover-team-box {{
     display: table;
     width: 100%;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    border-top: 1px solid rgba(255, 255, 255, 0.25);
     padding-top: 10pt;
 }}
 
@@ -354,29 +371,29 @@ table.slide-table td {{
             CHANGKEER ATELIER • SYSTEM PRESENTATION &amp; PROJECT SHOWCASE
         </div>
         <div style="margin-bottom: 10pt;">
-            <img src="{assets['logo']}" style="width: 55px; height: 55px; border-radius: 50%; border: 2px solid #dfba7c;" alt="Changkeer Logo">
+            <img src="{logo_b64}" style="width: 58px; height: 58px; border-radius: 50%; border: 2px solid #dfba7c; background: #ffffff;" alt="Changkeer Web Logo">
         </div>
         <div class="cover-title-big">Digitalizing the 24 Seasons Herbal Tea Ritual</div>
         <div class="cover-tagline">
-            Self-Service Mobile Ordering, Dynamic Locked-Amount QRIS Payments, Real-Time Kitchen Display System (KDS), and Store Management.
+            Self-Service Mobile Ordering, Dynamic Locked-Amount QRIS Payments, Real-Time Kitchen Display System (KDS), and Store Governance.
         </div>
     </div>
 
     <div class="cover-team-box">
         <div class="cover-team-cell">
-            <div class="cover-team-lbl">Project Team</div>
-            <div class="cover-team-val">System Engineering Team</div>
+            <div class="cover-team-lbl">Founding Group</div>
+            <div class="cover-team-val">5 Co-Founders</div>
         </div>
         <div class="cover-team-cell">
-            <div class="cover-team-lbl">Lead Architect</div>
-            <div class="cover-team-val">Muhammad Ilham</div>
+            <div class="cover-team-lbl">Project Initiators</div>
+            <div class="cover-team-val">Board of Founders</div>
         </div>
         <div class="cover-team-cell">
-            <div class="cover-team-lbl">Organization / Brand</div>
+            <div class="cover-team-lbl">Enterprise</div>
             <div class="cover-team-val">CHANGKEER ATELIER</div>
         </div>
         <div class="cover-team-cell">
-            <div class="cover-team-lbl">Academic Year / Release</div>
+            <div class="cover-team-lbl">Academic Release</div>
             <div class="cover-team-val">October 2026</div>
         </div>
     </div>
@@ -417,7 +434,7 @@ table.slide-table td {{
     </div>
 
     <div class="slide-footer">
-        <div class="slide-footer-left">CHANGKEER System Engineering Group</div>
+        <div class="slide-footer-left">Board of Founders, CHANGKEER ATELIER</div>
         <div class="slide-footer-right">Slide 02</div>
     </div>
 </div>
@@ -480,57 +497,55 @@ table.slide-table td {{
     </div>
 
     <div class="slide-footer">
-        <div class="slide-footer-left">CHANGKEER System Engineering Group</div>
+        <div class="slide-footer-left">Board of Founders, CHANGKEER ATELIER</div>
         <div class="slide-footer-right">Slide 03</div>
     </div>
 </div>
 
-<!-- SLIDE 4: SIGNATURE BLENDS GALLERY -->
+<!-- SLIDE 4: 24 BLENDS GALLERY (SPRING & SUMMER) -->
 <div class="slide">
     <div class="slide-header">
-        <div class="slide-header-left">03 / Product Showcase &amp; Ingredients</div>
+        <div class="slide-header-left">03 / Complete 24 Seasonal Blends (Part I)</div>
         <div class="slide-header-right">CHANGKEER ATELIER</div>
     </div>
 
     <div>
-        <div class="slide-title">Three Signature Botanical Blends</div>
-        <div class="slide-subtitle">Whole-leaf loose teas and premium Indonesian botanicals steeped with scientific precision.</div>
+        <div class="slide-title">Spring &amp; Summer Blends (Terms 01–12)</div>
+        <div class="slide-subtitle">12 crisp botanical infusions featuring simple thumbnail imagery, authentic ingredients, and verified pricing.</div>
 
-        <div class="col-container">
-            <div class="col-3">
-                <div class="product-slide-card">
-                    <img src="{assets['jasmine']}" alt="Jasmine Tea">
-                    <div class="product-slide-title">Jasmine Tea Signature</div>
-                    <div class="product-slide-desc">High-altitude green tea scented with natural jasmine petals. Calms mental fatigue and provides a silky, delicate finish.</div>
-                </div>
-            </div>
-            <div class="col-3">
-                <div class="product-slide-card">
-                    <img src="{assets['vanilla_mint']}" alt="Vanilla Mint Tea">
-                    <div class="product-slide-title">Vanilla Mint Tea</div>
-                    <div class="product-slide-desc">Crisp highland peppermint balanced with sweet organic vanilla extract. Clears breathing passages and cools the body.</div>
-                </div>
-            </div>
-            <div class="col-3">
-                <div class="product-slide-card">
-                    <img src="{assets['english_breakfast']}" alt="English Breakfast Tea">
-                    <div class="product-slide-title">English Breakfast Tea</div>
-                    <div class="product-slide-desc">Robust, full-bodied Indonesian black tea providing sustained morning focus. 100% bleach-free, microplastic-free pouches.</div>
-                </div>
-            </div>
-        </div>
+        {grid_spring_summer}
     </div>
 
     <div class="slide-footer">
-        <div class="slide-footer-left">CHANGKEER System Engineering Group</div>
+        <div class="slide-footer-left">Board of Founders, CHANGKEER ATELIER</div>
         <div class="slide-footer-right">Slide 04</div>
     </div>
 </div>
 
-<!-- SLIDE 5: CUSTOMER EXPERIENCE -->
+<!-- SLIDE 5: 24 BLENDS GALLERY (AUTUMN & WINTER) -->
 <div class="slide">
     <div class="slide-header">
-        <div class="slide-header-left">04 / Guest Experience &amp; Personalization</div>
+        <div class="slide-header-left">04 / Complete 24 Seasonal Blends (Part II)</div>
+        <div class="slide-header-right">CHANGKEER ATELIER</div>
+    </div>
+
+    <div>
+        <div class="slide-title">Autumn &amp; Winter Blends (Terms 13–24)</div>
+        <div class="slide-subtitle">12 warming root and floral tisanes designed to restore bodily vitality and bolster cold-weather immunity.</div>
+
+        {grid_autumn_winter}
+    </div>
+
+    <div class="slide-footer">
+        <div class="slide-footer-left">Board of Founders, CHANGKEER ATELIER</div>
+        <div class="slide-footer-right">Slide 05</div>
+    </div>
+</div>
+
+<!-- SLIDE 6: CUSTOMER EXPERIENCE -->
+<div class="slide">
+    <div class="slide-header">
+        <div class="slide-header-left">05 / Guest Experience &amp; Personalization</div>
         <div class="slide-header-right">CHANGKEER ATELIER</div>
     </div>
 
@@ -558,15 +573,15 @@ table.slide-table td {{
     </div>
 
     <div class="slide-footer">
-        <div class="slide-footer-left">CHANGKEER System Engineering Group</div>
-        <div class="slide-footer-right">Slide 05</div>
+        <div class="slide-footer-left">Board of Founders, CHANGKEER ATELIER</div>
+        <div class="slide-footer-right">Slide 06</div>
     </div>
 </div>
 
-<!-- SLIDE 6: WORKFLOW & DYNAMIC QRIS -->
+<!-- SLIDE 7: WORKFLOW & DYNAMIC QRIS -->
 <div class="slide">
     <div class="slide-header">
-        <div class="slide-header-left">05 / Transaction Workflow &amp; Dynamic QRIS</div>
+        <div class="slide-header-left">06 / Transaction Workflow &amp; Dynamic QRIS</div>
         <div class="slide-header-right">CHANGKEER ATELIER</div>
     </div>
 
@@ -574,7 +589,6 @@ table.slide-table td {{
         <div class="slide-title">End-to-End Automated Transaction Pipeline</div>
         <div class="slide-subtitle">Complete digital automation from menu exploration to the barista's pickup counter.</div>
 
-        <!-- Horizontal Visual Flow -->
         <div class="h-workflow">
             <div class="h-step">
                 <div class="h-step-num">1</div>
@@ -614,15 +628,15 @@ table.slide-table td {{
     </div>
 
     <div class="slide-footer">
-        <div class="slide-footer-left">CHANGKEER System Engineering Group</div>
-        <div class="slide-footer-right">Slide 06</div>
+        <div class="slide-footer-left">Board of Founders, CHANGKEER ATELIER</div>
+        <div class="slide-footer-right">Slide 07</div>
     </div>
 </div>
 
-<!-- SLIDE 7: PAYMENT SECURITY -->
+<!-- SLIDE 8: PAYMENT SECURITY -->
 <div class="slide">
     <div class="slide-header">
-        <div class="slide-header-left">06 / Security Architecture &amp; Financial Integrity</div>
+        <div class="slide-header-left">07 / Retail Financial Integrity</div>
         <div class="slide-header-right">CHANGKEER ATELIER</div>
     </div>
 
@@ -655,15 +669,15 @@ table.slide-table td {{
     </div>
 
     <div class="slide-footer">
-        <div class="slide-footer-left">CHANGKEER System Engineering Group</div>
-        <div class="slide-footer-right">Slide 07</div>
+        <div class="slide-footer-left">Board of Founders, CHANGKEER ATELIER</div>
+        <div class="slide-footer-right">Slide 08</div>
     </div>
 </div>
 
-<!-- SLIDE 8: KITCHEN DISPLAY SYSTEM -->
+<!-- SLIDE 9: KITCHEN DISPLAY SYSTEM -->
 <div class="slide">
     <div class="slide-header">
-        <div class="slide-header-left">07 / Barista Operations &amp; KDS</div>
+        <div class="slide-header-left">08 / Barista Operations &amp; KDS</div>
         <div class="slide-header-right">CHANGKEER ATELIER</div>
     </div>
 
@@ -718,15 +732,15 @@ table.slide-table td {{
     </div>
 
     <div class="slide-footer">
-        <div class="slide-footer-left">CHANGKEER System Engineering Group</div>
-        <div class="slide-footer-right">Slide 08</div>
+        <div class="slide-footer-left">Board of Founders, CHANGKEER ATELIER</div>
+        <div class="slide-footer-right">Slide 09</div>
     </div>
 </div>
 
-<!-- SLIDE 9: TECHNOLOGY ARCHITECTURE -->
+<!-- SLIDE 10: TECHNOLOGY ARCHITECTURE -->
 <div class="slide">
     <div class="slide-header">
-        <div class="slide-header-left">08 / Technology Stack &amp; Reliability</div>
+        <div class="slide-header-left">09 / Technology Stack &amp; Reliability</div>
         <div class="slide-header-right">CHANGKEER ATELIER</div>
     </div>
 
@@ -736,21 +750,21 @@ table.slide-table td {{
 
         <div class="col-container">
             <div class="col-3">
-                <div style="background-color: #fbfaf7; border: 1px solid #e5e2da; padding: 8pt;">
+                <div style="background-color: #f8fafc; border: 1px solid #cbd5e1; padding: 8pt;">
                     <div style="font-weight: 700; color: #143828; font-size: 9.5pt; margin-bottom: 2pt;">Next.js 16 &amp; React 19</div>
-                    <div style="font-size: 8pt; color: #4b5563;">Ultra-fast catalog rendering on mobile devices with negligible cellular data usage.</div>
+                    <div style="font-size: 8pt; color: #334155;">Ultra-fast catalog rendering on mobile devices with negligible cellular data usage.</div>
                 </div>
             </div>
             <div class="col-3">
-                <div style="background-color: #fbfaf7; border: 1px solid #e5e2da; padding: 8pt;">
+                <div style="background-color: #f8fafc; border: 1px solid #cbd5e1; padding: 8pt;">
                     <div style="font-weight: 700; color: #143828; font-size: 9.5pt; margin-bottom: 2pt;">Supabase Cloud &amp; RLS</div>
-                    <div style="font-size: 8pt; color: #4b5563;">Encrypted PostgreSQL database with strict row-level authorization on customer orders.</div>
+                    <div style="font-size: 8pt; color: #334155;">Encrypted PostgreSQL database with strict row-level authorization on customer orders.</div>
                 </div>
             </div>
             <div class="col-3">
-                <div style="background-color: #fbfaf7; border: 1px solid #e5e2da; padding: 8pt;">
+                <div style="background-color: #f8fafc; border: 1px solid #cbd5e1; padding: 8pt;">
                     <div style="font-weight: 700; color: #143828; font-size: 9.5pt; margin-bottom: 2pt;">Dual-Tier Resilience</div>
-                    <div style="font-size: 8pt; color: #4b5563;">If internet connection drops, the local memory store ensures counter POS continues smoothly.</div>
+                    <div style="font-size: 8pt; color: #334155;">If internet connection drops, the local memory store ensures counter POS continues smoothly.</div>
                 </div>
             </div>
         </div>
@@ -762,49 +776,35 @@ table.slide-table td {{
     </div>
 
     <div class="slide-footer">
-        <div class="slide-footer-left">CHANGKEER System Engineering Group</div>
-        <div class="slide-footer-right">Slide 09</div>
+        <div class="slide-footer-left">Board of Founders, CHANGKEER ATELIER</div>
+        <div class="slide-footer-right">Slide 10</div>
     </div>
 </div>
 
-<!-- SLIDE 10: TEAM & CONCLUSION -->
+<!-- SLIDE 11: FOUNDERS & CLOSING -->
 <div class="slide">
     <div class="slide-header">
-        <div class="slide-header-left">09 / Project Team &amp; Closing</div>
+        <div class="slide-header-left">10 / Board of Founders &amp; Closing</div>
         <div class="slide-header-right">CHANGKEER ATELIER</div>
     </div>
 
     <div>
-        <div class="slide-title">Engineering Team &amp; Open Discussion</div>
-        <div class="slide-subtitle">Empowering the future of Indonesian botanical tea rituals through disciplined digital engineering.</div>
+        <div class="slide-title">Board of Founders &amp; Open Discussion</div>
+        <div class="slide-subtitle">The five co-founders shaping the future of Indonesian botanical tea rituals.</div>
 
         <div class="col-container">
             <div class="col-2">
-                <h3 style="margin-bottom: 4pt;">Project Development Team Roster</h3>
+                <h3 style="margin-bottom: 4pt;">The 5 Co-Founders Roster</h3>
                 <table class="slide-table">
                     <thead>
                         <tr>
-                            <th>Department / Role</th>
-                            <th>Lead Person</th>
+                            <th style="width: 10%;">No</th>
+                            <th style="width: 45%;">Co-Founder Name</th>
+                            <th>Strategic Focus</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><strong>Project Lead &amp; System Architect</strong></td>
-                            <td><strong>Muhammad Ilham</strong></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Frontend &amp; UI/UX Division</strong></td>
-                            <td>User Interface Team</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Botanical R&amp;D &amp; Barista Standards</strong></td>
-                            <td>Botanical Research Team</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Store Operations &amp; Cashier Services</strong></td>
-                            <td>Store Operations Team</td>
-                        </tr>
+                        {founders_rows}
                     </tbody>
                 </table>
             </div>
@@ -813,12 +813,12 @@ table.slide-table td {{
                     <div class="layman-box-title">Final Synthesis</div>
                     CHANGKEER proves that heritage herbal craftsmanship can seamlessly harmonize with cutting-edge web technology. The platform is ready for commercial multi-store deployment.
                 </div>
-                <div style="text-align: center; margin-top: 14pt;">
+                <div style="text-align: center; margin-top: 12pt;">
                     <div style="font-family: 'Playfair Display', serif; font-size: 15pt; font-weight: 700; color: #143828; margin-bottom: 2pt;">
                         Thank You for Your Consideration
                     </div>
-                    <div style="font-size: 8.5pt; color: #6b7280;">
-                        We warmly invite questions, critique, and discussion.
+                    <div style="font-size: 8.5pt; color: #4a5568;">
+                        We warmly invite questions, evaluation, and discussion.
                     </div>
                 </div>
             </div>
@@ -827,7 +827,7 @@ table.slide-table td {{
 
     <div class="slide-footer">
         <div class="slide-footer-left">CHANGKEER ATELIER • All Rights Reserved</div>
-        <div class="slide-footer-right">Slide 10</div>
+        <div class="slide-footer-right">Slide 11</div>
     </div>
 </div>
 
