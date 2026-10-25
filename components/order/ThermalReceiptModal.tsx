@@ -1,16 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { 
-  X, 
-  Printer, 
-  Check, 
-  Copy, 
-  Coffee, 
-  Sparkles, 
-  QrCode,
-  Tag
-} from 'lucide-react';
+import { X } from 'lucide-react';
+import { ThermalSlipIcon, TeaCupIcon } from '@/components/icons';
 import { Order } from '@/types';
 import { generateDynamicQRIS, generateQRCodeDataUrl } from '@/lib/utils/qris';
 
@@ -294,7 +286,7 @@ export function ThermalReceiptModal({ order, isOpen, onClose }: ThermalReceiptMo
             onClick={handlePrint}
             className="flex-1 py-2.5 px-4 rounded-xl bg-neutral-900 hover:bg-neutral-800 text-white text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-xs cursor-pointer active:scale-98"
           >
-            <Printer className="w-4 h-4" />
+            <ThermalSlipIcon size={16} />
             <span>Print Receipt Now</span>
           </button>
         </div>

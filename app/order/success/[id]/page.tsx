@@ -4,22 +4,23 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { 
-  CheckCircle2, 
-  Clock, 
-  Flame, 
-  Sparkles, 
-  QrCode, 
-  Printer, 
-  MessageCircle, 
-  ArrowRight,
-  UtensilsCrossed,
-  Package,
-  Bike,
   AlertCircle,
-  Share2,
-  Copy,
-  Check
 } from 'lucide-react';
+import {
+  CheckCircleIcon,
+  CheckIcon,
+  BrewClockIcon,
+  ThermalSlipIcon,
+  WhatsAppIcon,
+  CopyClipboardIcon,
+  ArrowRightLineIcon,
+  DiningTableIcon,
+  TakeawayCupIcon,
+  DeliveryBikeIcon,
+  CashierCounterIcon,
+  BankVaultIcon,
+  CraftStarIcon
+} from '@/components/icons';
 import { Order, OrderStatus } from '@/types';
 import { generateWhatsAppReceiptText, getWhatsAppUrl } from '@/lib/utils/whatsapp';
 import { ThermalReceiptModal } from '@/components/order/ThermalReceiptModal';
@@ -221,8 +222,8 @@ export default function OrderSuccessPage({
         
         {/* Top Success Notice */}
         <div className="text-center space-y-3 mb-8">
-          <div className="w-14 h-14 rounded-xl bg-neutral-100 text-neutral-900 flex items-center justify-center mx-auto shadow-xs">
-            <CheckCircle2 className="w-7 h-7 stroke-[2.2]" />
+          <div className="w-14 h-14 rounded-2xl bg-white border border-neutral-200 text-neutral-900 flex items-center justify-center mx-auto shadow-xs">
+            <CheckCircleIcon size={28} className="text-emerald-700" />
           </div>
 
           <div className="text-xs font-bold uppercase tracking-wider text-neutral-500 font-sans">
@@ -304,7 +305,7 @@ export default function OrderSuccessPage({
           <div className="bg-white border border-amber-200/90 rounded-2xl p-5 sm:p-6 mb-6 sm:mb-8 shadow-xs font-sans">
             <div className="flex items-start gap-3.5">
               <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 border border-amber-200 flex items-center justify-center shrink-0">
-                <UtensilsCrossed className="w-5 h-5" />
+                <CashierCounterIcon size={20} />
               </div>
               <div className="space-y-1">
                 <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-amber-800">
@@ -329,8 +330,9 @@ export default function OrderSuccessPage({
                 <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-blue-800 block">
                   Manual Bank Transfer
                 </span>
-                <h4 className="font-bold text-sm text-neutral-900 mt-0.5">
-                  Bank Central Asia (BCA)
+                <h4 className="font-bold text-sm text-neutral-900 mt-0.5 flex items-center gap-2">
+                  <BankVaultIcon size={16} />
+                  <span>Bank Central Asia (BCA)</span>
                 </h4>
               </div>
               <span className="text-xs font-mono font-extrabold text-neutral-900 bg-neutral-100 px-2.5 py-1 rounded-md">
@@ -375,19 +377,19 @@ export default function OrderSuccessPage({
               <div className="text-xs font-bold text-neutral-900 flex items-center gap-1.5 sm:justify-end font-sans">
                 {order.order_type === 'dine_in' && (
                   <>
-                    <UtensilsCrossed className="w-3.5 h-3.5 text-neutral-600 shrink-0" />
+                    <DiningTableIcon size={14} className="text-neutral-600" />
                     <span>Dine-in at {order.table_number || 'Cafe Table'}</span>
                   </>
                 )}
                 {order.order_type === 'takeaway' && (
                   <>
-                    <Package className="w-3.5 h-3.5 text-neutral-600 shrink-0" />
+                    <TakeawayCupIcon size={14} className="text-neutral-600" />
                     <span>Takeaway ({order.pickup_time || 'ASAP'})</span>
                   </>
                 )}
                 {order.order_type === 'delivery' && (
                   <>
-                    <Bike className="w-3.5 h-3.5 text-neutral-600 shrink-0" />
+                    <DeliveryBikeIcon size={14} className="text-neutral-600" />
                     <span>Courier Delivery</span>
                   </>
                 )}
@@ -487,7 +489,7 @@ export default function OrderSuccessPage({
               className="py-2.5 sm:py-3 px-4 rounded-xl bg-neutral-900 hover:bg-neutral-800 active:scale-98 text-white text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-xs font-sans text-center"
               title="Send Receipt to WhatsApp Barista"
             >
-              <MessageCircle className="w-4 h-4 shrink-0" />
+              <WhatsAppIcon size={16} />
               <span className="truncate">Send Receipt to WhatsApp</span>
             </a>
 
@@ -498,7 +500,7 @@ export default function OrderSuccessPage({
               className="py-2.5 sm:py-3 px-4 rounded-xl bg-white hover:bg-neutral-50 active:scale-98 border border-neutral-200 text-neutral-900 text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-xs cursor-pointer font-sans"
               title="Print Thermal Receipt / Cup Label"
             >
-              <Printer className="w-4 h-4 text-neutral-700 shrink-0" />
+              <ThermalSlipIcon size={16} className="text-neutral-700" />
               <span className="truncate">Print Thermal Receipt (58/80mm)</span>
             </button>
           </div>
@@ -512,12 +514,12 @@ export default function OrderSuccessPage({
             >
               {copiedLink ? (
                 <>
-                  <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                  <CheckIcon size={14} className="text-emerald-600 shrink-0" />
                   <span className="text-emerald-700 font-bold">Receipt Link Copied!</span>
                 </>
               ) : (
                 <>
-                  <Copy className="w-3.5 h-3.5 shrink-0" />
+                  <CopyClipboardIcon size={14} className="shrink-0" />
                   <span>Copy Receipt Link</span>
                 </>
               )}
@@ -530,11 +532,11 @@ export default function OrderSuccessPage({
         <div className="mt-8 flex justify-center gap-6 text-xs text-neutral-500">
           <Link href="/order" className="hover:text-neutral-900 flex items-center gap-1.5 transition-colors font-bold uppercase tracking-wider">
             <span>Order Another Blend</span>
-            <ArrowRight className="w-3.5 h-3.5" />
+            <ArrowRightLineIcon size={14} />
           </Link>
           <Link href="/account" className="hover:text-neutral-900 flex items-center gap-1.5 transition-colors font-bold uppercase tracking-wider">
             <span>Open Account Dashboard</span>
-            <ArrowRight className="w-3.5 h-3.5" />
+            <ArrowRightLineIcon size={14} />
           </Link>
         </div>
 

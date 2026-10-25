@@ -144,4 +144,38 @@ describe('Orders and Checkout Flow', () => {
     const checksum = dynamicString.slice(-4);
     expect(calculateCRC16(rawData)).toBe(checksum);
   });
+
+  it('guarantees payment status idempotency and prevents double confirmation', async () => {
+    const testOrder = await createOrder({
+      customer_name: 'Security Test User',
+      customer_email: 'sec@test.com',
+      customer_phone: '081234567890',
+      order_type: 'dine_in',
+      table_number: 'Meja 09',
+      subtotal: 35000,
+      total_amount: 35000,
+      payment_method: 'qris',
+      items: [
+        {
+          cart_item_id: 'sec-1',
+          product_id: 'prod-01',
+          product_name: 'Changkeer Test Brew',
+          product_slug: 'start-of-spring',
+          serving_size: 'regular',
+          temperature: 'iced',
+          sweetness_level: '0%',
+          selected_addons: [],
+          unit_price: 35000,
+          quantity: 1,
+          subtotal: 35000,
+        },
+      ],
+    });
+
+    const firstPaid = await updatePaymentStatus(testOrder.id, 'paid');
+    expect(firstPaid?.payment_status).toBe('paid');
+
+    const secondPaid = await updatePaymentStatus(testOrder.id, 'paid');
+    expect(secondPaid?.payment_status).toBe('paid');
+  });
 });

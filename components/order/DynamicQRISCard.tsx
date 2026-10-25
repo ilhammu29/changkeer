@@ -3,17 +3,16 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { 
-  Download, 
-  Copy, 
-  Check, 
-  Sparkles, 
-  Clock, 
-  ShieldCheck, 
-  RefreshCw,
-  QrCode,
-  Smartphone,
-  ExternalLink
-} from 'lucide-react';
+  QRISScanIcon, 
+  CashierCounterIcon, 
+  SecureShieldIcon, 
+  BrewClockIcon, 
+  CheckIcon, 
+  CheckCircleIcon,
+  CopyClipboardIcon, 
+  DownloadTrayIcon,
+  CraftStarIcon 
+} from '@/components/icons';
 import { generateDynamicQRIS, generateQRCodeDataUrl, DEFAULT_STATIC_QRIS } from '@/lib/utils/qris';
 
 interface DynamicQRISCardProps {
@@ -55,7 +54,6 @@ export function DynamicQRISCard({
   // 1. Generate Dynamic & Static QR Codes
   useEffect(() => {
     try {
-      // Dynamic QR with locked nominal Tag 54
       const dynPayload = generateDynamicQRIS(safeAmount);
       setDynamicPayload(dynPayload);
 
@@ -63,7 +61,6 @@ export function DynamicQRISCard({
         setDynamicQrUrl(url);
       });
 
-      // Static base QR (Merchant Original)
       generateQRCodeDataUrl(DEFAULT_STATIC_QRIS, { width: 400, margin: 2 }).then((url) => {
         setStaticQrUrl(url);
       });
@@ -114,19 +111,19 @@ export function DynamicQRISCard({
   // If already paid
   if (paymentStatus === 'paid') {
     return (
-      <div className="bg-white border border-emerald-200 rounded-3xl p-6 sm:p-8 shadow-sm font-sans max-w-md mx-auto text-center space-y-4">
+      <div className="bg-white border border-emerald-200 rounded-3xl p-6 sm:p-8 shadow-sm font-sans max-w-md mx-auto text-center space-y-4 animate-in fade-in duration-300">
         <div className="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center mx-auto shadow-xs">
-          <Check className="w-8 h-8 stroke-[2.5]" />
+          <CheckCircleIcon size={32} />
         </div>
         <div>
-          <span className="text-[11px] font-mono font-bold tracking-widest uppercase text-emerald-600 block">
+          <span className="text-[10px] font-mono font-bold tracking-widest uppercase text-emerald-600 block">
             PAYMENT SETTLED
           </span>
           <h3 className="font-sans font-bold text-xl uppercase tracking-tight text-neutral-900 mt-1">
             Payment Confirmed
           </h3>
           <p className="text-xs text-neutral-500 mt-1.5 leading-relaxed">
-            Your QRIS payment of <strong className="text-neutral-900 font-bold">{formatRupiah(safeAmount)}</strong> has been verified. Your artisanal tea order is being steeped now.
+            Your QRIS payment of <strong className="text-neutral-900 font-bold">{formatRupiah(safeAmount)}</strong> has been verified. Your artisanal tea order is being steeped at the counter.
           </p>
         </div>
       </div>
@@ -134,7 +131,7 @@ export function DynamicQRISCard({
   }
 
   return (
-    <div className="bg-white border border-neutral-200/90 rounded-3xl p-5 sm:p-8 shadow-sm font-sans max-w-md mx-auto space-y-5">
+    <div className="bg-white border border-neutral-200/90 rounded-3xl p-5 sm:p-7 shadow-sm font-sans max-w-md mx-auto space-y-5">
       
       {/* Official Indonesian QRIS Header Card */}
       <div className="bg-gradient-to-r from-red-600 via-red-700 to-rose-700 text-white rounded-2xl p-4 sm:p-5 relative overflow-hidden shadow-xs">
@@ -183,36 +180,36 @@ export function DynamicQRISCard({
         <button
           type="button"
           onClick={() => setActiveTab('dynamic')}
-          className={`py-2 px-3 rounded-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+          className={`py-2 px-3 rounded-lg transition-all flex items-center justify-center gap-2 cursor-pointer ${
             activeTab === 'dynamic'
               ? 'bg-white text-neutral-900 shadow-xs'
               : 'text-neutral-500 hover:text-neutral-900'
           }`}
         >
-          <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-          <span>Auto Nominal</span>
+          <QRISScanIcon size={16} className={activeTab === 'dynamic' ? 'text-neutral-900' : 'text-neutral-400'} />
+          <span>Auto Amount</span>
         </button>
         <button
           type="button"
           onClick={() => setActiveTab('static')}
-          className={`py-2 px-3 rounded-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+          className={`py-2 px-3 rounded-lg transition-all flex items-center justify-center gap-2 cursor-pointer ${
             activeTab === 'static'
               ? 'bg-white text-neutral-900 shadow-xs'
               : 'text-neutral-500 hover:text-neutral-900'
           }`}
         >
-          <Smartphone className="w-3.5 h-3.5 text-blue-500" />
-          <span>Merchant QRIS</span>
+          <CashierCounterIcon size={16} className={activeTab === 'static' ? 'text-neutral-900' : 'text-neutral-400'} />
+          <span>Merchant Code</span>
         </button>
       </div>
 
       {/* QR Code Canvas Frame */}
-      <div className="bg-[#FAFAF8] border border-neutral-200 rounded-2xl p-4 sm:p-6 text-center space-y-3 relative shadow-2xs">
+      <div className="bg-[#FAFAF8] border border-neutral-200 rounded-2xl p-4 sm:p-5 text-center space-y-3.5 relative shadow-2xs">
         
         {/* Dynamic Amount Badge or Manual Amount Helper */}
         {activeTab === 'dynamic' ? (
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-[11px] font-bold tracking-wider uppercase font-sans">
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+            <SecureShieldIcon size={14} className="text-emerald-600" />
             <span>Amount Locked: {formatRupiah(safeAmount)}</span>
           </div>
         ) : (
@@ -226,14 +223,14 @@ export function DynamicQRISCard({
               onClick={handleCopyAmount}
               className="px-2 py-0.5 rounded-md bg-neutral-200 hover:bg-neutral-300 text-[10px] font-bold uppercase tracking-wider text-neutral-700 transition-colors flex items-center gap-1 cursor-pointer"
             >
-              {copiedAmount ? <Check className="w-3 h-3 text-emerald-600" /> : <Copy className="w-3 h-3" />}
+              {copiedAmount ? <CheckIcon size={12} className="text-emerald-600" /> : <CopyClipboardIcon size={12} />}
               <span>{copiedAmount ? 'Copied' : 'Copy'}</span>
             </button>
           </div>
         )}
 
         {/* The QR Image */}
-        <div className="relative w-56 h-56 sm:w-64 sm:h-64 mx-auto bg-white p-3 rounded-2xl border border-neutral-200 shadow-sm flex items-center justify-center">
+        <div className="relative w-56 h-56 sm:w-60 sm:h-60 mx-auto bg-white p-3 rounded-2xl border border-neutral-200 shadow-sm flex items-center justify-center">
           {currentQrUrl ? (
             <div className="relative w-full h-full">
               <Image 
@@ -247,15 +244,15 @@ export function DynamicQRISCard({
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center gap-2 text-neutral-400">
-              <RefreshCw className="w-6 h-6 animate-spin text-neutral-400" />
+              <div className="w-6 h-6 border-2 border-neutral-300 border-t-neutral-900 rounded-full animate-spin" />
               <span className="text-xs font-mono">Generating QR Code...</span>
             </div>
           )}
         </div>
 
         {/* 15-Minute Expiry Timer */}
-        <div className="flex items-center justify-center gap-2 text-xs text-neutral-500 font-sans pt-1">
-          <Clock className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+        <div className="flex items-center justify-center gap-2 text-xs text-neutral-500 font-sans pt-0.5">
+          <BrewClockIcon size={14} className="text-amber-600 shrink-0" />
           <span>QRIS expires in:</span>
           <span className="font-mono font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200">
             {formattedTime}
@@ -264,7 +261,7 @@ export function DynamicQRISCard({
 
         <p className="text-[11px] text-neutral-500 max-w-xs mx-auto leading-relaxed">
           {activeTab === 'dynamic'
-            ? 'Open GoPay, OVO, Dana, ShopeePay, BCA, Livin Mandiri, BRImo, or any Indonesian banking app to scan.'
+            ? 'Open GoPay, OVO, Dana, ShopeePay, BCA, Livin Mandiri, BRImo, or any banking app to scan.'
             : 'If your banking app cannot scan auto-amount, scan this merchant code and enter the exact nominal.'}
         </p>
       </div>
@@ -275,10 +272,10 @@ export function DynamicQRISCard({
           type="button"
           onClick={handleDownloadQR}
           disabled={!currentQrUrl}
-          className="py-2.5 px-3 rounded-xl border border-neutral-300 hover:bg-neutral-50 text-neutral-800 text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-colors cursor-pointer disabled:opacity-50"
+          className="py-2.5 px-3 rounded-xl border border-neutral-200 hover:bg-neutral-50 text-neutral-800 text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-colors cursor-pointer disabled:opacity-50"
           title="Download barcode image"
         >
-          <Download className="w-3.5 h-3.5" />
+          <DownloadTrayIcon size={15} />
           <span>Download QR</span>
         </button>
 
@@ -286,17 +283,17 @@ export function DynamicQRISCard({
           type="button"
           onClick={handleCopyPayload}
           disabled={!dynamicPayload}
-          className="py-2.5 px-3 rounded-xl border border-neutral-300 hover:bg-neutral-50 text-neutral-800 text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-colors cursor-pointer disabled:opacity-50"
+          className="py-2.5 px-3 rounded-xl border border-neutral-200 hover:bg-neutral-50 text-neutral-800 text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-colors cursor-pointer disabled:opacity-50"
           title="Copy QR payload string"
         >
           {copiedPayload ? (
             <>
-              <Check className="w-3.5 h-3.5 text-emerald-600" />
+              <CheckIcon size={15} className="text-emerald-600" />
               <span>Copied!</span>
             </>
           ) : (
             <>
-              <Copy className="w-3.5 h-3.5" />
+              <CopyClipboardIcon size={15} />
               <span>Copy Code</span>
             </>
           )}
@@ -318,7 +315,7 @@ export function DynamicQRISCard({
             </>
           ) : (
             <>
-              <Sparkles className="w-4 h-4 text-amber-400 shrink-0" />
+              <CraftStarIcon size={16} className="text-amber-400 shrink-0" />
               <span>I Have Paid &bull; Confirm Payment</span>
             </>
           )}
