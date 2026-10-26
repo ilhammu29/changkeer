@@ -79,6 +79,7 @@ export function CustomizationModal({ product, isOpen, onClose }: CustomizationMo
   const [sweetnessLevel, setSweetnessLevel] = useState<'0%' | '30%' | '50%' | '75%' | '100%'>('0%');
   const [sweetenerType, setSweetenerType] = useState<'sorghum' | 'honey' | 'stevia'>('sorghum');
   const [selectedAddons, setSelectedAddons] = useState<BotanicalAddon[]>([]);
+  const [addonFilter, setAddonFilter] = useState<'all' | 'flower' | 'fruit'>('all');
   const [notes, setNotes] = useState('');
   const [quantity, setQuantity] = useState(1);
 
@@ -353,44 +354,116 @@ export function CustomizationModal({ product, isOpen, onClose }: CustomizationMo
             </div>
           )}
 
-          {/* 5. Botanical Flower Infusion Toppings */}
+          {/* 5. Botanical Add-ons (Bunga Kering & Buah Kering) */}
           <div>
-            <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center justify-between mb-1.5">
               <label className="text-[11px] font-mono uppercase tracking-wider text-neutral-500 font-bold">
-                {temperature === 'iced' ? (sweetnessLevel !== '0%' ? '5' : '4') : (sweetnessLevel !== '0%' ? '4' : '3')}. Botanical Flower Infusions
+                {temperature === 'iced' ? (sweetnessLevel !== '0%' ? '5' : '4') : (sweetnessLevel !== '0%' ? '4' : '3')}. Tambahan Botani (Bunga &amp; Buah Kering)
               </label>
-              <span className="text-[10px] text-neutral-400 font-medium">Optional (Select multi)</span>
+              <span className="text-[10px] text-neutral-400 font-medium">
+                {selectedAddons.length > 0 ? `${selectedAddons.length} dipilih` : 'Opsional'}
+              </span>
             </div>
-            <div className="space-y-2">
-              {BOTANICAL_ADDONS.map(addon => {
-                const isSelected = selectedAddons.some(a => a.id === addon.id);
-                return (
-                  <button
-                    key={addon.id}
-                    type="button"
-                    onClick={() => toggleAddon(addon)}
-                    className={`w-full flex items-center justify-between p-3 rounded-xl border text-left transition-all cursor-pointer ${
-                      isSelected
-                        ? 'border-neutral-900 bg-neutral-50 text-neutral-900 font-semibold'
-                        : 'border-neutral-200 hover:border-neutral-300 text-neutral-700 bg-white'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2.5">
-                      <div className={`w-5 h-5 rounded-md border flex items-center justify-center transition-colors ${
-                        isSelected ? 'bg-neutral-900 border-neutral-900 text-white' : 'border-neutral-300 bg-white'
-                      }`}>
-                        {isSelected && <Check className="w-3.5 h-3.5" />}
+            <p className="text-[10.5px] text-neutral-500 mb-2.5">
+              Pilih kelopak bunga aromatik dan irisan buah kering alami untuk memperkaya cita rasa seduhan teh.
+            </p>
+
+            {/* Filter Pills */}
+            <div className="flex items-center gap-1.5 mb-2.5 p-1 bg-neutral-100 rounded-xl">
+              <button
+                type="button"
+                onClick={() => setAddonFilter('all')}
+                className={`flex-1 py-1.5 px-2 rounded-lg text-[10.5px] font-sans font-medium transition-all text-center cursor-pointer ${
+                  addonFilter === 'all'
+                    ? 'bg-white text-neutral-900 shadow-2xs font-bold'
+                    : 'text-neutral-600 hover:text-neutral-900'
+                }`}
+              >
+                Semua ({BOTANICAL_ADDONS.length})
+              </button>
+              <button
+                type="button"
+                onClick={() => setAddonFilter('flower')}
+                className={`flex-1 py-1.5 px-2 rounded-lg text-[10.5px] font-sans font-medium transition-all text-center cursor-pointer flex items-center justify-center gap-1 ${
+                  addonFilter === 'flower'
+                    ? 'bg-white text-rose-950 shadow-2xs font-bold'
+                    : 'text-neutral-600 hover:text-neutral-900'
+                }`}
+              >
+                <span>🌸 Bunga Kering</span>
+                {selectedAddons.filter(a => a.category === 'flower').length > 0 && (
+                  <span className="w-4 h-4 rounded-full bg-rose-600 text-white text-[9px] font-bold flex items-center justify-center">
+                    {selectedAddons.filter(a => a.category === 'flower').length}
+                  </span>
+                )}
+              </button>
+              <button
+                type="button"
+                onClick={() => setAddonFilter('fruit')}
+                className={`flex-1 py-1.5 px-2 rounded-lg text-[10.5px] font-sans font-medium transition-all text-center cursor-pointer flex items-center justify-center gap-1 ${
+                  addonFilter === 'fruit'
+                    ? 'bg-white text-amber-950 shadow-2xs font-bold'
+                    : 'text-neutral-600 hover:text-neutral-900'
+                }`}
+              >
+                <span>🍊 Buah Kering</span>
+                {selectedAddons.filter(a => a.category === 'fruit').length > 0 && (
+                  <span className="w-4 h-4 rounded-full bg-amber-600 text-white text-[9px] font-bold flex items-center justify-center">
+                    {selectedAddons.filter(a => a.category === 'fruit').length}
+                  </span>
+                )}
+              </button>
+            </div>
+
+            {/* Addons List */}
+            <div className="space-y-1.5 max-h-56 overflow-y-auto pr-1">
+              {BOTANICAL_ADDONS
+                .filter(addon => addonFilter === 'all' || addon.category === addonFilter)
+                .map(addon => {
+                  const isSelected = selectedAddons.some(a => a.id === addon.id);
+                  const isFruit = addon.category === 'fruit';
+
+                  return (
+                    <button
+                      key={addon.id}
+                      type="button"
+                      onClick={() => toggleAddon(addon)}
+                      className={`w-full flex items-center justify-between p-2.5 rounded-xl border text-left transition-all cursor-pointer ${
+                        isSelected
+                          ? 'border-neutral-900 bg-neutral-900/5 text-neutral-900 font-semibold shadow-2xs ring-1 ring-neutral-900/10'
+                          : 'border-neutral-200 hover:border-neutral-300 text-neutral-700 bg-white'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2.5 min-w-0 pr-2">
+                        <div className={`w-4 h-4 rounded-md border flex items-center justify-center shrink-0 transition-colors ${
+                          isSelected ? 'bg-neutral-900 border-neutral-900 text-white' : 'border-neutral-300 bg-white'
+                        }`}>
+                          {isSelected && <Check className="w-3 h-3 stroke-[3]" />}
+                        </div>
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-1.5">
+                            <span className="font-semibold text-xs text-neutral-900 truncate">
+                              {addon.name}
+                            </span>
+                            <span className={`text-[9px] px-1.5 py-0.2 rounded-md font-medium shrink-0 ${
+                              isFruit ? 'bg-amber-100 text-amber-800' : 'bg-rose-100 text-rose-800'
+                            }`}>
+                              {isFruit ? 'Buah' : 'Bunga'}
+                            </span>
+                          </div>
+                          {addon.note && (
+                            <span className="text-[10px] text-neutral-500 block truncate font-normal">
+                              {addon.note}
+                            </span>
+                          )}
+                        </div>
                       </div>
-                      <div>
-                        <span className="font-medium text-xs text-neutral-900">{addon.name}</span>
-                      </div>
-                    </div>
-                    <span className="font-mono font-bold text-xs text-neutral-800">
-                      +{formatRupiah(addon.price)}
-                    </span>
-                  </button>
-                );
-              })}
+                      <span className="font-mono font-bold text-xs text-neutral-800 shrink-0">
+                        +{formatRupiah(addon.price)}
+                      </span>
+                    </button>
+                  );
+                })}
             </div>
           </div>
 

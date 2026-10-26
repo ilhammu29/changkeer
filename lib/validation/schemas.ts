@@ -123,6 +123,8 @@ export const orderItemInputSchema = z.object({
     id: z.string(),
     name: z.string(),
     price: z.number().min(0),
+    category: z.enum(['flower', 'fruit']).optional(),
+    note: z.string().optional(),
   })).default([]),
   unit_price: z.number().min(0),
   quantity: z.number().int().min(1, { message: 'Quantity must be at least 1' }),

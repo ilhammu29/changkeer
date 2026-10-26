@@ -1361,11 +1361,107 @@ export const SEED_SITE_SETTINGS: SiteSettings = {
 import { BotanicalAddon, Voucher, CafeTable, Order } from '@/types';
 
 export const BOTANICAL_ADDONS: BotanicalAddon[] = [
-  { id: 'addon-1', name: 'Dried Rose Buds (Organic)', price: 3000 },
-  { id: 'addon-2', name: 'Golden Chrysanthemum', price: 3000 },
-  { id: 'addon-3', name: 'Butterfly Pea Flower', price: 3000 },
-  { id: 'addon-4', name: 'Whole Jasmine Bloom', price: 4000 },
-  { id: 'addon-5', name: 'Golden Osmanthus', price: 4000 },
+  // --- BUNGA KERING (DRIED FLOWERS) ---
+  {
+    id: 'addon-1',
+    name: 'Dried Rose Buds (Kuntum Mawar)',
+    price: 3000,
+    category: 'flower',
+    note: 'Aroma mawar lembut, menenangkan saraf',
+  },
+  {
+    id: 'addon-2',
+    name: 'Golden Chrysanthemum (Krisan Emas)',
+    price: 3000,
+    category: 'flower',
+    note: 'Meredakan panas dalam & menyegarkan',
+  },
+  {
+    id: 'addon-3',
+    name: 'Butterfly Pea (Bunga Telang)',
+    price: 3000,
+    category: 'flower',
+    note: 'Warna biru alami & kaya antioksidan',
+  },
+  {
+    id: 'addon-4',
+    name: 'Whole Jasmine Bloom (Melati Utuh)',
+    price: 4000,
+    category: 'flower',
+    note: 'Aroma melati pekat, relaksasi pikiran',
+  },
+  {
+    id: 'addon-5',
+    name: 'Golden Osmanthus (Bunga Osmanthus)',
+    price: 4000,
+    category: 'flower',
+    note: 'Aroma aprikot manis alami yang elegan',
+  },
+  {
+    id: 'addon-6',
+    name: 'Organic Hibiscus (Kelopak Rosella)',
+    price: 3000,
+    category: 'flower',
+    note: 'Rasa asam segar buah & merah delima alami',
+  },
+
+  // --- BUAH KERING (DRIED FRUITS) ---
+  {
+    id: 'addon-7',
+    name: 'Goji Berries (Keci Merah)',
+    price: 3000,
+    category: 'fruit',
+    note: 'Manis-asam alami, kaya vitamin & stamina',
+  },
+  {
+    id: 'addon-8',
+    name: 'Red Dates / Jujube (Angco)',
+    price: 3000,
+    category: 'fruit',
+    note: 'Manis karamel alami, menghangatkan tubuh',
+  },
+  {
+    id: 'addon-9',
+    name: 'Dried Longan (Kelengkeng Kering)',
+    price: 4000,
+    category: 'fruit',
+    note: 'Rasa madu buah pekat, menenangkan saraf',
+  },
+  {
+    id: 'addon-10',
+    name: 'Dried Pear Slice (Pir Kering)',
+    price: 3000,
+    category: 'fruit',
+    note: 'Manis lembut melegakan tenggorokan',
+  },
+  {
+    id: 'addon-11',
+    name: 'Dried Apple Crisp (Apel Kering)',
+    price: 3000,
+    category: 'fruit',
+    note: 'Karakter buah segar & aroma harum',
+  },
+  {
+    id: 'addon-12',
+    name: 'Dried Mango (Mangga Kering)',
+    price: 4000,
+    category: 'fruit',
+    note: 'Aroma tropis matang & manis alami',
+  },
+  {
+    id: 'addon-13',
+    name: 'Dried Lemon Slice (Lemon Kering)',
+    price: 2000,
+    category: 'fruit',
+    note: 'Sentuhan sitrus cerah & menyegarkan',
+  },
+  {
+    id: 'addon-14',
+    name: 'Sun-Dried Orange Peel (Kulit Jeruk)',
+    price: 2000,
+    category: 'fruit',
+    note: 'Zesty & aromatik, melancarkan pencernaan',
+  },
 ];
 
 export const SEED_VOUCHERS: Voucher[] = [

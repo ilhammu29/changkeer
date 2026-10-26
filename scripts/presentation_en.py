@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
 """
-presentation_en.py - English Presentation Deck (A4 Landscape)
-Featuring:
-- Official Web Logo (logo_new.png)
-- The 5 Co-Founders from the website About page (Zero mention of user's personal name)
-- Complete 24 Seasonal Products Showcase with simple, compact images (Terms 01-12 & Terms 13-24)
-- High Contrast, Pristine Professional Typography, Zero AI-slop, No Badges, Round Bullets
-- Zero mention of OXID
-- Zero asterisks
-- Exact 11 Slides = 11 Landscape Pages
+presentation_en.py - English Project Presentation Deck (16:9 Landscape)
+Document Type: Executive Business & Technical Project Presentation
+Editorial Standards:
+- Pure white background, high-contrast dark text (#111827 / #1F2937), botanical green accent (#1B4332).
+- Zero AI-slop visual boxes, zero badges, zero gradients, zero shadows.
+- 16:9 Landscape format (@page size: 297mm 167mm).
+- Clean structured tables for 24 seasonal blends (4 Seasonal Slides: Spring, Summer, Autumn, Winter; 6 blends per slide).
+- Linear transaction flow diagram (thin borders, clean arrows).
+- Official web logo (logo_new.png) and the 5 official Co-Founders.
+- Zero asterisks (*), zero mention of OXID, zero user personal name.
+- Exactly 12 Slides = 12 Clean Landscape Pages with zero clipping.
 """
 
 def generate_presentation_en(assets: dict) -> str:
@@ -16,40 +18,76 @@ def generate_presentation_en(assets: dict) -> str:
     solar = assets.get("solar_terms", [])
     logo_b64 = assets.get("logo", "")
 
-    def render_12_grid_en(items):
-        html = '<div style="display: table; width: 100%; table-layout: fixed; margin-top: 5pt;">'
-        for row_idx in range(0, len(items), 6):
-            html += '<div style="display: table-row;">'
-            for col_idx in range(6):
-                if row_idx + col_idx < len(items):
-                    it = items[row_idx + col_idx]
-                    ingr = ", ".join(it.get('ingredients', [])[:2])
-                    html += f'''
-                    <div style="display: table-cell; width: 16.66%; vertical-align: top; padding: 4.5pt; border: 1px solid #cbd5e1; background: #ffffff; text-align: center;">
-                        <img src="{it['thumb_b64']}" style="width: 44px; height: 44px; object-fit: cover; border: 1px solid #94a3b8; margin: 0 auto 3pt auto; display: block;" alt="{it['term']}">
-                        <div style="font-family: 'Playfair Display', serif; font-size: 8pt; font-weight: 700; color: #143828; line-height: 1.15;">{it['term']}</div>
-                        <div style="font-size: 7.2pt; color: #946c38; font-weight: 600;">{it['blend']} ({it['termChinese']})</div>
-                        <div style="font-size: 6.8pt; color: #334155; margin-top: 1.5pt; line-height: 1.2;">Hot {it['hotPrice']} / Ice {it['icedPrice']}</div>
-                        <div style="font-size: 6.5pt; color: #64748b; margin-top: 1pt; font-style: italic;">{ingr}</div>
+    # Helper function to generate clean 6-item seasonal catalog table
+    def render_6_table_en(items, start_idx=1):
+        rows = ""
+        for idx, it in enumerate(items, start_idx):
+            ingr_str = ", ".join(it.get("ingredients", []))
+            thumb_img = ""
+            if it.get("thumb_b64"):
+                thumb_img = f'<img src="{it["thumb_b64"]}" style="width: 24px; height: 24px; object-fit: cover; border: 1px solid #D1D5DB; vertical-align: middle; margin-right: 6px; display: inline-block;" alt="{it["term"]}">'
+
+            # Extraction parameter
+            if "jasmine" in ingr_str.lower() or "green" in ingr_str.lower():
+                param = "82°C • 3.5 Min"
+            elif "ginger" in ingr_str.lower() or "cinnamon" in ingr_str.lower():
+                param = "98°C • 6.0 Min"
+            elif "chamomile" in ingr_str.lower() or "rose" in ingr_str.lower() or "hibiscus" in ingr_str.lower():
+                param = "92°C • 5.0 Min"
+            else:
+                param = "88°C • 4.0 Min"
+
+            rows += f"""
+            <tr>
+                <td style="text-align: center; font-weight: 600; color: #4B5563; font-size: 8.5pt;">{idx:02d}</td>
+                <td style="white-space: nowrap;">
+                    <div style="display: flex; align-items: center;">
+                        {thumb_img}
+                        <div>
+                            <strong>{it.get('term')}</strong><br>
+                            <span style="font-size: 7.5pt; color: #4B5563;">{it.get('termChinese')}</span>
+                        </div>
                     </div>
-                    '''
-                else:
-                    html += '<div style="display: table-cell; width: 16.66%;"></div>'
-            html += '</div>'
-        html += '</div>'
-        return html
+                </td>
+                <td style="font-weight: 600; color: #111827; font-size: 8.5pt;">{it.get('blend')}</td>
+                <td style="font-size: 8pt; color: #374151;">{ingr_str}</td>
+                <td style="text-align: center; font-size: 8pt; color: #4B5563; white-space: nowrap;">{param}</td>
+                <td style="text-align: center; font-size: 8pt; white-space: nowrap; font-weight: 600;">Hot {it.get('hotPrice')}<br><span style="color: #4B5563;">Iced {it.get('icedPrice')}</span></td>
+                <td style="font-size: 8pt; color: #4B5563;">{it.get('note')}</td>
+            </tr>
+            """
+        return f"""
+        <table class="editorial-table" style="font-size: 8.5pt; margin-top: 6pt; margin-bottom: 0;">
+            <thead>
+                <tr>
+                    <th style="width: 4%; text-align: center;">No</th>
+                    <th style="width: 22%;">Solar Term</th>
+                    <th style="width: 17%;">Blend Formulation</th>
+                    <th style="width: 24%;">Key Ingredients</th>
+                    <th style="width: 13%; text-align: center;">Brew Standard</th>
+                    <th style="width: 9%; text-align: center;">Price</th>
+                    <th style="width: 21%;">Flavor Profile &amp; Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                {rows}
+            </tbody>
+        </table>
+        """
 
-    grid_spring_summer = render_12_grid_en(solar[:12])
-    grid_autumn_winter = render_12_grid_en(solar[12:])
+    table_spring = render_6_table_en(solar[0:6], 1)
+    table_summer = render_6_table_en(solar[6:12], 7)
+    table_autumn = render_6_table_en(solar[12:18], 13)
+    table_winter = render_6_table_en(solar[18:24], 19)
 
-    # Founders Table Rows for Slide 11
+    # Founders Table Rows for Slide 12
     founders_rows = ""
     for f in founders:
         founders_rows += f"""
         <tr>
-            <td style="text-align: center; font-weight: 700; color: #143828;">{f['num']}</td>
+            <td style="text-align: center; font-weight: 600; color: #1B4332;">{f['num']}</td>
             <td><strong>{f['name']}</strong></td>
-            <td>{f['role']}</td>
+            <td style="color: #4B5563;">{f['role']}</td>
             <td>{f['focus_en']}</td>
         </tr>
         """
@@ -58,13 +96,47 @@ def generate_presentation_en(assets: dict) -> str:
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>CHANGKEER ATELIER — SYSTEM PRESENTATION &amp; PROJECT SHOWCASE</title>
+<title>CHANGKEER ATELIER — PROJECT PRESENTATION &amp; SYSTEM MANUAL</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap');
-
 @page {{
-    size: A4 landscape;
-    margin: 0;
+    size: 297mm 167mm;
+    margin: 10mm 15mm 10mm 15mm;
+    @top-left {{
+        content: "CHANGKEER ATELIER";
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+        font-size: 8pt;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: #1B4332;
+    }}
+    @top-right {{
+        content: "EXECUTIVE PROJECT PRESENTATION • E-COMMERCE CAFE SYSTEM";
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+        font-size: 8pt;
+        font-weight: 500;
+        color: #4B5563;
+    }}
+    @bottom-left {{
+        content: "Official Presentation Deck • CHANGKEER Board of Founders";
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+        font-size: 7.5pt;
+        color: #6B7280;
+    }}
+    @bottom-right {{
+        content: "Page " counter(page) " of " counter(pages);
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+        font-size: 7.5pt;
+        font-weight: 600;
+        color: #111827;
+    }}
+}}
+
+@page:first {{
+    @top-left {{ content: none; }}
+    @top-right {{ content: none; }}
+    @bottom-left {{ content: none; }}
+    @bottom-right {{ content: none; }}
 }}
 
 * {{
@@ -74,760 +146,630 @@ def generate_presentation_en(assets: dict) -> str:
 }}
 
 body {{
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
     font-size: 9pt;
-    line-height: 1.5;
-    color: #1a202c;
-    background-color: #ffffff;
+    line-height: 1.45;
+    color: #1F2937;
+    background-color: #FFFFFF;
     margin: 0;
     padding: 0;
 }}
 
 .slide {{
-    width: 297mm;
-    height: 210mm;
-    max-height: 210mm;
-    box-sizing: border-box;
     page-break-after: always;
     page-break-inside: avoid;
-    overflow: hidden;
-    padding: 12mm 20mm 10mm 20mm;
-    position: relative;
-    background-color: #ffffff;
+    height: 147mm;
+    max-height: 147mm;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    overflow: hidden;
 }}
 
 .slide-header {{
-    display: table;
-    width: 100%;
-    border-bottom: 1.5px solid #143828;
+    border-bottom: 1.5px solid #1B4332;
     padding-bottom: 4pt;
     margin-bottom: 6pt;
 }}
 
-.slide-header-left {{
-    display: table-cell;
-    font-size: 7.5pt;
+.slide-category {{
+    font-size: 8pt;
     font-weight: 700;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: #946c38;
-}}
-
-.slide-header-right {{
-    display: table-cell;
-    text-align: right;
-    font-size: 7.5pt;
-    font-weight: 700;
-    color: #143828;
-}}
-
-.slide-footer {{
-    display: table;
-    width: 100%;
-    border-top: 1px solid #cbd5e1;
-    padding-top: 4pt;
-    margin-top: 6pt;
-    font-size: 7.5pt;
-    color: #64748b;
-}}
-
-.slide-footer-left {{
-    display: table-cell;
-    text-align: left;
-}}
-
-.slide-footer-right {{
-    display: table-cell;
-    text-align: right;
-    font-weight: 700;
-    color: #143828;
-}}
-
-h1, h2, h3 {{
-    font-family: 'Playfair Display', Georgia, serif;
-    font-weight: 700;
-    color: #143828;
-    margin: 0;
+    color: #1B4332;
+    margin-bottom: 1pt;
 }}
 
 .slide-title {{
-    font-size: 18pt;
-    line-height: 1.15;
-    margin-bottom: 2pt;
+    font-size: 15pt;
+    font-weight: 800;
+    line-height: 1.2;
+    color: #111827;
 }}
 
 .slide-subtitle {{
-    font-size: 9pt;
-    color: #4a5568;
-    margin-bottom: 6pt;
-}}
-
-p {{
-    margin-top: 0;
-    margin-bottom: 5pt;
-    text-align: justify;
-    color: #2d3748;
-}}
-
-ul {{
-    list-style-type: disc !important;
+    font-size: 8.5pt;
+    color: #4B5563;
     margin-top: 2pt;
-    margin-bottom: 5pt;
+}}
+
+.content-two-cols {{
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+    margin-top: 4pt;
+}}
+
+.col-cell {{
+    display: table-cell;
+    vertical-align: top;
+    padding: 0 8pt;
+}}
+
+.col-cell:first-child {{
+    padding-left: 0;
+    border-right: 1px solid #E5E7EB;
+}}
+
+.col-cell:last-child {{
+    padding-right: 0;
+}}
+
+/* Editorial Table */
+.editorial-table {{
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 8.5pt;
+}}
+
+.editorial-table th {{
+    background-color: #F9FAFB;
+    color: #111827;
+    font-weight: 700;
+    text-align: left;
+    padding: 5pt 6pt;
+    border-top: 1px solid #D1D5DB;
+    border-bottom: 1.5px solid #1B4332;
+    border-left: 1px solid #E5E7EB;
+    border-right: 1px solid #E5E7EB;
+    font-size: 8pt;
+}}
+
+.editorial-table td {{
+    padding: 4.5pt 6pt;
+    border-bottom: 1px solid #E5E7EB;
+    border-left: 1px solid #E5E7EB;
+    border-right: 1px solid #E5E7EB;
+    vertical-align: middle;
+    line-height: 1.35;
+}}
+
+/* Workflow Linear */
+.workflow-row {{
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+    margin: 8pt 0;
+}}
+
+.wf-box {{
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    border: 1px solid #D1D5DB;
+    background-color: #F9FAFB;
+    padding: 6pt 4pt;
+    font-size: 7.5pt;
+    line-height: 1.3;
+}}
+
+.wf-num {{
+    font-weight: 700;
+    font-size: 7pt;
+    color: #1B4332;
+    text-transform: uppercase;
+    margin-bottom: 1pt;
+}}
+
+.wf-title {{
+    font-weight: 600;
+    color: #111827;
+}}
+
+.wf-arrow {{
+    display: table-cell;
+    width: 14px;
+    vertical-align: middle;
+    text-align: center;
+    font-size: 11pt;
+    color: #6B7280;
+    font-weight: bold;
+}}
+
+/* Lists */
+ul {{
+    list-style-type: disc;
+    margin-top: 2pt;
+    margin-bottom: 6pt;
     padding-left: 16px;
 }}
 
 ul li {{
-    margin-bottom: 2.5pt;
+    margin-bottom: 3pt;
     line-height: 1.4;
-    color: #2d3748;
-}}
-
-.col-container {{
-    display: table;
-    width: 100%;
-    table-layout: fixed;
-}}
-
-.col-2 {{
-    display: table-cell;
-    width: 50%;
-    vertical-align: top;
-    padding-right: 10pt;
-}}
-
-.col-2:last-child {{
-    padding-right: 0;
-    padding-left: 10pt;
-}}
-
-.col-3 {{
-    display: table-cell;
-    width: 33.33%;
-    vertical-align: top;
-    padding-right: 8pt;
-}}
-
-.col-3:last-child {{
-    padding-right: 0;
-}}
-
-.layman-box {{
-    border-left: 3.5px solid #143828;
-    background-color: #f8fafc;
-    border-right: 1px solid #e2e8f0;
-    border-top: 1px solid #e2e8f0;
-    border-bottom: 1px solid #e2e8f0;
-    padding: 6pt 10pt;
-    margin: 5pt 0;
+    color: #1F2937;
     font-size: 8.5pt;
-}}
-
-.layman-box-title {{
-    font-weight: 700;
-    color: #143828;
-    font-size: 8pt;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 2pt;
-}}
-
-table.slide-table {{
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 8pt;
-    margin: 5pt 0;
-}}
-
-table.slide-table th {{
-    border-top: 1.5px solid #143828;
-    border-bottom: 1.5px solid #143828;
-    padding: 4pt 6pt;
-    text-align: left;
-    font-weight: 700;
-    color: #143828;
-    font-size: 7.5pt;
-    text-transform: uppercase;
-    background-color: #f1f5f9;
-}}
-
-table.slide-table td {{
-    border-bottom: 1px solid #cbd5e1;
-    padding: 4pt 6pt;
-    vertical-align: top;
-    color: #2d3748;
-}}
-
-.h-workflow {{
-    display: table;
-    width: 100%;
-    margin: 8pt 0;
-    table-layout: fixed;
-}}
-
-.h-step {{
-    display: table-cell;
-    vertical-align: top;
-    padding: 6pt 8pt;
-    background-color: #f8fafc;
-    border: 1px solid #cbd5e1;
-}}
-
-.h-step-num {{
-    font-family: 'Playfair Display', serif;
-    font-size: 13pt;
-    font-weight: 700;
-    color: #143828;
-    margin-bottom: 2pt;
-}}
-
-.h-step-title {{
-    font-weight: 700;
-    font-size: 8pt;
-    color: #143828;
-    margin-bottom: 2pt;
-}}
-
-.h-step-desc {{
-    font-size: 7.5pt;
-    color: #4a5568;
-    line-height: 1.35;
-}}
-
-.h-arrow {{
-    display: table-cell;
-    width: 18px;
-    vertical-align: middle;
-    text-align: center;
-    color: #946c38;
-    font-size: 12pt;
-}}
-
-/* Cover Slide */
-.slide-cover {{
-    background-color: #143828;
-    color: #ffffff;
-    padding: 18mm 20mm 14mm 20mm;
-    max-height: 210mm;
-    overflow: hidden;
-    page-break-after: always;
-    page-break-inside: avoid;
-}}
-
-.cover-title-big {{
-    font-family: 'Playfair Display', Georgia, serif;
-    font-size: 27pt;
-    font-weight: 700;
-    line-height: 1.15;
-    color: #ffffff;
-    margin-bottom: 6pt;
-}}
-
-.cover-tagline {{
-    font-size: 11pt;
-    color: #e2e8f0;
-    max-width: 620px;
-    line-height: 1.45;
-    margin-bottom: 14pt;
-}}
-
-.cover-team-box {{
-    display: table;
-    width: 100%;
-    border-top: 1px solid rgba(255, 255, 255, 0.25);
-    padding-top: 10pt;
-}}
-
-.cover-team-cell {{
-    display: table-cell;
-    width: 25%;
-    vertical-align: top;
-}}
-
-.cover-team-lbl {{
-    font-size: 7pt;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: #dfba7c;
-    margin-bottom: 2pt;
-}}
-
-.cover-team-val {{
-    font-size: 8.5pt;
-    font-weight: 600;
-    color: #ffffff;
 }}
 </style>
 </head>
 <body>
 
-<!-- SLIDE 1: COVER -->
-<div class="slide slide-cover">
-    <div>
-        <div style="font-size: 8.5pt; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; color: #dfba7c; margin-bottom: 12pt;">
-            CHANGKEER ATELIER • SYSTEM PRESENTATION &amp; PROJECT SHOWCASE
-        </div>
-        <div style="margin-bottom: 10pt;">
-            <img src="{logo_b64}" style="width: 58px; height: 58px; border-radius: 50%; border: 2px solid #dfba7c; background: #ffffff;" alt="Changkeer Web Logo">
-        </div>
-        <div class="cover-title-big">Digitalizing the 24 Seasons Herbal Tea Ritual</div>
-        <div class="cover-tagline">
-            Self-Service Mobile Ordering, Dynamic Locked-Amount QRIS Payments, Real-Time Kitchen Display System (KDS), and Store Governance.
+<!-- SLIDE 1: COVER SLIDE -->
+<div class="slide">
+    <div style="border-bottom: 1.5px solid #1B4332; padding-bottom: 6pt;">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center;">
+                <img src="{logo_b64}" style="height: 34px; width: auto; margin-right: 10pt; display: block;" alt="CHANGKEER Logo">
+                <div>
+                    <div style="font-size: 12pt; font-weight: 800; letter-spacing: 0.05em; color: #1B4332; text-transform: uppercase;">CHANGKEER ATELIER</div>
+                    <div style="font-size: 7.5pt; color: #4B5563;">Artisan Herbal Tea &amp; Botanical Laboratory</div>
+                </div>
+            </div>
+            <div style="text-align: right; font-size: 7.5pt; color: #6B7280;">
+                <div>OFFICIAL DOCUMENT</div>
+                <div style="font-weight: 700; color: #111827;">2026 PROJECT EDITION</div>
+            </div>
         </div>
     </div>
 
-    <div class="cover-team-box">
-        <div class="cover-team-cell">
-            <div class="cover-team-lbl">Founding Group</div>
-            <div class="cover-team-val">5 Co-Founders</div>
+    <div style="margin: auto 0; padding: 10pt 0;">
+        <div style="font-size: 8.5pt; font-weight: 700; color: #1B4332; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4pt;">
+            PROJECT PRESENTATION &amp; SYSTEM MANUAL
         </div>
-        <div class="cover-team-cell">
-            <div class="cover-team-lbl">Project Initiators</div>
-            <div class="cover-team-val">Board of Founders</div>
+        <div style="font-size: 21pt; font-weight: 800; line-height: 1.2; color: #111827; margin-bottom: 6pt;">
+            Integrated E-Commerce Cafe System &amp; 24 Seasonal Botanical Blends
         </div>
-        <div class="cover-team-cell">
-            <div class="cover-team-lbl">Enterprise</div>
-            <div class="cover-team-val">CHANGKEER ATELIER</div>
+        <div style="font-size: 10pt; color: #4B5563; max-width: 90%; line-height: 1.45;">
+            Engineering Feasibility, Software Architecture, Server-Side Dynamic QRIS Settlement Governance, and Barista Operational Precision at CHANGKEER ATELIER.
         </div>
-        <div class="cover-team-cell">
-            <div class="cover-team-lbl">Academic Release</div>
-            <div class="cover-team-val">October 2026</div>
+    </div>
+
+    <div>
+        <div style="font-size: 8pt; font-weight: 700; color: #1B4332; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 3pt;">
+            CHANGKEER BOARD OF FOUNDERS (THE 5 CO-FOUNDERS)
+        </div>
+        <table class="editorial-table">
+            <thead>
+                <tr>
+                    <th style="width: 5%; text-align: center;">No</th>
+                    <th style="width: 28%;">Founder Name</th>
+                    <th style="width: 14%;">Role</th>
+                    <th>Executive Operational Focus</th>
+                </tr>
+            </thead>
+            <tbody>
+                {founders_rows}
+            </tbody>
+        </table>
+        <div style="font-size: 7.5pt; color: #6B7280; text-align: center; margin-top: 6pt;">
+            CHANGKEER ATELIER • West Java &amp; Jakarta, Indonesia • All Rights Reserved
         </div>
     </div>
 </div>
 
-<!-- SLIDE 2: BACKGROUND & PROBLEM -->
+<!-- SLIDE 2: BACKGROUND & PHILOSOPHY -->
 <div class="slide">
     <div class="slide-header">
-        <div class="slide-header-left">01 / Industry Background &amp; Problem Statement</div>
-        <div class="slide-header-right">CHANGKEER ATELIER</div>
+        <div class="slide-category">Section 01 • Business Context &amp; Botanical Vision</div>
+        <div class="slide-title">Industry Landscape &amp; The 24 Solar Terms Philosophy</div>
+        <div class="slide-subtitle">Pioneering a wholesome botanical hydration alternative synchronized with human circadian biological rhythms.</div>
     </div>
 
-    <div>
-        <div class="slide-title">Operational Friction in the Artisan Tea Sector</div>
-        <div class="slide-subtitle">Why traditional cafe counters fail to meet modern guest expectations and barista precision.</div>
-
-        <div class="col-container">
-            <div class="col-2">
-                <h3 style="margin-bottom: 4pt;">Core Frictions in Traditional Tea Stores</h3>
-                <ul>
-                    <li><strong>Exhausting Counter Queues:</strong> Guests stand in long lines simply to decide on custom botanical blends, degrading the relaxing tea lounge experience.</li>
-                    <li><strong>Costly Typos on Static QR Codes:</strong> Static printed paper stickers require guests to manually key in prices, triggering frequent underpayments or double transfers.</li>
-                    <li><strong>Damaged Paper Tickets at the Brew Bar:</strong> Paper kitchen chits easily get soaked with hot water or lost, leading to swapped orders and ruined steep times.</li>
-                    <li><strong>Lack of Recipe Calibration:</strong> Herbal extraction varies wildly between baristas without automated digital recipe guidance.</li>
-                </ul>
-            </div>
-            <div class="col-2">
-                <div class="layman-box">
-                    <div class="layman-box-title">Everyday Analogy: Chaos Behind the Bar</div>
-                    Imagine a barista carefully maintaining water temperature at 85°C for mountain jasmine. Suddenly, the cashier yells a custom 30% sweetness modification, while the paper receipt slips into a puddle of spilled tea. The barista loses track of the timer, and the brew turns bitter and astringent. This is the exact issue CHANGKEER eliminates.
-                </div>
-                <div class="layman-box">
-                    <div class="layman-box-title">The Strategic Solution</div>
-                    Eliminating 100% of paper tickets at the bar, preventing financial transfer errors through dynamic QRIS, and empowering guests to configure their cups right from their seats.
-                </div>
-            </div>
+    <div class="content-two-cols">
+        <div class="col-cell" style="width: 50%;">
+            <div style="font-size: 9.5pt; font-weight: 700; color: #1B4332; margin-bottom: 4pt;">Challenges in Modern Beverage Retail</div>
+            <ul>
+                <li><strong>Excessive Synthetic Sweeteners:</strong> Commercial beverages are saturated with artificial flavoring agents, high-fructose corn syrups, and synthetic non-dairy creamers harmful to long-term health.</li>
+                <li><strong>Stimulant Caffeine Dependency:</strong> Excessive coffee intake often triggers gastric acidity, nervous palpitations, and mid-afternoon energy crashes.</li>
+                <li><strong>Absence of Mindful Spaces:</strong> Standard cafes operate as loud, fast-turnover transaction hubs that fail to provide restorative environments for contemplation.</li>
+            </ul>
+        </div>
+        <div class="col-cell" style="width: 50%;">
+            <div style="font-size: 9.5pt; font-weight: 700; color: #1B4332; margin-bottom: 4pt;">CHANGKEER 24 Solar Terms Solution</div>
+            <ul>
+                <li><strong>100% Pure Botanical Tisanes:</strong> Crafted exclusively from whole organic flowers, wild herbs, and rimpang roots; completely caffeine-free, gentle on digestion, and soothing.</li>
+                <li><strong>Harmonized with 24 Solar Terms:</strong> 24 recipes balanced with natural cycles (Spring for vitality renewal, Summer for heat dispersal, Autumn for nervous grounding, Winter for immune support).</li>
+                <li><strong>Calibrated Natural Sweetening:</strong> Standardized dispensations of raw forest honey or sorghum nectar measured strictly via milliliter jiggers.</li>
+            </ul>
         </div>
     </div>
 
-    <div class="slide-footer">
-        <div class="slide-footer-left">Board of Founders, CHANGKEER ATELIER</div>
-        <div class="slide-footer-right">Slide 02</div>
+    <div style="border-top: 1px solid #E5E7EB; padding-top: 4pt; font-size: 8pt; color: #4B5563;">
+        <strong>Sourcing Integrity:</strong> Zero synthetic flavoring essences; all raw botanicals sourced directly from cooperative farmers in Wonosobo, Garut, and Puncak.
     </div>
 </div>
 
-<!-- SLIDE 3: PRODUCT SOLUTION & 24 SEASONS -->
+<!-- SLIDE 3: SOLUTION CONCEPT & SERVICE ARCHITECTURE -->
 <div class="slide">
     <div class="slide-header">
-        <div class="slide-header-left">02 / Solution Concept &amp; Philosophy</div>
-        <div class="slide-header-right">CHANGKEER ATELIER</div>
+        <div class="slide-category">Section 02 • Integrated Retail Architecture</div>
+        <div class="slide-title">Service Architecture: Guest Self-Service &amp; Bar Efficiency</div>
+        <div class="slide-subtitle">Unifying app-free mobile web ordering with real-time Kitchen Display System (KDS) execution.</div>
     </div>
 
-    <div>
-        <div class="slide-title">The CHANGKEER Solution: 24 Seasons Botanical Teas</div>
-        <div class="slide-subtitle">Harmonizing bodily metabolism with Indonesia's rich botanical heritage and cosmic natural cycles.</div>
-
-        <div class="col-container">
-            <div class="col-2">
-                <p>
-                    <strong>CHANGKEER</strong> presents an authentic herbal tea sanctuary celebrating the ancient 24 Solar Terms calendar. Each cup is intentionally designed to align bodily vitality with prevailing weather and atmospheric conditions.
-                </p>
-                <div class="layman-box">
-                    <div class="layman-box-title">Layman Explanation: What is an Herbal Tisane?</div>
-                    A tisane is a pure botanical infusion created from whole herbs, spices, and whole flower blossoms (such as dried rose, mountain jasmine, blue pea flower, and ginger root). Unlike mass-market tea bags that often use synthetic aromatics, CHANGKEER Tisanes are 100% natural, preservative-free, and stomach-friendly.
-                </div>
-            </div>
-            <div class="col-2">
-                <table class="slide-table">
-                    <thead>
-                        <tr>
-                            <th>Season</th>
-                            <th>Sensory Profile</th>
-                            <th>Bodily Wellness Function</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>Spring</strong></td>
-                            <td>Fresh Floral Bouquet</td>
-                            <td>Refreshes mental vitality &amp; aids gentle seasonal detox.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Summer</strong></td>
-                            <td>Cooling Mint &amp; Citrus</td>
-                            <td>Lowers internal heat &amp; delivers intense hydration.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Autumn</strong></td>
-                            <td>Chamomile &amp; Cinnamon</td>
-                            <td>Soothes nervous tension &amp; relieves daily stress.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Winter</strong></td>
-                            <td>Aged Red Ginger &amp; Clove</td>
-                            <td>Provides deep thermal comfort &amp; strengthens immunity.</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+    <div class="content-two-cols">
+        <div class="col-cell" style="width: 50%;">
+            <div style="font-size: 9.5pt; font-weight: 700; color: #1B4332; margin-bottom: 4pt;">Autonomous Guest Experience (Mobile Web)</div>
+            <ul>
+                <li><strong>Zero-Install Access:</strong> Guests scan table QR codes; the high-performance web app renders instantly in mobile browsers without downloading native apps.</li>
+                <li><strong>Precision Customization:</strong> Guests personalize temperature (hot ceramic pot or craft iced shaken), natural sweetness levels (0% to 100%), and organic dried flower &amp; fruit infusions.</li>
+                <li><strong>Dynamic Exact-Amount QRIS:</strong> Payment codes pre-populate the exact bill total into mobile banking apps, eliminating manual input mistakes.</li>
+            </ul>
+        </div>
+        <div class="col-cell" style="width: 50%;">
+            <div style="font-size: 9.5pt; font-weight: 700; color: #1B4332; margin-bottom: 4pt;">Bar Station Operations (Kitchen Display System)</div>
+            <ul>
+                <li><strong>Dedicated Brewing Craft:</strong> Baristas are freed entirely from writing manual paper chits or handling physical cash transactions.</li>
+                <li><strong>Strict FIFO Queue Management:</strong> Tickets arrive in strict queue sequence with automated digital countdown timers and precise temperature guides.</li>
+                <li><strong>Instant Status Sync:</strong> Brewing progression updates instantly across both kitchen monitors and customer smartphone screens.</li>
+            </ul>
         </div>
     </div>
 
-    <div class="slide-footer">
-        <div class="slide-footer-left">Board of Founders, CHANGKEER ATELIER</div>
-        <div class="slide-footer-right">Slide 03</div>
+    <div style="border-top: 1px solid #E5E7EB; padding-top: 4pt; font-size: 8pt; color: #4B5563;">
+        <strong>Operational Impact:</strong> Eliminates counter ordering queues by over 70% while drastically improving extraction consistency across all seasonal blends.
     </div>
 </div>
 
-<!-- SLIDE 4: 24 BLENDS GALLERY (SPRING & SUMMER) -->
+<!-- SLIDE 4: SPRING BLENDS (TERMS 01 - 06) -->
 <div class="slide">
     <div class="slide-header">
-        <div class="slide-header-left">03 / Complete 24 Seasonal Blends (Part I)</div>
-        <div class="slide-header-right">CHANGKEER ATELIER</div>
+        <div class="slide-category">Section 03 • Seasonal Formulations (1/4)</div>
+        <div class="slide-title">Spring Season Catalog: Vitality Renewal &amp; Metabolic Cleansing</div>
+        <div class="slide-subtitle">Solar Terms 01 to 06 — Light floral formulations anchored by jasmine, rose buds, and tender shoots for natural cellular awakening.</div>
     </div>
 
     <div>
-        <div class="slide-title">Spring &amp; Summer Blends (Terms 01–12)</div>
-        <div class="slide-subtitle">12 crisp botanical infusions featuring simple thumbnail imagery, authentic ingredients, and verified pricing.</div>
-
-        {grid_spring_summer}
+        {table_spring}
     </div>
 
-    <div class="slide-footer">
-        <div class="slide-footer-left">Board of Founders, CHANGKEER ATELIER</div>
-        <div class="slide-footer-right">Slide 04</div>
+    <div style="border-top: 1px solid #E5E7EB; padding-top: 3pt; font-size: 7.5pt; color: #4B5563;">
+        Serving options: Ceramic hot infusion pot (standard) or craft iced shaken tea (+IDR 2,000). Zero synthetic essences; 100% caffeine-free.
     </div>
 </div>
 
-<!-- SLIDE 5: 24 BLENDS GALLERY (AUTUMN & WINTER) -->
+<!-- SLIDE 5: SUMMER BLENDS (TERMS 07 - 12) -->
 <div class="slide">
     <div class="slide-header">
-        <div class="slide-header-left">04 / Complete 24 Seasonal Blends (Part II)</div>
-        <div class="slide-header-right">CHANGKEER ATELIER</div>
+        <div class="slide-category">Section 03 • Seasonal Formulations (2/4)</div>
+        <div class="slide-title">Summer Season Catalog: Active Hydration &amp; Biological Cooling</div>
+        <div class="slide-subtitle">Solar Terms 07 to 12 — Refreshing mountain mint, butterfly pea, and native citrus designed for thirst quenching and heat dispersal.</div>
     </div>
 
     <div>
-        <div class="slide-title">Autumn &amp; Winter Blends (Terms 13–24)</div>
-        <div class="slide-subtitle">12 warming root and floral tisanes designed to restore bodily vitality and bolster cold-weather immunity.</div>
-
-        {grid_autumn_winter}
+        {table_summer}
     </div>
 
-    <div class="slide-footer">
-        <div class="slide-footer-left">Board of Founders, CHANGKEER ATELIER</div>
-        <div class="slide-footer-right">Slide 05</div>
+    <div style="border-top: 1px solid #E5E7EB; padding-top: 3pt; font-size: 7.5pt; color: #4B5563;">
+        Serving options: Ceramic hot infusion pot (standard) or craft iced shaken tea (+IDR 2,000). Zero synthetic essences; 100% caffeine-free.
     </div>
 </div>
 
-<!-- SLIDE 6: CUSTOMER EXPERIENCE -->
+<!-- SLIDE 6: AUTUMN BLENDS (TERMS 13 - 18) -->
 <div class="slide">
     <div class="slide-header">
-        <div class="slide-header-left">05 / Guest Experience &amp; Personalization</div>
-        <div class="slide-header-right">CHANGKEER ATELIER</div>
+        <div class="slide-category">Section 03 • Seasonal Formulations (3/4)</div>
+        <div class="slide-title">Autumn Season Catalog: Restorative Calm &amp; Nervous Grounding</div>
+        <div class="slide-subtitle">Solar Terms 13 to 18 — Whole chamomile blossoms, tropical cinnamon bark, and dried pear to ease mental stress and support deep sleep.</div>
     </div>
 
     <div>
-        <div class="slide-title">Frictionless Mobile Ordering &amp; Customization</div>
-        <div class="slide-subtitle">Empowering guests to tailor their tea ritual without downloading any third-party app.</div>
-
-        <div class="col-container">
-            <div class="col-2">
-                <h3 style="margin-bottom: 4pt;">The Web-Based Guest Journey</h3>
-                <ul>
-                    <li><strong>No App Installation Required:</strong> Guests scan a stylish table QR code using their native phone camera to instantly access the live catalog.</li>
-                    <li><strong>Temperature Selection:</strong> Traditional Hot Clay Pot (warm comfort) or Refreshing Iced Shaken Tea (+IDR 2,000 with craft ice).</li>
-                    <li><strong>5 Calibrated Sweetness Levels:</strong> 0% (Unsweetened), 30% (Light), 50% (Tea Forward), 75% (Balanced), and 100% (Full Sweetness).</li>
-                    <li><strong>Botanical Petal Add-Ons (+IDR 3,000):</strong> Fresh Butterfly Pea, Dried Mountain Jasmine, Royal Marigold, or Raw Forest Honey.</li>
-                </ul>
-            </div>
-            <div class="col-2">
-                <div class="layman-box">
-                    <div class="layman-box-title">Why Guests Love Complete Personalization</div>
-                    Every guest has distinct wellness needs: diabetics require 0% sugar brews, fatigued individuals need raw forest honey, and lifestyle seekers love iced teas infused with purple butterfly pea petals. The CHANGKEER system accommodates every preference in seconds.
-                </div>
-            </div>
-        </div>
+        {table_autumn}
     </div>
 
-    <div class="slide-footer">
-        <div class="slide-footer-left">Board of Founders, CHANGKEER ATELIER</div>
-        <div class="slide-footer-right">Slide 06</div>
+    <div style="border-top: 1px solid #E5E7EB; padding-top: 3pt; font-size: 7.5pt; color: #4B5563;">
+        Serving options: Ceramic hot infusion pot (standard) or craft iced shaken tea (+IDR 2,000). Zero synthetic essences; 100% caffeine-free.
     </div>
 </div>
 
-<!-- SLIDE 7: WORKFLOW & DYNAMIC QRIS -->
+<!-- SLIDE 7: WINTER BLENDS (TERMS 19 - 24) -->
 <div class="slide">
     <div class="slide-header">
-        <div class="slide-header-left">06 / Transaction Workflow &amp; Dynamic QRIS</div>
-        <div class="slide-header-right">CHANGKEER ATELIER</div>
+        <div class="slide-category">Section 03 • Seasonal Formulations (4/4)</div>
+        <div class="slide-title">Winter Season Catalog: Deep Thermal Warmth &amp; Immune Defense</div>
+        <div class="slide-subtitle">Solar Terms 19 to 24 — Mature red ginger rhizomes, archipelago cloves, and wild forest honey to sustain vitality and peripheral circulation.</div>
     </div>
 
     <div>
-        <div class="slide-title">End-to-End Automated Transaction Pipeline</div>
-        <div class="slide-subtitle">Complete digital automation from menu exploration to the barista's pickup counter.</div>
-
-        <div class="h-workflow">
-            <div class="h-step">
-                <div class="h-step-num">1</div>
-                <div class="h-step-title">Configure on Phone</div>
-                <div class="h-step-desc">Guest picks tea blend, temperature, sweetness &amp; toppings.</div>
-            </div>
-            <div class="h-arrow">&#8594;</div>
-            <div class="h-step">
-                <div class="h-step-num">2</div>
-                <div class="h-step-title">Dynamic QRIS</div>
-                <div class="h-step-desc">Server locks in the exact payable bill amount into barcode.</div>
-            </div>
-            <div class="h-arrow">&#8594;</div>
-            <div class="h-step">
-                <div class="h-step-num">3</div>
-                <div class="h-step-title">Security Check</div>
-                <div class="h-step-desc">Backend re-validates catalog prices &amp; payment state.</div>
-            </div>
-            <div class="h-arrow">&#8594;</div>
-            <div class="h-step">
-                <div class="h-step-num">4</div>
-                <div class="h-step-title">Barista KDS Ticket</div>
-                <div class="h-step-desc">Touchscreen display updates with order queue in real time.</div>
-            </div>
-            <div class="h-arrow">&#8594;</div>
-            <div class="h-step">
-                <div class="h-step-num">5</div>
-                <div class="h-step-title">Precision Handover</div>
-                <div class="h-step-desc">Barista steeps tea accurately &amp; delivers cup to table.</div>
-            </div>
-        </div>
-
-        <div class="layman-box">
-            <div class="layman-box-title">Layman Explanation: The Superiority of Dynamic QRIS</div>
-            On traditional paper QR codes, guests must manually type in "IDR 28,000". If they accidentally type "IDR 2,800", the store loses money. With CHANGKEER Dynamic QRIS, the scanned barcode already carries the exact locked IDR 28,000 amount. Guests only tap 'Confirm' on their mobile banking app.
-        </div>
+        {table_winter}
     </div>
 
-    <div class="slide-footer">
-        <div class="slide-footer-left">Board of Founders, CHANGKEER ATELIER</div>
-        <div class="slide-footer-right">Slide 07</div>
+    <div style="border-top: 1px solid #E5E7EB; padding-top: 3pt; font-size: 7.5pt; color: #4B5563;">
+        Serving options: Ceramic hot infusion pot (standard) or craft iced shaken tea (+IDR 2,000). Zero synthetic essences; 100% caffeine-free.
     </div>
 </div>
 
-<!-- SLIDE 8: PAYMENT SECURITY -->
+<!-- SLIDE 8: GUEST JOURNEY -->
 <div class="slide">
     <div class="slide-header">
-        <div class="slide-header-left">07 / Retail Financial Integrity</div>
-        <div class="slide-header-right">CHANGKEER ATELIER</div>
+        <div class="slide-category">Section 04 • Guest Journey &amp; Retail Flow</div>
+        <div class="slide-title">End-to-End Guest Journey &amp; Atelier Experience</div>
+        <div class="slide-subtitle">Frictionless 5-phase journey from table seating to savoring handcrafted ceramic tea infusions.</div>
     </div>
 
-    <div>
-        <div class="slide-title">Financial Protection &amp; Anti-Tampering Shield</div>
-        <div class="slide-subtitle">Multi-tier safeguards protecting both retail revenues and consumer trust.</div>
-
-        <div class="col-container">
-            <div class="col-2">
-                <h3 style="margin-bottom: 4pt;">1. Server-Side Anti-Tampering</h3>
-                <p>
-                    All product unit prices, ice surcharges (+IDR 2,000), and flower add-ons are strictly re-verified on the central backend, never trusted to browser variables.
-                </p>
-                <div class="layman-box">
-                    <div class="layman-box-title">Analogy: The Incorruptible Cashier</div>
-                    If a dishonest customer tampers with browser code to change an IDR 35,000 premium blend to IDR 1,000, the central server instantly flags the discrepancy and aborts the transaction immediately.
-                </div>
-            </div>
-            <div class="col-2">
-                <h3 style="margin-bottom: 4pt;">2. Idempotency (Double-Charge Prevention)</h3>
-                <p>
-                    When network connectivity stutters and a customer taps "Pay" multiple times, the transaction lock ensures only the first request is executed.
-                </p>
-                <div class="layman-box">
-                    <div class="layman-box-title">Analogy: The Fair Ticket Machine</div>
-                    Guarantees that the customer's bank account or e-wallet balance is never debited twice, no matter how many times the button was pressed.
-                </div>
-            </div>
+    <div class="workflow-row">
+        <div class="wf-box">
+            <div class="wf-num">Phase 1</div>
+            <div class="wf-title">Table Scan</div>
+            <div style="color: #4B5563; margin-top: 1pt;">Instant web menu via camera; zero app install</div>
+        </div>
+        <div class="wf-arrow">&rarr;</div>
+        <div class="wf-box">
+            <div class="wf-num">Phase 2</div>
+            <div class="wf-title">Customize</div>
+            <div style="color: #4B5563; margin-top: 1pt;">Choose from 24 blends, calibrate sweetness &amp; temp</div>
+        </div>
+        <div class="wf-arrow">&rarr;</div>
+        <div class="wf-box">
+            <div class="wf-num">Phase 3</div>
+            <div class="wf-title">Dynamic QRIS</div>
+            <div style="color: #4B5563; margin-top: 1pt;">Amount locked; instant server-side verification</div>
+        </div>
+        <div class="wf-arrow">&rarr;</div>
+        <div class="wf-box">
+            <div class="wf-num">Phase 4</div>
+            <div class="wf-title">Live Tracking</div>
+            <div style="color: #4B5563; margin-top: 1pt;">Transparent real-time brew progression on phone</div>
+        </div>
+        <div class="wf-arrow">&rarr;</div>
+        <div class="wf-box">
+            <div class="wf-num">Phase 5</div>
+            <div class="wf-title">Ceramic Service</div>
+            <div style="color: #4B5563; margin-top: 1pt;">Savor hot artisanal pot infusion at leisure</div>
         </div>
     </div>
 
-    <div class="slide-footer">
-        <div class="slide-footer-left">Board of Founders, CHANGKEER ATELIER</div>
-        <div class="slide-footer-right">Slide 08</div>
+    <div style="margin-top: 6pt;">
+        <table class="editorial-table">
+            <thead>
+                <tr>
+                    <th style="width: 28%;">Experience Dimension</th>
+                    <th style="width: 36%;">Conventional Cafe Model</th>
+                    <th>CHANGKEER Atelier Standard</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Queue Wait Duration</strong></td>
+                    <td>Guests stand in line for 5-10 minutes during peak trading hours.</td>
+                    <td>Zero counter queuing; guests seat immediately and order from their smartphone.</td>
+                </tr>
+                <tr>
+                    <td><strong>Herbal Ingredient Transparency</strong></td>
+                    <td>Cashiers rarely possess in-depth botanical or functional knowledge.</td>
+                    <td>Interactive digital cards display flavor notes, botanical parts, and health benefits.</td>
+                </tr>
+                <tr>
+                    <td><strong>Brewing Precision &amp; Consistency</strong></td>
+                    <td>Frequently over-extracted (bitter) when baristas are distracted.</td>
+                    <td>Standardized via digital countdown timers and precise thermal kettle displays.</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 
-<!-- SLIDE 9: KITCHEN DISPLAY SYSTEM -->
+<!-- SLIDE 9: TRANSACTION WORKFLOW & ANTI-FRAUD SECURITY -->
 <div class="slide">
     <div class="slide-header">
-        <div class="slide-header-left">08 / Barista Operations &amp; KDS</div>
-        <div class="slide-header-right">CHANGKEER ATELIER</div>
+        <div class="slide-category">Section 05 • Financial Integrity &amp; Security Architecture</div>
+        <div class="slide-title">Transaction Pipeline &amp; Server-Side Anti-Tampering</div>
+        <div class="slide-subtitle">Ensuring banking settlement validity while eliminating client-side price tampering vectors.</div>
     </div>
 
-    <div>
-        <div class="slide-title">Kitchen Display System (KDS): A Paperless Bar</div>
-        <div class="slide-subtitle">Transforming the tea preparation counter into an organized, hygienic brewing laboratory.</div>
-
-        <div class="col-container">
-            <div class="col-2">
-                <h3 style="margin-bottom: 4pt;">Operational Value for Baristas</h3>
-                <ul>
-                    <li><strong>Chronological Order Queue:</strong> Orders placed earlier sit automatically at the front of the queue, preventing fulfillment delays.</li>
-                    <li><strong>Vibrant Color-Coded States:</strong> Amber (Waiting), Blue (Active Extraction), and Green (Ready for Pickup).</li>
-                    <li><strong>Crystal-Clear Customization:</strong> Sweetness doses (ml) and flower toppings are clearly highlighted on screen.</li>
-                    <li><strong>Zero Paper Clutter:</strong> Brewing surfaces remain completely dry, sterile, and professional.</li>
-                </ul>
-            </div>
-            <div class="col-2">
-                <table class="slide-table">
-                    <thead>
-                        <tr>
-                            <th>Tea Category</th>
-                            <th>Water Temperature</th>
-                            <th>Standard Steeping Duration</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Green Tea &amp; Jasmine</td>
-                            <td>80°C – 85°C</td>
-                            <td>3.5 – 4 Minutes (Delicate)</td>
-                        </tr>
-                        <tr>
-                            <td>Robust Black Tea</td>
-                            <td>95°C – 98°C</td>
-                            <td>3.5 Minutes (Bold)</td>
-                        </tr>
-                        <tr>
-                            <td>Whole Floral Tisanes</td>
-                            <td>90°C – 95°C</td>
-                            <td>5 Minutes (Full Color)</td>
-                        </tr>
-                        <tr>
-                            <td>Root &amp; Ginger Tisanes</td>
-                            <td>98°C – 100°C</td>
-                            <td>6 Minutes (Active Oils)</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+    <div class="workflow-row">
+        <div class="wf-box">
+            <div class="wf-num">Stage 1</div>
+            <div class="wf-title">Lock Bill Total</div>
+            <div style="color: #4B5563; margin-top: 1pt;">Server calculates total against master DB</div>
+        </div>
+        <div class="wf-arrow">&rarr;</div>
+        <div class="wf-box">
+            <div class="wf-num">Stage 2</div>
+            <div class="wf-title">Generate QRIS</div>
+            <div style="color: #4B5563; margin-top: 1pt;">Dynamic code embeds exact rupiah settlement</div>
+        </div>
+        <div class="wf-arrow">&rarr;</div>
+        <div class="wf-box">
+            <div class="wf-num">Stage 3</div>
+            <div class="wf-title">Webhook Settlement</div>
+            <div style="color: #4B5563; margin-top: 1pt;">Bank gateway issues signed settlement webhook</div>
+        </div>
+        <div class="wf-arrow">&rarr;</div>
+        <div class="wf-box">
+            <div class="wf-num">Stage 4</div>
+            <div class="wf-title">Dispatch KDS Ticket</div>
+            <div style="color: #4B5563; margin-top: 1pt;">Verified ticket pushed to barista queue</div>
         </div>
     </div>
 
-    <div class="slide-footer">
-        <div class="slide-footer-left">Board of Founders, CHANGKEER ATELIER</div>
-        <div class="slide-footer-right">Slide 09</div>
+    <div style="margin-top: 6pt;">
+        <table class="editorial-table">
+            <thead>
+                <tr>
+                    <th style="width: 25%;">Security Safeguard</th>
+                    <th style="width: 35%;">Engineering Mechanism</th>
+                    <th>Enterprise Operational Protection</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Server-Side Anti-Tampering</strong></td>
+                    <td>Pricing is calculated strictly in backend memory; client values ignored.</td>
+                    <td>Prevents fraudulent price overrides via browser inspect tools or modified proxies.</td>
+                </tr>
+                <tr>
+                    <td><strong>Idempotency Key Protocol</strong></td>
+                    <td>Unique transaction tokens guarantee single settlement execution.</td>
+                    <td>Eliminates duplicate debit charges when guests tap pay repeatedly on lagging connections.</td>
+                </tr>
+                <tr>
+                    <td><strong>Cryptographic Webhook Signatures</strong></td>
+                    <td>HMAC-SHA256 signature verification on every inbound settlement notice.</td>
+                    <td>Instantly rejects forged payment confirmations or third-party mutation simulations.</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 
-<!-- SLIDE 10: TECHNOLOGY ARCHITECTURE -->
+<!-- SLIDE 10: BARISTA CRAFT & KDS -->
 <div class="slide">
     <div class="slide-header">
-        <div class="slide-header-left">09 / Technology Stack &amp; Reliability</div>
-        <div class="slide-header-right">CHANGKEER ATELIER</div>
+        <div class="slide-category">Section 06 • Bar Operations &amp; Craftsmanship</div>
+        <div class="slide-title">Barista Standard Operating Procedures &amp; KDS Workflow</div>
+        <div class="slide-subtitle">Digital queue monitoring ensuring extraction precision, strict timing control, and sweetness balance.</div>
     </div>
 
-    <div>
-        <div class="slide-title">Next-Generation Engineering Stack</div>
-        <div class="slide-subtitle">Engineered with high-speed modern web infrastructure to ensure uninterrupted retail uptime.</div>
-
-        <div class="col-container">
-            <div class="col-3">
-                <div style="background-color: #f8fafc; border: 1px solid #cbd5e1; padding: 8pt;">
-                    <div style="font-weight: 700; color: #143828; font-size: 9.5pt; margin-bottom: 2pt;">Next.js 16 &amp; React 19</div>
-                    <div style="font-size: 8pt; color: #334155;">Ultra-fast catalog rendering on mobile devices with negligible cellular data usage.</div>
-                </div>
-            </div>
-            <div class="col-3">
-                <div style="background-color: #f8fafc; border: 1px solid #cbd5e1; padding: 8pt;">
-                    <div style="font-weight: 700; color: #143828; font-size: 9.5pt; margin-bottom: 2pt;">Supabase Cloud &amp; RLS</div>
-                    <div style="font-size: 8pt; color: #334155;">Encrypted PostgreSQL database with strict row-level authorization on customer orders.</div>
-                </div>
-            </div>
-            <div class="col-3">
-                <div style="background-color: #f8fafc; border: 1px solid #cbd5e1; padding: 8pt;">
-                    <div style="font-weight: 700; color: #143828; font-size: 9.5pt; margin-bottom: 2pt;">Dual-Tier Resilience</div>
-                    <div style="font-size: 8pt; color: #334155;">If internet connection drops, the local memory store ensures counter POS continues smoothly.</div>
-                </div>
-            </div>
+    <div class="content-two-cols">
+        <div class="col-cell" style="width: 48%;">
+            <div style="font-size: 9pt; font-weight: 700; color: #1B4332; margin-bottom: 4pt;">3-State KDS Queue Progression</div>
+            <ul>
+                <li><strong>Order Received (Amber):</strong> New incoming order from table; barista checks table number, blend formula, and sweetness level.</li>
+                <li><strong>Brewing Now (Blue):</strong> Barista taps 'Start Brew'; digital extraction timer initiates automated countdown.</li>
+                <li><strong>Ready to Serve (Green):</strong> Infusion completed and poured into pre-warmed ceramic pot; ready for table service.</li>
+            </ul>
         </div>
-
-        <div class="layman-box" style="margin-top: 10pt;">
-            <div class="layman-box-title">Measurable Retail Impact</div>
-            Reduces customer ordering wait times by up to 65%, cuts tea beverage preparation errors to near 0%, and permanently eliminates paper receipt procurement overhead.
+        <div class="col-cell" style="width: 52%;">
+            <div style="font-size: 9pt; font-weight: 700; color: #1B4332; margin-bottom: 4pt;">Thermal Extraction Standard Operating Matrix</div>
+            <table class="editorial-table">
+                <thead>
+                    <tr>
+                        <th>Botanical Category</th>
+                        <th style="text-align: center;">Water Temp</th>
+                        <th style="text-align: center;">Duration</th>
+                        <th>Quality Standard</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Fresh Petals &amp; Green Tea</strong></td>
+                        <td style="text-align: center; font-weight: 600;">80°C – 85°C</td>
+                        <td style="text-align: center;">3.5 – 4 Min</td>
+                        <td>Avoids bitter tannins.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Whole Dried Blossoms</strong></td>
+                        <td style="text-align: center; font-weight: 600;">90°C – 94°C</td>
+                        <td style="text-align: center;">5 Min</td>
+                        <td>Releases natural color pigments.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ginger &amp; Turmeric Roots</strong></td>
+                        <td style="text-align: center; font-weight: 600;">98°C – 100°C</td>
+                        <td style="text-align: center;">6 Min</td>
+                        <td>Breaks cell walls for essential oils.</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 
-    <div class="slide-footer">
-        <div class="slide-footer-left">Board of Founders, CHANGKEER ATELIER</div>
-        <div class="slide-footer-right">Slide 10</div>
+    <div style="border-top: 1px solid #E5E7EB; padding-top: 4pt; font-size: 8pt; color: #4B5563;">
+        <strong>Flavor Precision:</strong> Natural sweeteners are dispensed strictly using calibrated stainless steel jiggers (0ml, 7.5ml, 12.5ml, 18ml, 25ml).
     </div>
 </div>
 
-<!-- SLIDE 11: FOUNDERS & CLOSING -->
+<!-- SLIDE 11: TECHNOLOGY STACK -->
 <div class="slide">
     <div class="slide-header">
-        <div class="slide-header-left">10 / Board of Founders &amp; Closing</div>
-        <div class="slide-header-right">CHANGKEER ATELIER</div>
+        <div class="slide-category">Section 07 • Engineering Stack &amp; Resilience</div>
+        <div class="slide-title">Technology Ecosystem &amp; High-Availability Architecture</div>
+        <div class="slide-subtitle">Engineered with modern web standards for high concurrency, banking data safety, and zero downtime.</div>
     </div>
 
     <div>
-        <div class="slide-title">Board of Founders &amp; Open Discussion</div>
-        <div class="slide-subtitle">The five co-founders shaping the future of Indonesian botanical tea rituals.</div>
-
-        <div class="col-container">
-            <div class="col-2">
-                <h3 style="margin-bottom: 4pt;">The 5 Co-Founders Roster</h3>
-                <table class="slide-table">
-                    <thead>
-                        <tr>
-                            <th style="width: 10%;">No</th>
-                            <th style="width: 45%;">Co-Founder Name</th>
-                            <th>Strategic Focus</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {founders_rows}
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-2">
-                <div class="layman-box">
-                    <div class="layman-box-title">Final Synthesis</div>
-                    CHANGKEER proves that heritage herbal craftsmanship can seamlessly harmonize with cutting-edge web technology. The platform is ready for commercial multi-store deployment.
-                </div>
-                <div style="text-align: center; margin-top: 12pt;">
-                    <div style="font-family: 'Playfair Display', serif; font-size: 15pt; font-weight: 700; color: #143828; margin-bottom: 2pt;">
-                        Thank You for Your Consideration
-                    </div>
-                    <div style="font-size: 8.5pt; color: #4a5568;">
-                        We warmly invite questions, evaluation, and discussion.
-                    </div>
-                </div>
-            </div>
-        </div>
+        <table class="editorial-table">
+            <thead>
+                <tr>
+                    <th style="width: 22%;">System Tier</th>
+                    <th style="width: 25%;">Technology Selection</th>
+                    <th>Architectural Role &amp; Operational Benefit</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Frontend &amp; Server Web</strong></td>
+                    <td>Next.js 16 (App Router, React 19)</td>
+                    <td>High-speed server rendering supporting instant guest access across mobile devices without app installation friction.</td>
+                </tr>
+                <tr>
+                    <td><strong>Programming Language</strong></td>
+                    <td>TypeScript 5 (Strict Mode)</td>
+                    <td>Full end-to-end type safety eliminating runtime exceptions in transactional calculations and recipe parameters.</td>
+                </tr>
+                <tr>
+                    <td><strong>Interface Design</strong></td>
+                    <td>Tailwind CSS</td>
+                    <td>High-contrast, ergonomic touch interface complying with modern accessibility and editorial standards.</td>
+                </tr>
+                <tr>
+                    <td><strong>Relational Database</strong></td>
+                    <td>PostgreSQL (via Supabase)</td>
+                    <td>Banking-grade ACID transactional consistency fortified with Row-Level Security (RLS) for data protection.</td>
+                </tr>
+                <tr>
+                    <td><strong>Data Validation</strong></td>
+                    <td>Zod Schema Validation</td>
+                    <td>Strict schema enforcement across all incoming HTTP order payloads prior to executing server business logic.</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
-    <div class="slide-footer">
-        <div class="slide-footer-left">CHANGKEER ATELIER • All Rights Reserved</div>
-        <div class="slide-footer-right">Slide 11</div>
+    <div style="border-top: 1px solid #E5E7EB; padding-top: 4pt; font-size: 8pt; color: #4B5563;">
+        <strong>Dual-Tier Resilience:</strong> Active kitchen orders are cached locally in bar memory, ensuring uninterrupted service and receipt printing during network downtime.
+    </div>
+</div>
+
+<!-- SLIDE 12: FOUNDERS & CLOSING -->
+<div class="slide">
+    <div class="slide-header">
+        <div class="slide-category">Section 08 • Board of Founders &amp; Strategic Vision</div>
+        <div class="slide-title">Board of Founders &amp; Operational Governance</div>
+        <div class="slide-subtitle">Executive synergy and operational dedication behind a modern, transparent herbal tea atelier.</div>
+    </div>
+
+    <div>
+        <div style="font-size: 8.5pt; font-weight: 700; color: #1B4332; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 3pt;">
+            CHANGKEER BOARD OF FOUNDERS (THE 5 CO-FOUNDERS)
+        </div>
+        <table class="editorial-table">
+            <thead>
+                <tr>
+                    <th style="width: 5%; text-align: center;">No</th>
+                    <th style="width: 28%;">Founder Name</th>
+                    <th style="width: 14%;">Role</th>
+                    <th>Executive Operational Focus</th>
+                </tr>
+            </thead>
+            <tbody>
+                {founders_rows}
+            </tbody>
+        </table>
+    </div>
+
+    <div style="margin-top: 8pt; border-top: 1.5px solid #1B4332; padding-top: 6pt;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="font-size: 8.5pt; color: #1F2937;">
+                <strong>Project Synthesis:</strong> CHANGKEER ATELIER establishes that indigenous botanical wisdom and the 24 Solar Terms can be successfully elevated into a standardized, digitally secure, and commercially viable modern retail model.
+            </div>
+            <div style="text-align: right; font-size: 8pt; color: #6B7280; white-space: nowrap; margin-left: 14pt;">
+                <div>Official Release: October 2026</div>
+                <div style="font-weight: 700; color: #111827;">CHANGKEER ATELIER</div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -838,6 +780,8 @@ table.slide-table td {{
     return clean_html
 
 if __name__ == "__main__":
+    import sys
+    sys.path.insert(0, "/home/ilhammu29/changkeer/scripts")
     from assets_loader import get_all_assets
     assets = get_all_assets()
     out = generate_presentation_en(assets)

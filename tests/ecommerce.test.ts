@@ -82,6 +82,51 @@ describe('Orders and Checkout Flow', () => {
     }
   });
 
+  it('validates checkout payload with both dried flower and dried fruit addons', () => {
+    // BOTANICAL_ADDONS[0] is Dried Rose Buds (Flower)
+    // BOTANICAL_ADDONS[6] is Goji Berries (Fruit)
+    const flowerAddon = BOTANICAL_ADDONS.find(a => a.category === 'flower') || BOTANICAL_ADDONS[0];
+    const fruitAddon = BOTANICAL_ADDONS.find(a => a.category === 'fruit') || BOTANICAL_ADDONS[6];
+
+    const payload = {
+      customer_name: 'Budi Santoso',
+      customer_email: 'budi@example.com',
+      customer_phone: '081234567890',
+      order_type: 'dine_in',
+      table_number: 'Meja 05',
+      subtotal: 34000,
+      discount_amount: 0,
+      delivery_fee: 0,
+      tax_amount: 0,
+      total_amount: 34000,
+      payment_method: 'qris',
+      items: [
+        {
+          cart_item_id: 'cart-fruit-flower',
+          product_id: 'prod-2',
+          product_name: 'CHANGKEER Rain Garden',
+          product_slug: 'rain-water',
+          serving_size: 'regular',
+          temperature: 'hot',
+          sweetness_level: '30%',
+          sweetener_type: 'sorghum',
+          selected_addons: [flowerAddon, fruitAddon],
+          unit_price: 34000,
+          quantity: 1,
+          subtotal: 34000,
+        },
+      ],
+    };
+
+    const parsed = checkoutSchema.safeParse(payload);
+    expect(parsed.success).toBe(true);
+    if (parsed.success) {
+      expect(parsed.data.items[0].selected_addons).toHaveLength(2);
+      expect(parsed.data.items[0].selected_addons.map(a => a.category)).toContain('flower');
+      expect(parsed.data.items[0].selected_addons.map(a => a.category)).toContain('fruit');
+    }
+  });
+
   it('creates an order, retrieves it, and updates its status', async () => {
     const created = await createOrder({
       customer_name: 'Test Customer',

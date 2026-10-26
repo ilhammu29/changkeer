@@ -137,6 +137,8 @@ export interface BotanicalAddon {
   id: string;
   name: string;
   price: number;
+  category?: 'flower' | 'fruit';
+  note?: string;
 }
 
 export interface CartItem {

@@ -57,6 +57,7 @@ export function ClientProductDetailInteractive({
   const [sweetenerType, setSweetenerType] = useState<'sorghum' | 'honey' | 'stevia'>('sorghum');
   const [iceLevel, setIceLevel] = useState<'less' | 'normal'>('normal');
   const [selectedAddons, setSelectedAddons] = useState<typeof BOTANICAL_ADDONS>([]);
+  const [addonFilter, setAddonFilter] = useState<'all' | 'flower' | 'fruit'>('all');
   const [copied, setCopied] = useState(false);
   const [addedAnimation, setAddedAnimation] = useState(false);
 
@@ -461,33 +462,105 @@ export function ClientProductDetailInteractive({
             </div>
           )}
 
-          {/* Botanical Add-ons */}
-          <div className="space-y-1.5 pt-0.5">
+          {/* Botanical Add-ons (Bunga Kering & Buah Kering) */}
+          <div className="space-y-2 pt-0.5">
             <div className="flex items-center justify-between">
               <label className="text-[11px] font-sans font-bold tracking-wider uppercase text-neutral-500 block">
-                Botanical Flower Infusions
+                Tambahan Botani (Bunga &amp; Buah Kering)
               </label>
-              <span className="text-[10px] font-sans text-neutral-400 font-medium">Optional</span>
+              <span className="text-[10px] font-sans text-neutral-400 font-medium">
+                {selectedAddons.length > 0 ? `${selectedAddons.length} dipilih` : 'Opsional'}
+              </span>
             </div>
-            <div className="space-y-1.5 max-h-28 overflow-y-auto pr-1">
-              {BOTANICAL_ADDONS.map((addon) => {
-                const isSelected = selectedAddons.some(a => a.id === addon.id);
-                return (
-                  <button
-                    key={addon.id}
-                    type="button"
-                    onClick={() => handleToggleAddon(addon)}
-                    className={`w-full py-1.5 px-3 rounded-xl border text-left text-xs font-sans flex items-center justify-between transition-colors cursor-pointer ${
-                      isSelected
-                        ? 'bg-neutral-900 text-white border-neutral-900 shadow-xs'
-                        : 'bg-neutral-50/70 text-neutral-700 border-neutral-200/80 hover:bg-neutral-100'
-                    }`}
-                  >
-                    <span className="font-semibold truncate max-w-[140px] sm:max-w-[200px]">{addon.name}</span>
-                    <span className="text-[11px] font-mono font-bold shrink-0">+{formatRupiah(addon.price)}</span>
-                  </button>
-                );
-              })}
+
+            {/* Filter Pills */}
+            <div className="flex items-center gap-1 p-0.5 bg-neutral-100 rounded-lg text-[10px] font-sans font-medium">
+              <button
+                type="button"
+                onClick={() => setAddonFilter('all')}
+                className={`flex-1 py-1 px-1.5 rounded-md transition-all text-center cursor-pointer ${
+                  addonFilter === 'all'
+                    ? 'bg-white text-neutral-900 shadow-2xs font-bold'
+                    : 'text-neutral-500 hover:text-neutral-900'
+                }`}
+              >
+                Semua
+              </button>
+              <button
+                type="button"
+                onClick={() => setAddonFilter('flower')}
+                className={`flex-1 py-1 px-1.5 rounded-md transition-all text-center cursor-pointer flex items-center justify-center gap-1 ${
+                  addonFilter === 'flower'
+                    ? 'bg-white text-rose-950 shadow-2xs font-bold'
+                    : 'text-neutral-500 hover:text-neutral-900'
+                }`}
+              >
+                <span>🌸 Bunga</span>
+                {selectedAddons.filter(a => a.category === 'flower').length > 0 && (
+                  <span className="w-3.5 h-3.5 rounded-full bg-rose-600 text-white text-[8px] font-bold flex items-center justify-center">
+                    {selectedAddons.filter(a => a.category === 'flower').length}
+                  </span>
+                )}
+              </button>
+              <button
+                type="button"
+                onClick={() => setAddonFilter('fruit')}
+                className={`flex-1 py-1 px-1.5 rounded-md transition-all text-center cursor-pointer flex items-center justify-center gap-1 ${
+                  addonFilter === 'fruit'
+                    ? 'bg-white text-amber-950 shadow-2xs font-bold'
+                    : 'text-neutral-500 hover:text-neutral-900'
+                }`}
+              >
+                <span>🍊 Buah</span>
+                {selectedAddons.filter(a => a.category === 'fruit').length > 0 && (
+                  <span className="w-3.5 h-3.5 rounded-full bg-amber-600 text-white text-[8px] font-bold flex items-center justify-center">
+                    {selectedAddons.filter(a => a.category === 'fruit').length}
+                  </span>
+                )}
+              </button>
+            </div>
+
+            <div className="space-y-1 max-h-36 overflow-y-auto pr-1">
+              {BOTANICAL_ADDONS
+                .filter(addon => addonFilter === 'all' || addon.category === addonFilter)
+                .map((addon) => {
+                  const isSelected = selectedAddons.some(a => a.id === addon.id);
+                  const isFruit = addon.category === 'fruit';
+
+                  return (
+                    <button
+                      key={addon.id}
+                      type="button"
+                      onClick={() => handleToggleAddon(addon)}
+                      className={`w-full py-2 px-2.5 rounded-xl border text-left text-xs font-sans flex items-center justify-between transition-colors cursor-pointer ${
+                        isSelected
+                          ? 'bg-neutral-900 text-white border-neutral-900 shadow-xs'
+                          : 'bg-neutral-50/70 text-neutral-700 border-neutral-200/80 hover:bg-neutral-100'
+                      }`}
+                    >
+                      <div className="min-w-0 pr-2">
+                        <div className="flex items-center gap-1.5">
+                          <span className="font-semibold truncate text-[11px]">{addon.name}</span>
+                          <span className={`text-[8.5px] px-1 py-0.2 rounded font-medium shrink-0 ${
+                            isSelected 
+                              ? 'bg-neutral-800 text-neutral-200' 
+                              : isFruit ? 'bg-amber-100 text-amber-800' : 'bg-rose-100 text-rose-800'
+                          }`}>
+                            {isFruit ? 'Buah' : 'Bunga'}
+                          </span>
+                        </div>
+                        {addon.note && (
+                          <span className={`text-[9.5px] block truncate font-normal ${
+                            isSelected ? 'text-neutral-300' : 'text-neutral-400'
+                          }`}>
+                            {addon.note}
+                          </span>
+                        )}
+                      </div>
+                      <span className="text-[11px] font-mono font-bold shrink-0">+{formatRupiah(addon.price)}</span>
+                    </button>
+                  );
+                })}
             </div>
           </div>
 
