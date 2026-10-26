@@ -79,7 +79,7 @@ function BotanicalThumbnail({ addon }: { addon: BotanicalAddon }) {
   switch (addon.id) {
     case 'addon-1': // Dried Rose Buds
       return (
-        <svg viewBox="0 0 40 40" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 40 40" className="w-full h-full pointer-events-none" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect width="40" height="40" rx="8" fill="#1A1114" />
           <circle cx="20" cy="20" r="14" fill="#381017" opacity="0.6" />
           <path d="M16 23C13 20 13 15 17 13C21 11 25 14 24 18C23 22 19 25 16 23Z" fill="#991B1B" />
@@ -90,7 +90,7 @@ function BotanicalThumbnail({ addon }: { addon: BotanicalAddon }) {
       );
     case 'addon-2': // Golden Chrysanthemum
       return (
-        <svg viewBox="0 0 40 40" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 40 40" className="w-full h-full pointer-events-none" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect width="40" height="40" rx="8" fill="#1A1710" />
           <circle cx="20" cy="20" r="13" fill="#3D2E12" opacity="0.6" />
           {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map((deg) => (
@@ -111,7 +111,7 @@ function BotanicalThumbnail({ addon }: { addon: BotanicalAddon }) {
       );
     case 'addon-3': // Butterfly Pea (Telang)
       return (
-        <svg viewBox="0 0 40 40" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 40 40" className="w-full h-full pointer-events-none" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect width="40" height="40" rx="8" fill="#101524" />
           <circle cx="20" cy="20" r="13" fill="#1E2A4A" opacity="0.6" />
           <path d="M14 20C12 14 18 11 21 13C25 15 27 21 24 25C21 28 16 25 14 20Z" fill="#1E40AF" />
@@ -122,7 +122,7 @@ function BotanicalThumbnail({ addon }: { addon: BotanicalAddon }) {
       );
     case 'addon-4': // Jasmine Bloom
       return (
-        <svg viewBox="0 0 40 40" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 40 40" className="w-full h-full pointer-events-none" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect width="40" height="40" rx="8" fill="#131916" />
           <circle cx="20" cy="20" r="13" fill="#1D2A24" opacity="0.6" />
           {[0, 72, 144, 216, 288].map((deg) => (
@@ -142,7 +142,7 @@ function BotanicalThumbnail({ addon }: { addon: BotanicalAddon }) {
       );
     case 'addon-5': // Golden Osmanthus
       return (
-        <svg viewBox="0 0 40 40" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 40 40" className="w-full h-full pointer-events-none" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect width="40" height="40" rx="8" fill="#1C1810" />
           <circle cx="20" cy="20" r="13" fill="#3D3016" opacity="0.6" />
           <g transform="translate(14, 13) scale(0.65)">
@@ -170,7 +170,7 @@ function BotanicalThumbnail({ addon }: { addon: BotanicalAddon }) {
       );
     case 'addon-6': // Organic Hibiscus (Rosella)
       return (
-        <svg viewBox="0 0 40 40" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 40 40" className="w-full h-full pointer-events-none" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect width="40" height="40" rx="8" fill="#1C1014" />
           <circle cx="20" cy="20" r="13" fill="#3D121F" opacity="0.6" />
           <path d="M20 10C16 14 13 19 14 25C15 28 17 30 20 30C23 30 25 28 26 25C27 19 24 14 20 10Z" fill="#9F1239" />
@@ -180,7 +180,7 @@ function BotanicalThumbnail({ addon }: { addon: BotanicalAddon }) {
       );
     case 'addon-7': // Goji Berries
       return (
-        <svg viewBox="0 0 40 40" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 40 40" className="w-full h-full pointer-events-none" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect width="40" height="40" rx="8" fill="#1C1210" />
           <circle cx="20" cy="20" r="13" fill="#3E1D16" opacity="0.6" />
           <ellipse cx="17" cy="18" rx="4" ry="7" fill="#DC2626" transform="rotate(-20 17 18)" />
@@ -191,7 +191,7 @@ function BotanicalThumbnail({ addon }: { addon: BotanicalAddon }) {
       );
     case 'addon-8': // Red Dates / Jujube
       return (
-        <svg viewBox="0 0 40 40" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 40 40" className="w-full h-full pointer-events-none" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect width="40" height="40" rx="8" fill="#191311" />
           <circle cx="20" cy="20" r="13" fill="#3D211A" opacity="0.6" />
           <ellipse cx="20" cy="20" rx="7.5" ry="11" fill="#78350F" transform="rotate(-15 20 20)" />
@@ -201,7 +201,7 @@ function BotanicalThumbnail({ addon }: { addon: BotanicalAddon }) {
       );
     case 'addon-9': // Dried Longan
       return (
-        <svg viewBox="0 0 40 40" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 40 40" className="w-full h-full pointer-events-none" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect width="40" height="40" rx="8" fill="#1A1610" />
           <circle cx="20" cy="20" r="13" fill="#3A2D16" opacity="0.6" />
           <circle cx="20" cy="20" r="9" fill="#B45309" />
@@ -211,7 +211,7 @@ function BotanicalThumbnail({ addon }: { addon: BotanicalAddon }) {
       );
     case 'addon-10': // Dried Pear Slice
       return (
-        <svg viewBox="0 0 40 40" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 40 40" className="w-full h-full pointer-events-none" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect width="40" height="40" rx="8" fill="#1A1810" />
           <circle cx="20" cy="20" r="13" fill="#3D361B" opacity="0.6" />
           <path d="M20 11C16 11 15 15 14 19C12 23 14 28 20 28C26 28 28 23 26 19C25 15 24 11 20 11Z" fill="#EAB308" opacity="0.85" />
@@ -221,7 +221,7 @@ function BotanicalThumbnail({ addon }: { addon: BotanicalAddon }) {
       );
     case 'addon-11': // Dried Apple Crisp
       return (
-        <svg viewBox="0 0 40 40" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 40 40" className="w-full h-full pointer-events-none" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect width="40" height="40" rx="8" fill="#1C1510" />
           <circle cx="20" cy="20" r="13" fill="#3E2B18" opacity="0.6" />
           <circle cx="20" cy="20" r="10" fill="#F59E0B" opacity="0.85" />
@@ -241,7 +241,7 @@ function BotanicalThumbnail({ addon }: { addon: BotanicalAddon }) {
       );
     case 'addon-12': // Dried Mango
       return (
-        <svg viewBox="0 0 40 40" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 40 40" className="w-full h-full pointer-events-none" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect width="40" height="40" rx="8" fill="#1C150E" />
           <circle cx="20" cy="20" r="13" fill="#422914" opacity="0.6" />
           <path d="M12 25C15 28 24 28 28 22C29 17 26 13 22 12C16 11 13 17 12 25Z" fill="#EA580C" />
@@ -250,7 +250,7 @@ function BotanicalThumbnail({ addon }: { addon: BotanicalAddon }) {
       );
     case 'addon-13': // Dried Lemon Slice
       return (
-        <svg viewBox="0 0 40 40" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 40 40" className="w-full h-full pointer-events-none" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect width="40" height="40" rx="8" fill="#1A180E" />
           <circle cx="20" cy="20" r="13" fill="#3D3716" opacity="0.6" />
           <circle cx="20" cy="20" r="10.5" stroke="#CA8A04" strokeWidth="2" fill="#EAB308" />
@@ -273,7 +273,7 @@ function BotanicalThumbnail({ addon }: { addon: BotanicalAddon }) {
     case 'addon-14': // Sun-Dried Orange Peel
     default:
       return (
-        <svg viewBox="0 0 40 40" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 40 40" className="w-full h-full pointer-events-none" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect width="40" height="40" rx="8" fill={isFruit ? '#1C150E' : '#1A1114'} />
           <circle cx="20" cy="20" r="13" fill={isFruit ? '#422914' : '#381017'} opacity="0.6" />
           {isFruit ? (
@@ -300,18 +300,16 @@ export function CustomizationModal({ product, isOpen, onClose }: CustomizationMo
   const [notes, setNotes] = useState('');
   const [quantity, setQuantity] = useState(1);
 
-  // Close on Escape key & prevent page scroll
+  // Close on Escape key
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
     };
     if (isOpen) {
       window.addEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = 'hidden';
     }
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = 'unset';
     };
   }, [isOpen, onClose]);
 
@@ -366,32 +364,34 @@ export function CustomizationModal({ product, isOpen, onClose }: CustomizationMo
   const showcaseImage = product.featured_image || '/images/products/cold-dew.jpg';
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 md:p-6 overflow-hidden font-sans select-none animate-in fade-in duration-200">
-      {/* Luxury Dark Backdrop with Blur */}
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 md:p-6 font-sans">
+      {/* Luxury Dark Backdrop with Blur (Strictly behind modal at z-0) */}
       <div
-        className="fixed inset-0 bg-black/80 backdrop-blur-md transition-opacity"
+        className="fixed inset-0 bg-black/80 backdrop-blur-md transition-opacity z-0 cursor-pointer"
         onClick={onClose}
         aria-hidden="true"
       />
 
-      {/* Split Modal Container (Matched to pop_up_custom_order.png with Full Mobile Polish) */}
-      <div className="relative w-full max-w-full sm:max-w-[960px] bg-[#121619] border border-[#272E34] text-white rounded-t-[24px] sm:rounded-[24px] shadow-2xl overflow-hidden z-10 flex flex-col md:flex-row max-h-[92dvh] sm:max-h-[88vh] md:h-[660px] lg:h-[690px] animate-in slide-in-from-bottom-4 sm:zoom-in-95 duration-200">
-        
-        {/* Mobile-First Close Button (always accessible top right with large tap target) */}
+      {/* Split Modal Container (Matched to pop_up_custom_order.png with Zero-Glitch Mobile & Tablet Architecture) */}
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="relative z-10 w-full max-w-full sm:max-w-[960px] bg-[#121619] border border-[#272E34] text-white rounded-t-[24px] sm:rounded-[24px] shadow-2xl flex flex-col md:flex-row h-[92dvh] sm:h-[88vh] md:h-[660px] lg:h-[690px] max-h-[92dvh] min-h-0 pointer-events-auto overflow-hidden animate-in slide-in-from-bottom-3 sm:zoom-in-95 duration-200"
+      >
+        {/* Universal Easy-Touch Close Button (Prominent on Mobile & Tablet) */}
         <button
           type="button"
           onClick={onClose}
-          className="absolute top-3 right-3 sm:top-5 sm:right-5 p-2 rounded-full bg-black/60 hover:bg-white/10 text-neutral-300 hover:text-white border border-white/15 backdrop-blur-md transition-colors z-30 cursor-pointer shadow-lg md:hidden"
+          className="absolute top-3.5 right-3.5 sm:top-5 sm:right-5 p-2 rounded-full bg-black/60 hover:bg-black/80 active:scale-95 text-neutral-200 hover:text-white border border-white/20 backdrop-blur-md transition-all z-30 cursor-pointer shadow-lg flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10"
           aria-label="Tutup kustomisasi"
         >
-          <X className="w-4 h-4" />
+          <X className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2.2]" />
         </button>
 
         {/* =========================================================================
             LEFT COLUMN: ATMOSPHERIC ARTISANAL PHOTOGRAPHY & BRAND STORY
-            Responsive: Compact top banner on mobile, expansive visual on desktop
+            Visible as full-height column on Desktop & Tablet Landscape (md:flex)
             ========================================================================= */}
-        <div className="relative w-full md:w-[40%] lg:w-[42%] h-36 sm:h-52 md:h-full min-h-[140px] sm:min-h-[200px] md:min-h-full bg-[#0D1012] shrink-0 flex flex-col justify-between overflow-hidden">
+        <div className="hidden md:flex md:w-[40%] lg:w-[42%] md:h-full bg-[#0D1012] shrink-0 flex-col justify-between overflow-hidden relative">
           {/* Full-bleed photography */}
           <div className="absolute inset-0">
             <Image
@@ -406,64 +406,94 @@ export function CustomizationModal({ product, isOpen, onClose }: CustomizationMo
           </div>
 
           {/* Top-Left Floating Pill Badge */}
-          <div className="relative z-10 p-3.5 sm:p-5 md:p-6">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/50 backdrop-blur-md border border-white/20 text-white text-[10px] sm:text-xs font-medium tracking-wide shadow-md">
-              <Leaf className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white/90" />
+          <div className="relative z-10 p-5 sm:p-6">
+            <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-black/50 backdrop-blur-md border border-white/20 text-white text-xs font-medium tracking-wide shadow-md">
+              <Leaf className="w-3.5 h-3.5 text-white/90" />
               <span>Herbal Drink</span>
             </div>
           </div>
 
           {/* Bottom Poetic Narrative Overlay */}
-          <div className="relative z-10 p-4 sm:p-6 md:p-8 mt-auto">
+          <div className="relative z-10 p-6 sm:p-7 md:p-8 mt-auto">
             {/* Gold Accent Divider Bar */}
-            <div className="w-6 sm:w-7 h-[2px] bg-[#D4A373] mb-1.5 sm:mb-2.5 rounded-full" />
+            <div className="w-7 h-[2px] bg-[#D4A373] mb-3 rounded-full" />
 
-            <h3 className="font-serif italic text-base sm:text-lg md:text-xl text-white font-normal leading-snug tracking-wide">
+            <h3 className="font-serif italic text-lg sm:text-xl text-white font-normal leading-snug tracking-wide">
               Tradisional. Alami. Menyehatkan.
             </h3>
             
-            <p className="hidden sm:block text-[11px] sm:text-xs text-neutral-300/90 leading-relaxed font-sans font-light mt-1.5 max-w-xs sm:max-w-sm">
+            <p className="text-xs text-neutral-300/90 leading-relaxed font-sans font-light mt-2 max-w-xs sm:max-w-sm">
               Perpaduan jahe dan rempah alami untuk menjaga daya tahan tubuh dan menghangatkan badan, terutama di musim dingin.
             </p>
           </div>
         </div>
 
         {/* =========================================================================
-            RIGHT COLUMN: CUSTOMIZATION CONTROLS & LUXURY SELECTIONS
-            Responsive: Ergonomic layout, sleek custom scrollbar, comfortable tap targets
+            RIGHT COLUMN: UNIFIED SCROLLABLE CUSTOMIZATION & CONTROLS
+            min-h-0 ensures perfect flex shrinking so touch scrolling never freezes!
             ========================================================================= */}
-        <div className="flex-1 flex flex-col bg-[#121619] text-white relative min-w-0">
+        <div className="flex-1 md:h-full flex flex-col min-h-0 min-w-0 bg-[#121619] text-white relative">
           
-          {/* Header Bar */}
-          <div className="pt-4 px-4 sm:pt-6 sm:px-7 md:pt-7 md:px-8 pb-3 border-b border-[#1E252B] shrink-0">
-            <div className="flex items-start justify-between gap-3">
-              <div className="min-w-0 pr-1">
-                <span className="text-[9.5px] sm:text-[10.5px] font-mono tracking-[0.14em] text-neutral-400 font-bold uppercase block truncate">
-                  {categoryBadge}
-                </span>
-                <h2 className="font-serif text-lg sm:text-2xl md:text-[26px] font-medium text-white uppercase tracking-normal mt-0.5 sm:mt-1 leading-tight truncate">
-                  {product.name}
-                </h2>
-                <p className="text-[11px] sm:text-xs text-neutral-400 mt-0.5 sm:mt-1 line-clamp-2 leading-relaxed">
-                  {product.tagline || product.description || 'Cold Dew (寒露) • Warming ginger and naturally sweet dates, for the first wet evenings.'}
-                </p>
-              </div>
-
-              {/* Desktop Close Button */}
-              <button
-                type="button"
-                onClick={onClose}
-                className="hidden md:flex p-1.5 rounded-lg text-neutral-400 hover:text-white hover:bg-white/5 transition-colors cursor-pointer shrink-0 -mt-1 -mr-1"
-                aria-label="Close modal"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
+          {/* Desktop-only static header */}
+          <div className="hidden md:block pt-6 px-8 pb-3 border-b border-[#1E252B] shrink-0">
+            <span className="text-[10.5px] font-mono tracking-[0.14em] text-neutral-400 font-bold uppercase block truncate">
+              {categoryBadge}
+            </span>
+            <h2 className="font-serif text-2xl lg:text-[26px] font-medium text-white uppercase tracking-normal mt-1 leading-tight truncate">
+              {product.name}
+            </h2>
+            <p className="text-xs text-neutral-400 mt-1 line-clamp-2 leading-relaxed">
+              {product.tagline || product.description || 'Cold Dew (寒露) • Warming ginger and naturally sweet dates, for the first wet evenings.'}
+            </p>
           </div>
 
-          {/* Scrollable Customization Body with Custom Luxury Scrollbar */}
-          <div className="flex-1 overflow-y-auto px-4 py-4 sm:px-6 sm:py-5 md:px-8 md:py-6 space-y-5 sm:space-y-6 text-xs font-sans custom-modal-scrollbar overscroll-contain">
+          {/* 
+            Main Unified Scroll Container
+            - Uses custom-modal-scrollbar (ergonomic gold slim thumb)
+            - touch-pan-y allows smooth gesture recognition on mobile & tablet
+            - min-h-0 allows proper flex calculation without overflow lock
+          */}
+          <div className="flex-1 min-h-0 overflow-y-auto px-4 py-4 sm:px-6 sm:py-5 md:px-8 md:py-6 space-y-5 sm:space-y-6 text-xs font-sans custom-modal-scrollbar overscroll-contain">
             
+            {/* Mobile-only compact banner at top of scroll view (Smooth, swipeable anywhere!) */}
+            <div className="block md:hidden relative w-full h-40 sm:h-48 rounded-xl overflow-hidden shrink-0 -mt-1 mb-2">
+              <Image
+                src={showcaseImage}
+                alt={product.name}
+                fill
+                priority
+                className="object-cover object-center"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#121619] via-[#121619]/40 to-black/30 pointer-events-none" />
+              
+              <div className="relative z-10 p-3 sm:p-4">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-white text-[10px] sm:text-xs font-medium tracking-wide">
+                  <Leaf className="w-3 h-3 text-white/90" />
+                  <span>Herbal Drink</span>
+                </div>
+              </div>
+
+              <div className="absolute bottom-3 left-3 right-3 z-10">
+                <div className="w-6 h-[2px] bg-[#D4A373] mb-1.5 rounded-full" />
+                <h4 className="font-serif italic text-base sm:text-lg text-white font-normal leading-tight">
+                  Tradisional. Alami. Menyehatkan.
+                </h4>
+              </div>
+            </div>
+
+            {/* Mobile-only title info */}
+            <div className="block md:hidden border-b border-[#1E252B] pb-3 -mt-1">
+              <span className="text-[9.5px] font-mono tracking-[0.14em] text-neutral-400 font-bold uppercase block truncate">
+                {categoryBadge}
+              </span>
+              <h2 className="font-serif text-xl sm:text-2xl font-medium text-white uppercase tracking-normal mt-0.5 leading-tight">
+                {product.name}
+              </h2>
+              <p className="text-[11px] sm:text-xs text-neutral-400 mt-1 line-clamp-2 leading-relaxed">
+                {product.tagline || product.description || 'Cold Dew (寒露) • Warming ginger and naturally sweet dates, for the first wet evenings.'}
+              </p>
+            </div>
+
             {/* -------------------------------------------------------------
                 SECTION 1: SERVING TEMPERATURE
                 ------------------------------------------------------------- */}
@@ -490,14 +520,14 @@ export function CustomizationModal({ product, isOpen, onClose }: CustomizationMo
                 <button
                   type="button"
                   onClick={() => setTemperature('hot')}
-                  className={`flex items-center justify-between p-2.5 sm:p-3.5 rounded-xl border transition-all cursor-pointer text-left min-h-[50px] ${
+                  className={`flex items-center justify-between p-3 sm:p-3.5 rounded-xl border transition-all cursor-pointer text-left min-h-[52px] ${
                     temperature === 'hot'
                       ? 'border-[#C5A376] bg-[#191D21] ring-1 ring-[#C5A376]/25 text-white'
                       : 'border-[#262D33] bg-[#15191C]/80 hover:border-neutral-700 text-neutral-300'
                   }`}
                 >
                   <div className="flex items-center gap-2 sm:gap-3 min-w-0 pr-1">
-                    <Flame className={`w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0 ${temperature === 'hot' ? 'text-[#D4A373]' : 'text-neutral-500'}`} />
+                    <Flame className={`w-4 h-4 shrink-0 ${temperature === 'hot' ? 'text-[#D4A373]' : 'text-neutral-500'}`} />
                     <div className="min-w-0">
                       <span className="text-[11px] sm:text-xs font-bold tracking-wide uppercase block truncate text-white">
                         HOT (90&deg;C)
@@ -509,10 +539,10 @@ export function CustomizationModal({ product, isOpen, onClose }: CustomizationMo
                   </div>
 
                   {/* Radio Indicator */}
-                  <div className={`w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full border flex items-center justify-center shrink-0 transition-colors ${
+                  <div className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 transition-colors ${
                     temperature === 'hot' ? 'border-[#D4A373]' : 'border-neutral-600'
                   }`}>
-                    {temperature === 'hot' && <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#D4A373]" />}
+                    {temperature === 'hot' && <div className="w-2 h-2 rounded-full bg-[#D4A373]" />}
                   </div>
                 </button>
 
@@ -520,14 +550,14 @@ export function CustomizationModal({ product, isOpen, onClose }: CustomizationMo
                 <button
                   type="button"
                   onClick={() => setTemperature('iced')}
-                  className={`flex items-center justify-between p-2.5 sm:p-3.5 rounded-xl border transition-all cursor-pointer text-left min-h-[50px] ${
+                  className={`flex items-center justify-between p-3 sm:p-3.5 rounded-xl border transition-all cursor-pointer text-left min-h-[52px] ${
                     temperature === 'iced'
                       ? 'border-[#C5A376] bg-[#191D21] ring-1 ring-[#C5A376]/25 text-white'
                       : 'border-[#262D33] bg-[#15191C]/80 hover:border-neutral-700 text-neutral-300'
                   }`}
                 >
                   <div className="flex items-center gap-2 sm:gap-3 min-w-0 pr-1">
-                    <Snowflake className={`w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0 ${temperature === 'iced' ? 'text-sky-400' : 'text-neutral-500'}`} />
+                    <Snowflake className={`w-4 h-4 shrink-0 ${temperature === 'iced' ? 'text-sky-400' : 'text-neutral-500'}`} />
                     <div className="min-w-0">
                       <span className="text-[11px] sm:text-xs font-bold tracking-wide uppercase block truncate text-white">
                         ICED (+RP 2,000)
@@ -539,10 +569,10 @@ export function CustomizationModal({ product, isOpen, onClose }: CustomizationMo
                   </div>
 
                   {/* Radio Indicator */}
-                  <div className={`w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full border flex items-center justify-center shrink-0 transition-colors ${
+                  <div className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 transition-colors ${
                     temperature === 'iced' ? 'border-[#D4A373]' : 'border-neutral-600'
                   }`}>
-                    {temperature === 'iced' && <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#D4A373]" />}
+                    {temperature === 'iced' && <div className="w-2 h-2 rounded-full bg-[#D4A373]" />}
                   </div>
                 </button>
               </div>
@@ -563,7 +593,7 @@ export function CustomizationModal({ product, isOpen, onClose }: CustomizationMo
                           key={item.id}
                           type="button"
                           onClick={() => setIceLevel(item.id)}
-                          className={`py-2 px-2.5 sm:py-2 sm:px-3 rounded-lg border text-left transition-all cursor-pointer flex items-center justify-between ${
+                          className={`py-2 px-2.5 sm:py-2.5 sm:px-3 rounded-lg border text-left transition-all cursor-pointer flex items-center justify-between ${
                             iceLevel === item.id
                               ? 'border-[#C5A376] bg-[#1E2328] text-white'
                               : 'border-[#262D33] bg-[#121619] text-neutral-400 hover:text-white'
@@ -603,7 +633,7 @@ export function CustomizationModal({ product, isOpen, onClose }: CustomizationMo
                 Tingkat kemanisan sesuai selera Anda.
               </p>
 
-              {/* 5 Sweetness Buttons Grid (Fully fluid on small phone screens) */}
+              {/* 5 Sweetness Buttons Grid */}
               <div className="grid grid-cols-5 gap-1.5 sm:gap-2 pl-0 sm:pl-7">
                 {SWEETNESS_OPTIONS.map((opt) => {
                   const isSelected = sweetnessLevel === opt.level;
@@ -614,7 +644,7 @@ export function CustomizationModal({ product, isOpen, onClose }: CustomizationMo
                       key={opt.level}
                       type="button"
                       onClick={() => setSweetnessLevel(opt.level as any)}
-                      className={`p-1.5 sm:p-2.5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between h-[54px] sm:h-[62px] min-w-0 ${
+                      className={`p-1.5 sm:p-2.5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between h-[56px] sm:h-[62px] min-w-0 ${
                         isSelected
                           ? 'border-[#C5A376] bg-[#191D21] text-white ring-1 ring-[#C5A376]/25'
                           : 'border-[#262D33] bg-[#15191C]/70 text-neutral-400 hover:border-neutral-700 hover:text-neutral-200'
@@ -663,7 +693,7 @@ export function CustomizationModal({ product, isOpen, onClose }: CustomizationMo
                           key={sw.id}
                           type="button"
                           onClick={() => setSweetenerType(sw.id)}
-                          className={`w-full flex items-center justify-between p-2.5 sm:p-3 rounded-xl border text-left transition-all cursor-pointer min-h-[46px] ${
+                          className={`w-full flex items-center justify-between p-2.5 sm:p-3 rounded-xl border text-left transition-all cursor-pointer min-h-[48px] ${
                             isSelected
                               ? 'border-[#C5A376] bg-[#191D21] text-white ring-1 ring-[#C5A376]/25'
                               : 'border-[#262D33] bg-[#15191C]/70 hover:border-neutral-700 text-neutral-300'
@@ -693,6 +723,7 @@ export function CustomizationModal({ product, isOpen, onClose }: CustomizationMo
 
             {/* -------------------------------------------------------------
                 SECTION 3: BOTANICAL FLOWER & FRUIT INFUSIONS
+                No nested scroll traps on mobile! Content reflows seamlessly.
                 ------------------------------------------------------------- */}
             <div>
               <div className="flex items-center justify-between mb-1">
@@ -718,7 +749,7 @@ export function CustomizationModal({ product, isOpen, onClose }: CustomizationMo
                   <button
                     type="button"
                     onClick={() => setAddonFilter('all')}
-                    className={`flex-1 py-1.5 px-2 rounded-lg text-[10px] sm:text-[10.5px] font-sans font-medium transition-all text-center cursor-pointer ${
+                    className={`flex-1 py-1.5 px-2 rounded-lg text-[10px] sm:text-[10.5px] font-sans font-medium transition-all text-center cursor-pointer min-h-[36px] ${
                       addonFilter === 'all'
                         ? 'bg-[#232A30] text-white font-bold border border-white/10 shadow-xs'
                         : 'text-neutral-400 hover:text-white'
@@ -729,7 +760,7 @@ export function CustomizationModal({ product, isOpen, onClose }: CustomizationMo
                   <button
                     type="button"
                     onClick={() => setAddonFilter('flower')}
-                    className={`flex-1 py-1.5 px-2 rounded-lg text-[10px] sm:text-[10.5px] font-sans font-medium transition-all text-center cursor-pointer flex items-center justify-center gap-1 ${
+                    className={`flex-1 py-1.5 px-2 rounded-lg text-[10px] sm:text-[10.5px] font-sans font-medium transition-all text-center cursor-pointer min-h-[36px] flex items-center justify-center gap-1 ${
                       addonFilter === 'flower'
                         ? 'bg-[#232A30] text-white font-bold border border-white/10 shadow-xs'
                         : 'text-neutral-400 hover:text-white'
@@ -745,7 +776,7 @@ export function CustomizationModal({ product, isOpen, onClose }: CustomizationMo
                   <button
                     type="button"
                     onClick={() => setAddonFilter('fruit')}
-                    className={`flex-1 py-1.5 px-2 rounded-lg text-[10px] sm:text-[10.5px] font-sans font-medium transition-all text-center cursor-pointer flex items-center justify-center gap-1 ${
+                    className={`flex-1 py-1.5 px-2 rounded-lg text-[10px] sm:text-[10.5px] font-sans font-medium transition-all text-center cursor-pointer min-h-[36px] flex items-center justify-center gap-1 ${
                       addonFilter === 'fruit'
                         ? 'bg-[#232A30] text-white font-bold border border-white/10 shadow-xs'
                         : 'text-neutral-400 hover:text-white'
@@ -761,8 +792,8 @@ export function CustomizationModal({ product, isOpen, onClose }: CustomizationMo
                 </div>
               </div>
 
-              {/* Addons List with Luxury Slim Custom Scrollbar */}
-              <div className="pl-0 sm:pl-7 space-y-1.5 sm:space-y-2 max-h-48 sm:max-h-56 overflow-y-auto pr-1.5 custom-modal-scrollbar">
+              {/* Addons List: Smooth in-place rendering (on desktop: scrollable window; on mobile: unified main scroll) */}
+              <div className="pl-0 sm:pl-7 space-y-1.5 sm:space-y-2 md:max-h-56 md:overflow-y-auto md:pr-1.5 md:custom-modal-scrollbar">
                 {BOTANICAL_ADDONS.filter(
                   (addon) => addonFilter === 'all' || addon.category === addonFilter
                 ).map((addon) => {
@@ -773,7 +804,7 @@ export function CustomizationModal({ product, isOpen, onClose }: CustomizationMo
                       key={addon.id}
                       type="button"
                       onClick={() => toggleAddon(addon)}
-                      className={`w-full flex items-center justify-between p-2 sm:p-2.5 rounded-xl border text-left transition-all cursor-pointer min-h-[48px] ${
+                      className={`w-full flex items-center justify-between p-2.5 rounded-xl border text-left transition-all cursor-pointer min-h-[48px] ${
                         isSelected
                           ? 'border-[#C5A376] bg-[#1A1F23] text-white ring-1 ring-[#C5A376]/25'
                           : 'border-[#262D33] bg-[#15191C] hover:border-neutral-700 text-neutral-300'
@@ -831,26 +862,29 @@ export function CustomizationModal({ product, isOpen, onClose }: CustomizationMo
                   placeholder="Contoh: Pisahkan es batu, seduh ekstra panas..."
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
-                  className="w-full bg-[#15191C] border border-[#262D33] rounded-xl px-3 py-2 sm:px-3.5 sm:py-2.5 text-[13px] sm:text-xs text-neutral-200 placeholder:text-neutral-500 focus:outline-none focus:border-[#C5A376] font-sans"
+                  className="w-full bg-[#15191C] border border-[#262D33] rounded-xl px-3 py-2.5 text-base sm:text-xs text-neutral-200 placeholder:text-neutral-500 focus:outline-none focus:border-[#C5A376] font-sans"
                   maxLength={150}
                 />
               </div>
             </div>
 
+            {/* Bottom spacer for comfortable scroll over sticky footer */}
+            <div className="h-4 sm:h-2" />
+
           </div>
 
           {/* =========================================================================
               BOTTOM ACTION BAR: QUANTITY PILL & WARM HONEY ADD TO BAG CTA
-              Sticky bottom with safe area padding on mobile
+              Solid docked footer: Never overlaps content, always accessible!
               ========================================================================= */}
-          <div className="p-3.5 sm:p-5 md:p-6 border-t border-[#1E252B] bg-[#121619]/95 backdrop-blur-md sticky bottom-0 z-20 flex items-center gap-2.5 sm:gap-3 shrink-0 pb-[max(0.875rem,env(safe-area-inset-bottom))]">
+          <div className="shrink-0 p-3.5 sm:p-5 md:p-6 border-t border-[#1E252B] bg-[#121619] z-20 flex items-center gap-2.5 sm:gap-3 pb-[max(0.875rem,env(safe-area-inset-bottom))]">
             {/* Quantity Selector Capsule */}
             <div className="flex items-center justify-between border border-[#283038] rounded-xl bg-[#171C20] px-1.5 sm:px-2 h-11 sm:h-12 min-w-[96px] sm:min-w-[104px]">
               <button
                 type="button"
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
                 disabled={quantity <= 1}
-                className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center text-neutral-400 hover:text-white disabled:opacity-25 transition-colors cursor-pointer"
+                className="w-8 h-8 flex items-center justify-center text-neutral-400 hover:text-white disabled:opacity-25 transition-colors cursor-pointer"
                 aria-label="Decrease quantity"
               >
                 <Minus className="w-3.5 h-3.5" />
@@ -861,7 +895,7 @@ export function CustomizationModal({ product, isOpen, onClose }: CustomizationMo
               <button
                 type="button"
                 onClick={() => setQuantity(quantity + 1)}
-                className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center text-neutral-400 hover:text-white transition-colors cursor-pointer"
+                className="w-8 h-8 flex items-center justify-center text-neutral-400 hover:text-white transition-colors cursor-pointer"
                 aria-label="Increase quantity"
               >
                 <Plus className="w-3.5 h-3.5" />
@@ -872,7 +906,7 @@ export function CustomizationModal({ product, isOpen, onClose }: CustomizationMo
             <button
               type="button"
               onClick={handleAddToCart}
-              className="flex-1 h-11 sm:h-12 px-4 sm:px-6 rounded-xl bg-[#D4B78F] hover:bg-[#C8AA80] active:scale-[0.98] text-neutral-900 font-sans font-bold text-[11.5px] sm:text-xs md:text-sm uppercase tracking-wider transition-all flex items-center justify-between shadow-lg cursor-pointer"
+              className="flex-1 h-11 sm:h-12 px-4 sm:px-6 rounded-xl bg-[#D4A373] hover:bg-[#C8AA80] active:scale-[0.98] text-neutral-900 font-sans font-bold text-[11.5px] sm:text-xs md:text-sm uppercase tracking-wider transition-all flex items-center justify-between shadow-lg cursor-pointer"
             >
               <span className="flex items-center gap-2">
                 <ShoppingBag className="w-4 h-4 text-neutral-900 stroke-[2.2]" />

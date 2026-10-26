@@ -251,6 +251,8 @@ h1.font-serif, h2.font-serif, h3.font-serif, h4.font-serif,
   scrollbar-width: thin;
   scrollbar-color: rgba(197, 163, 118, 0.4) rgba(18, 22, 25, 0.6);
   -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+  overscroll-behavior-y: contain;
 }
 
 .custom-modal-scrollbar::-webkit-scrollbar {
