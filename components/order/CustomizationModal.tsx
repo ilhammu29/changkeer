@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { X, Plus, Minus, Flame, Snowflake, Check, ShoppingBag, Leaf, Sparkles } from 'lucide-react';
+import { X, Plus, Minus, Flame, Snowflake, Check, ShoppingBag, Leaf } from 'lucide-react';
 import { Product, BotanicalAddon } from '@/types';
 import { BOTANICAL_ADDONS } from '@/lib/data/mock-seed';
 import { useCart } from '@/lib/context/CartContext';
@@ -82,7 +82,6 @@ function BotanicalThumbnail({ addon }: { addon: BotanicalAddon }) {
         <svg viewBox="0 0 40 40" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect width="40" height="40" rx="8" fill="#1A1114" />
           <circle cx="20" cy="20" r="14" fill="#381017" opacity="0.6" />
-          {/* Rose Petals Cluster */}
           <path d="M16 23C13 20 13 15 17 13C21 11 25 14 24 18C23 22 19 25 16 23Z" fill="#991B1B" />
           <path d="M22 24C26 22 27 16 23 13C19 10 15 13 17 17C19 21 21 25 22 24Z" fill="#BE123C" />
           <path d="M19 14C17 16 17 19 20 20C22 21 24 18 22 16C21 14 20 13 19 14Z" fill="#E11D48" />
@@ -94,7 +93,6 @@ function BotanicalThumbnail({ addon }: { addon: BotanicalAddon }) {
         <svg viewBox="0 0 40 40" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect width="40" height="40" rx="8" fill="#1A1710" />
           <circle cx="20" cy="20" r="13" fill="#3D2E12" opacity="0.6" />
-          {/* Chrysanthemum rays */}
           {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map((deg) => (
             <ellipse
               key={deg}
@@ -147,7 +145,6 @@ function BotanicalThumbnail({ addon }: { addon: BotanicalAddon }) {
         <svg viewBox="0 0 40 40" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect width="40" height="40" rx="8" fill="#1C1810" />
           <circle cx="20" cy="20" r="13" fill="#3D3016" opacity="0.6" />
-          {/* Small 4-petal osmanthus florets */}
           <g transform="translate(14, 13) scale(0.65)">
             <ellipse cx="10" cy="6" rx="2" ry="4" fill="#F59E0B" />
             <ellipse cx="10" cy="14" rx="2" ry="4" fill="#F59E0B" />
@@ -229,7 +226,6 @@ function BotanicalThumbnail({ addon }: { addon: BotanicalAddon }) {
           <circle cx="20" cy="20" r="13" fill="#3E2B18" opacity="0.6" />
           <circle cx="20" cy="20" r="10" fill="#F59E0B" opacity="0.85" />
           <circle cx="20" cy="20" r="4.5" fill="#1C1510" />
-          {/* Star core */}
           {[0, 72, 144, 216, 288].map((deg) => (
             <ellipse
               key={deg}
@@ -259,7 +255,6 @@ function BotanicalThumbnail({ addon }: { addon: BotanicalAddon }) {
           <circle cx="20" cy="20" r="13" fill="#3D3716" opacity="0.6" />
           <circle cx="20" cy="20" r="10.5" stroke="#CA8A04" strokeWidth="2" fill="#EAB308" />
           <circle cx="20" cy="20" r="8" fill="#FEF08A" />
-          {/* Segments */}
           {[0, 45, 90, 135, 180, 225, 270, 315].map((deg) => (
             <line
               key={deg}
@@ -305,7 +300,7 @@ export function CustomizationModal({ product, isOpen, onClose }: CustomizationMo
   const [notes, setNotes] = useState('');
   const [quantity, setQuantity] = useState(1);
 
-  // Close on Escape key
+  // Close on Escape key & prevent page scroll
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
@@ -371,21 +366,32 @@ export function CustomizationModal({ product, isOpen, onClose }: CustomizationMo
   const showcaseImage = product.featured_image || '/images/products/cold-dew.jpg';
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 md:p-6 overflow-y-auto font-sans select-none animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 md:p-6 overflow-hidden font-sans select-none animate-in fade-in duration-200">
       {/* Luxury Dark Backdrop with Blur */}
       <div
-        className="fixed inset-0 bg-black/75 backdrop-blur-md transition-opacity"
+        className="fixed inset-0 bg-black/80 backdrop-blur-md transition-opacity"
         onClick={onClose}
         aria-hidden="true"
       />
 
-      {/* Split Modal Container (Matched to pop_up_custom_order.png) */}
-      <div className="relative w-full max-w-[960px] bg-[#121619] border border-[#272E34] text-white rounded-[22px] sm:rounded-[24px] shadow-2xl overflow-hidden z-10 flex flex-col md:flex-row max-h-[92vh] md:h-[660px] lg:h-[690px] animate-in zoom-in-95 duration-200">
+      {/* Split Modal Container (Matched to pop_up_custom_order.png with Full Mobile Polish) */}
+      <div className="relative w-full max-w-full sm:max-w-[960px] bg-[#121619] border border-[#272E34] text-white rounded-t-[24px] sm:rounded-[24px] shadow-2xl overflow-hidden z-10 flex flex-col md:flex-row max-h-[92dvh] sm:max-h-[88vh] md:h-[660px] lg:h-[690px] animate-in slide-in-from-bottom-4 sm:zoom-in-95 duration-200">
         
+        {/* Mobile-First Close Button (always accessible top right with large tap target) */}
+        <button
+          type="button"
+          onClick={onClose}
+          className="absolute top-3 right-3 sm:top-5 sm:right-5 p-2 rounded-full bg-black/60 hover:bg-white/10 text-neutral-300 hover:text-white border border-white/15 backdrop-blur-md transition-colors z-30 cursor-pointer shadow-lg md:hidden"
+          aria-label="Tutup kustomisasi"
+        >
+          <X className="w-4 h-4" />
+        </button>
+
         {/* =========================================================================
             LEFT COLUMN: ATMOSPHERIC ARTISANAL PHOTOGRAPHY & BRAND STORY
+            Responsive: Compact top banner on mobile, expansive visual on desktop
             ========================================================================= */}
-        <div className="relative w-full md:w-[40%] lg:w-[42%] min-h-[240px] sm:min-h-[280px] md:min-h-full bg-[#0D1012] shrink-0 flex flex-col justify-between overflow-hidden">
+        <div className="relative w-full md:w-[40%] lg:w-[42%] h-36 sm:h-52 md:h-full min-h-[140px] sm:min-h-[200px] md:min-h-full bg-[#0D1012] shrink-0 flex flex-col justify-between overflow-hidden">
           {/* Full-bleed photography */}
           <div className="absolute inset-0">
             <Image
@@ -399,24 +405,24 @@ export function CustomizationModal({ product, isOpen, onClose }: CustomizationMo
             <div className="absolute inset-0 bg-gradient-to-t from-[#121619] via-[#121619]/40 to-black/25 pointer-events-none" />
           </div>
 
-          {/* Top-Left Floating Badge */}
-          <div className="relative z-10 p-5 sm:p-6">
-            <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-black/45 backdrop-blur-md border border-white/20 text-white text-[11px] sm:text-xs font-medium tracking-wide shadow-md">
-              <Leaf className="w-3.5 h-3.5 text-white/90" />
+          {/* Top-Left Floating Pill Badge */}
+          <div className="relative z-10 p-3.5 sm:p-5 md:p-6">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/50 backdrop-blur-md border border-white/20 text-white text-[10px] sm:text-xs font-medium tracking-wide shadow-md">
+              <Leaf className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white/90" />
               <span>Herbal Drink</span>
             </div>
           </div>
 
           {/* Bottom Poetic Narrative Overlay */}
-          <div className="relative z-10 p-6 sm:p-7 md:p-8 mt-auto">
+          <div className="relative z-10 p-4 sm:p-6 md:p-8 mt-auto">
             {/* Gold Accent Divider Bar */}
-            <div className="w-7 h-[2px] bg-[#D4A373] mb-3 rounded-full" />
+            <div className="w-6 sm:w-7 h-[2px] bg-[#D4A373] mb-1.5 sm:mb-2.5 rounded-full" />
 
-            <h3 className="font-serif italic text-lg sm:text-xl text-white font-normal leading-snug tracking-wide">
+            <h3 className="font-serif italic text-base sm:text-lg md:text-xl text-white font-normal leading-snug tracking-wide">
               Tradisional. Alami. Menyehatkan.
             </h3>
             
-            <p className="text-[11.5px] sm:text-xs text-neutral-300/90 leading-relaxed font-sans font-light mt-2 max-w-xs sm:max-w-sm">
+            <p className="hidden sm:block text-[11px] sm:text-xs text-neutral-300/90 leading-relaxed font-sans font-light mt-1.5 max-w-xs sm:max-w-sm">
               Perpaduan jahe dan rempah alami untuk menjaga daya tahan tubuh dan menghangatkan badan, terutama di musim dingin.
             </p>
           </div>
@@ -424,29 +430,30 @@ export function CustomizationModal({ product, isOpen, onClose }: CustomizationMo
 
         {/* =========================================================================
             RIGHT COLUMN: CUSTOMIZATION CONTROLS & LUXURY SELECTIONS
+            Responsive: Ergonomic layout, sleek custom scrollbar, comfortable tap targets
             ========================================================================= */}
         <div className="flex-1 flex flex-col bg-[#121619] text-white relative min-w-0">
           
           {/* Header Bar */}
-          <div className="pt-5 px-5 sm:pt-6 sm:px-7 md:pt-7 md:px-8 pb-3 border-b border-[#1E252B] shrink-0">
-            <div className="flex items-start justify-between gap-4">
-              <div className="min-w-0 pr-2">
-                <span className="text-[10px] sm:text-[10.5px] font-mono tracking-[0.14em] text-neutral-400 font-bold uppercase block truncate">
+          <div className="pt-4 px-4 sm:pt-6 sm:px-7 md:pt-7 md:px-8 pb-3 border-b border-[#1E252B] shrink-0">
+            <div className="flex items-start justify-between gap-3">
+              <div className="min-w-0 pr-1">
+                <span className="text-[9.5px] sm:text-[10.5px] font-mono tracking-[0.14em] text-neutral-400 font-bold uppercase block truncate">
                   {categoryBadge}
                 </span>
-                <h2 className="font-serif text-xl sm:text-2xl md:text-[26px] font-medium text-white uppercase tracking-normal mt-1 leading-tight truncate">
+                <h2 className="font-serif text-lg sm:text-2xl md:text-[26px] font-medium text-white uppercase tracking-normal mt-0.5 sm:mt-1 leading-tight truncate">
                   {product.name}
                 </h2>
-                <p className="text-[11.5px] sm:text-xs text-neutral-400 mt-1 line-clamp-2 leading-relaxed">
+                <p className="text-[11px] sm:text-xs text-neutral-400 mt-0.5 sm:mt-1 line-clamp-2 leading-relaxed">
                   {product.tagline || product.description || 'Cold Dew (寒露) • Warming ginger and naturally sweet dates, for the first wet evenings.'}
                 </p>
               </div>
 
-              {/* Minimal Clean Close Button */}
+              {/* Desktop Close Button */}
               <button
                 type="button"
                 onClick={onClose}
-                className="p-1.5 rounded-lg text-neutral-400 hover:text-white hover:bg-white/5 transition-colors cursor-pointer shrink-0 -mt-1 -mr-1"
+                className="hidden md:flex p-1.5 rounded-lg text-neutral-400 hover:text-white hover:bg-white/5 transition-colors cursor-pointer shrink-0 -mt-1 -mr-1"
                 aria-label="Close modal"
               >
                 <X className="w-5 h-5" />
@@ -454,8 +461,8 @@ export function CustomizationModal({ product, isOpen, onClose }: CustomizationMo
             </div>
           </div>
 
-          {/* Scrollable Customization Body */}
-          <div className="flex-1 overflow-y-auto px-5 py-5 sm:px-7 sm:py-6 md:px-8 md:py-6 space-y-6 text-xs font-sans">
+          {/* Scrollable Customization Body with Custom Luxury Scrollbar */}
+          <div className="flex-1 overflow-y-auto px-4 py-4 sm:px-6 sm:py-5 md:px-8 md:py-6 space-y-5 sm:space-y-6 text-xs font-sans custom-modal-scrollbar overscroll-contain">
             
             {/* -------------------------------------------------------------
                 SECTION 1: SERVING TEMPERATURE
@@ -470,42 +477,42 @@ export function CustomizationModal({ product, isOpen, onClose }: CustomizationMo
                     SERVING TEMPERATURE
                   </span>
                 </div>
-                <span className="text-[10.5px] text-neutral-400 font-medium">
+                <span className="text-[10px] sm:text-[10.5px] text-neutral-400 font-medium">
                   {temperature === 'iced' ? '+Rp 2.000' : 'No extra charge'}
                 </span>
               </div>
-              <p className="text-[11px] text-neutral-400 pl-7 mb-3">
+              <p className="text-[10.5px] sm:text-[11px] text-neutral-400 pl-0 sm:pl-7 mb-2.5">
                 Pilih suhu penyajian yang sesuai dengan selera Anda.
               </p>
 
-              <div className="grid grid-cols-2 gap-3 pl-0 sm:pl-7">
+              <div className="grid grid-cols-2 gap-2 sm:gap-3 pl-0 sm:pl-7">
                 {/* Hot Card */}
                 <button
                   type="button"
                   onClick={() => setTemperature('hot')}
-                  className={`flex items-center justify-between p-3.5 rounded-xl border transition-all cursor-pointer text-left ${
+                  className={`flex items-center justify-between p-2.5 sm:p-3.5 rounded-xl border transition-all cursor-pointer text-left min-h-[50px] ${
                     temperature === 'hot'
                       ? 'border-[#C5A376] bg-[#191D21] ring-1 ring-[#C5A376]/25 text-white'
                       : 'border-[#262D33] bg-[#15191C]/80 hover:border-neutral-700 text-neutral-300'
                   }`}
                 >
-                  <div className="flex items-center gap-3 min-w-0 pr-2">
-                    <Flame className={`w-4 h-4 shrink-0 ${temperature === 'hot' ? 'text-[#D4A373]' : 'text-neutral-500'}`} />
+                  <div className="flex items-center gap-2 sm:gap-3 min-w-0 pr-1">
+                    <Flame className={`w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0 ${temperature === 'hot' ? 'text-[#D4A373]' : 'text-neutral-500'}`} />
                     <div className="min-w-0">
-                      <span className="text-xs font-bold tracking-wide uppercase block truncate text-white">
+                      <span className="text-[11px] sm:text-xs font-bold tracking-wide uppercase block truncate text-white">
                         HOT (90&deg;C)
                       </span>
-                      <span className="text-[10px] text-neutral-400 block truncate mt-0.5">
-                        Hangat, menenangkan (Free)
+                      <span className="text-[9.5px] sm:text-[10px] text-neutral-400 block truncate mt-0.5">
+                        Hangat (Free)
                       </span>
                     </div>
                   </div>
 
                   {/* Radio Indicator */}
-                  <div className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 transition-colors ${
+                  <div className={`w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full border flex items-center justify-center shrink-0 transition-colors ${
                     temperature === 'hot' ? 'border-[#D4A373]' : 'border-neutral-600'
                   }`}>
-                    {temperature === 'hot' && <div className="w-2 h-2 rounded-full bg-[#D4A373]" />}
+                    {temperature === 'hot' && <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#D4A373]" />}
                   </div>
                 </button>
 
@@ -513,38 +520,38 @@ export function CustomizationModal({ product, isOpen, onClose }: CustomizationMo
                 <button
                   type="button"
                   onClick={() => setTemperature('iced')}
-                  className={`flex items-center justify-between p-3.5 rounded-xl border transition-all cursor-pointer text-left ${
+                  className={`flex items-center justify-between p-2.5 sm:p-3.5 rounded-xl border transition-all cursor-pointer text-left min-h-[50px] ${
                     temperature === 'iced'
                       ? 'border-[#C5A376] bg-[#191D21] ring-1 ring-[#C5A376]/25 text-white'
                       : 'border-[#262D33] bg-[#15191C]/80 hover:border-neutral-700 text-neutral-300'
                   }`}
                 >
-                  <div className="flex items-center gap-3 min-w-0 pr-2">
-                    <Snowflake className={`w-4 h-4 shrink-0 ${temperature === 'iced' ? 'text-sky-400' : 'text-neutral-500'}`} />
+                  <div className="flex items-center gap-2 sm:gap-3 min-w-0 pr-1">
+                    <Snowflake className={`w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0 ${temperature === 'iced' ? 'text-sky-400' : 'text-neutral-500'}`} />
                     <div className="min-w-0">
-                      <span className="text-xs font-bold tracking-wide uppercase block truncate text-white">
+                      <span className="text-[11px] sm:text-xs font-bold tracking-wide uppercase block truncate text-white">
                         ICED (+RP 2,000)
                       </span>
-                      <span className="text-[10px] text-neutral-400 block truncate mt-0.5">
-                        Segar dengan sensasi kristal
+                      <span className="text-[9.5px] sm:text-[10px] text-neutral-400 block truncate mt-0.5">
+                        Segar kristal
                       </span>
                     </div>
                   </div>
 
                   {/* Radio Indicator */}
-                  <div className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 transition-colors ${
+                  <div className={`w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full border flex items-center justify-center shrink-0 transition-colors ${
                     temperature === 'iced' ? 'border-[#D4A373]' : 'border-neutral-600'
                   }`}>
-                    {temperature === 'iced' && <div className="w-2 h-2 rounded-full bg-[#D4A373]" />}
+                    {temperature === 'iced' && <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#D4A373]" />}
                   </div>
                 </button>
               </div>
 
               {/* Sub-option: Ice Level (Shown when Iced is Selected) */}
               {temperature === 'iced' && (
-                <div className="mt-3 pl-0 sm:pl-7 animate-in fade-in duration-200">
-                  <div className="p-3 rounded-xl bg-[#15191C] border border-[#262D33] space-y-2">
-                    <span className="text-[10.5px] font-mono uppercase tracking-wider text-neutral-400 font-semibold block">
+                <div className="mt-2.5 pl-0 sm:pl-7 animate-in fade-in duration-200">
+                  <div className="p-2.5 sm:p-3 rounded-xl bg-[#15191C] border border-[#262D33] space-y-2">
+                    <span className="text-[10px] sm:text-[10.5px] font-mono uppercase tracking-wider text-neutral-400 font-semibold block">
                       Tingkat Kepadatan Es (Ice Level):
                     </span>
                     <div className="grid grid-cols-2 gap-2">
@@ -556,15 +563,15 @@ export function CustomizationModal({ product, isOpen, onClose }: CustomizationMo
                           key={item.id}
                           type="button"
                           onClick={() => setIceLevel(item.id)}
-                          className={`py-2 px-3 rounded-lg border text-left transition-all cursor-pointer flex items-center justify-between ${
+                          className={`py-2 px-2.5 sm:py-2 sm:px-3 rounded-lg border text-left transition-all cursor-pointer flex items-center justify-between ${
                             iceLevel === item.id
                               ? 'border-[#C5A376] bg-[#1E2328] text-white'
                               : 'border-[#262D33] bg-[#121619] text-neutral-400 hover:text-white'
                           }`}
                         >
                           <div>
-                            <span className="text-xs font-bold block">{item.label}</span>
-                            <span className="text-[9.5px] text-neutral-400 block">{item.note}</span>
+                            <span className="text-[11px] sm:text-xs font-bold block">{item.label}</span>
+                            <span className="text-[9px] sm:text-[9.5px] text-neutral-400 block">{item.note}</span>
                           </div>
                           {iceLevel === item.id && <Check className="w-3.5 h-3.5 text-[#D4A373]" />}
                         </button>
@@ -588,16 +595,16 @@ export function CustomizationModal({ product, isOpen, onClose }: CustomizationMo
                     SWEETNESS LEVEL
                   </span>
                 </div>
-                <span className="text-[10.5px] text-neutral-400 font-medium">
+                <span className="text-[10px] sm:text-[10.5px] text-neutral-400 font-medium">
                   Default: Unsweetened
                 </span>
               </div>
-              <p className="text-[11px] text-neutral-400 pl-7 mb-3">
+              <p className="text-[10.5px] sm:text-[11px] text-neutral-400 pl-0 sm:pl-7 mb-2.5">
                 Tingkat kemanisan sesuai selera Anda.
               </p>
 
-              {/* 5 Sweetness Buttons Grid */}
-              <div className="grid grid-cols-5 gap-2 pl-0 sm:pl-7">
+              {/* 5 Sweetness Buttons Grid (Fully fluid on small phone screens) */}
+              <div className="grid grid-cols-5 gap-1.5 sm:gap-2 pl-0 sm:pl-7">
                 {SWEETNESS_OPTIONS.map((opt) => {
                   const isSelected = sweetnessLevel === opt.level;
                   const shortName = opt.title.split(' ')[0].toUpperCase();
@@ -607,21 +614,21 @@ export function CustomizationModal({ product, isOpen, onClose }: CustomizationMo
                       key={opt.level}
                       type="button"
                       onClick={() => setSweetnessLevel(opt.level as any)}
-                      className={`p-2.5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between h-[62px] ${
+                      className={`p-1.5 sm:p-2.5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between h-[54px] sm:h-[62px] min-w-0 ${
                         isSelected
                           ? 'border-[#C5A376] bg-[#191D21] text-white ring-1 ring-[#C5A376]/25'
                           : 'border-[#262D33] bg-[#15191C]/70 text-neutral-400 hover:border-neutral-700 hover:text-neutral-200'
                       }`}
                     >
                       <div className="flex items-center justify-between w-full">
-                        <span className={`font-mono font-bold text-xs ${isSelected ? 'text-white' : 'text-neutral-300'}`}>
+                        <span className={`font-mono font-bold text-[11px] sm:text-xs ${isSelected ? 'text-white' : 'text-neutral-300'}`}>
                           {opt.level}
                         </span>
-                        <div className={`w-2.5 h-2.5 rounded-full border flex items-center justify-center ${
+                        <div className={`w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full border flex items-center justify-center ${
                           isSelected ? 'border-[#D4A373] bg-[#D4A373]' : 'border-neutral-600'
                         }`} />
                       </div>
-                      <span className={`text-[9px] uppercase tracking-wider font-semibold truncate block ${
+                      <span className={`text-[8px] sm:text-[9px] uppercase tracking-normal sm:tracking-wider font-semibold truncate block w-full text-center sm:text-left ${
                         isSelected ? 'text-white' : 'text-neutral-500'
                       }`}>
                         {shortName}
@@ -631,22 +638,24 @@ export function CustomizationModal({ product, isOpen, onClose }: CustomizationMo
                 })}
               </div>
 
-              {/* Dark Forest Green Subtitle Pill (Identical to Screenshot) */}
-              <div className="mt-2.5 ml-0 sm:ml-7 p-2.5 sm:py-2.5 sm:px-3 rounded-xl bg-[#12221E] border border-[#1B3830] text-neutral-200 text-[11px] flex items-center gap-2.5">
-                <Leaf className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                <span className="truncate">
-                  <strong className="text-white font-semibold">{activeSweetness.title}:</strong>{' '}
-                  <span className="text-neutral-300">{activeSweetness.subtitle}</span>
-                </span>
+              {/* Dark Forest Green Subtitle Pill */}
+              <div className="mt-2 pl-0 sm:pl-7">
+                <div className="p-2 sm:py-2.5 sm:px-3 rounded-xl bg-[#12221E] border border-[#1B3830] text-neutral-200 text-[10.5px] sm:text-[11px] flex items-center gap-2">
+                  <Leaf className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                  <span className="truncate">
+                    <strong className="text-white font-semibold">{activeSweetness.title}:</strong>{' '}
+                    <span className="text-neutral-300">{activeSweetness.subtitle}</span>
+                  </span>
+                </div>
               </div>
 
               {/* Natural Sweetener Type (Shown when Sweetness > 0%) */}
               {sweetnessLevel !== '0%' && (
-                <div className="mt-3 pl-0 sm:pl-7 animate-in fade-in duration-200">
-                  <span className="text-[10.5px] font-mono uppercase tracking-wider text-neutral-400 font-semibold block mb-2">
+                <div className="mt-2.5 pl-0 sm:pl-7 animate-in fade-in duration-200">
+                  <span className="text-[10px] sm:text-[10.5px] font-mono uppercase tracking-wider text-neutral-400 font-semibold block mb-2">
                     Sumber Pemanis Alami (Natural Sweetener):
                   </span>
-                  <div className="space-y-2">
+                  <div className="space-y-1.5 sm:space-y-2">
                     {SWEETENER_TYPES.map((sw) => {
                       const isSelected = sweetenerType === sw.id;
                       return (
@@ -654,7 +663,7 @@ export function CustomizationModal({ product, isOpen, onClose }: CustomizationMo
                           key={sw.id}
                           type="button"
                           onClick={() => setSweetenerType(sw.id)}
-                          className={`w-full flex items-center justify-between p-2.5 sm:p-3 rounded-xl border text-left transition-all cursor-pointer ${
+                          className={`w-full flex items-center justify-between p-2.5 sm:p-3 rounded-xl border text-left transition-all cursor-pointer min-h-[46px] ${
                             isSelected
                               ? 'border-[#C5A376] bg-[#191D21] text-white ring-1 ring-[#C5A376]/25'
                               : 'border-[#262D33] bg-[#15191C]/70 hover:border-neutral-700 text-neutral-300'
@@ -668,7 +677,7 @@ export function CustomizationModal({ product, isOpen, onClose }: CustomizationMo
                             </div>
                             <div className="min-w-0">
                               <span className="font-semibold text-xs text-white block truncate">{sw.name}</span>
-                              <span className="text-[10px] text-neutral-400 block truncate">{sw.desc}</span>
+                              <span className="text-[9.5px] sm:text-[10px] text-neutral-400 block truncate">{sw.desc}</span>
                             </div>
                           </div>
                           <span className="font-mono font-bold text-xs text-neutral-200 shrink-0 ml-2">
@@ -695,63 +704,65 @@ export function CustomizationModal({ product, isOpen, onClose }: CustomizationMo
                     BOTANICAL FLOWER INFUSIONS
                   </span>
                 </div>
-                <span className="text-[10.5px] text-neutral-400 font-medium">
+                <span className="text-[10px] sm:text-[10.5px] text-neutral-400 font-medium">
                   {selectedAddons.length > 0 ? `${selectedAddons.length} dipilih` : 'Optional (Select multi)'}
                 </span>
               </div>
-              <p className="text-[11px] text-neutral-400 pl-7 mb-3">
-                Tambahkan sentuhan bunga pilihan untuk pengalaman yang lebih istimewa.
+              <p className="text-[10.5px] sm:text-[11px] text-neutral-400 pl-0 sm:pl-7 mb-2.5">
+                Tambahkan sentuhan bunga &amp; buah pilihan untuk pengalaman yang lebih istimewa.
               </p>
 
               {/* Filter Tabs for Bunga Kering & Buah Kering */}
-              <div className="flex items-center gap-1.5 mb-3 ml-0 sm:ml-7 p-1 bg-[#161B1E] border border-[#262D33] rounded-xl">
-                <button
-                  type="button"
-                  onClick={() => setAddonFilter('all')}
-                  className={`flex-1 py-1 px-2 rounded-lg text-[10.5px] font-sans font-medium transition-all text-center cursor-pointer ${
-                    addonFilter === 'all'
-                      ? 'bg-[#232A30] text-white font-bold border border-white/10 shadow-xs'
-                      : 'text-neutral-400 hover:text-white'
-                  }`}
-                >
-                  Semua ({BOTANICAL_ADDONS.length})
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setAddonFilter('flower')}
-                  className={`flex-1 py-1 px-2 rounded-lg text-[10.5px] font-sans font-medium transition-all text-center cursor-pointer flex items-center justify-center gap-1 ${
-                    addonFilter === 'flower'
-                      ? 'bg-[#232A30] text-white font-bold border border-white/10 shadow-xs'
-                      : 'text-neutral-400 hover:text-white'
-                  }`}
-                >
-                  <span>🌸 Bunga Kering</span>
-                  {selectedAddons.filter((a) => a.category === 'flower').length > 0 && (
-                    <span className="w-4 h-4 rounded-full bg-rose-500/80 text-white text-[9px] font-bold flex items-center justify-center">
-                      {selectedAddons.filter((a) => a.category === 'flower').length}
-                    </span>
-                  )}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setAddonFilter('fruit')}
-                  className={`flex-1 py-1 px-2 rounded-lg text-[10.5px] font-sans font-medium transition-all text-center cursor-pointer flex items-center justify-center gap-1 ${
-                    addonFilter === 'fruit'
-                      ? 'bg-[#232A30] text-white font-bold border border-white/10 shadow-xs'
-                      : 'text-neutral-400 hover:text-white'
-                  }`}
-                >
-                  <span>🍊 Buah Kering</span>
-                  {selectedAddons.filter((a) => a.category === 'fruit').length > 0 && (
-                    <span className="w-4 h-4 rounded-full bg-amber-500/80 text-white text-[9px] font-bold flex items-center justify-center">
-                      {selectedAddons.filter((a) => a.category === 'fruit').length}
-                    </span>
-                  )}
-                </button>
+              <div className="pl-0 sm:pl-7 mb-2.5">
+                <div className="p-1 bg-[#161B1E] border border-[#262D33] rounded-xl flex gap-1">
+                  <button
+                    type="button"
+                    onClick={() => setAddonFilter('all')}
+                    className={`flex-1 py-1.5 px-2 rounded-lg text-[10px] sm:text-[10.5px] font-sans font-medium transition-all text-center cursor-pointer ${
+                      addonFilter === 'all'
+                        ? 'bg-[#232A30] text-white font-bold border border-white/10 shadow-xs'
+                        : 'text-neutral-400 hover:text-white'
+                    }`}
+                  >
+                    Semua ({BOTANICAL_ADDONS.length})
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setAddonFilter('flower')}
+                    className={`flex-1 py-1.5 px-2 rounded-lg text-[10px] sm:text-[10.5px] font-sans font-medium transition-all text-center cursor-pointer flex items-center justify-center gap-1 ${
+                      addonFilter === 'flower'
+                        ? 'bg-[#232A30] text-white font-bold border border-white/10 shadow-xs'
+                        : 'text-neutral-400 hover:text-white'
+                    }`}
+                  >
+                    <span>🌸 Bunga</span>
+                    {selectedAddons.filter((a) => a.category === 'flower').length > 0 && (
+                      <span className="w-4 h-4 rounded-full bg-rose-500/80 text-white text-[9px] font-bold flex items-center justify-center">
+                        {selectedAddons.filter((a) => a.category === 'flower').length}
+                      </span>
+                    )}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setAddonFilter('fruit')}
+                    className={`flex-1 py-1.5 px-2 rounded-lg text-[10px] sm:text-[10.5px] font-sans font-medium transition-all text-center cursor-pointer flex items-center justify-center gap-1 ${
+                      addonFilter === 'fruit'
+                        ? 'bg-[#232A30] text-white font-bold border border-white/10 shadow-xs'
+                        : 'text-neutral-400 hover:text-white'
+                    }`}
+                  >
+                    <span>🍊 Buah</span>
+                    {selectedAddons.filter((a) => a.category === 'fruit').length > 0 && (
+                      <span className="w-4 h-4 rounded-full bg-amber-500/80 text-white text-[9px] font-bold flex items-center justify-center">
+                        {selectedAddons.filter((a) => a.category === 'fruit').length}
+                      </span>
+                    )}
+                  </button>
+                </div>
               </div>
 
-              {/* Addons List matching pop_up_custom_order.png card style */}
-              <div className="space-y-2 ml-0 sm:ml-7 max-h-56 overflow-y-auto pr-1">
+              {/* Addons List with Luxury Slim Custom Scrollbar */}
+              <div className="pl-0 sm:pl-7 space-y-1.5 sm:space-y-2 max-h-48 sm:max-h-56 overflow-y-auto pr-1.5 custom-modal-scrollbar">
                 {BOTANICAL_ADDONS.filter(
                   (addon) => addonFilter === 'all' || addon.category === addonFilter
                 ).map((addon) => {
@@ -762,13 +773,13 @@ export function CustomizationModal({ product, isOpen, onClose }: CustomizationMo
                       key={addon.id}
                       type="button"
                       onClick={() => toggleAddon(addon)}
-                      className={`w-full flex items-center justify-between p-2.5 rounded-xl border text-left transition-all cursor-pointer ${
+                      className={`w-full flex items-center justify-between p-2 sm:p-2.5 rounded-xl border text-left transition-all cursor-pointer min-h-[48px] ${
                         isSelected
                           ? 'border-[#C5A376] bg-[#1A1F23] text-white ring-1 ring-[#C5A376]/25'
                           : 'border-[#262D33] bg-[#15191C] hover:border-neutral-700 text-neutral-300'
                       }`}
                     >
-                      <div className="flex items-center gap-3 min-w-0 pr-2">
+                      <div className="flex items-center gap-2.5 sm:gap-3 min-w-0 pr-2">
                         {/* Checkbox square */}
                         <div
                           className={`w-4 h-4 rounded border flex items-center justify-center shrink-0 transition-colors ${
@@ -780,25 +791,25 @@ export function CustomizationModal({ product, isOpen, onClose }: CustomizationMo
                           {isSelected && <Check className="w-3 h-3 stroke-[3]" />}
                         </div>
 
-                        {/* Botanical Thumbnail */}
+                        {/* Botanical Artwork Thumbnail */}
                         <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg overflow-hidden shrink-0 border border-white/5 bg-[#0F1316]">
                           <BotanicalThumbnail addon={addon} />
                         </div>
 
                         {/* Name and note */}
                         <div className="min-w-0">
-                          <span className="font-medium text-xs text-neutral-200 block truncate">
+                          <span className="font-medium text-[11.5px] sm:text-xs text-neutral-200 block truncate">
                             {addon.name}
                           </span>
                           {addon.note && (
-                            <span className="text-[10px] text-neutral-400 block truncate font-normal">
+                            <span className="text-[9.5px] sm:text-[10px] text-neutral-400 block truncate font-normal">
                               {addon.note}
                             </span>
                           )}
                         </div>
                       </div>
 
-                      <span className="font-mono font-bold text-xs text-neutral-200 shrink-0 ml-2">
+                      <span className="font-mono font-bold text-[11px] sm:text-xs text-neutral-200 shrink-0 ml-1.5">
                         +{formatRupiah(addon.price)}
                       </span>
                     </button>
@@ -810,17 +821,17 @@ export function CustomizationModal({ product, isOpen, onClose }: CustomizationMo
             {/* -------------------------------------------------------------
                 SECTION 4: BARISTA NOTES (OPTIONAL)
                 ------------------------------------------------------------- */}
-            <div className="pt-1">
-              <label className="block text-[10.5px] font-mono uppercase tracking-wider text-neutral-400 font-semibold mb-1.5 ml-0 sm:ml-7">
+            <div className="pt-0.5">
+              <label className="block text-[10px] sm:text-[10.5px] font-mono uppercase tracking-wider text-neutral-400 font-semibold mb-1.5 pl-0 sm:pl-7">
                 Catatan Khusus Barista (Opsional)
               </label>
-              <div className="ml-0 sm:ml-7">
+              <div className="pl-0 sm:pl-7">
                 <input
                   type="text"
                   placeholder="Contoh: Pisahkan es batu, seduh ekstra panas..."
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
-                  className="w-full bg-[#15191C] border border-[#262D33] rounded-xl px-3.5 py-2.5 text-xs text-neutral-200 placeholder:text-neutral-500 focus:outline-none focus:border-[#C5A376] font-sans"
+                  className="w-full bg-[#15191C] border border-[#262D33] rounded-xl px-3 py-2 sm:px-3.5 sm:py-2.5 text-[13px] sm:text-xs text-neutral-200 placeholder:text-neutral-500 focus:outline-none focus:border-[#C5A376] font-sans"
                   maxLength={150}
                 />
               </div>
@@ -830,26 +841,27 @@ export function CustomizationModal({ product, isOpen, onClose }: CustomizationMo
 
           {/* =========================================================================
               BOTTOM ACTION BAR: QUANTITY PILL & WARM HONEY ADD TO BAG CTA
+              Sticky bottom with safe area padding on mobile
               ========================================================================= */}
-          <div className="p-4 sm:p-5 md:p-6 border-t border-[#1E252B] bg-[#121619] flex items-center gap-3 shrink-0">
+          <div className="p-3.5 sm:p-5 md:p-6 border-t border-[#1E252B] bg-[#121619]/95 backdrop-blur-md sticky bottom-0 z-20 flex items-center gap-2.5 sm:gap-3 shrink-0 pb-[max(0.875rem,env(safe-area-inset-bottom))]">
             {/* Quantity Selector Capsule */}
-            <div className="flex items-center justify-between border border-[#283038] rounded-xl bg-[#171C20] px-2 py-1.5 min-w-[104px]">
+            <div className="flex items-center justify-between border border-[#283038] rounded-xl bg-[#171C20] px-1.5 sm:px-2 h-11 sm:h-12 min-w-[96px] sm:min-w-[104px]">
               <button
                 type="button"
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
                 disabled={quantity <= 1}
-                className="p-1.5 text-neutral-400 hover:text-white disabled:opacity-30 transition-colors cursor-pointer"
+                className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center text-neutral-400 hover:text-white disabled:opacity-25 transition-colors cursor-pointer"
                 aria-label="Decrease quantity"
               >
                 <Minus className="w-3.5 h-3.5" />
               </button>
-              <span className="font-mono text-xs font-bold text-white px-2">
+              <span className="font-mono text-xs font-bold text-white px-1 sm:px-2">
                 {quantity}
               </span>
               <button
                 type="button"
                 onClick={() => setQuantity(quantity + 1)}
-                className="p-1.5 text-neutral-400 hover:text-white transition-colors cursor-pointer"
+                className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center text-neutral-400 hover:text-white transition-colors cursor-pointer"
                 aria-label="Increase quantity"
               >
                 <Plus className="w-3.5 h-3.5" />
@@ -860,7 +872,7 @@ export function CustomizationModal({ product, isOpen, onClose }: CustomizationMo
             <button
               type="button"
               onClick={handleAddToCart}
-              className="flex-1 py-3.5 px-5 sm:px-6 rounded-xl bg-[#D4B78F] hover:bg-[#C8AA80] active:scale-[0.99] text-neutral-900 font-sans font-bold text-xs sm:text-sm uppercase tracking-wider transition-all flex items-center justify-between shadow-lg cursor-pointer"
+              className="flex-1 h-11 sm:h-12 px-4 sm:px-6 rounded-xl bg-[#D4B78F] hover:bg-[#C8AA80] active:scale-[0.98] text-neutral-900 font-sans font-bold text-[11.5px] sm:text-xs md:text-sm uppercase tracking-wider transition-all flex items-center justify-between shadow-lg cursor-pointer"
             >
               <span className="flex items-center gap-2">
                 <ShoppingBag className="w-4 h-4 text-neutral-900 stroke-[2.2]" />

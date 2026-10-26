@@ -242,3 +242,39 @@ h1.font-serif, h2.font-serif, h3.font-serif, h4.font-serif,
     scroll-behavior: auto !important;
   }
 }
+
+/* ==========================================================================
+   CHANGKEER LUXURY DARK MODAL SCROLLBAR
+   Ergonomic, slim golden-accented scrollbar for pop-up modals & lists
+   ========================================================================== */
+.custom-modal-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(197, 163, 118, 0.4) rgba(18, 22, 25, 0.6);
+  -webkit-overflow-scrolling: touch;
+}
+
+.custom-modal-scrollbar::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+.custom-modal-scrollbar::-webkit-scrollbar-track {
+  background: rgba(18, 22, 25, 0.5);
+  border-radius: 9999px;
+}
+
+.custom-modal-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(197, 163, 118, 0.35);
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: background-color 0.2s ease;
+}
+
+.custom-modal-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(212, 163, 115, 0.75);
+}
+
+.custom-modal-scrollbar::-webkit-scrollbar-thumb:active {
+  background: #C5A376;
+}
+
